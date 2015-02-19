@@ -12,12 +12,16 @@
     }
 
 .b-paidBody{
-	margin-top: 10px;
+	box-shadow: 0px 0px 7px rgba(0,0,0,0.30);
+	background-color: #F5F5F5;
 	min-height: 400px;
-    /*border: 1px solid rgb(51, 122, 183);*/
-	box-shadow: 0px 1px 6px rgba(0,0,0,0.45);
-	padding: 10px;
 }
-	.b-paidBody .b-paidBody__{
-		
+	.b-paidBody .b-paidBody__left{
+		min-height: 400px;
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 5px;
+		background-color: white;
+	}
+	.b-paidBody .b-paidBody__right{
 	}

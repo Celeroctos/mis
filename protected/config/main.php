@@ -14,7 +14,7 @@ return [
 
 	// preloading 'log' component
 	'preload'=>['log'],
-	'homeUrl'=>'service/fsdfd/sfds',
+	'homeUrl'=>'paid/cash/index',
 	'sourceLanguage' => 'ru',
 	'language' => 'ru',
 	'charset'=>'utf-8',
