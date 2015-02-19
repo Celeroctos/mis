@@ -14,11 +14,11 @@ class Users extends ActiveRecord
 	public $verifyCode;
 	public $passwordRepeat;
 	
-	const ROLE_GUEST_ID = 0;
+	const ROLE_GUEST_ID = 1;
 	const ROLE_GUEST_NAME = 'guest';
-	const ROLE_ADMIN_ID = 1;
+	const ROLE_ADMIN_ID = 2;
 	const ROLE_ADMIN_NAME = 'admin';
-	const ROLE_USER_ID = 2;
+	const ROLE_USER_ID = 3;
 	const ROLE_USER_NAME = 'user';
 	
 	public static function model($className=__CLASS__)
@@ -64,15 +64,18 @@ class Users extends ActiveRecord
 	public function checkUserIdentity($attribute)
 	{
 		$record=Users::model()->find('login=:login', [':login'=>$this->login]);
+		
 		if($record===null)
 		{
 			$this->addError($attribute, 'Неверный логин или пароль');
 			return 0;
 		}
+		
 		if(!CPasswordHelper::verifyPassword($this->password, $record->password)
 		&& md5(md5($this->password))!=$record->password) //обратная совместимость со старой версией приложения, где использовали md5(md5())
 		{
-			$this->addError($attribute, 'Неверный логин или пароль1');
+			$this->addError($attribute, 'Неверный логин или пароль');
+			return 0;
 		}
 	}
 	

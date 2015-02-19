@@ -1,7 +1,7 @@
 <?php
 /**
  * RBAC файл.
- * @author Тайибов Джамал <prohps@yandex.ru>
+ * @author Dzhamal Tayibov <prohps@yandex.ru>
  * 
  * TYPE_ROLE - роль.
  * TYPE_OPERATION - операция.
@@ -31,33 +31,25 @@ return [
 	],
 
 	//роли
-	Users::ROLE_GUEST=>[
+	Users::ROLE_GUEST_ID=>[
 		'type'=>CAuthItem::TYPE_ROLE,
 		'description'=>'guest',
 		'bizRule' => null,
 		'data' => null,
 	],
 
-	Users::ROLE_USER=>[
+	Users::ROLE_USER_ID=>[
 		'type'=>CAuthItem::TYPE_ROLE,
 		'description'=>'user',
-		'children'=>[Users::ROLE_GUEST, 'authUser'], //наследуем права и роль guest, добавляем к роли операцию
+		'children'=>[Users::ROLE_GUEST_ID, 'authUser'], //наследуем права и роль guest, добавляем к роли операцию
 		'bizRule' => null,
 		'data' => null,
 	],
-
-	Users::ROLE_PARTNER=>[
-		'type'=>CAuthItem::TYPE_ROLE,
-		'description'=>'partner',
-		'children'=>[Users::ROLE_GUEST, 'authPartner'],
-		'bizRule' => null,
-		'data' => null,
-	],
-
-	Users::ROLE_ADMIN=>[
+	
+	Users::ROLE_ADMIN_ID=>[
 		'type'=>CAuthItem::TYPE_ROLE,
 		'description'=>'admin',
-		'children'=>[Users::ROLE_GUEST, 'authAdmin'],
+		'children'=>[Users::ROLE_GUEST_ID, 'authAdmin'],
 		'bizRule' => null,
 		'data' => null,
 	],

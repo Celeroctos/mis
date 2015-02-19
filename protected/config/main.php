@@ -10,11 +10,11 @@ require_once('params.inc'); //доп. параметры.
 return [
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Moniiag',
-	'defaultController'=>'service/auth',
+	'defaultController'=>'service/auth/login',
 
 	// preloading 'log' component
 	'preload'=>['log'],
-	'homeUrl'=>['service/auth/login'],
+	'homeUrl'=>'service/fsdfd/sfds',
 	'sourceLanguage' => 'ru',
 	'language' => 'ru',
 	'charset'=>'utf-8',
@@ -40,16 +40,16 @@ return [
 
 	'components'=>[
 		
-		'session'=>[
-			'class'=>'CHttpSession',
-			'autoStart'=>false,
-		],
+//		'session'=>[
+//			'class'=>'CHttpSession',
+//			'autoStart'=>false,
+//		],
 		
 		'user'=>[
 			'class'=>'WebUser',
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
-			'loginUrl'=>['service/auth/login'], // module/controller/action, см. метод createUrl()
+			'loginUrl'=>'service/auth/login', // module/controller/action, см. метод createUrl()
 		],
 		
 		'clientScript' => include(dirname(__FILE__) . '/data/packages.php'),		
@@ -62,7 +62,7 @@ return [
 		
 		'authManager'=>[
 			'class'=>'PhpAuthManager',
-			'defaultRoles' => ['guest'],
+			'defaultRoles' => [1], // 1=>'guest'
 		],
 
 		'urlManager'=>[
