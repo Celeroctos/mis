@@ -13,6 +13,12 @@ define('_STATIC','static_src');
 					'jquery-1.11.2.min.js',
 				],
 			],
+			'header'=>[
+				'baseUrl'=>_STATIC . '/header/',
+				'css'=>[
+					'/css/header.css',
+				],
+			],
 			'bootstrap'=>[
 				'baseUrl'=>_STATIC . '/bootstrap-3.3.2-dist/',
 				'css'=>[
@@ -48,6 +54,7 @@ define('_STATIC','static_src');
 				],
 				'depends'=>[
 					'bootstrap',
+					'header',
 				],
 			],
 			//module service
@@ -61,6 +68,7 @@ define('_STATIC','static_src');
 				],
 				'depends'=>[
 					'bootstrap',
+					'header',
 				],
 			],
 		],

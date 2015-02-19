@@ -38,7 +38,9 @@ class Users extends ActiveRecord
 			['login, password', 'required', 'on'=>'service.auth.login'],
 			['login, password', 'type', 'type'=>'string', 'on'=>'service.auth.login'],
 			['login', 'checkUserIdentity', 'on'=>'service.auth.login'],
-			//Сценарии регистрации в системе
+			/**********************************/
+			
+			//Сценарии регистрации в системе (порядок правил не менять!)
 			['login', 'unique', 'on'=>'service.auth.register'],
 			['role_id', 'type', 'type'=>'integer', 'on'=>'service.auth.register'],
 			['username, login, password, passwordRepeat', 'required', 'on'=>'service.auth.register'],

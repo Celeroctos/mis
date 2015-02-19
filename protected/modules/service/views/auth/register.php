@@ -21,7 +21,7 @@ $this->pageTitle="Регистрация";
 			</div>
 			<div class="col-xs-5">
 				<?= $form->TextField($model, 'username', [
-								'class'=>'form-control',
+								'class'=>'form-control input-sm',
 							]); ?>
 			</div>
 		</div>
@@ -31,7 +31,7 @@ $this->pageTitle="Регистрация";
 			</div>
 			<div class="col-xs-5">
 				<?= $form->TextField($model, 'login', [
-								'class'=>'form-control',
+								'class'=>'form-control input-sm',
 							]); ?>
 			</div>
 		</div>
@@ -41,7 +41,7 @@ $this->pageTitle="Регистрация";
 			</div>
 			<div class="col-xs-5">
 				<?= $form->PasswordField($model, 'password', [
-								'class'=>'form-control',
+								'class'=>'form-control input-sm',
 							]); ?>
 			</div>
 		</div>
@@ -51,14 +51,14 @@ $this->pageTitle="Регистрация";
 			</div>
 			<div class="col-xs-5">
 				<?= $form->PasswordField($model, 'passwordRepeat', [
-								'class'=>'form-control',
+								'class'=>'form-control input-sm',
 							]); ?>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-4 col-xs-offset-3">
 				<?= CHtml::submitButton('Зарегистрироваться',[
-										'class'=>'btn btn-primary',
+										'class'=>'btn btn-primary btn-sm',
 									]); ?>
 			</div>
 		</div>
