@@ -5,7 +5,21 @@
  */
 class CashController extends MPaidController
 {
-	public $layout='index';
+	public function accessRules()
+	{
+		return [
+			[
+				'allow', //разрешить только авториз. юзерам.
+				'controllers' => ['paid/cash'],
+				'users'=>['@'],
+			],
+			[
+				'deny', //запрет всем остальным и перенаправление.
+				'deniedCallback' => [$this, 'redirectToDenied'],
+				'controllers'    => ['paid/cash'],
+			],
+		];
+	}
 	
 	public function actionIndex()
 	{
@@ -14,9 +28,9 @@ class CashController extends MPaidController
 	
 	public function actionSearch()
 	{
-		$model=new Medcard('paid.cash.search'); // Сценарий [module].[controller].[action]
+		$model=new Medcards('paid.cash.search'); // Сценарий [module].[controller].[action]
 		
-		if(isset($_POST['Medcard']))
+		if(isset($_POST['Medcards']))
 		{
 			$model->attributes=Yii::app()->getPost('Medcards');
 		}

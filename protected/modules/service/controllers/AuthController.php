@@ -5,11 +5,6 @@
  */
 class AuthController extends MServiceController
 {
-	public function filters()
-	{
-		return ['accessControl',];
-	}
-
 	public function accessRules()
 	{
 		return [
@@ -40,7 +35,7 @@ class AuthController extends MServiceController
 			if($model->validate())
 			{
 				$model->login();
-				echo Yii::app()->user->getRole();
+				$this->refresh();
 			}
 		}
 		
@@ -74,10 +69,9 @@ class AuthController extends MServiceController
 			$model->role_id=Users::ROLE_USER_ID;
 			if($model->save())
 			{
-				Yii::app()->user->addFlashMessage(WebUser::MSG_SUCCESS, 'Вы успешно зарегистрировались. Теперь Вы можете войти в систему.');
-				
 				$model->password=''; //чистим Хэши паролей при ошибке в валидации.
 				$model->passwordRepeat='';
+				Yii::app()->user->addFlashMessage(WebUser::MSG_SUCCESS, 'Вы успешно зарегистрировались. Теперь Вы можете войти в систему.');
 				$this->redirect('/' . Yii::app()->user->loginUrl); //absolute url
 			}
 			else

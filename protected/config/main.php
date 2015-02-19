@@ -74,7 +74,7 @@ return [
 			],
 
 		'errorHandler'=>[
-			'class'=>'ErrorHandler',
+			'class'=>'CErrorHandler',
 			//'errorAction'=>'service/error',
 		],
 		'log'=>[

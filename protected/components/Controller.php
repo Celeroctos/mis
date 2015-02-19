@@ -23,28 +23,43 @@ class Controller extends CController
 		];
 	}
 	
-	public function actionError()
-	{
-		if($error=Yii::app()->errorHandler->error)
-		{
-			if(Yii::app()->request->isAjaxRequest)
-			{
-				echo $error['message'];
-			}
-			else
-			{
+//	public function actionError()
+//	{
+//		if($error=Yii::app()->errorHandler->error)
+//		{
+//			if(Yii::app()->request->isAjaxRequest)
+//			{
+//				echo $error['message'];
+//			}
+//			else
+//			{
 //				$this->render('error', $error);
-				echo $error['message'];
-			}
-		}
+//				echo $error['message'];
+//			}
+//		}
+//	}
+
+	public function filters()
+	{
+		return ['accessControl',];
+	}
+
+	/**
+	 * Редирект пользователя в случае запрета доступа к контроллеру
+	 */
+	public function redirectToDenied()
+	{
+		Yii::app()->user->logout(true);
+		$this->redirect('/' . Yii::app()->user->loginUrl);
 	}
 	
 	/**
-	 * Редирект пользователя, которому всё запрещено (deny).
+	 * Редирект пользователя для аутентификации
 	 * См. фильтр CAccessControlFilter
 	 */
 	public function redirectToLogin()
 	{
+		Yii::app()->user->logout();
 		$this->redirect('/' . Yii::app()->user->loginUrl); //absolute url
 	}
 	
