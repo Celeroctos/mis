@@ -57,9 +57,7 @@ $this->pageTitle="Регистрация";
 		</div>
 		<div class="row">
 			<div class="col-xs-4 col-xs-offset-3">
-				<?= CHtml::submitButton('Зарегистрироваться',[
-										'class'=>'btn btn-primary btn-sm',
-									]); ?>
+				<?= CHtml::submitButton('Зарегистрироваться',['class'=>'btn btn-primary btn-sm', ]); ?>
 			</div>
 		</div>
 	<?php $this->endWidget(); ?>

@@ -10,13 +10,13 @@ class AuthController extends MServiceController
 		return [
 			[
 				'allow', //разрешить аутентификацию только анонимным юзерам.
-				'controllers' => ['service/auth'],
+				'controllers'=>['service/auth'],
 				'users'=>['?'],
 			],
 			[
 				'deny', //запрет всем остальным к регистрации/авторизации и перенаправление.
-				'deniedCallback' => [$this, 'redirectToHomeUrl'],
-				'controllers'    => ['service/auth'],
+				'deniedCallback'=>[$this, 'redirectToHomeUrl'],
+				'actions'=>['login', 'register', 'index'],
 			],
 		];
 	}

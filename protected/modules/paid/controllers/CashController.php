@@ -10,13 +10,13 @@ class CashController extends MPaidController
 		return [
 			[
 				'allow', //разрешить только авториз. юзерам.
-				'controllers' => ['paid/cash'],
+				'controllers'=>['paid/cash'],
 				'users'=>['@'],
 			],
 			[
 				'deny', //запрет всем остальным и перенаправление.
-				'deniedCallback' => [$this, 'redirectToDenied'],
-				'controllers'    => ['paid/cash'],
+				'deniedCallback'=>[$this, 'redirectToDenied'],
+				'controllers'=>['paid/cash'],
 			],
 		];
 	}
@@ -41,7 +41,7 @@ class CashController extends MPaidController
 	}
 	
 	/*
-	 * Создание абстрактной ЭМК и карты платных услуг.
+	 * Создание абстрактной ЭМК
 	 */
 	public function actionCreate()
 	{

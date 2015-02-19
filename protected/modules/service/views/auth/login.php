@@ -33,9 +33,8 @@ $this->pageTitle="Вход в систему";
 						</div>
 						<div class="row">
 							<div class="col-xs-12">
-								<?= CHtml::submitButton('Войти', [
-														'class'=>'btn btn-primary btn-block btn-sm',
-													]); ?>
+								<?= CHtml::submitButton('Войти', ['class'=>'btn btn-primary btn-block btn-sm',]); ?>
+								<?= CHtml::link('Создать пользователя', Yii::app()->createUrl('service/auth/register'), ['class'=>'btn btn-default btn-block btn-sm']); ?>
 							</div>
 						</div>
 					<?php $this->endWidget(); ?>

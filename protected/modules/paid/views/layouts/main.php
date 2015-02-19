@@ -40,5 +40,6 @@
 			</div>
 		</div>
 	</div>
+	<?php $this->widget('FooterWidget'); ?>
 </body>
 </html>

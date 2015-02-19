@@ -19,6 +19,12 @@ define('_STATIC','static_src');
 					'/css/header.css',
 				],
 			],
+			'footer'=>[
+				'baseUrl'=>_STATIC . '/footer/',
+				'css'=>[
+					'/css/footer.css',
+				],
+			],
 			'bootstrap'=>[
 				'baseUrl'=>_STATIC . '/bootstrap-3.3.2-dist/',
 				'css'=>[
@@ -55,6 +61,7 @@ define('_STATIC','static_src');
 				'depends'=>[
 					'bootstrap',
 					'header',
+					'footer',
 				],
 			],
 			//module service
@@ -69,6 +76,7 @@ define('_STATIC','static_src');
 				'depends'=>[
 					'bootstrap',
 					'header',
+					'footer',
 				],
 			],
 		],
