@@ -1,0 +1,9 @@
+.b-header{
+	min-height: 60px;
+	margin-bottom: 20px;
+}
+	.b-header__body{
+		background-color: #4682B4;
+		color: white;
+		padding-left: 10px;
+	}
