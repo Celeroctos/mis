@@ -75,24 +75,24 @@ $this->pageTitle="Касса";
 									</div>
 									<div class="col-xs-3">
 										<div class="form-group">
-											<?= $form->Label($modelPaid_Medcard, 'document_type', ['class'=>'control-label']); ?>
-											<?= $form->DropDownList($modelPaid_Medcard, 'document_type', $documentTypeListData, [
+											<?= $form->Label($modelPatient, 'document_type', ['class'=>'control-label']); ?>
+											<?= $form->DropDownList($modelPatient, 'document_type', $documentTypeListData, [
 															'class'=>'form-control input-sm',
 														]); ?>
 										</div>
 									</div>
 									<div class="col-xs-3">
 										<div class="form-group">
-											<?= $form->Label($modelPaid_Medcard, 'document_serie', ['class'=>'control-label']); ?>
-											<?= $form->TextField($modelPaid_Medcard, 'document_serie', [
+											<?= $form->Label($modelPatient, 'document_serie', ['class'=>'control-label']); ?>
+											<?= $form->TextField($modelPatient, 'document_serie', [
 															'class'=>'form-control input-sm',
 														]); ?>
 										</div>
 									</div>
 									<div class="col-xs-3">
 										<div class="form-group">
-											<?= $form->Label($modelPaid_Medcard, 'document_number', ['class'=>'control-label']); ?>
-											<?= $form->TextField($modelPaid_Medcard, 'document_number', [
+											<?= $form->Label($modelPatient, 'document_number', ['class'=>'control-label']); ?>
+											<?= $form->TextField($modelPatient, 'document_number', [
 															'class'=>'form-control input-sm',
 														]); ?>
 										</div>	
@@ -101,16 +101,16 @@ $this->pageTitle="Касса";
 								<div class="row">
 									<div class="col-xs-3">
 										<div class="form-group">
-											<?= $form->Label($modelPaid_Medcard, 'document_who_gived', ['class'=>'control-label']); ?>
-											<?= $form->TextField($modelPaid_Medcard, 'document_who_gived', [
+											<?= $form->Label($modelPatient, 'document_who_gived', ['class'=>'control-label']); ?>
+											<?= $form->TextField($modelPatient, 'document_who_gived', [
 															'class'=>'form-control input-sm',
 														]); ?>
 										</div>	
 									</div>
 									<div class="col-xs-3">
 										<div class="form-group">
-											<?= $form->Label($modelPaid_Medcard, 'document_date_gived', ['class'=>'control-label']); ?>
-											<?= $form->TextField($modelPaid_Medcard, 'document_date_gived', [
+											<?= $form->Label($modelPatient, 'document_date_gived', ['class'=>'control-label']); ?>
+											<?= $form->TextField($modelPatient, 'document_date_gived', [
 															'class'=>'form-control input-sm',
 														]); ?>
 										</div>	
@@ -119,8 +119,8 @@ $this->pageTitle="Касса";
 								<div class="row">
 									<div class="col-xs-8">
 										<div class="form-group">
-											<?= $form->Label($modelPaid_Medcard, 'address_reg', ['class'=>'control-label']); ?>
-											<?= $form->TextField($modelPaid_Medcard, 'address_reg', [
+											<?= $form->Label($modelPatient, 'address_reg', ['class'=>'control-label']); ?>
+											<?= $form->TextField($modelPatient, 'address_reg', [
 															'class'=>'form-control input-sm',
 														]); ?>
 										</div>	
@@ -129,8 +129,8 @@ $this->pageTitle="Касса";
 								<div class="row">
 									<div class="col-xs-3">
 										<div class="form-group">
-											<?= $form->Label($modelPaid_Medcard, 'snils', ['class'=>'control-label']); ?>
-											<?= $form->TextField($modelPaid_Medcard, 'snils', [
+											<?= $form->Label($modelPatient, 'snils', ['class'=>'control-label']); ?>
+											<?= $form->TextField($modelPatient, 'snils', [
 															'class'=>'form-control input-sm',
 														]); ?>
 										</div>	
@@ -139,6 +139,14 @@ $this->pageTitle="Касса";
 										<div class="form-group">
 											<?= $form->Label($modelPaid_Medcard, 'paid_card_number', ['class'=>'control-label']); ?>
 											<?= $form->TextField($modelPaid_Medcard, 'paid_card_number', [
+															'class'=>'form-control input-sm',
+														]); ?>
+										</div>	
+									</div>
+									<div class="col-xs-3">
+										<div class="form-group">
+											<?= $form->Label($modelPatient, 'phone_number', ['class'=>'control-label']); ?>
+											<?= $form->TextField($modelPatient, 'phone_number', [
 															'class'=>'form-control input-sm',
 														]); ?>
 										</div>	

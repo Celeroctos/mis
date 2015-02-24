@@ -11,6 +11,75 @@ class Patients extends ActiveRecord
 	public $last_name;
 	public $gender;
 	public $birthday;
+	public $document_type;
+	public $document_serie;
+	public $document_number;
+	public $document_who_gived;
+	public $document_date_gived;
+	public $address_reg;
+	public $address;
+	public $snils;
+	public $invalid_group;
+	public $phone_number;
+	public $profession;
+	public $job_address;
+	public $create_timestamp;
+	
+	const DOCUMENT_TYPE_PASSPORT_ID = 1;
+	const DOCUMENT_TYPE_PASSPORT_NAME = 'Паспорт';
+	
+	const DOCUMENT_TYPE_BIRTH_CERTIFICATE_ID = 2;
+	const DOCUMENT_TYPE_BIRTH_CERTIFICATE_NAME = 'Свидетельство о рождении';
+	
+	const DOCUMENT_TYPE_RESIDENCE_PERMIT_ID = 3;
+	const DOCUMENT_TYPE_RESIDENCE_PERMIT_NAME = 'Вид на жительство';
+	
+	const DOCUMENT_TYPE_PASSPORT_FOREIGNER_ID = 4;
+	const DOCUMENT_TYPE_PASSPORT_FOREIGNER_NAME = 'Паспорт иностранного гражданина';
+	
+	const DOCUMENT_TYPE_IDENTITY_CARD_ID = 5;
+	const DOCUMENT_TYPE_IDENTITY_CARD_NAME = 'Удостоверение личности';
+	
+	const DOCUMENT_TYPE_OTHER_DOCUMENT_ID = 6;
+	const DOCUMENT_TYPE_OTHER_DOCUMENT_NAME = 'Другой документ';
+
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+	
+	/**
+	 * Используется в форме paid/cash/search
+	 */
+	public static function getDocumentTypeListData()
+	{
+		return CHtml::listData([
+					[
+						'value'=>self::DOCUMENT_TYPE_PASSPORT_ID,
+						'name'=>self::DOCUMENT_TYPE_PASSPORT_NAME,
+					],
+					[
+						'value'=>self::DOCUMENT_TYPE_BIRTH_CERTIFICATE_ID,
+						'name'=>self::DOCUMENT_TYPE_BIRTH_CERTIFICATE_NAME,
+					],
+					[
+						'value'=>self::DOCUMENT_TYPE_RESIDENCE_PERMIT_ID,
+						'name'=>self::DOCUMENT_TYPE_RESIDENCE_PERMIT_NAME,
+					],
+					[
+						'value'=>self::DOCUMENT_TYPE_PASSPORT_FOREIGNER_ID,
+						'name'=>self::DOCUMENT_TYPE_PASSPORT_FOREIGNER_NAME,
+					],
+					[
+						'value'=>self::DOCUMENT_TYPE_IDENTITY_CARD_ID,
+						'name'=>self::DOCUMENT_TYPE_IDENTITY_CARD_NAME,
+					],
+					[
+						'value'=>self::DOCUMENT_TYPE_OTHER_DOCUMENT_ID,
+						'name'=>self::DOCUMENT_TYPE_OTHER_DOCUMENT_NAME,
+					]
+				], 'value', 'name');
+	}
 	
 	public function tableName()
 	{

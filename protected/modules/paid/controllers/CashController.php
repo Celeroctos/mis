@@ -30,7 +30,7 @@ class CashController extends MPaidController
 	{
 		$modelPatient=new Patients('paid.cash.search'); // Сценарий [module].[controller].[action]
 		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
-		$documentTypeListData=Paid_Medcards::getDocumentTypeListData();
+		$documentTypeListData=Patients::getDocumentTypeListData();
 //		if(isset($_POST['Medcards']))
 //		{
 //			$model->attributes=Yii::app()->getPost('Medcards');
