@@ -84,7 +84,7 @@ HERE;
 					(
 						"paid_referrals_id" serial NOT NULL, --Уникальный номер направления
 						"paid_order_id" integer NOT NULL, --FK (table paid_orders)
-						"medcard_id" integer NOT NULL, --FK (table medcards)
+						"paid_medcard_id" integer NOT NULL, --FK (table paid_medcards)
 						"date" TIMESTAMPTZ,
 						"status" integer, --Сомнительно, возможно удаление (есть в paid_orders)
 						PRIMARY KEY(paid_referrals_id)
@@ -137,8 +137,10 @@ HERE;
 					CREATE TABLE IF NOT EXISTS "paid"."paid_medcards"
 					(
 						"paid_medcards_id" serial NOT NULL,
-						"date_create" TIMESTAMPTZ, --Дата создания карты
-						"medcard_id" integer, --FK (table medcards). Привязка к основной (абстрактной) карте ЭМК
+						"paid_medcard_number" character varying(255) DEFAULT NULL, --Номер карты
+						"date_create" TIMESTAMPTZ NOT NULL, --Дата создания карты
+						"enterprise_id" integer DEFAULT NULL, --FK (table enterprises)
+						"pacient_id" integer, --FK (table medcards). Привязка к основной (абстрактной) карте ЭМК
 						PRIMARY KEY(paid_medcards_id)
 					);
 HERE;

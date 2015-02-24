@@ -31,10 +31,16 @@ return [
 		'paid'=>[
 			'defaultController' => 'cash',
 			'layout' => 'main',
+			'import'=>[
+				'application.modules.paid.models.*',
+			],
 		],
 		'service'=>[
 			'defaultController' => 'auth',
 			'layout' => 'main',
+			'import'=>[
+				'application.modules.service.models.*',
+			],
 		],
 	],
 

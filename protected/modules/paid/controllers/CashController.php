@@ -28,15 +28,18 @@ class CashController extends MPaidController
 	
 	public function actionSearch()
 	{
-		$model=new Patients('paid.cash.search'); // Сценарий [module].[controller].[action]
-		
+		$modelPatient=new Patients('paid.cash.search'); // Сценарий [module].[controller].[action]
+		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
+		$documentTypeListData=Paid_Medcards::getDocumentTypeListData();
 //		if(isset($_POST['Medcards']))
 //		{
 //			$model->attributes=Yii::app()->getPost('Medcards');
 //		}
 		
 		$this->render('search', [
-			'model'=>$model,
+			'modelPatient'=>$modelPatient,
+			'modelPaid_Medcard'=>$modelPaid_Medcard,
+			'documentTypeListData'=>$documentTypeListData,
 		]);
 	}
 	

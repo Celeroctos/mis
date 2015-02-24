@@ -111,5 +111,5 @@ class Users extends ActiveRecord
 			'password'=>'Пароль',
 			'passwordRepeat'=>'Повтор пароля',
 		];
-	}	
+	}
 }
