@@ -11,7 +11,8 @@ $this->pageTitle="Вход в систему";
 			<div class="panel-heading">Вход в систему</div>
 			<div class="panel-body">
 				<div class="form">
-					<?php $form=$this->beginWidget('CActiveForm'); ?>
+					<?php $form=$this->beginWidget('CActiveForm', ['id'=>'user-form',
+																		 'enableClientValidation'=>true,]); ?>
 						<div class="row">
 							<div class="col-xs-12">
 								<?= $form->errorSummary($model, '', '', [

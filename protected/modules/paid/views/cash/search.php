@@ -36,9 +36,8 @@ $this->pageTitle="Касса";
 								<?= $form->errorSummary($modelPaid_Medcard, '', '', [
 									'class'=>'alert alert-warning',
 								]); ?>
-								<div class="form-inline">
 									<div class="row">
-										<div class="col-xs-3">
+										<div class="col-xs-4">
 											<div class="form-group">
 												<?= $form->Label($modelPatient, 'last_name', ['class'=>'control-label']); ?>
 												<?= $form->TextField($modelPatient, 'last_name', [
@@ -46,7 +45,7 @@ $this->pageTitle="Касса";
 															]); ?>
 											</div>
 										</div>
-										<div class="col-xs-3">
+										<div class="col-xs-4">
 											<div class="form-group">
 												<?= $form->Label($modelPatient, 'first_name', ['class'=>'control-label']); ?>
 												<?= $form->TextField($modelPatient, 'first_name', [
@@ -54,7 +53,7 @@ $this->pageTitle="Касса";
 															]); ?>
 											</div>
 										</div>
-										<div class="col-xs-3">
+										<div class="col-xs-4">
 											<div class="form-group">
 												<?= $form->Label($modelPatient, 'middle_name', ['class'=>'control-label']); ?>
 												<?= $form->TextField($modelPatient, 'middle_name', [
@@ -63,7 +62,6 @@ $this->pageTitle="Касса";
 											</div>
 										</div>
 									</div>
-								</div>
 								<div class="row">
 									<div class="col-xs-3">
 										<div class="form-group">
@@ -150,6 +148,11 @@ $this->pageTitle="Касса";
 															'class'=>'form-control input-sm',
 														]); ?>
 										</div>	
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-12">
+										<?= CHtml::ajaxSubmitButton('Найти', '', [], ['class'=>'btn btn-primary']); ?>
 									</div>
 								</div>
 							<?php $this->endWidget(); ?>
