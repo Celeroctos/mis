@@ -1,35 +1,61 @@
-/* 
-    Created on: 17.02.2015, 12:24:54
-    Author: Dzhamal Tayibov <prohps@yandex.ru>
-	style: БЭМ.
-*/
 .b-paidNav{
+    margin-bottom: 15px;
 }
-    .b-paidNav .b-paidNav__href{    
-       border-radius: 0px 0px 0px 0px;
+    .b-paidNav .b-paidNav__href{
+        border-radius: 0px 0px 0px 0px;
     }
     .b-paidNav .b-paidNav__li{
         box-shadow: 0px 0px 1px rgba(0,0,0,0.65);
     }
-    
-.b-paidHeader{
+.b-paid{
+    background-color: #F5F5F5;
+}
+    .b-paid__bodyLeft{
+        box-shadow: 0px 0px 7px rgba(0,0,0,0.30);
+        border-radius: 6px 6px 6px 6px;
+        background-color: white;
+    }
+    .b-paid__bodyRight{
+    }
+    .b-paid__footerLeft{
+        box-shadow: 0px 0px 7px rgba(0,0,0,0.30);
+        border-radius: 6px 6px 0px 0px;
+        background-color: white;
+    }
+    .b-paid__footerRight{
+    }
+.b-paidFooterRow{
+    margin-top: 2px;
+}
+.b-paidFooterH3{
+    margin-top: 10px;
     margin-bottom: 10px;
 }
-    
+/*.b-paidHeader{
+    margin-bottom: 10px;
+}*/
+/*    
 .b-paidBody{
     box-shadow: 0px 0px 7px rgba(0,0,0,0.30);
     background-color: #F5F5F5;
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 8px 8px 8px 8px;
     min-height: 400px;
 }
 	.b-paidBody .b-paidBody__left{
             min-height: 400px;
             padding-left: 10px;
             padding-right: 10px;
-            border-radius: 8px 0px 0px 0px;
+            border-radius: 8px 8px 8px 8px;
             padding-top: 5px;
             background-color: white;
 	}
 	.b-paidBody .b-paidBody__right{
             
 	}
+.b-rowHeader{
+    margin-bottom: 3px;
+}
+    
+.b-rowFooter{
+    
+}*/
