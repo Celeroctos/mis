@@ -32,10 +32,21 @@ class CashController extends MPaidController
 		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
 		$documentTypeListData=Patients::getDocumentTypeListData();
 		
-//		if(isset($_POST['Medcards']))
-//		{
-//			$model->attributes=Yii::app()->getPost('Medcards');
-//		}
+		if(isset($_GET['ajax']))
+		{
+			$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient]); //processoutput загрузился один раз, снизу
+			Yii::app()->end();
+		}
+		
+		if(isset($_POST['Patients']))
+		{
+			if(Yii::app()->request->isAjaxRequest)
+			{
+				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
+				$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient], false, true); //load processoutput
+				Yii::app()->end();
+			}
+		}
 		
 		$this->render('search', [
 			'modelPatient'=>$modelPatient,

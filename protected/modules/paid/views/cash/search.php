@@ -22,7 +22,7 @@ $this->pageTitle="Касса";
 <div class="container b-paid">
 	<div class="row">
 		<div class="col-xs-10 b-paid__bodyLeft">
-			<?php $form=$this->beginWidget('CActiveForm'); ?>
+			<?php $form=$this->beginWidget('CActiveForm', ['id'=>'yw10']); ?>
 				<?= $form->errorSummary($modelPatient, '', '', [
 					'class'=>'alert alert-warning',
 				]); ?>
@@ -139,11 +139,32 @@ $this->pageTitle="Касса";
 											'class'=>'form-control input-sm',
 										]); ?>
 						</div>	
-									</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<?= CHtml::ajaxSubmitButton('Найти', '', [
+														'success'=>'function(html){
+															$("#myModalBody").html(html);
+															$("#myModal").modal("show");
+														}',	
+													], ['class'=>'btn btn-primary btn-sm',]); ?>
+					</div>
+					<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog b-modalSearchPacient">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 								</div>
-								<div class="row">
-									<div class="col-xs-12">
-										<?= CHtml::ajaxSubmitButton('Найти', '', [], ['class'=>'btn btn-primary']); ?>
+								<div class="modal-body" id="myModalBody">
+									...
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			<?php $this->endWidget(); ?>

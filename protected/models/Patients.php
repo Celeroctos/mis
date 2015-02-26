@@ -47,6 +47,15 @@ class Patients extends ActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public function rules()
+	{
+		return [
+			//Сценарии аутентификации в системе
+			['first_name, middle_name, last_name', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
+			/**********************************/
+		];
+	}
 	
 	/**
 	 * Используется в форме paid/cash/search
@@ -79,6 +88,25 @@ class Patients extends ActiveRecord
 						'name'=>self::DOCUMENT_TYPE_OTHER_DOCUMENT_NAME,
 					]
 				], 'value', 'name');
+	}
+	
+	public function search()
+	{
+		$criteria=new CDbCriteria;
+		$criteria->compare('last_name', $this->last_name, true);
+		$criteria->compare('first_name', $this->first_name, true);
+		
+		return new CActiveDataProvider('Patients',[
+			'criteria'=>$criteria,
+			'sort'=>[
+				'defaultOrder'=>[
+					'patient_id'=>CSort::SORT_DESC,
+				],
+			],
+			'pagination'=>[
+				'pageSize'=>1,
+			],
+		]);
 	}
 	
 	public function tableName()
