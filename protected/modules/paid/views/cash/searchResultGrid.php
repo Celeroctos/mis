@@ -10,7 +10,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 		'selectedPageCssClass'=>'active',
 		'header'=>'',
 		'htmlOptions'=>[
-			'class'=>'pagination',
+			'class'=>'pagination pagination-sm',
 		]
 	],
 	'columns'=>[
