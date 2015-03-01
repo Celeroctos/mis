@@ -42,12 +42,12 @@ class Patients extends ActiveRecord
 	
 	const DOCUMENT_TYPE_OTHER_DOCUMENT_ID = 6;
 	const DOCUMENT_TYPE_OTHER_DOCUMENT_NAME = 'Другой документ';
-
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
 	}
-
+	
 	public function rules()
 	{
 		return [
@@ -87,7 +87,7 @@ class Patients extends ActiveRecord
 						'value'=>self::DOCUMENT_TYPE_OTHER_DOCUMENT_ID,
 						'name'=>self::DOCUMENT_TYPE_OTHER_DOCUMENT_NAME,
 					]
-				], 'value', 'name');
+		], 'value', 'name');
 	}
 	
 	public function search()
@@ -95,6 +95,7 @@ class Patients extends ActiveRecord
 		$criteria=new CDbCriteria;
 		$criteria->compare('last_name', $this->last_name, true);
 		$criteria->compare('first_name', $this->first_name, true);
+		$criteria->compare('middle_name', $this->middle_name, true);
 		
 		return new CActiveDataProvider('Patients',[
 			'criteria'=>$criteria,

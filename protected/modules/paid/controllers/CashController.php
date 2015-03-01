@@ -42,6 +42,8 @@ class CashController extends MPaidController
 		{
 			if(Yii::app()->request->isAjaxRequest)
 			{
+				
+				Yii::app()->clientScript->scriptMap['jquery-1.11.2.min.js'] = false; //уже подключен.
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 				$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient], false, true); //load processoutput
 				Yii::app()->end();
@@ -56,7 +58,7 @@ class CashController extends MPaidController
 	}
 	
 	/*
-	 * Создание абстрактной ЭМК
+	 * Создание платной ЭМК
 	 */
 	public function actionCreate()
 	{
