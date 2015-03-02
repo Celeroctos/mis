@@ -54,13 +54,14 @@ class CashController extends MPaidController
 			 * scenario_ajax_create Используется в <input type="hidden">
 			 * для отличия между поиском
 			 * и добавлением юзера из одной формы (ПОИСК в блоке if выше),
-			 * По умолчанию у <input>: display: none; display: inline меняется в случае, когда мы добавляем пациента (ajax).
+			 * По умолчанию у <input>: display: none; Меняется на display: inline; в случае, когда мы добавляем пациента (через modal).
 			 * При нажатии на кнопку сохранить 
 			 * смотрим, что пришло в ответ от сервера, если удачное добавление, то меняем
-			 * display: none у кнопки "Сохранить" и у <input>, если нет - то выводим ошибку валидации.
+			 * display: none; у кнопки "Сохранить" и у <input>, если нет - то выводим ошибку валидации.
 			 */
-			elseif(Yii::app()->request->isAjaxRequest && isset($_POST['scenario_ajax_create']))
+			elseif(isset($_POST['scenario_ajax_create']))
 			{ //add patient
+				echo $_POST['scenario_ajax_create'];
 				$modelPatient->setScenario('paid.cash.create'); //меняем сценарий
 				$modelPaid_Medcard->setScenario('paid.cash.create'); //меняем сценарий
 				
