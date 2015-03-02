@@ -157,8 +157,11 @@ $this->pageTitle="Касса";
 															$("#myModal").modal("show");
 														}',	
 													], ['class'=>'btn btn-primary btn-sm',]); ?>
-						<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success btn-sm', 'id'=>'add_paid_patient_button', 'style'=>'display: none; opacity: 0;']); ?>
-						<?= CHtml::hiddenField('scenario_ajax_create', '9', ['id'=>'add_paid_patient_input', 'style'=>'display: none;']); ?>
+						<?= CHtml::ajaxSubmitButton('Сохранить', '', ['data'=>"{jQuery(this).parents('form').serialize()",
+																	  'success'=>'function(html){
+																			alert(html);
+																   }'], 
+																	 ['class'=>'btn btn-success btn-sm', 'id'=>'add_paid_patient_button', 'name'=>'add_paid_patient_button', 'style'=>'display: none; opacity: 0;']); ?>
 					</div>
 					<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog b-modalSearchPacient">

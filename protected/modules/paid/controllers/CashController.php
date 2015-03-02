@@ -50,33 +50,28 @@ class CashController extends MPaidController
 				$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient], false, true); //load processoutput
 				Yii::app()->end();
 			}
-			/**
-			 * scenario_ajax_create Используется в <input type="hidden">
-			 * для отличия между поиском
-			 * и добавлением юзера из одной формы (ПОИСК в блоке if выше),
-			 * По умолчанию у <input>: display: none; Меняется на display: inline; в случае, когда мы добавляем пациента (через modal).
-			 * При нажатии на кнопку сохранить 
-			 * смотрим, что пришло в ответ от сервера, если удачное добавление, то меняем
-			 * display: none; у кнопки "Сохранить" и у <input>, если нет - то выводим ошибку валидации.
-			 */
-			elseif(isset($_POST['scenario_ajax_create']))
-			{ //add patient
-				echo $_POST['scenario_ajax_create'];
-				$modelPatient->setScenario('paid.cash.create'); //меняем сценарий
-				$modelPaid_Medcard->setScenario('paid.cash.create'); //меняем сценарий
-				
-				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
-				
-				if($modelPatient->save())
-				{
-					echo 1; //1 - успешное добавление пациента
-				}
-				else
-				{
-					echo 0; //ошибка
-				}
-				Yii::app()->end();
-			}
+		elseif(isset($_POST['Patients']))
+		{
+			echo 423423;
+			Yii::app()->end();
+		}
+//			elseif()
+//			{ //add patient
+//				$modelPatient->setScenario('paid.cash.create'); //меняем сценарий
+//				$modelPaid_Medcard->setScenario('paid.cash.create'); //меняем сценарий
+//				
+//				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
+//				
+//				if($modelPatient->save())
+//				{
+//					echo 1; //1 - успешное добавление пациента
+//				}
+//				else
+//				{
+//					echo 0; //ошибка
+//				}
+//				Yii::app()->end();
+//			}
 		}
 		
 		$this->render('search', [
