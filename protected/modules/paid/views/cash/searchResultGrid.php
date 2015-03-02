@@ -2,8 +2,15 @@
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPatient->search(),
 	'filter'=>$modelPatient,
-	'ajaxVar'=>'ajax',
+	'id'=>'paid_grid_search_patients',
+	'ajaxVar'=>'ajax_grid',
 	'ajaxUpdate'=>true,
+	'emptyText'=>'<div style="width: 185px; margin: 0 auto;">'
+	. '<h4>Пациент не найден</h4>'
+	. CHtml::htmlButton('Добавить', ['class'=>'btn btn-primary', 'id'=>'add_paid_modal_patient', 'name'=>'add_paid_modal_patient'])
+	. ' <button type="button" class="btn btn-default" data-dismiss="modal">Назад</button>'
+	. '</div>',
+	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered',
 	'pager'=>[
 		'class'=>'CLinkPager',
@@ -14,7 +21,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 		]
 	],
 	'columns'=>[
-		[ 
+		[
 			'name'=>'last_name',
 			'filter'=>'',
 			'headerHtmlOptions'=>[
@@ -30,26 +37,13 @@ $this->widget('zii.widgets.grid.CGridView', [
 		],
 		[
 			'class'=>'CButtonColumn',
+			'template'=>'{view}',
 			'buttons'=>[
 				'view'=>[
-					'label'=>'Просмотр',
+					'label'=>'Выбрать пациента',
 					'imageUrl'=>false,
 					'options'=>[
-						'class'=>'btn btn-primary btn-block btn-xs'
-					],
-				],
-				'update'=>[
-					'label'=>'Редактировать',
-					'imageUrl'=>false,
-					'options'=>[
-						'class'=>'btn btn-primary btn-block btn-xs'
-					],
-				],
-				'delete'=>[
-					'label'=>'Удалить',
-					'imageUrl'=>false,
-					'options'=>[
-						'class'=>'btn btn-default btn-block btn-xs'
+						'class'=>'btn btn-success btn-block btn-xs'
 					],
 				],
 				'headerHtmlOptions'=>[

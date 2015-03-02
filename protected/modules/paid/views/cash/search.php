@@ -52,6 +52,14 @@ $this->pageTitle="Касса";
 										]); ?>
 						</div>
 					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<?= $form->Label($modelPatient, 'gender', ['class'=>'control-label']); ?>
+							<?= $form->TextField($modelPatient, 'gender', [
+											'class'=>'form-control input-sm',
+										]); ?>
+						</div>
+					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-3">
@@ -138,7 +146,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'phone_number', [
 											'class'=>'form-control input-sm',
 										]); ?>
-						</div>	
+						</div>
 					</div>
 				</div>
 				<div class="row">
@@ -149,14 +157,12 @@ $this->pageTitle="Касса";
 															$("#myModal").modal("show");
 														}',	
 													], ['class'=>'btn btn-primary btn-sm',]); ?>
+						<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success btn-sm', 'id'=>'add_paid_patient', 'style'=>'display: none; opacity: 0;']); ?>
+						<?= CHtml::hiddenField('scenario_ajax_create', '1', []); ?>
 					</div>
 					<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog b-modalSearchPacient">
 							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									<h4 class="modal-title" id="myModalLabel">Modal title</h4>
-								</div>
 								<div class="modal-body" id="myModalBody">
 									...
 								</div>

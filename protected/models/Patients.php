@@ -51,7 +51,9 @@ class Patients extends ActiveRecord
 	public function rules()
 	{
 		return [
-			//Сценарии аутентификации в системе
+			//Добавление пациента
+			['first_name, middle_name, last_name, gender, birthday', 'required', 'on'=>'paid.cash.create'],
+			//Поиск пациентов
 			['first_name, middle_name, last_name', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			/**********************************/
 		];
