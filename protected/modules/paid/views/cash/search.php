@@ -23,12 +23,12 @@ $this->pageTitle="Касса";
 	<div class="row">
 		<div class="col-xs-10 b-paid__bodyLeft">
 			<?php $form=$this->beginWidget('CActiveForm', [
-												'id'=>'paid_cash_search_form',
-//												'enableAjaxValidation'=>true,
-												'clientOptions'=>['validateOnChange'=>false],
+												'id'=>'paid_cash_search-form',
+												'enableAjaxValidation'=>'true',
+												'enableClientValidation'=>'true',
+												'clientOptions'=>['validateOnChange'=>false, 'ajaxVar'=>'paid_cash_search-form', 'validateOnSubmit'=>true],
 											]); ?>
-				<?= $form->errorSummary($modelPatient, '', '', [
-				]); ?>
+				<?= $form->errorSummary($modelPatient); ?>
 				<div class="row">
 					<div class="col-xs-3">
 							<?= $form->Label($modelPatient, 'last_name', ['class'=>'control-label']); ?>
@@ -42,7 +42,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'first_name', [
 											'class'=>'form-control input-sm',
 										]); ?>
-
+							<?= $form->error($modelPatient, 'first_name'); ?>
 					</div>
 					<div class="col-xs-3">
 						<div class="form-group">
@@ -50,6 +50,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'middle_name', [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'middle_name'); ?>
 						</div>
 					</div>
 					<div class="col-xs-3">
@@ -174,12 +175,8 @@ $this->pageTitle="Касса";
 																 ], 
 																 ['class'=>'btn btn-primary btn-sm',]
 													); ?>
-						<?= CHtml::ajaxSubmitButton('Сохранить', '', ['data'=>new CJavaScriptExpression('jQuery(this).parents("form").serialize() + "&paid_cash_save_patient_ajax=1"'),
-//																	  'success'=>'function(html){
-//																					alert(html);
-//																				 }'
-																	 ], 
-																	 ['class'=>'btn btn-success btn-sm', 'id'=>'add_paid_patient_button', 'name'=>'add_paid_patient_button', 'style'=>'display: none; opacity: 0;']); ?>
+						
+						<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success btn-sm', 'id'=>'add_paid_patient_button', 'name'=>'add_paid_patient_button', 'style'=>'display: none; opacity: 0;']); ?>
 					</div>
 					<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog b-modalSearchPacient">
