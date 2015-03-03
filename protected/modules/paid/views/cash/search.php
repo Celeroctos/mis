@@ -22,12 +22,12 @@ $this->pageTitle="Касса";
 <div class="container b-paid">
 	<div class="row">
 		<div class="col-xs-10 b-paid__bodyLeft">
-			<?php $form=$this->beginWidget('CActiveForm', ['id'=>'paid_cash_search_Form']); ?>
+			<?php $form=$this->beginWidget('CActiveForm', [
+												'id'=>'paid_cash_search_form',
+//												'enableAjaxValidation'=>true,
+												'clientOptions'=>['validateOnChange'=>false],
+											]); ?>
 				<?= $form->errorSummary($modelPatient, '', '', [
-					'class'=>'alert alert-warning',
-				]); ?>
-				<?= $form->errorSummary($modelPaid_Medcard, '', '', [
-					'class'=>'alert alert-warning',
 				]); ?>
 				<div class="row">
 					<div class="col-xs-3">
@@ -35,7 +35,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'last_name', [
 											'class'=>'form-control input-sm',
 										]); ?>
-
+							<?= $form->error($modelPatient, 'last_name'); ?>
 					</div>
 					<div class="col-xs-3">
 							<?= $form->Label($modelPatient, 'first_name', ['class'=>'control-label']); ?>
@@ -82,7 +82,7 @@ $this->pageTitle="Касса";
 									'htmlOptions'=>[
 										'class'=>'form-control',
 									],
-								]); ?>	
+								]); ?>
 						</div>
 					</div>
 					<div class="col-xs-3">
