@@ -43,35 +43,19 @@ class CashController extends MPaidController
 		}
 		elseif(isset($_POST['Patients']))
 		{
-			if(Yii::app()->request->isAjaxRequest)
+			if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('paid_cash_search_patient_ajax'))
 			{ //search
 				Yii::app()->clientScript->scriptMap['jquery-1.11.2.min.js']=false; //уже подключен.
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 				$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient], false, true); //load processoutput
 				Yii::app()->end();
 			}
-		elseif(isset($_POST['Patients']))
-		{
-			echo 423423;
-			Yii::app()->end();
-		}
-//			elseif()
-//			{ //add patient
-//				$modelPatient->setScenario('paid.cash.create'); //меняем сценарий
-//				$modelPaid_Medcard->setScenario('paid.cash.create'); //меняем сценарий
-//				
-//				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
-//				
-//				if($modelPatient->save())
-//				{
-//					echo 1; //1 - успешное добавление пациента
-//				}
-//				else
-//				{
-//					echo 0; //ошибка
-//				}
-//				Yii::app()->end();
-//			}
+			elseif(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('paid_cash_save_patient_ajax'))
+			{ //create
+				$modelPatient->setScenario('paid.cash.create');
+				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
+				Yii::app()->end();
+			}
 		}
 		
 		$this->render('search', [

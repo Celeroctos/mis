@@ -151,16 +151,19 @@ $this->pageTitle="Касса";
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<?= CHtml::ajaxSubmitButton('Найти', '', [
-														'success'=>'function(html){
-															$("#myModalBody").html(html);
-															$("#myModal").modal("show");
-														}',	
-													], ['class'=>'btn btn-primary btn-sm',]); ?>
-						<?= CHtml::ajaxSubmitButton('Сохранить', '', ['data'=>"{jQuery(this).parents('form').serialize()",
+						<?= CHtml::ajaxSubmitButton('Найти', '', ['data'=>new CJavaScriptExpression('jQuery(this).parents("form").serialize() + "&paid_cash_search_patient_ajax=1"'),
+																  'success'=>'function(html){
+																				$("#myModalBody").html(html);
+																				$("#myModal").modal("show");
+																			  }',
+																 ], 
+																 ['class'=>'btn btn-primary btn-sm',]
+													); ?>
+						<?= CHtml::ajaxSubmitButton('Сохранить', '', ['data'=>new CJavaScriptExpression('jQuery(this).parents("form").serialize() + "&paid_cash_save_patient_ajax=1"'),
 																	  'success'=>'function(html){
-																			alert(html);
-																   }'], 
+																					alert(html);
+																				 }'
+																	 ], 
 																	 ['class'=>'btn btn-success btn-sm', 'id'=>'add_paid_patient_button', 'name'=>'add_paid_patient_button', 'style'=>'display: none; opacity: 0;']); ?>
 					</div>
 					<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
