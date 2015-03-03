@@ -25,6 +25,8 @@ class Patients extends ActiveRecord
 	public $job_address;
 	public $create_timestamp;
 	
+	const PAGE_SIZE = 5;
+	
 	const DOCUMENT_TYPE_PASSPORT_ID = 1;
 	const DOCUMENT_TYPE_PASSPORT_NAME = 'Паспорт';
 	
@@ -59,8 +61,11 @@ class Patients extends ActiveRecord
 		return [
 			//Добавление пациента
 			['first_name, middle_name, last_name, gender, birthday', 'required', 'on'=>'paid.cash.create'],
+			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
+			['document_type, document_serie, document_number, document_who_gived, document_date_gived, address_reg, address, snils, invalid_group, phone_number, profession, job_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			
 			//Поиск пациентов
-			['first_name, middle_name, last_name', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
+			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			/**********************************/
 		];
 	}
@@ -117,11 +122,11 @@ class Patients extends ActiveRecord
 	
 	public function search()
 	{
-		$criteria=new CDbCriteria;
+		$criteria=new CDbCriteria;	
 		$criteria->compare('last_name', $this->last_name, true);
 		$criteria->compare('first_name', $this->first_name, true);
 		$criteria->compare('middle_name', $this->middle_name, true);
-		
+		$criteria->compare('gender', $this->gender, true);
 		return new CActiveDataProvider('Patients',[
 			'criteria'=>$criteria,
 			'sort'=>[
@@ -130,7 +135,7 @@ class Patients extends ActiveRecord
 				],
 			],
 			'pagination'=>[
-				'pageSize'=>1,
+				'pageSize'=>self::PAGE_SIZE,
 			],
 		]);
 	}

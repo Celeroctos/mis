@@ -22,7 +22,7 @@ $this->pageTitle="Касса";
 <div class="container b-paid">
 	<div class="row">
 		<div class="col-xs-10 b-paid__bodyLeft">
-			<?php $form=$this->beginWidget('CActiveForm', ['id'=>'yw10']); ?>
+			<?php $form=$this->beginWidget('CActiveForm', ['id'=>'paid_cash_search_Form']); ?>
 				<?= $form->errorSummary($modelPatient, '', '', [
 					'class'=>'alert alert-warning',
 				]); ?>

@@ -38,7 +38,7 @@ class CashController extends MPaidController
 		$genderListData=Patients::getGenderListData();
 		
 		if(isset($_GET['ajax_grid']))
-		{
+		{ //обработка кнопок грида (пагинация и прочее)
 			$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient]); //processoutput загрузился один раз, снизу
 			Yii::app()->end();
 		}
@@ -55,6 +55,8 @@ class CashController extends MPaidController
 			{ //create
 				$modelPatient->setScenario('paid.cash.create');
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
+				$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+				$modelPatient->save();
 				Yii::app()->end();
 			}
 		}

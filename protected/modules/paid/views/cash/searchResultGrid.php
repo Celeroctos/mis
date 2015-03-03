@@ -2,7 +2,7 @@
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPatient->search(),
 	'filter'=>$modelPatient,
-	'id'=>'paid_grid_search_patients',
+	'id'=>'paid_cash_search-gridPatients',
 	'ajaxVar'=>'ajax_grid',
 	'ajaxUpdate'=>true,
 	'emptyText'=>'<div style="width: 185px; margin: 0 auto;">'
@@ -17,14 +17,14 @@ $this->widget('zii.widgets.grid.CGridView', [
 		'cssFile'=>'',
 		'selectedPageCssClass'=>'active',
 		'firstPageCssClass'=>'',
-//		'hiddenPageCssClass'=>'',
+		'hiddenPageCssClass'=>'',
 		'internalPageCssClass'=>'',
 		'nextPageLabel'=>false,
 		'prevPageLabel'=>false,
 		'lastPageCssClass'=>'',
 		'nextPageCssClass'=>'',
+		'maxButtonCount'=>'7',
 		'previousPageCssClass'=>'',
-		'maxButtonCount'=>6,
 		'selectedPageCssClass'=>'active',
 		'header'=>false,
 		'htmlOptions'=>[
