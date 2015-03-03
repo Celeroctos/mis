@@ -43,6 +43,12 @@ class Patients extends ActiveRecord
 	const DOCUMENT_TYPE_OTHER_DOCUMENT_ID = 6;
 	const DOCUMENT_TYPE_OTHER_DOCUMENT_NAME = 'Другой документ';
 	
+	const GENDER_MALE_ID = 1;
+	const GENDER_MALE_NAME = 'Мужской';
+	
+	const GENDER_FEMALE_ID = 2;
+	const GENDER_FEMALE_NAME = 'Женский';
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -90,6 +96,23 @@ class Patients extends ActiveRecord
 						'name'=>self::DOCUMENT_TYPE_OTHER_DOCUMENT_NAME,
 					]
 		], 'value', 'name');
+	}
+	
+	/**
+	 * Используется в форме paid/cash/search
+	 */
+	public static function getGenderListData()
+	{
+		return CHtml::listData([
+					[
+						'value'=>self::GENDER_MALE_ID,
+						'name'=>self::GENDER_MALE_NAME,
+					],
+					[
+						'value'=>self::GENDER_FEMALE_ID,
+						'name'=>self::GENDER_FEMALE_NAME,
+					]
+				], 'value', 'name');
 	}
 	
 	public function search()

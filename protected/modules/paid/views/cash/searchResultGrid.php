@@ -14,10 +14,21 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'itemsCssClass'=>'table table-bordered',
 	'pager'=>[
 		'class'=>'CLinkPager',
+		'cssFile'=>'',
 		'selectedPageCssClass'=>'active',
-		'header'=>'',
+		'firstPageCssClass'=>'',
+//		'hiddenPageCssClass'=>'',
+		'internalPageCssClass'=>'',
+		'nextPageLabel'=>false,
+		'prevPageLabel'=>false,
+		'lastPageCssClass'=>'',
+		'nextPageCssClass'=>'',
+		'previousPageCssClass'=>'',
+		'maxButtonCount'=>6,
+		'selectedPageCssClass'=>'active',
+		'header'=>false,
 		'htmlOptions'=>[
-			'class'=>'pagination pagination-sm',
+			'class'=>'pagination',
 		]
 	],
 	'columns'=>[

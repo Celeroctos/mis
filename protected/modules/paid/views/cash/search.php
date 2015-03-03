@@ -30,21 +30,21 @@ $this->pageTitle="Касса";
 					'class'=>'alert alert-warning',
 				]); ?>
 				<div class="row">
-					<div class="col-xs-4">
+					<div class="col-xs-3">
 							<?= $form->Label($modelPatient, 'last_name', ['class'=>'control-label']); ?>
 							<?= $form->TextField($modelPatient, 'last_name', [
 											'class'=>'form-control input-sm',
 										]); ?>
 
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-3">
 							<?= $form->Label($modelPatient, 'first_name', ['class'=>'control-label']); ?>
 							<?= $form->TextField($modelPatient, 'first_name', [
 											'class'=>'form-control input-sm',
 										]); ?>
 
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-3">
 						<div class="form-group">
 							<?= $form->Label($modelPatient, 'middle_name', ['class'=>'control-label']); ?>
 							<?= $form->TextField($modelPatient, 'middle_name', [
@@ -52,10 +52,10 @@ $this->pageTitle="Касса";
 										]); ?>
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-3">
 						<div class="form-group">
 							<?= $form->Label($modelPatient, 'gender', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'gender', [
+							<?= $form->DropDownList($modelPatient, 'gender', $genderListData, [
 											'class'=>'form-control input-sm',
 										]); ?>
 						</div>
@@ -65,9 +65,24 @@ $this->pageTitle="Касса";
 					<div class="col-xs-3">
 						<div class="form-group">
 							<?= $form->Label($modelPatient, 'birthday', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'birthday', [
-											'class'=>'form-control input-sm',
-										]); ?>
+								<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
+									'language'=>'ru',
+									'model'=>$modelPatient,
+									'attribute'=>'birthday',
+									'options'=>[
+										'changeMonth'=>'true',
+										'changeYear'=>'true',
+//										'showButtonPanel'=>true,
+										'showOn'=>'focus', // 'focus', 'button', 'both'
+										'dateFormat'=>'yy-mm-dd',
+										'yearRange'=>'1900:'.Yii::app()->dateformatter->format('yyyy', time()),
+										'minDate'=>'1900-01-01',
+										'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
+									],
+									'htmlOptions'=>[
+										'class'=>'form-control',
+									],
+								]); ?>	
 						</div>
 					</div>
 					<div class="col-xs-3">
@@ -160,9 +175,9 @@ $this->pageTitle="Касса";
 																 ['class'=>'btn btn-primary btn-sm',]
 													); ?>
 						<?= CHtml::ajaxSubmitButton('Сохранить', '', ['data'=>new CJavaScriptExpression('jQuery(this).parents("form").serialize() + "&paid_cash_save_patient_ajax=1"'),
-																	  'success'=>'function(html){
-																					alert(html);
-																				 }'
+//																	  'success'=>'function(html){
+//																					alert(html);
+//																				 }'
 																	 ], 
 																	 ['class'=>'btn btn-success btn-sm', 'id'=>'add_paid_patient_button', 'name'=>'add_paid_patient_button', 'style'=>'display: none; opacity: 0;']); ?>
 					</div>

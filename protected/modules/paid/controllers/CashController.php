@@ -31,10 +31,11 @@ class CashController extends MPaidController
 	 * @param int $patient_id #ID пациента
 	 */
 	public function actionSearch($patient_id=null)
-	{	
+	{
 		$modelPatient=new Patients('paid.cash.search'); // Сценарий [module].[controller].[action]
 		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
 		$documentTypeListData=Patients::getDocumentTypeListData();
+		$genderListData=Patients::getGenderListData();
 		
 		if(isset($_GET['ajax_grid']))
 		{
@@ -62,6 +63,7 @@ class CashController extends MPaidController
 			'modelPatient'=>$modelPatient,
 			'modelPaid_Medcard'=>$modelPaid_Medcard,
 			'documentTypeListData'=>$documentTypeListData,
+			'genderListData'=>$genderListData,
 		]);
 	}
 	

@@ -23,7 +23,7 @@ HERE;
 					"first_name" character varying(255) NOT NULL,
 					"middle_name" character varying(255) NOT NULL,
 					"last_name" character varying(255) NOT NULL,
-					"gender" character varying(100) NOT NULL,
+					"gender" character varying(100) NOT NULL, --1/2 (Мужской/женский)
 					"birthday" date DEFAULT NULL,
 					"document_type" character varying(255) DEFAULT NULL, --Тип документа (паспорт и прочее)
 					"document_serie" character varying(255) DEFAULT NULL, --Серия документа
