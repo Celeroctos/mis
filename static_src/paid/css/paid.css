@@ -16,6 +16,10 @@
         border-radius: 6px 6px 6px 6px;
         background-color: white;
     }
+    .b-paid__errorFormPatient{
+        color: red;
+        font-size: 12px;
+    }
     .b-paid__bodyRight{
     }
     .b-paid__footerLeft{

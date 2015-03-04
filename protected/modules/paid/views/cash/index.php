@@ -26,7 +26,17 @@ $this->pageTitle="Касса";
 												'id'=>'paid_cash_search-form',
 												'enableAjaxValidation'=>'true',
 												'enableClientValidation'=>'true',
-												'clientOptions'=>['validateOnChange'=>false, 'ajaxVar'=>'paid_cash_search-form', 'validateOnSubmit'=>true],
+												'clientOptions'=>[
+													'validateOnChange'=>false,
+													'ajaxVar'=>'paid_cash_search-form',
+													'validateOnSubmit'=>true,
+													'afterValidate'=>new CJavaScriptExpression('function(form, data, hasError){
+																									if(!hasError)
+																									{
+																										window.location.replace(data.redirectUrl);
+																									}
+																							    }'),
+												],
 											]); ?>
 				<?= $form->errorSummary($modelPatient); ?>
 				<div class="row">
@@ -35,14 +45,14 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'last_name', [
 											'class'=>'form-control input-sm',
 										]); ?>
-							<?= $form->error($modelPatient, 'last_name'); ?>
+							<?= $form->error($modelPatient, 'last_name', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
 					<div class="col-xs-3">
 							<?= $form->Label($modelPatient, 'first_name', ['class'=>'control-label']); ?>
 							<?= $form->TextField($modelPatient, 'first_name', [
 											'class'=>'form-control input-sm',
 										]); ?>
-							<?= $form->error($modelPatient, 'first_name'); ?>
+							<?= $form->error($modelPatient, 'first_name', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
 					<div class="col-xs-3">
 						<div class="form-group">
@@ -50,7 +60,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'middle_name', [
 											'class'=>'form-control input-sm',
 										]); ?>
-							<?= $form->error($modelPatient, 'middle_name'); ?>
+							<?= $form->error($modelPatient, 'middle_name', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>
 					</div>
 					<div class="col-xs-3">
@@ -59,6 +69,7 @@ $this->pageTitle="Касса";
 							<?= $form->DropDownList($modelPatient, 'gender', $genderListData, [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'gender', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>
 					</div>
 				</div>
@@ -84,6 +95,7 @@ $this->pageTitle="Касса";
 										'class'=>'form-control',
 									],
 								]); ?>
+							<?= $form->error($modelPatient, 'birthday', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>
 					</div>
 					<div class="col-xs-3">
@@ -100,6 +112,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'document_serie', [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'document_serie', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>
 					</div>
 					<div class="col-xs-3">
@@ -108,6 +121,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'document_number', [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'document_number', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>	
 					</div>
 				</div>
@@ -118,6 +132,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'document_who_gived', [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'document_who_gived', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>	
 					</div>
 					<div class="col-xs-3">
@@ -126,6 +141,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'document_date_gived', [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'document_date_gived', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>	
 					</div>
 				</div>
@@ -136,6 +152,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'address_reg', [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'address_reg', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>	
 					</div>
 				</div>
@@ -146,6 +163,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'snils', [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'snils', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>	
 					</div>
 					<div class="col-xs-3">
@@ -154,6 +172,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPaid_Medcard, 'paid_card_number', [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'paid_card_number', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>	
 					</div>
 					<div class="col-xs-3">
@@ -162,6 +181,7 @@ $this->pageTitle="Касса";
 							<?= $form->TextField($modelPatient, 'phone_number', [
 											'class'=>'form-control input-sm',
 										]); ?>
+							<?= $form->error($modelPatient, 'phone_number', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>
 					</div>
 				</div>
@@ -170,12 +190,14 @@ $this->pageTitle="Касса";
 						<?= CHtml::ajaxSubmitButton('Найти', '', ['data'=>new CJavaScriptExpression('jQuery(this).parents("form").serialize() + "&paid_cash_search_patient_ajax=1"'),
 																  'success'=>'function(html){
 																				$("#myModalBody").html(html);
+																				$("#add_paid_patient_button").animate({opacity: 0}, "fast", function(){
+																					$("#add_paid_patient_button").css("display", "none");
+																				});
 																				$("#myModal").modal("show");
 																			  }',
 																 ], 
 																 ['class'=>'btn btn-primary btn-sm',]
 													); ?>
-						
 						<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success btn-sm', 'id'=>'add_paid_patient_button', 'name'=>'add_paid_patient_button', 'style'=>'display: none; opacity: 0;']); ?>
 					</div>
 					<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -60,6 +60,7 @@ class Patients extends ActiveRecord
 	{
 		return [
 			//Добавление пациента
+			['patient_id', 'safe'],
 			['first_name, middle_name, last_name, gender, birthday', 'required', 'on'=>'paid.cash.create'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
 			['document_type, document_serie, document_number, document_who_gived, document_date_gived, address_reg, address, snils, invalid_group, phone_number, profession, job_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],

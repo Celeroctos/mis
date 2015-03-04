@@ -1,4 +1,8 @@
 $(document).ready(function(){
+	$('#myModal').on('show.bs.modal', function(e){
+		$(".b-paid__errorFormPatient").html('');
+		$(".b-paid__errorFormPatient").css('display', 'none');
+	});
 	$('#myModal').on('hidden.bs.modal', function (e){
 		$("#myModalBody").html(''); //clean
 		$(document).off('click.yiiGridView', $.fn.yiiGridView.settings['paid_cash_search-gridPatients'].updateSelector);

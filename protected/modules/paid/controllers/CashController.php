@@ -21,16 +21,11 @@ class CashController extends MPaidController
 		];
 	}
 	
-	public function actionIndex()
-	{
-		return $this->actionSearch(Yii::app()->request->getQuery('patient_id'));
-	}
-	
 	/**
-	 * Если указан данный параметр, то юзаем выбранного пациента
+	 * Основной экш кассы.
 	 * @param int $patient_id #ID пациента
 	 */
-	public function actionSearch($patient_id=null)
+	public function actionIndex($patient_id=null)
 	{
 		$modelPatient=new Patients; // Сценарий [module].[controller].[action]
 		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
@@ -57,20 +52,21 @@ class CashController extends MPaidController
 				$modelPatient->setScenario('paid.cash.create');
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 				$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-				
 				if(!$modelPatient->save())
 				{
 					$errors=CActiveForm::validate($modelPatient);
 					Yii::app()->end($errors); //output JSON
 				}
-			}
-			else //человек нажал кнопку сохранить, прошла enableAjaxValidation и перезагрузка страницы с отправкой POST
-			{
-				$this->redirect([]); //на страницу того юзера, которого добавили
+				else
+				{
+					$arrayJson=array();
+					$arrayJson['redirectUrl']=$this->createUrl('cash/index', ['patient_id'=>Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq')]);
+					Yii::app()->end(CJSON::encode($arrayJson));
+				}
 			}
 		}
 		
-		$this->render('search', [
+		$this->render('index', [
 			'modelPatient'=>$modelPatient,
 			'modelPaid_Medcard'=>$modelPaid_Medcard,
 			'documentTypeListData'=>$documentTypeListData,

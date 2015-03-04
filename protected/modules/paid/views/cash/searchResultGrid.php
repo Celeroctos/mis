@@ -1,4 +1,8 @@
 <?php
+/**
+ * Шаблон таблицы поиска пациента
+ * @author Dzhamal Tayibov <prohps@yandex.ru>
+ */
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPatient->search(),
 	'filter'=>$modelPatient,
@@ -6,9 +10,8 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'ajaxVar'=>'ajax_grid',
 	'ajaxUpdate'=>true,
 	'emptyText'=>'<div style="width: 185px; margin: 0 auto;">'
-	. '<h4>Пациент не найден</h4>'
-	. CHtml::htmlButton('Добавить', ['class'=>'btn btn-primary', 'id'=>'add_paid_modal_patient', 'name'=>'add_paid_modal_patient'])
-	. ' <button type="button" class="btn btn-default" data-dismiss="modal">Назад</button>'
+	. '<h4>Пациент не найден!</h4>'
+	. CHtml::htmlButton('Добавить', ['class'=>'btn btn-block btn-primary', 'id'=>'add_paid_modal_patient', 'name'=>'add_paid_modal_patient'])
 	. '</div>',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered',
