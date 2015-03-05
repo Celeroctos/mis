@@ -28,12 +28,26 @@ class CashController extends MPaidController
 	public function actionIndex($patient_id=null)
 	{
 		$modelPatient=new Patients; // Сценарий [module].[controller].[action]
-		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
+		$modelPaid_Medcard=new Paid_Medcards;
+		$modelPatient_Documents=new Patient_Documents;
+		$modelPatient_Contacts=new Patient_Contacts;
+		
 		$documentTypeListData=Patients::getDocumentTypeListData();
 		$genderListData=Patients::getGenderListData();
 		
-		if(isset($_GET['ajax_grid']))
-		{ //обработка кнопок грида (пагинация и прочее)
+		if(!Yii::app()->request->isAjaxRequest && isset($patient_id))
+		{//выбрали юзера не(!!) ajax запросом
+			$modelPatient=Patients::model()->findByPk($patient_id);
+			$criteria=new CDbCriteria;
+			$this->render('index', ['modelPatient'=>$modelPatient,
+									'modelPaid_Medcard'=>$modelPaid_Medcard,
+									'documentTypeListData'=>$documentTypeListData,
+									'genderListData'=>$genderListData,
+			]);
+			Yii::app()->end();
+		}
+		elseif(isset($_GET['ajax_grid']))
+		{ //обработка кнопок грида ajax(пагинация и прочее)
 			$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient]); //processoutput загрузился один раз, снизу
 			Yii::app()->end();
 		}
@@ -52,6 +66,7 @@ class CashController extends MPaidController
 				$modelPatient->setScenario('paid.cash.create');
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 				$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+				
 				if(!$modelPatient->save())
 				{
 					$errors=CActiveForm::validate($modelPatient);

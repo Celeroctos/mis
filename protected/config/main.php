@@ -13,7 +13,7 @@ return [
 	'defaultController'=>'service/auth/login',
 
 	// preloading 'log' component
-	'preload'=>['log'],
+	'preload'=>['log', 'params'],
 	'homeUrl'=>'paid/cash/index',
 	'sourceLanguage' => 'ru',
 	'language' => 'ru',

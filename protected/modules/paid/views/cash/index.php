@@ -98,52 +98,6 @@ $this->pageTitle="Касса";
 							<?= $form->error($modelPatient, 'birthday', ['class'=>'b-paid__errorFormPatient']); ?>
 						</div>
 					</div>
-					<div class="col-xs-3">
-						<div class="form-group">
-							<?= $form->Label($modelPatient, 'document_type', ['class'=>'control-label']); ?>
-							<?= $form->DropDownList($modelPatient, 'document_type', $documentTypeListData, [
-											'class'=>'form-control input-sm',
-										]); ?>
-						</div>
-					</div>
-					<div class="col-xs-3">
-						<div class="form-group">
-							<?= $form->Label($modelPatient, 'document_serie', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'document_serie', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'document_serie', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>
-					</div>
-					<div class="col-xs-3">
-						<div class="form-group">
-							<?= $form->Label($modelPatient, 'document_number', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'document_number', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'document_number', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>	
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-3">
-						<div class="form-group">
-							<?= $form->Label($modelPatient, 'document_who_gived', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'document_who_gived', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'document_who_gived', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>	
-					</div>
-					<div class="col-xs-3">
-						<div class="form-group">
-							<?= $form->Label($modelPatient, 'document_date_gived', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'document_date_gived', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'document_date_gived', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>	
-					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-8">
@@ -177,11 +131,7 @@ $this->pageTitle="Касса";
 					</div>
 					<div class="col-xs-3">
 						<div class="form-group">
-							<?= $form->Label($modelPatient, 'phone_number', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'phone_number', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'phone_number', ['class'=>'b-paid__errorFormPatient']); ?>
+							<?php $this->widget('FieldPhonesWidget', ['model'=>$modelPatient, 'form'=>$form]); ?>
 						</div>
 					</div>
 				</div>

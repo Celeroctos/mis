@@ -3,7 +3,8 @@
  * Пакеты для подключения в CClientScript
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
-define('_STATIC','static_src');
+
+define('_STATIC', $params['_STATIC']);
 
 return [
 	'packages'=>[
@@ -47,6 +48,12 @@ return [
 			],
 			'depends'=>[
 				'jquery',
+			],
+		],
+		'fieldPhonesWidget'=>[
+			'baseUrl'=>_STATIC . '/widgets/fieldPhones/',
+			'js'=>[
+				'js/fieldPhones.js'
 			],
 		],
 		//module paid

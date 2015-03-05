@@ -11,18 +11,21 @@ class Patients extends ActiveRecord
 	public $last_name;
 	public $gender;
 	public $birthday;
-	public $document_type;
-	public $document_serie;
-	public $document_number;
-	public $document_who_gived;
-	public $document_date_gived;
+//	public $document_type;
+//	public $document_serie;
+//	public $document_number;
+//	public $document_who_gived;
+//	public $document_date_gived;
 	public $address_reg;
 	public $address;
 	public $snils;
 	public $invalid_group;
 	public $phone_number;
 	public $profession;
-	public $job_address;
+	public $work_address;
+	public $work_place;
+	public $address_str;
+	public $address_reg_str;
 	public $create_timestamp;
 	
 	const PAGE_SIZE = 5;
@@ -56,6 +59,14 @@ class Patients extends ActiveRecord
 		return parent::model($className);
 	}
 	
+	public function relations()
+	{
+		return [
+			'documents'=>[self::HAS_MANY, 'Patient_Documents', 'patient_id'],
+			'contacts'=>[self::HAS_MANY, 'Patient_Contacts', 'patient_id'],
+		];
+	}
+	
 	public function rules()
 	{
 		return [
@@ -63,7 +74,7 @@ class Patients extends ActiveRecord
 			['patient_id', 'safe'],
 			['first_name, middle_name, last_name, gender, birthday', 'required', 'on'=>'paid.cash.create'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
-			['document_type, document_serie, document_number, document_who_gived, document_date_gived, address_reg, address, snils, invalid_group, phone_number, profession, job_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			['address_reg, address, snils, invalid_group, phone_number, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			
 			//Поиск пациентов
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
@@ -123,11 +134,13 @@ class Patients extends ActiveRecord
 	
 	public function search()
 	{
-		$criteria=new CDbCriteria;	
+		$criteria=new CDbCriteria;
+		$criteria->with=['documents', 'contacts'];
 		$criteria->compare('last_name', $this->last_name, true);
 		$criteria->compare('first_name', $this->first_name, true);
 		$criteria->compare('middle_name', $this->middle_name, true);
 		$criteria->compare('gender', $this->gender, true);
+		
 		return new CActiveDataProvider('Patients',[
 			'criteria'=>$criteria,
 			'sort'=>[
