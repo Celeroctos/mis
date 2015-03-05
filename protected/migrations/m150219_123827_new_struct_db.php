@@ -23,13 +23,12 @@ HERE;
 					"first_name" character varying(255) NOT NULL,
 					"middle_name" character varying(255) NOT NULL,
 					"last_name" character varying(255) NOT NULL,
-					"gender" character varying(100) NOT NULL, --1/2 (Мужской/женский)
+					"snils" character varying(255) DEFAULT NULL, --СНИЛС
 					"birthday" date NOT NULL, --День рождения
+					"gender" character varying(100) NOT NULL, --1/2 (Мужской/женский)
 					"address_reg" character varying(255) DEFAULT NULL, --Адрес регистрации
 					"address" character varying(255) DEFAULT NULL, --Адрес фактического проживания
-					"snils" character varying(255) DEFAULT NULL, --СНИЛС
 					"invalid_group" character varying(255) DEFAULT NULL, --группа инвалидности
-					"phone_number" character varying(255) DEFAULT NULL, --Номер телефона
 					"profession" character varying(255) DEFAULT NULL, --Профессия
 					"work_address" character varying(255) DEFAULT NULL, --Адрес работы
 					"work_place" character varying(255) DEFAULT NULL, --Место работы
