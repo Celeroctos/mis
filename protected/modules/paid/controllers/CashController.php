@@ -82,14 +82,18 @@ class CashController extends MPaidController
 					if($modelPatient->save())
 					{
 						$arr_phone_numbers=Yii::app()->request->getPost('Patient_Contacts');
-
 						foreach($arr_phone_numbers['value'] as $value)
 						{
 							$modelPatient_Contacts->value=$value;
-							$modelPatient_Contacts->type=1;
+							$modelPatient_Contacts->type=1; //пока тип один, может быть удалим в
 							$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-							$modelPatient_Contacts->save(); //если валидация ок то нормалек
-							$modelPatient_Contacts->isNewRecord=true;
+							if(!$modelPatient_Contacts->save())
+							{//валидируем
+								$transaction->rollback();
+								$errors=CActiveForm::validate($modelPatient_Contacts, NULL, false);
+								Yii::app()->end($errors); //output JSON
+//								$modelPatient_Contacts->isNewRecord=true;
+							}
 						}
 						$transaction->commit();
 						$arrayJson=array();

@@ -29,7 +29,7 @@ class Patient_Contacts extends ActiveRecord
 	public function rules()
 	{
 		return [
-			['value', 'type', 'type'=>'string', 'on'=>'paid.cash.create']
+			['value', 'required', 'on'=>'paid.cash.create']
 		];
 	}
 	

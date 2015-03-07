@@ -38,7 +38,6 @@ $this->pageTitle="Касса";
 																							    }'),
 												],
 											]); ?>
-				<?= $form->errorSummary($modelPatient); ?>
 				<div class="row">
 					<div class="col-xs-3">
 							<?= $form->Label($modelPatient, 'last_name', ['class'=>'control-label']); ?>
@@ -131,7 +130,7 @@ $this->pageTitle="Касса";
 					</div>
 					<div class="col-xs-3">
 						<div class="form-group">
-							<?php $this->widget('FieldPhonesWidget', ['model'=>$modelPatient, 'form'=>$form]); ?>
+							<?php $this->widget('FieldPhonesWidget', ['model'=>$modelPatient_Contacts, 'form'=>$form]); ?>
 						</div>
 					</div>
 				</div>
