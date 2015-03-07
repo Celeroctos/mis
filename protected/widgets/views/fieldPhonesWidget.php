@@ -4,8 +4,10 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
-<div class="ajax_f">
-	<a id="add_elem" href="#">Добавить элемент</a>
+<div class="b-phones">
 	<?= $form->Label($model, 'phone_number', ['class'=>'control-label']); ?>
-	<?=	CHtml::TextField('Patients', null, ['class'=>'form-control input-sm']); ?>
+	<span class="b-phones__spanPlus glyphicon glyphicon-plus" id="b-phones__add" aria-hidden="true"></span>
+	<div class="b-phones__input">
+		<input style="opacity: 1;" class="form-control input-sm">
+	</div>
 </div>

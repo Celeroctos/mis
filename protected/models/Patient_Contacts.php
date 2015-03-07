@@ -7,7 +7,7 @@ class Patient_Contacts extends ActiveRecord
 {
 	public $patient_contact_id;
 	public $patient_id; //FK
-	public $type;
+	public $type; //пока один тип. в дальнейшем может удалим
 	public $value;
 	
 	const MOBILE_PHONE_ID = 1;

@@ -1,0 +1,26 @@
+.b-phones{
+    
+}
+    .b-phones__spanDelete{
+        top: 0px !important;
+        background-color: white;
+        font-size: 14px;
+        color: gray;
+        cursor: default;
+    }
+    .b-phones__spanDelete:hover{
+        background-color: rgb(238, 238, 238);
+        color: black;
+    }
+    .b-phones__spanPlus{
+        color: gray;
+        font-size: 12px;
+        cursor: default;
+        margin-left: 1px !important;
+    }
+    .b-phones__spanPlus:hover{
+        color: black !important;
+    }
+    .b-phones__input{
+        margin-bottom: 2px;
+    }

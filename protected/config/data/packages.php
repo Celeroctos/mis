@@ -55,6 +55,9 @@ return [
 			'js'=>[
 				'js/fieldPhones.js'
 			],
+			'css'=>[
+				'css/fieldPhones.css'
+			],
 		],
 		//module paid
 		'paid'=>[
