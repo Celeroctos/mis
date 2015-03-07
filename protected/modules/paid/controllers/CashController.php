@@ -38,20 +38,27 @@ class CashController extends MPaidController
 		if(!Yii::app()->request->isAjaxRequest && isset($patient_id))
 		{//выбрали юзера не(!!) ajax запросом
 			$modelPatient=Patients::model()->findByPk($patient_id);
+			if($modelPatient===null)
+			{
+				//throw();
+				Yii::app()->end();
+			}
 			$criteria=new CDbCriteria;
 			$this->render('index', ['modelPatient'=>$modelPatient,
 									'modelPaid_Medcard'=>$modelPaid_Medcard,
+									'modelPatient_Documents'=>$modelPatient_Documents,
+									'modelPatient_Contacts'=>$modelPatient_Contacts,
 									'documentTypeListData'=>$documentTypeListData,
 									'genderListData'=>$genderListData,
 			]);
 			Yii::app()->end();
 		}
 		elseif(isset($_GET['ajax_grid']))
-		{ //обработка кнопок грида ajax(пагинация и прочее)
-			$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient]); //processoutput загрузился один раз, снизу
+		{ //обработка кнопок грида ajax в модальном окне(пагинация и прочее)
+			$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient]); //processoutput уже загрузился один раз, снизу
 			Yii::app()->end();
 		}
-		elseif(isset($_POST['Patients']))
+		elseif(isset($_POST['Patients']) && Yii::app()->request->getPost('Patient_Contacts'))
 		{
 			if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('paid_cash_search_patient_ajax')) //ajaxSubmitButton, в этом случае enableajaxValidation не срабатывает.
 			{ //search
@@ -61,22 +68,45 @@ class CashController extends MPaidController
 				$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient], false, true); //load processoutput
 				Yii::app()->end();
 			}
-			elseif(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('paid_cash_search-form')) //см CActiveForm. Все по доке. (enableajaxValidation)
+			elseif(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('paid_cash_search-form')) //см CActiveForm, офф доку. (enableajaxValidation)
 			{ //create
 				$modelPatient->setScenario('paid.cash.create');
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 				$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
 				
-				if(!$modelPatient->save())
+				$modelPatient_Contacts->setScenario('paid.cash.create');
+				
+				$transaction=Yii::app()->db->beginTransaction();
+				try
 				{
-					$errors=CActiveForm::validate($modelPatient);
-					Yii::app()->end($errors); //output JSON
+					if($modelPatient->save())
+					{
+						$arr_phone_numbers=Yii::app()->request->getPost('Patient_Contacts');
+
+						foreach($arr_phone_numbers['value'] as $value)
+						{
+							$modelPatient_Contacts->value=$value;
+							$modelPatient_Contacts->type=1;
+							$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
+							$modelPatient_Contacts->save(); //если валидация ок то нормалек
+							$modelPatient_Contacts->isNewRecord=true;
+						}
+						$transaction->commit();
+						$arrayJson=array();
+						$arrayJson['redirectUrl']=$this->createUrl('cash/index', ['patient_id'=>Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq')]);
+						Yii::app()->end(CJSON::encode($arrayJson));
+					}
+					else
+					{
+						$transaction->rollback();
+						$errors=CActiveForm::validate($modelPatient);
+						Yii::app()->end($errors); //output JSON
+					}
 				}
-				else
+				catch(Exception $e)
 				{
-					$arrayJson=array();
-					$arrayJson['redirectUrl']=$this->createUrl('cash/index', ['patient_id'=>Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq')]);
-					Yii::app()->end(CJSON::encode($arrayJson));
+					$transaction->rollback();
+					throw $e;
 				}
 			}
 		}
@@ -84,6 +114,8 @@ class CashController extends MPaidController
 		$this->render('index', [
 			'modelPatient'=>$modelPatient,
 			'modelPaid_Medcard'=>$modelPaid_Medcard,
+			'modelPatient_Documents'=>$modelPatient_Documents,
+			'modelPatient_Contacts'=>$modelPatient_Contacts,
 			'documentTypeListData'=>$documentTypeListData,
 			'genderListData'=>$genderListData,
 		]);

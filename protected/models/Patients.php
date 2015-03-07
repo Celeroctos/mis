@@ -74,7 +74,7 @@ class Patients extends ActiveRecord
 			['patient_id', 'safe'],
 			['first_name, middle_name, last_name, gender, birthday', 'required', 'on'=>'paid.cash.create'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
-			['address_reg, address, snils, invalid_group, phone_number, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			['address_reg, address, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			
 			//Поиск пациентов
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
