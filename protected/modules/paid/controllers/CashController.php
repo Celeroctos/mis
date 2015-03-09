@@ -87,13 +87,13 @@ class CashController extends MPaidController
 							$modelPatient_Contacts->value=$value;
 							$modelPatient_Contacts->type=1; //пока тип один, может быть удалим в
 							$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-							if(!$modelPatient_Contacts->save())
-							{//валидируем
+							if(!$modelPatient_Contacts->save()) //валидируем всё но пишем ошибку в интерфейс только от 1 поля
+							{ //валидируем
 								$transaction->rollback();
 								$errors=CActiveForm::validate($modelPatient_Contacts, NULL, false);
 								Yii::app()->end($errors); //output JSON
-//								$modelPatient_Contacts->isNewRecord=true;
 							}
+							$modelPatient_Contacts->isNewRecord=true;
 						}
 						$transaction->commit();
 						$arrayJson=array();
