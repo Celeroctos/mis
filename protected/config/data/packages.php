@@ -59,6 +59,15 @@ return [
 				'css/fieldPhones.css'
 			],
 		],
+		'fieldDocumentsWidget'=>[
+			'baseUrl'=>_STATIC . '/widgets/fieldDocuments',
+			'js'=>[
+				'js/fieldDocuments.js',
+			],
+			'css'=>[
+				'css/fieldDocuments.css'
+			]
+		],
 		//module paid
 		'paid'=>[
 			'baseUrl'=>_STATIC . '/paid/',

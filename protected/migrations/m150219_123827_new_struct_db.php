@@ -67,7 +67,6 @@ HERE;
 					PRIMARY KEY(patient_contact_id)
 				);
 HERE;
-	
 		$command=$connection->createCommand($sql);
 		$command->execute();
 	}

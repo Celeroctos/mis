@@ -21,7 +21,7 @@ $this->pageTitle="Касса";
 </div>
 <div class="container b-paid">
 	<div class="row">
-		<div class="col-xs-10 b-paid__bodyLeft">
+		<div class="col-xs-11 b-paid__bodyLeft">
 			<?php $form=$this->beginWidget('CActiveForm', [
 												'id'=>'paid_cash_search-form',
 												'enableAjaxValidation'=>'true',
@@ -40,41 +40,34 @@ $this->pageTitle="Касса";
 											]); ?>
 				<div class="row">
 					<div class="col-xs-3">
-							<?= $form->Label($modelPatient, 'last_name', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'last_name', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'last_name', ['class'=>'b-paid__errorFormPatient']); ?>
+						<?= $form->Label($modelPatient, 'last_name', ['class'=>'control-label']); ?>
+						<?= $form->TextField($modelPatient, 'last_name', [
+										'class'=>'form-control input-sm',
+									]); ?>
+						<?= $form->error($modelPatient, 'last_name', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
 					<div class="col-xs-3">
-							<?= $form->Label($modelPatient, 'first_name', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'first_name', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'first_name', ['class'=>'b-paid__errorFormPatient']); ?>
+						<?= $form->Label($modelPatient, 'first_name', ['class'=>'control-label']); ?>
+						<?= $form->TextField($modelPatient, 'first_name', [
+										'class'=>'form-control input-sm',
+									]); ?>
+						<?= $form->error($modelPatient, 'first_name', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
 					<div class="col-xs-3">
-						<div class="form-group">
-							<?= $form->Label($modelPatient, 'middle_name', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'middle_name', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'middle_name', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>
+						<?= $form->Label($modelPatient, 'middle_name', ['class'=>'control-label']); ?>
+						<?= $form->TextField($modelPatient, 'middle_name', [
+										'class'=>'form-control input-sm',
+									]); ?>
+						<?= $form->error($modelPatient, 'middle_name', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
-					<div class="col-xs-3">
-						<div class="form-group">
-							<?= $form->Label($modelPatient, 'gender', ['class'=>'control-label']); ?>
-							<?= $form->DropDownList($modelPatient, 'gender', $genderListData, [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'gender', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>
+					<div class="col-xs-1">
+						<?= $form->Label($modelPatient, 'gender', ['class'=>'control-label']); ?>
+						<?= $form->DropDownList($modelPatient, 'gender', $genderListData, [
+										'class'=>'form-control input-sm',
+									]); ?>
+						<?= $form->error($modelPatient, 'gender', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-3">
-						<div class="form-group">
+					<div class="col-xs-2">
 							<?= $form->Label($modelPatient, 'birthday', ['class'=>'control-label']); ?>
 								<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 									'language'=>'ru',
@@ -95,43 +88,37 @@ $this->pageTitle="Касса";
 									],
 								]); ?>
 							<?= $form->error($modelPatient, 'birthday', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>
 					</div>
 				</div>
+			
+				<?php $this->widget('FieldDocumentsWidget', ['model'=>$modelPatient_Documents, 'form'=>$form, 'documentTypeListData'=>$documentTypeListData]); ?>
+				
 				<div class="row">
 					<div class="col-xs-8">
-						<div class="form-group">
 							<?= $form->Label($modelPatient, 'address_reg', ['class'=>'control-label']); ?>
 							<?= $form->TextField($modelPatient, 'address_reg', [
 											'class'=>'form-control input-sm',
 										]); ?>
 							<?= $form->error($modelPatient, 'address_reg', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>	
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-3">
-						<div class="form-group">
-							<?= $form->Label($modelPatient, 'snils', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPatient, 'snils', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'snils', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>	
+						<?= $form->Label($modelPatient, 'snils', ['class'=>'control-label']); ?>
+						<?= $form->TextField($modelPatient, 'snils', [
+										'class'=>'form-control input-sm',
+									]); ?>
+						<?= $form->error($modelPatient, 'snils', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
 					<div class="col-xs-3">
-						<div class="form-group">
-							<?= $form->Label($modelPaid_Medcard, 'paid_card_number', ['class'=>'control-label']); ?>
-							<?= $form->TextField($modelPaid_Medcard, 'paid_card_number', [
-											'class'=>'form-control input-sm',
-										]); ?>
-							<?= $form->error($modelPatient, 'paid_card_number', ['class'=>'b-paid__errorFormPatient']); ?>
-						</div>	
+						<?= $form->Label($modelPaid_Medcard, 'paid_card_number', ['class'=>'control-label']); ?>
+						<?= $form->TextField($modelPaid_Medcard, 'paid_card_number', [
+										'class'=>'form-control input-sm',
+									]); ?>
+						<?= $form->error($modelPatient, 'paid_card_number', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
 					<div class="col-xs-3">
-						<div class="form-group">
-							<?php $this->widget('FieldPhonesWidget', ['model'=>$modelPatient_Contacts, 'form'=>$form]); ?>
-						</div>
+						<?php $this->widget('FieldPhonesWidget', ['model'=>$modelPatient_Contacts, 'form'=>$form]); ?>
 					</div>
 				</div>
 				<div class="row">

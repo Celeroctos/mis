@@ -1,0 +1,31 @@
+.b-documents{
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+.b-documents .row{
+    margin-bottom: 3px !important;
+}
+    .b-documents__spanDelete{
+        color: gray;
+        font-size: 15px;
+        cursor: default;
+        margin-top: 6px;
+        cursor: default;
+    }
+    .b-documents__spanDelete:hover{
+        color: black;
+    }
+    .b-documents__spanPlus{
+        color: gray;
+        font-size: 15px;
+        cursor: default;
+        margin-left: 1px !important;
+        margin-top: 30px;
+        cursor: default;
+    }
+    .b-documents__spanPlus:hover{
+        color: black !important;
+    }
+    .b-documents__input{
+        margin-bottom: 2px;
+    }

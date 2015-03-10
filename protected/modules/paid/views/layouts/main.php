@@ -11,6 +11,7 @@
 	<meta name="language" content="ru" />
 	<?php Yii::app()->clientScript->registerPackage('paid'); ?>
 	<?php Yii::app()->clientScript->registerPackage('fieldPhonesWidget'); ?>
+	<?php Yii::app()->clientScript->registerPackage('fieldDocumentsWidget'); ?>
 	<title><?= CHtml::encode($this->pageTitle); ?></title>
 </head>
 <body>

@@ -49,10 +49,10 @@ class Patients extends ActiveRecord
 	const DOCUMENT_TYPE_OTHER_DOCUMENT_NAME = 'Другой документ';
 	
 	const GENDER_MALE_ID = 1;
-	const GENDER_MALE_NAME = 'Мужской';
+	const GENDER_MALE_NAME = 'М';
 	
 	const GENDER_FEMALE_ID = 2;
-	const GENDER_FEMALE_NAME = 'Женский';
+	const GENDER_FEMALE_NAME = 'Ж';
 	
 	public static function model($className=__CLASS__)
 	{

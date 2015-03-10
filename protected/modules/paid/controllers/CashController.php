@@ -43,7 +43,7 @@ class CashController extends MPaidController
 				//throw();
 				Yii::app()->end();
 			}
-			$criteria=new CDbCriteria;
+			
 			$this->render('index', ['modelPatient'=>$modelPatient,
 									'modelPaid_Medcard'=>$modelPaid_Medcard,
 									'modelPatient_Documents'=>$modelPatient_Documents,
