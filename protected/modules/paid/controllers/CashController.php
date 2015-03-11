@@ -72,37 +72,29 @@ class CashController extends MPaidController
 			{ //create (кнопка сохранить, submitbutton)
 				$modelPatient->setScenario('paid.cash.create');
 				$modelPatient_Contacts->setScenario('paid.cash.create');
-				
-				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
-				$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+				$modelPatient_Documents->setScenario('paid.cash.create');
 				
 				$transaction=Yii::app()->db->beginTransaction();
 				try
 				{
+					$modelPatient->attributes=Yii::app()->request->getPost('Patients');
+					$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+				
 					if(!$modelPatient->save())
 					{
 						$transaction->rollback();
 						echo CActiveForm::validate($modelPatient);
 						Yii::app()->end();
-					}
+					}//если ок, то идем дальше сохранять данные в другие модели (контакты и документы)
+					//динамические поля, подгружаемые JSом
+					$arrPhoneValues=Yii::app()->request->getPost('Patient_Contacts')['value'];
+					$arrDocumentTypes=Yii::app()->request->getPost('Patient_Documents')['type'];
+					$arrDocumentSeries=Yii::app()->request->getPost('Patient_Documents')['serie'];
+					$arrDocumentsNumbers=Yii::app()->request->getPost('Patient_Documents')['number'];
 					
-					$arr_values=$_POST['Patient_Contacts']['value'];
-					
-					foreach($arr_values as $value)
-					{
-						$modelPatient_Contacts->value=$value;
-						$modelPatient_Contacts->type=1; //пока тип один, может быть удалим в
-						$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-						
-						if(!$modelPatient_Contacts->save())
-						{
-							$transaction->rollback(); //откат если хоть одно поле с ошибкой
-							echo $errors=CActiveForm::validate($modelPatient_Contacts, NULL, false);
-							Yii::app()->end();
-						}
-						unset($modelPatient_Contacts); //косяк с сохранением валидации, не работает save() при повторном обращении..
-						$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
-					}
+					Patient_Documents::saveFewDocumentsFromForm($arrDocumentTypes, $arrDocumentSeries, $arrDocumentsNumbers, $modelPatient_Documents, $transaction);
+					Patient_Contacts::saveFewPhonesFromForm($arrPhoneValues, $modelPatient_Contacts, $transaction);
+					//если нет ошибок валидации в методах то идём дальше.
 					
 					$transaction->commit();
 					$arrayJson=array();

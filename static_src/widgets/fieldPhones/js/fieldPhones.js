@@ -9,7 +9,6 @@
 			$('.b-phones').append(blockObj);
 			blockObj.append(inputObj);
 			blockObj.append(deleteButtonObj);
-			i++; //из замыкания
 			
 			deleteButtonObj.on('click', function() {
 //				$(this).parent().animate({opacity: 0}, 'slow', function(){
@@ -17,5 +16,6 @@
 //				});
 			});
 		});
+		i++; //из замыкания
 	});
 })();

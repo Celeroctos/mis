@@ -10,5 +10,5 @@
 	<div class="b-phones__input">
 	<?= $form->TextField($model, 'value', ['id'=>'Patient_Contacts_value', 'name'=>'Patient_Contacts[value][0]', 'class'=>'form-control input-sm']); ?>
 	</div>
-	<?= $form->error($model, 'value', ['class'=>'b-paid__errorFormPatient']); ?>
 </div>
+<?= $form->error($model, 'value', ['class'=>'b-paid__errorFormPatient']); ?>

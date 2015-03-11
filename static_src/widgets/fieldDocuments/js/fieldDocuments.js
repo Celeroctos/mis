@@ -22,11 +22,10 @@
 			row.append(inputSerie);
 			row.append(inputNumber);
 			row.append(deleteButtonObj);
-			
+			i++;
 			deleteButtonObj.on('click', function() {
 				$(this).parent().detach();
 			});
 		});
-	i++;
 	});
 })();
