@@ -58,7 +58,7 @@ class CashController extends MPaidController
 			$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient]); //processoutput уже загрузился один раз, снизу
 			Yii::app()->end();
 		}
-		elseif(isset($_POST['Patients']) && Yii::app()->request->getPost('Patient_Contacts'))
+		elseif(isset($_POST['Patients']) && Yii::app()->request->getPost('Patient_Contacts') && Yii::app()->request->getPost('Patient_Documents'))
 		{
 			if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('paid_cash_search_patient_ajax')) //ajaxSubmitButton, в этом случае enableajaxValidation не срабатывает.
 			{ //search
@@ -69,43 +69,45 @@ class CashController extends MPaidController
 				Yii::app()->end();
 			}
 			elseif(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('paid_cash_search-form')) //см CActiveForm, офф доку. (enableajaxValidation)
-			{ //create
+			{ //create (кнопка сохранить, submitbutton)
 				$modelPatient->setScenario('paid.cash.create');
+				$modelPatient_Contacts->setScenario('paid.cash.create');
+				
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 				$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-				
-				$modelPatient_Contacts->setScenario('paid.cash.create');
 				
 				$transaction=Yii::app()->db->beginTransaction();
 				try
 				{
-					if($modelPatient->save())
-					{
-						$arr_phone_numbers=Yii::app()->request->getPost('Patient_Contacts');
-						foreach($arr_phone_numbers['value'] as $value)
-						{
-							$modelPatient_Contacts->value=$value;
-							$modelPatient_Contacts->type=1; //пока тип один, может быть удалим в
-							$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-							if(!$modelPatient_Contacts->save()) //валидируем всё но пишем ошибку в интерфейс только от 1 поля
-							{ //валидируем
-								$transaction->rollback();
-								$errors=CActiveForm::validate($modelPatient_Contacts, NULL, false);
-								Yii::app()->end($errors); //output JSON
-							}
-							$modelPatient_Contacts->isNewRecord=true;
-						}
-						$transaction->commit();
-						$arrayJson=array();
-						$arrayJson['redirectUrl']=$this->createUrl('cash/index', ['patient_id'=>Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq')]);
-						Yii::app()->end(CJSON::encode($arrayJson));
-					}
-					else
+					if(!$modelPatient->save())
 					{
 						$transaction->rollback();
-						$errors=CActiveForm::validate($modelPatient);
-						Yii::app()->end($errors); //output JSON
+						echo CActiveForm::validate($modelPatient);
+						Yii::app()->end();
 					}
+					
+					$arr_values=$_POST['Patient_Contacts']['value'];
+					
+					foreach($arr_values as $value)
+					{
+						$modelPatient_Contacts->value=$value;
+						$modelPatient_Contacts->type=1; //пока тип один, может быть удалим в
+						$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
+						
+						if(!$modelPatient_Contacts->save())
+						{
+							$transaction->rollback(); //откат если хоть одно поле с ошибкой
+							echo $errors=CActiveForm::validate($modelPatient_Contacts, NULL, false);
+							Yii::app()->end();
+						}
+						unset($modelPatient_Contacts); //косяк с сохранением валидации, не работает save() при повторном обращении..
+						$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
+					}
+					
+					$transaction->commit();
+					$arrayJson=array();
+					$arrayJson['redirectUrl']=$this->createUrl('cash/index', ['patient_id'=>Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq')]);
+					Yii::app()->end(CJSON::encode($arrayJson));
 				}
 				catch(Exception $e)
 				{
