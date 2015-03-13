@@ -27,13 +27,18 @@ class Patient_Documents extends ActiveRecord
 	public function rules()
 	{
 		return [
-			['type, serie, number', 'required', 'on'=>'paid.cash.create'],
-			['type, serie, number', 'required', 'on'=>'paid.cash.search']
+			['type, serie, number', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			['type, serie, number', 'type', 'type'=>'string', 'on'=>'paid.cash.search']
 		];
 	}
 	
-	public static function saveFewDocumentsFromForm($arrDocumentTypes, $arrDocumentSeries, $arrDocumentsNumbers, $modelPatient_Documents, $transaction)
+	public static function saveFewDocumentsFromForm($modelPatient_Documents, $transaction)
 	{
+		$arrDocumentTypes=isset(Yii::app()->request->getPost('Patient_Documents')['typeArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['typeArrMass'] : [];
+		$arrDocumentSeries=isset(Yii::app()->request->getPost('Patient_Documents')['serieArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['serieArrMass'] :[];
+		$arrDocumentsNumbers=isset(Yii::app()->request->getPost('Patient_Documents')['numberArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['numberArrMass'] : [];
+		
+		$modelPatient_Documents->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
 		if($modelPatient_Documents->save())
 		{ //прошёл первый сейв от обычных инпутов Yii
 			$x=0;

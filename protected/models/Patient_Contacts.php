@@ -30,7 +30,7 @@ class Patient_Contacts extends ActiveRecord
 	public function rules()
 	{
 		return [
-			['value', 'required', 'on'=>'paid.cash.create'],
+			['value', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			['value', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 		];
 	}
@@ -41,23 +41,35 @@ class Patient_Contacts extends ActiveRecord
 	 * @param Patient_Contacts $modelPatient_Contacts
 	 * @param CDbTransaction $transaction
 	 */
-	public static function saveFewPhonesFromForm($arrPhoneValues, $modelPatient_Contacts, $transaction)
+	public static function saveFewPhonesFromForm($modelPatient_Contacts, $transaction)
 	{
-		foreach($arrPhoneValues as $value)
+		$arrPhoneValues=isset(Yii::app()->request->getPost('Patient_Contacts')['valueArrMass']) ? Yii::app()->request->getPost('Patient_Contacts')['valueArrMass'] : [];
+		$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
+		$modelPatient_Contacts->type=1;
+		if($modelPatient_Contacts->save())
 		{
-			$modelPatient_Contacts->value=$value;
-			$modelPatient_Contacts->type=1; //пока тип один, может быть удалим в
-			$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-
-			if(!$modelPatient_Contacts->save())
+			foreach($arrPhoneValues as $value)
 			{
-				$transaction->rollback(); //откат если хоть одно поле с ошибкой
-				echo CActiveForm::validate($modelPatient_Contacts, NULL, false);
-				Yii::app()->end();
+				$modelPatient_Contacts->value=$value;
+				$modelPatient_Contacts->type=1; //пока тип один, может быть удалим в
+				$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
+
+				if(!$modelPatient_Contacts->save())
+				{
+					$transaction->rollback(); //откат если хоть одно поле с ошибкой
+					echo CActiveForm::validate($modelPatient_Contacts, NULL, false);
+					Yii::app()->end();
+				}
+				unset($modelPatient_Contacts); //косяк с сохранением валидации, не работает save() при повторном обращении..
+				$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
 			}
-			unset($modelPatient_Contacts); //косяк с сохранением валидации, не работает save() при повторном обращении..
-			$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
-		}		
+		}
+		else
+		{
+			$transaction->rollback();
+			echo CActiveForm::validate($modelPatient_Contacts, NULL, false);
+			Yii::app()->end();			
+		}
 	}
 	
 	public static function model($className=__CLASS__)

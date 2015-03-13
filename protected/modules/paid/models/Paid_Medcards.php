@@ -20,6 +20,7 @@ class Paid_Medcards extends ActiveRecord
 	{
 		return [
 			['paid_medcard_number', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
+			['paid_medcard_number', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 		];
 	}
 	

@@ -53,8 +53,13 @@ class CashController extends MPaidController
 		
 		if(!Yii::app()->request->isAjaxRequest && isset($patient_id))
 		{//выбрали юзера не(!!) ajax запросом
-			$modelPatient=Patients::model()->findByPk($patient_id);
+			$recordPatient_Documents=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+			$recordPatient_Contacts=Patient_Contacts::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 			$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+			
+			$modelPatient_Documents=isset($recordPatient_Documents) ? $recordPatient_Documents : $modelPatient_Documents;
+			$modelPatient_Contacts=isset($recordPatient_Contacts) ? $recordPatient_Contacts : $modelPatient_Contacts;
+			$modelPatient=Patients::model()->findByPk($patient_id);
 			if($modelPatient===null)
 			{
 				//throw();
@@ -69,10 +74,9 @@ class CashController extends MPaidController
 				$modelPaid_Medcard->save();
 			}
 			elseif($recordPaid_Medcard!==null)
-			{
+			{ //уже есть ЭМК платных услуг
 				$modelPaid_Medcard=$recordPaid_Medcard;
 			}
-
 			
 			$this->renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData);
 			Yii::app()->end();
@@ -91,6 +95,7 @@ class CashController extends MPaidController
 				$modelPatient->setScenario('paid.cash.search');
 				$modelPatient->modelPaid_Medcard->setScenario('paid.cash.search');
 				$modelPatient->modelPatient_Documents->setScenario('paid.cash.search');
+				$modelPatient->modelPatient_Contacts->setScenario('paid.cash.search');
 				
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 				$modelPatient->modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
@@ -122,13 +127,9 @@ class CashController extends MPaidController
 						Yii::app()->end();
 					}//если ок, то идем дальше сохранять данные в другие модели (контакты и документы)
 					//динамические поля, подгружаемые JSом
-					$arrPhoneValues=isset(Yii::app()->request->getPost('Patient_Contacts')['valueArrMass']) ? Yii::app()->request->getPost('Patient_Contacts')['valueArrMass'] : [];
-					$arrDocumentTypes=isset(Yii::app()->request->getPost('Patient_Documents')['typeArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['typeArrMass'] : [];
-					$arrDocumentSeries=isset(Yii::app()->request->getPost('Patient_Documents')['serieArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['serieArrMass'] :[];
-					$arrDocumentsNumbers=isset(Yii::app()->request->getPost('Patient_Documents')['numberArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['numberArrMass'] : [];
 					
-					Patient_Documents::saveFewDocumentsFromForm($arrDocumentTypes, $arrDocumentSeries, $arrDocumentsNumbers, $modelPatient_Documents, $transaction);
-					Patient_Contacts::saveFewPhonesFromForm($arrPhoneValues, $modelPatient_Contacts, $transaction);
+					Patient_Documents::saveFewDocumentsFromForm($modelPatient_Documents, $transaction);
+					Patient_Contacts::saveFewPhonesFromForm($modelPatient_Contacts, $transaction);
 					//если нет ошибок валидации в методах то идём дальше, иначе exit()
 					
 					$transaction->commit();
