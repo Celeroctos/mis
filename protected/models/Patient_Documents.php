@@ -13,6 +13,10 @@ class Patient_Documents extends ActiveRecord
 	public $type;
 	public $patient_id; //FK
 	
+//	public $typeArrMass;
+//	public $serieArrMass;
+//	public $numberArrMass;
+	
 	public function relations()
 	{
 		return [
@@ -23,29 +27,39 @@ class Patient_Documents extends ActiveRecord
 	public function rules()
 	{
 		return [
-			['type, serie, number', 'required', 'on'=>'paid.cash.create']
+			['type, serie, number', 'required', 'on'=>'paid.cash.create'],
+			['type, serie, number', 'required', 'on'=>'paid.cash.search']
 		];
 	}
 	
 	public static function saveFewDocumentsFromForm($arrDocumentTypes, $arrDocumentSeries, $arrDocumentsNumbers, $modelPatient_Documents, $transaction)
 	{
-		$x=0;
-		foreach($arrDocumentTypes as $value)
-		{
-			$modelPatient_Documents->type=$arrDocumentTypes[$x];
-			$modelPatient_Documents->serie=$arrDocumentSeries[$x];
-			$modelPatient_Documents->number=$arrDocumentsNumbers[$x];
-			$modelPatient_Documents->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-			
-			if(!$modelPatient_Documents->save())
+		if($modelPatient_Documents->save())
+		{ //прошёл первый сейв от обычных инпутов Yii
+			$x=0;
+			foreach($arrDocumentTypes as $value)
 			{
-				$transaction->rollback();
-				echo CActiveForm::validate($modelPatient_Documents, NULL, false);
-				Yii::app()->end();
+				$modelPatient_Documents->type=$arrDocumentTypes[$x];
+				$modelPatient_Documents->serie=$arrDocumentSeries[$x];
+				$modelPatient_Documents->number=$arrDocumentsNumbers[$x];
+				$modelPatient_Documents->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
+
+				if(!$modelPatient_Documents->save())
+				{
+					$transaction->rollback();
+					echo CActiveForm::validate($modelPatient_Documents, NULL, false);
+					Yii::app()->end();
+				}
+				unset($modelPatient_Documents); //сохранение валидации, не работает save() при повторном обращении..
+				$modelPatient_Documents=new Patient_Documents('paid.cash.create');
+				$x++;
 			}
-			unset($modelPatient_Documents); //сохранение валидации, не работает save() при повторном обращении..
-			$modelPatient_Documents=new Patient_Documents('paid.cash.create');
-			$x++;
+		}
+		else
+		{
+			$transaction->rollback();
+			echo CActiveForm::validate($modelPatient_Documents, NULL, false);
+			Yii::app()->end();
 		}
 	}
 	

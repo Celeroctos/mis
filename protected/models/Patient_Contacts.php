@@ -9,6 +9,7 @@ class Patient_Contacts extends ActiveRecord
 	public $patient_id; //FK
 	public $type; //пока один тип. в дальнейшем может удалим
 	public $value;
+//	public $valueArrMass; //js input
 	
 	const MOBILE_PHONE_ID = 1;
 	const MOBILE_PHONE_NAME = 'Мобильный телефон';

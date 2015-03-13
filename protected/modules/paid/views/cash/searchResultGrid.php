@@ -39,14 +39,21 @@ $this->widget('zii.widgets.grid.CGridView', [
 			'name'=>'last_name',
 			'filter'=>'',
 			'headerHtmlOptions'=>[
-				'class'=>'col-xs-7',
+				'class'=>'col-xs-4',
 			],
 		],
 		[
 			'name'=>'first_name',
 			'filter' =>'',
 			'headerHtmlOptions'=>[
-				'class'=>'col-xs-2',
+				'class'=>'col-xs-4',
+			],
+		],
+		[
+			'name'=>'birthday',
+			'filter'=>'',
+			'headerHtmlOptions'=>[
+				'class'=>'col-xs-3',
 			],
 		],
 		[
@@ -56,12 +63,13 @@ $this->widget('zii.widgets.grid.CGridView', [
 				'view'=>[
 					'label'=>'Выбрать пациента',
 					'imageUrl'=>false,
+					'url'=>'CHtml::normalizeUrl(["cash/index", "patient_id"=>$data->patient_id])',
 					'options'=>[
 						'class'=>'btn btn-success btn-block btn-xs'
 					],
 				],
 				'headerHtmlOptions'=>[
-					'class'=>'col-md-1',
+					'class'=>'col-xs-1',
 				],
 			],
 		],

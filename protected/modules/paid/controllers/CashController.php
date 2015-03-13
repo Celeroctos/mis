@@ -54,11 +54,25 @@ class CashController extends MPaidController
 		if(!Yii::app()->request->isAjaxRequest && isset($patient_id))
 		{//выбрали юзера не(!!) ajax запросом
 			$modelPatient=Patients::model()->findByPk($patient_id);
+			$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 			if($modelPatient===null)
 			{
 				//throw();
 				Yii::app()->end();
 			}
+			elseif($recordPaid_Medcard===null)
+			{ //нет медкарты у пациента, нужно создать
+				$modelPaid_Medcard->paid_medcard_number=uniqid('', true); //TODO временно
+				$modelPaid_Medcard->enterprise_id=null;
+				$modelPaid_Medcard->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+				$modelPaid_Medcard->patient_id=$patient_id;
+				$modelPaid_Medcard->save();
+			}
+			elseif($recordPaid_Medcard!==null)
+			{
+				$modelPaid_Medcard=$recordPaid_Medcard;
+			}
+
 			
 			$this->renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData);
 			Yii::app()->end();
@@ -76,13 +90,13 @@ class CashController extends MPaidController
 				
 				$modelPatient->setScenario('paid.cash.search');
 				$modelPatient->modelPaid_Medcard->setScenario('paid.cash.search');
+				$modelPatient->modelPatient_Documents->setScenario('paid.cash.search');
 				
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 				$modelPatient->modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
-//				$modelPatient->modelPatient_Documents->type=Yii::app()->request->getPost('Patient_Documents')['type'][0]; //тип всегда указан..
-				$modelPatient->modelPatient_Documents->serie=Yii::app()->request->getPost('Patient_Documents')['serie'][0];
-				$modelPatient->modelPatient_Documents->number=Yii::app()->request->getPost('Patient_Documents')['number'][0];
-				$modelPatient->modelPatient_Contacts->value=Yii::app()->request->getPost('Patient_Contacts')['value'][0];
+				$modelPatient->modelPatient_Contacts->attributes=Yii::app()->request->getPost('Patient_Contacts');
+				$modelPatient->modelPatient_Documents->attributes=Yii::app()->request->getPost('Patient_Documents');
+				$modelPatient->modelPatient_Documents->type=null; //не нужен в поиске.
 				
 				$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient], false, true); //load processoutput
 				Yii::app()->end();
@@ -98,7 +112,9 @@ class CashController extends MPaidController
 				{
 					$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 					$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-				
+					$modelPatient_Contacts->attributes=Yii::app()->request->getPost('Patient_Contacts');
+					$modelPatient_Documents->attributes=Yii::app()->request->getPost('Patient_Documents');
+					
 					if(!$modelPatient->save())
 					{
 						$transaction->rollback();
@@ -106,10 +122,10 @@ class CashController extends MPaidController
 						Yii::app()->end();
 					}//если ок, то идем дальше сохранять данные в другие модели (контакты и документы)
 					//динамические поля, подгружаемые JSом
-					$arrPhoneValues=Yii::app()->request->getPost('Patient_Contacts')['value'];
-					$arrDocumentTypes=Yii::app()->request->getPost('Patient_Documents')['type'];
-					$arrDocumentSeries=Yii::app()->request->getPost('Patient_Documents')['serie'];
-					$arrDocumentsNumbers=Yii::app()->request->getPost('Patient_Documents')['number'];
+					$arrPhoneValues=isset(Yii::app()->request->getPost('Patient_Contacts')['valueArrMass']) ? Yii::app()->request->getPost('Patient_Contacts')['valueArrMass'] : [];
+					$arrDocumentTypes=isset(Yii::app()->request->getPost('Patient_Documents')['typeArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['typeArrMass'] : [];
+					$arrDocumentSeries=isset(Yii::app()->request->getPost('Patient_Documents')['serieArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['serieArrMass'] :[];
+					$arrDocumentsNumbers=isset(Yii::app()->request->getPost('Patient_Documents')['numberArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['numberArrMass'] : [];
 					
 					Patient_Documents::saveFewDocumentsFromForm($arrDocumentTypes, $arrDocumentSeries, $arrDocumentsNumbers, $modelPatient_Documents, $transaction);
 					Patient_Contacts::saveFewPhonesFromForm($arrPhoneValues, $modelPatient_Contacts, $transaction);
