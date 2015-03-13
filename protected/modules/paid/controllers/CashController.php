@@ -32,6 +32,7 @@ class CashController extends MPaidController
 		]);
 	}
 	
+	
 	/**
 	 * Основной экш кассы.
 	 * @param int $patient_id #ID пациента
@@ -83,6 +84,8 @@ class CashController extends MPaidController
 		}
 		elseif(isset($_GET['ajax_grid']))
 		{ //обработка кнопок грида ajax в модальном окне(пагинация и прочее)
+			$modelPatient->setScenario('paid.cash.search');
+			$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 			$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient]); //processoutput уже загрузился один раз, снизу
 			Yii::app()->end();
 		}

@@ -124,6 +124,7 @@ $this->pageTitle="Касса";
 				<div class="row">
 					<div class="col-xs-12">
 						<?= CHtml::ajaxSubmitButton('Найти', '', ['data'=>new CJavaScriptExpression('jQuery(this).parents("form").serialize() + "&paid_cash_search_patient_ajax=1"'),
+																  
 																  'success'=>'function(html){
 																				$("#myModalBody").html(html);
 																				$("#add_paid_patient_button").animate({opacity: 0}, "fast", function(){
