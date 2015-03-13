@@ -155,7 +155,7 @@ $this->pageTitle="Касса";
 		</div>
 	</div>
 	<div class="row b-paidFooterRow">
-		<div class="col-xs-10 b-paid__footerLeft">
+		<div class="col-xs-11 b-paid__footerLeft">
 			<h3 class="b-paidFooterH3">Итого:</h3>
 		</div>
 		<div class="col-xs-2 b-paid__footerRight">

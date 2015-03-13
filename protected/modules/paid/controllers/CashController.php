@@ -21,17 +21,27 @@ class CashController extends MPaidController
 		];
 	}
 	
+	private function renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData)
+	{
+		$this->render('index', ['modelPatient'=>$modelPatient,
+									'modelPaid_Medcard'=>$modelPaid_Medcard,
+									'modelPatient_Documents'=>$modelPatient_Documents,
+									'modelPatient_Contacts'=>$modelPatient_Contacts,
+									'documentTypeListData'=>$documentTypeListData,
+									'genderListData'=>$genderListData,
+		]);
+	}
+	
 	/**
 	 * Основной экш кассы.
 	 * @param int $patient_id #ID пациента
 	 */
 	public function actionIndex($patient_id=null)
 	{
-		$modelPatient=new Patients; // Сценарий [module].[controller].[action]
+		$modelPatient=new Patients;
 		$modelPaid_Medcard=new Paid_Medcards;
 		$modelPatient_Documents=new Patient_Documents;
 		$modelPatient_Contacts=new Patient_Contacts;
-		
 		$documentTypeListData=Patients::getDocumentTypeListData();
 		$genderListData=Patients::getGenderListData();
 		
@@ -44,13 +54,7 @@ class CashController extends MPaidController
 				Yii::app()->end();
 			}
 			
-			$this->render('index', ['modelPatient'=>$modelPatient,
-									'modelPaid_Medcard'=>$modelPaid_Medcard,
-									'modelPatient_Documents'=>$modelPatient_Documents,
-									'modelPatient_Contacts'=>$modelPatient_Contacts,
-									'documentTypeListData'=>$documentTypeListData,
-									'genderListData'=>$genderListData,
-			]);
+			$this->renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData);
 			Yii::app()->end();
 		}
 		elseif(isset($_GET['ajax_grid']))
@@ -94,7 +98,7 @@ class CashController extends MPaidController
 					
 					Patient_Documents::saveFewDocumentsFromForm($arrDocumentTypes, $arrDocumentSeries, $arrDocumentsNumbers, $modelPatient_Documents, $transaction);
 					Patient_Contacts::saveFewPhonesFromForm($arrPhoneValues, $modelPatient_Contacts, $transaction);
-					//если нет ошибок валидации в методах то идём дальше.
+					//если нет ошибок валидации в методах то идём дальше, иначе exit()
 					
 					$transaction->commit();
 					$arrayJson=array();
@@ -108,15 +112,7 @@ class CashController extends MPaidController
 				}
 			}
 		}
-		
-		$this->render('index', [
-			'modelPatient'=>$modelPatient,
-			'modelPaid_Medcard'=>$modelPaid_Medcard,
-			'modelPatient_Documents'=>$modelPatient_Documents,
-			'modelPatient_Contacts'=>$modelPatient_Contacts,
-			'documentTypeListData'=>$documentTypeListData,
-			'genderListData'=>$genderListData,
-		]);
+		$this->renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData);
 	}
 	
 	/*
