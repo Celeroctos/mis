@@ -42,6 +42,12 @@ class CashController extends MPaidController
 		$modelPaid_Medcard=new Paid_Medcards;
 		$modelPatient_Documents=new Patient_Documents;
 		$modelPatient_Contacts=new Patient_Contacts;
+		
+		/**vars For search in CGridView**/
+		$modelPatient->modelPaid_Medcard=$modelPaid_Medcard;
+		$modelPatient->modelPatient_Contacts=$modelPatient_Contacts;
+		$modelPatient->modelPatient_Documents=$modelPatient_Documents;
+		
 		$documentTypeListData=Patients::getDocumentTypeListData();
 		$genderListData=Patients::getGenderListData();
 		
@@ -62,13 +68,22 @@ class CashController extends MPaidController
 			$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient]); //processoutput уже загрузился один раз, снизу
 			Yii::app()->end();
 		}
-		elseif(isset($_POST['Patients']) && Yii::app()->request->getPost('Patient_Contacts') && Yii::app()->request->getPost('Patient_Documents'))
+		elseif(isset($_POST['Patients']) && Yii::app()->request->getPost('Paid_Medcards') && Yii::app()->request->getPost('Patient_Contacts') && Yii::app()->request->getPost('Patient_Documents'))
 		{
 			if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('paid_cash_search_patient_ajax')) //ajaxSubmitButton, в этом случае enableajaxValidation не срабатывает.
 			{ //search
 				Yii::app()->clientScript->scriptMap['jquery-1.11.2.min.js']=false; //уже подключен.
+				
 				$modelPatient->setScenario('paid.cash.search');
+				$modelPatient->modelPaid_Medcard->setScenario('paid.cash.search');
+				
 				$modelPatient->attributes=Yii::app()->request->getPost('Patients');
+				$modelPatient->modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
+//				$modelPatient->modelPatient_Documents->type=Yii::app()->request->getPost('Patient_Documents')['type'][0]; //тип всегда указан..
+				$modelPatient->modelPatient_Documents->serie=Yii::app()->request->getPost('Patient_Documents')['serie'][0];
+				$modelPatient->modelPatient_Documents->number=Yii::app()->request->getPost('Patient_Documents')['number'][0];
+				$modelPatient->modelPatient_Contacts->value=Yii::app()->request->getPost('Patient_Contacts')['value'][0];
+				
 				$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient], false, true); //load processoutput
 				Yii::app()->end();
 			}

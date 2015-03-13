@@ -111,11 +111,11 @@ $this->pageTitle="Касса";
 						<?= $form->error($modelPatient, 'snils', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
 					<div class="col-xs-3">
-						<?= $form->Label($modelPaid_Medcard, 'paid_card_number', ['class'=>'control-label']); ?>
-						<?= $form->TextField($modelPaid_Medcard, 'paid_card_number', [
+						<?= $form->Label($modelPaid_Medcard, 'paid_medcard_number', ['class'=>'control-label']); ?>
+						<?= $form->TextField($modelPaid_Medcard, 'paid_medcard_number', [
 										'class'=>'form-control input-sm',
 									]); ?>
-						<?= $form->error($modelPatient, 'paid_card_number', ['class'=>'b-paid__errorFormPatient']); ?>
+						<?= $form->error($modelPatient, 'paid_medcard_number', ['class'=>'b-paid__errorFormPatient']); ?>
 					</div>
 					<div class="col-xs-3">
 						<?php $this->widget('FieldPhonesWidget', ['model'=>$modelPatient_Contacts, 'form'=>$form]); ?>

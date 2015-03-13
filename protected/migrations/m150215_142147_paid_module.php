@@ -140,7 +140,7 @@ HERE;
 						"paid_medcard_number" character varying(255) DEFAULT NULL, --Номер карты
 						"date_create" TIMESTAMPTZ NOT NULL, --Дата создания карты
 						"enterprise_id" integer DEFAULT NULL, --FK (table enterprises)
-						"pacient_id" integer, --FK (table medcards). Привязка к основной (абстрактной) карте ЭМК
+						"patient_id" integer, --FK (table medcards). Привязка к основной (абстрактной) карте ЭМК
 						PRIMARY KEY(paid_medcards_id)
 					);
 HERE;

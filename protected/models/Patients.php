@@ -28,6 +28,11 @@ class Patients extends ActiveRecord
 	public $address_reg_str;
 	public $create_timestamp;
 	
+	/**search vars for CGridView**/
+	public $modelPatient_Documents; // table patient_documents (activeRecord object)
+	public $modelPatient_Contacts; // table patient_contacts (activeRecord object)
+	public $modelPaid_Medcard; // table paid_medcards (activeRecord object)
+	
 	const PAGE_SIZE = 5;
 	
 	const DOCUMENT_TYPE_PASSPORT_ID = 1;
@@ -64,6 +69,7 @@ class Patients extends ActiveRecord
 		return [
 			'documents'=>[self::HAS_MANY, 'Patient_Documents', 'patient_id'],
 			'contacts'=>[self::HAS_MANY, 'Patient_Contacts', 'patient_id'],
+			'paid_medcards'=>[self::HAS_MANY, 'Paid_Medcards', 'patient_id'],
 		];
 	}
 	
@@ -135,11 +141,19 @@ class Patients extends ActiveRecord
 	public function search()
 	{
 		$criteria=new CDbCriteria;
-		$criteria->with=['documents', 'contacts'];
-		$criteria->compare('last_name', $this->last_name, true);
-		$criteria->compare('first_name', $this->first_name, true);
-		$criteria->compare('middle_name', $this->middle_name, true);
-		$criteria->compare('gender', $this->gender, true);
+		$criteria->with=['documents'=>['joinType'=>'LEFT JOIN', 'together'=>true], 'contacts'=>['joinType'=>'LEFT JOIN', 'together'=>true], 'paid_medcards'=>['joinType'=>'LEFT JOIN', 'together'=>true]];
+		$criteria->compare('t.last_name', $this->last_name, true);
+		$criteria->compare('t.first_name', $this->first_name);
+		$criteria->compare('t.middle_name', $this->middle_name, true);
+		$criteria->compare('t.gender', $this->gender, true);
+		
+		$criteria->compare('paid_medcards.paid_medcard_number', $this->modelPaid_Medcard->paid_medcard_number);
+		
+		$criteria->compare('documents.type', $this->modelPatient_Documents->type);
+		$criteria->compare('documents.serie', $this->modelPatient_Documents->serie);
+		$criteria->compare('documents.number', $this->modelPatient_Documents->number);
+		
+		$criteria->compare('contacts.value', $this->modelPatient_Contacts->value);
 		
 		return new CActiveDataProvider('Patients',[
 			'criteria'=>$criteria,
