@@ -37,31 +37,34 @@ $this->widget('zii.widgets.grid.CGridView', [
 	],
 	'columns'=>[
 		[
+			'name'=>'patient_id',
+		],
+		[
 			'name'=>'last_name',
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-2',
 			],
 		],
-		[
-			'name'=>'first_name',
-			'headerHtmlOptions'=>[
-				'class'=>'col-xs-2',
-			],
-		],
-		[
-			'name'=>'middle_name',
-		],
-		[
-			'name'=>'gender',
-			'visible'=>false,
-		],
-		[
-			'name'=>'documents.type',
-			'visible'=>false,
-		],
+//		[
+//			'name'=>'first_name',
+//			'headerHtmlOptions'=>[
+//				'class'=>'col-xs-2',
+//			],
+//		],
+//		[
+//			'name'=>'middle_name',
+//		],
+//		[
+//			'name'=>'gender',
+//			'visible'=>false,
+//		],
+//		[
+//			'name'=>'documents.type',
+//			'visible'=>false,
+//		],
 		[
 			'name'=>'documents.serie',
-			'visible'=>false,
+//			'visible'=>false,
 		],
 		[
 			'name'=>'documents.number',

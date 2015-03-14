@@ -33,7 +33,7 @@ class Patients extends ActiveRecord
 	public $modelPatient_Contacts; // table patient_contacts (activeRecord object)
 	public $modelPaid_Medcard; // table paid_medcards (activeRecord object)
 	
-	const PAGE_SIZE = 5;
+	const PAGE_SIZE = 10;
 	
 	const DOCUMENT_TYPE_PASSPORT_ID = 1;
 	const DOCUMENT_TYPE_PASSPORT_NAME = 'Паспорт';
@@ -141,15 +141,18 @@ class Patients extends ActiveRecord
 	public function search()
 	{
 		$criteria=new CDbCriteria;
-		$criteria->with=['documents'=>['joinType'=>'LEFT JOIN', 'together'=>true], 'contacts'=>['joinType'=>'LEFT JOIN', 'together'=>true], 'paid_medcards'=>['joinType'=>'LEFT JOIN', 'together'=>true]];
+		$criteria->with=['contacts'=>['select'=>''], 'documents'=>['select'=>'']]; //не выводим в таблице grid, FIX for POSTGRESQL
+		$criteria->select=['t.first_name', 't.last_name', 't.middle_name', 't.birthday'];
+		$criteria->group='t.patient_id';
+		$criteria->together=true;
 		$criteria->compare('t.last_name', $this->last_name, true);
 		$criteria->compare('t.first_name', $this->first_name);
 		$criteria->compare('t.middle_name', $this->middle_name, true);
-		$criteria->compare('t.gender', $this->gender, true);
+//		$criteria->compare('t.gender', $this->gender, true);
 		
 		$criteria->compare('paid_medcards.paid_medcard_number', $this->modelPaid_Medcard->paid_medcard_number);
 		
-		$criteria->compare('documents.type', $this->modelPatient_Documents->type);
+//		$criteria->compare('documents.type', $this->modelPatient_Documents->type);
 		$criteria->compare('documents.serie', $this->modelPatient_Documents->serie);
 		$criteria->compare('documents.number', $this->modelPatient_Documents->number);
 		
@@ -158,9 +161,9 @@ class Patients extends ActiveRecord
 		return new CActiveDataProvider('Patients',[
 			'criteria'=>$criteria,
 			'sort'=>[
-				'defaultOrder'=>[
-					'patient_id'=>CSort::SORT_DESC,
-				],
+//				'defaultOrder'=>[
+//					'patient_id'=>CSort::SORT_DESC,
+//				],
 			],
 			'pagination'=>[
 				'pageSize'=>self::PAGE_SIZE,

@@ -31,7 +31,44 @@ class CashController extends MPaidController
 									'genderListData'=>$genderListData,
 		]);
 	}
-	
+
+	/**
+	 * Выбрали пациента.
+	 * @param int $patient_id #ID пациента
+	 */
+	public function actionPatient($patient_id)
+	{
+//		if(!Yii::app()->request->isAjaxRequest && isset($patient_id))
+//		{//выбрали юзера не(!!) ajax запросом
+//			$recordPatient_Documents=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+//			$recordPatient_Contacts=Patient_Contacts::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+//			$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+//			
+//			$modelPatient_Documents=isset($recordPatient_Documents) ? $recordPatient_Documents : $modelPatient_Documents;
+//			$modelPatient_Contacts=isset($recordPatient_Contacts) ? $recordPatient_Contacts : $modelPatient_Contacts;
+//			$modelPatient=Patients::model()->findByPk($patient_id);
+//			if($modelPatient===null)
+//			{
+//				//throw();
+//				Yii::app()->end();
+//			}
+//			elseif($recordPaid_Medcard===null)
+//			{ //нет медкарты у пациента, нужно создать
+//				$modelPaid_Medcard->paid_medcard_number=uniqid('', true); //TODO временно
+//				$modelPaid_Medcard->enterprise_id=null;
+//				$modelPaid_Medcard->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+//				$modelPaid_Medcard->patient_id=$patient_id;
+//				$modelPaid_Medcard->save();
+//			}
+//			elseif($recordPaid_Medcard!==null)
+//			{ //уже есть ЭМК платных услуг
+//				$modelPaid_Medcard=$recordPaid_Medcard;
+//			}
+//			
+//			$this->renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData);
+//			Yii::app()->end();
+//		}		
+	}
 	
 	/**
 	 * Основной экш кассы.
@@ -52,37 +89,7 @@ class CashController extends MPaidController
 		$documentTypeListData=Patients::getDocumentTypeListData();
 		$genderListData=Patients::getGenderListData();
 		
-		if(!Yii::app()->request->isAjaxRequest && isset($patient_id))
-		{//выбрали юзера не(!!) ajax запросом
-			$recordPatient_Documents=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
-			$recordPatient_Contacts=Patient_Contacts::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
-			$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
-			
-			$modelPatient_Documents=isset($recordPatient_Documents) ? $recordPatient_Documents : $modelPatient_Documents;
-			$modelPatient_Contacts=isset($recordPatient_Contacts) ? $recordPatient_Contacts : $modelPatient_Contacts;
-			$modelPatient=Patients::model()->findByPk($patient_id);
-			if($modelPatient===null)
-			{
-				//throw();
-				Yii::app()->end();
-			}
-			elseif($recordPaid_Medcard===null)
-			{ //нет медкарты у пациента, нужно создать
-				$modelPaid_Medcard->paid_medcard_number=uniqid('', true); //TODO временно
-				$modelPaid_Medcard->enterprise_id=null;
-				$modelPaid_Medcard->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-				$modelPaid_Medcard->patient_id=$patient_id;
-				$modelPaid_Medcard->save();
-			}
-			elseif($recordPaid_Medcard!==null)
-			{ //уже есть ЭМК платных услуг
-				$modelPaid_Medcard=$recordPaid_Medcard;
-			}
-			
-			$this->renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData);
-			Yii::app()->end();
-		}
-		elseif(isset($_GET['ajax_grid']))
+		if(isset($_GET['ajax_grid']))
 		{ //обработка кнопок грида ajax в модальном окне(пагинация и прочее)
 			$modelPatient->setScenario('paid.cash.search');
 			$modelPatient->attributes=Yii::app()->request->getPost('Patients');
