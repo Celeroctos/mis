@@ -95,6 +95,10 @@ class Patients extends ActiveRecord
 	{
 		return CHtml::listData([
 					[
+						'value'=>null,
+						'name'=>'',
+					],
+					[
 						'value'=>self::DOCUMENT_TYPE_PASSPORT_ID,
 						'name'=>self::DOCUMENT_TYPE_PASSPORT_NAME,
 					],
@@ -128,6 +132,10 @@ class Patients extends ActiveRecord
 	{
 		return CHtml::listData([
 					[
+						'value'=>null,
+						'name'=>'',
+					],
+					[
 						'value'=>self::GENDER_MALE_ID,
 						'name'=>self::GENDER_MALE_NAME,
 					],
@@ -148,11 +156,11 @@ class Patients extends ActiveRecord
 		$criteria->compare('t.last_name', $this->last_name, true);
 		$criteria->compare('t.first_name', $this->first_name);
 		$criteria->compare('t.middle_name', $this->middle_name, true);
-//		$criteria->compare('t.gender', $this->gender, true);
+		$criteria->compare('t.gender', $this->gender, true);
 		
 		$criteria->compare('paid_medcards.paid_medcard_number', $this->modelPaid_Medcard->paid_medcard_number);
 		
-//		$criteria->compare('documents.type', $this->modelPatient_Documents->type);
+		$criteria->compare('documents.type', $this->modelPatient_Documents->type);
 		$criteria->compare('documents.serie', $this->modelPatient_Documents->serie);
 		$criteria->compare('documents.number', $this->modelPatient_Documents->number);
 		
@@ -161,9 +169,9 @@ class Patients extends ActiveRecord
 		return new CActiveDataProvider('Patients',[
 			'criteria'=>$criteria,
 			'sort'=>[
-//				'defaultOrder'=>[
-//					'patient_id'=>CSort::SORT_DESC,
-//				],
+				'defaultOrder'=>[
+					'patient_id'=>CSort::SORT_DESC,
+				],
 			],
 			'pagination'=>[
 				'pageSize'=>self::PAGE_SIZE,

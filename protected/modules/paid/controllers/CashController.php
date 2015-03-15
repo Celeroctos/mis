@@ -111,7 +111,6 @@ class CashController extends MPaidController
 				$modelPatient->modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
 				$modelPatient->modelPatient_Contacts->attributes=Yii::app()->request->getPost('Patient_Contacts');
 				$modelPatient->modelPatient_Documents->attributes=Yii::app()->request->getPost('Patient_Documents');
-				$modelPatient->modelPatient_Documents->type=null; //не нужен в поиске.
 				
 				$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient], false, true); //load processoutput
 				Yii::app()->end();

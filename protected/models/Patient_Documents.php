@@ -27,7 +27,7 @@ class Patient_Documents extends ActiveRecord
 	public function rules()
 	{
 		return [
-			['type, serie, number', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			['type, serie, number', 'required', 'on'=>'paid.cash.create'],
 			['type, serie, number', 'type', 'type'=>'string', 'on'=>'paid.cash.search']
 		];
 	}
@@ -41,12 +41,15 @@ class Patient_Documents extends ActiveRecord
 		$modelPatient_Documents->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
 		if($modelPatient_Documents->save())
 		{ //прошёл первый сейв от обычных инпутов Yii
-			$x=0;
-			foreach($arrDocumentTypes as $value)
+			
+			unset($modelPatient_Documents); //сохранение валидации, не работает save() при повторном обращении..
+			$modelPatient_Documents=new Patient_Documents('paid.cash.create');
+			
+			foreach($arrDocumentTypes as $key=>$value)
 			{
-				$modelPatient_Documents->type=$arrDocumentTypes[$x];
-				$modelPatient_Documents->serie=$arrDocumentSeries[$x];
-				$modelPatient_Documents->number=$arrDocumentsNumbers[$x];
+				$modelPatient_Documents->type=$arrDocumentTypes[$key];
+				$modelPatient_Documents->serie=$arrDocumentSeries[$key];
+				$modelPatient_Documents->number=$arrDocumentsNumbers[$key];
 				$modelPatient_Documents->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
 
 				if(!$modelPatient_Documents->save())
@@ -57,7 +60,6 @@ class Patient_Documents extends ActiveRecord
 				}
 				unset($modelPatient_Documents); //сохранение валидации, не работает save() при повторном обращении..
 				$modelPatient_Documents=new Patient_Documents('paid.cash.create');
-				$x++;
 			}
 		}
 		else

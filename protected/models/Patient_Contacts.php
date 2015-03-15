@@ -31,7 +31,7 @@ class Patient_Contacts extends ActiveRecord
 	{
 		return [
 			['value', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
-			['value', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			['value', 'required', 'on'=>'paid.cash.create'],
 		];
 	}
 	
@@ -48,6 +48,9 @@ class Patient_Contacts extends ActiveRecord
 		$modelPatient_Contacts->type=1;
 		if($modelPatient_Contacts->save())
 		{
+			unset($modelPatient_Contacts); //сохранение валидации, не работает save() при повторном обращении..
+			$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
+			
 			foreach($arrPhoneValues as $value)
 			{
 				$modelPatient_Contacts->value=$value;
