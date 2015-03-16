@@ -4,4 +4,4 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
-<?= CHtml::ajaxButton('Добавить', ''); ?>
+<?= CHtml::ajaxButton('Добавить', '', [], ['class'=>'btn btn-block btn-default']); ?>

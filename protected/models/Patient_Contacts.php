@@ -31,7 +31,7 @@ class Patient_Contacts extends ActiveRecord
 	{
 		return [
 			['value', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
-			['value', 'required', 'on'=>'paid.cash.create'],
+			['value', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 		];
 	}
 	

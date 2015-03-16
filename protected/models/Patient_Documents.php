@@ -27,7 +27,7 @@ class Patient_Documents extends ActiveRecord
 	public function rules()
 	{
 		return [
-			['type, serie, number', 'required', 'on'=>'paid.cash.create'],
+			['type, serie, number', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			['type, serie, number', 'type', 'type'=>'string', 'on'=>'paid.cash.search']
 		];
 	}

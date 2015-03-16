@@ -32,6 +32,11 @@ class CashController extends MPaidController
 		]);
 	}
 
+	public function actionPriceList()
+	{
+		$this->render('priceList');
+	}
+	
 	/**
 	 * Выбрали пациента.
 	 * @param int $patient_id #ID пациента

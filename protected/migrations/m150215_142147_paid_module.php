@@ -16,12 +16,12 @@ class m150215_142147_paid_module extends CDbMigration
 		$command->execute();
 			
             $sql=<<<HERE
-                    CREATE TABLE IF NOT EXISTS "paid"."paid_groups"
+                    CREATE TABLE IF NOT EXISTS "paid"."paid_service_groups"
                     (
-                        "paid_group_id" serial NOT NULL,
+                        "paid_service_group_id" serial NOT NULL,
                         "name" character varying(255) NOT NULL, --Имя группы
                         "p_id" integer DEFAULT NULL, --Родитель группы, NULL, если нету
-                        PRIMARY KEY (paid_group_id)
+                        PRIMARY KEY (paid_service_group_id)
                     );
 HERE;
             $command=$connection->createCommand($sql);
@@ -31,7 +31,7 @@ HERE;
 					CREATE TABLE IF NOT EXISTS "paid"."paid_services"
 					(
 						"paid_service_id" serial NOT NULL,
-						"paid_group_id" integer, --FK (table paid_groups)
+						"paid_service_group_id" integer, --FK (table paid_service_groups)
 						"name" character varying(255) NOT NULL, --Имя услуги
 						PRIMARY KEY(paid_service_id)
 					);
@@ -43,7 +43,7 @@ HERE;
 					CREATE TABLE IF NOT EXISTS "paid"."paid_services_doctors"
 					(
 						"paid_service_doctor_id" serial NOT NULL,
-						"paid_group_id" integer NOT NULL, --FK (table paid_groups)
+						"paid_service_group_id" integer NOT NULL, --FK (table paid_service_groups)
 						"doctor_id" integer NOT NULL, --FK (table doctors)
 						PRIMARY KEY(paid_service_doctor_id)
 					);
