@@ -10,7 +10,7 @@ class m150215_142147_paid_module extends CDbMigration
 	public function up()
 	{
 		$connection=Yii::app()->db;
-			
+		
 		$sql="CREATE SCHEMA IF NOT EXISTS paid";
 		$command=$connection->createCommand($sql);
 		$command->execute();
@@ -57,8 +57,7 @@ HERE;
 						"paid_order_id" serial NOT NULL,
 						"name" character varying(255),
 						"user_create_id" integer NOT NULL, --Пользователь, создавший заказ и в дальнейшем платёж
-						"paid_expense_id" integer, --Номер счета, при статусе "новое" пустое значение, при статусе "включено в счет" ID счета					
-						"status" integer, --Оплачен/не оплачен (1/0)
+						"paid_expense_id" integer, --Номер счета, при статусе "новое" пустое значение, при статусе "включено в счет" ID счета
 						PRIMARY KEY(paid_order_id)
 					);
 HERE;
@@ -112,7 +111,7 @@ HERE;
 						"date" TIMESTAMPTZ, --Дата создания
 						"price" integer NOT NULL, --Сумма счёта (умноженная на 100)
 						"paid_order_id" integer NOT NULL, --FK (table paid_orders)
-						"status" integer, --Сомнительно, возможно удаление (есть в paid_orders)
+						"status" integer, --Оплачен/не оплачен (1/0)
 						PRIMARY KEY(paid_expense_id)
 					);
 HERE;

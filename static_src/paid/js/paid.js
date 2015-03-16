@@ -1,4 +1,10 @@
 $(document).ready(function(){
+//	$('.b-paidNav__li').on('click', function() {
+//		$('.b-paidNav__li').each(function() {
+//			$(this).removeClass('active');
+//		});
+//		$(this).addClass('active');
+//	});
 	$('#myModal').on('show.bs.modal', function(e){
 		$(".b-paid__errorFormPatient").html('');
 		$(".b-paid__errorFormPatient").css('display', 'none');
