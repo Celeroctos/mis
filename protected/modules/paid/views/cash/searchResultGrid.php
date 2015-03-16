@@ -38,45 +38,35 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'columns'=>[
 		[
 			'name'=>'last_name',
+			'filter'=>  CHtml::activeHiddenField($modelPatient->modelPatient_Documents, 'serie') .
+						CHtml::activeHiddenField($modelPatient, 'last_name') .
+						CHtml::activeHiddenField($modelPatient, 'first_name') .
+						CHtml::activeHiddenField($modelPatient, 'middle_name') .
+						CHtml::activeHiddenField($modelPatient, 'last_name') .
+						CHtml::activeHiddenField($modelPatient, 'gender') .
+						CHtml::activeHiddenField($modelPatient, 'birthday') .
+						CHtml::activeHiddenField($modelPatient, 'address_reg') .
+						CHtml::activeHiddenField($modelPatient, 'snils') .
+						CHtml::activeHiddenField($modelPatient->modelPatient_Documents, 'type') .
+						CHtml::activeHiddenField($modelPatient->modelPatient_Documents, 'serie') .
+						CHtml::activeHiddenField($modelPatient->modelPatient_Documents, 'number') .
+						CHtml::activeHiddenField($modelPatient->modelPaid_Medcard, 'paid_medcard_number') .
+						CHtml::activeHiddenField($modelPatient->modelPatient_Contacts, 'value'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-2',
 			],
 		],
 		[
 			'name'=>'first_name',
-			'headerHtmlOptions'=>[
-				'class'=>'col-xs-2',
-			],
+			'filter'=>false,
 		],
 		[
 			'name'=>'middle_name',
+			'filter'=>false,
 		],
 		[
 			'name'=>'gender',
-			'visible'=>false,
-		],
-		[
-			'name'=>'documents.type',
-			'visible'=>false,
-		],
-		[
-			'name'=>'documents.serie',
-			'visible'=>false,
-		],
-		[
-			'name'=>'documents.number',
-			'visible'=>false,
-		],
-		[
-			'name'=>'address_reg',
-			'visible'=>false,
-		],
-		[
-			'name'=>'snils',
-			'visible'=>false,
-		],
-		[
-			'name'=>'paid_medcards.paid_medcard_number',
+			'filter'=>false,
 			'visible'=>false,
 		],
 		[
@@ -87,7 +77,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 			'name'=>'birthday',
 			'filter'=>'',
 			'headerHtmlOptions'=>[
-				'class'=>'col-xs-3',
+				'class'=>'col-xs-2',
 			],
 		],
 		[

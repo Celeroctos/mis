@@ -92,7 +92,15 @@ class CashController extends MPaidController
 		if(isset($_GET['ajax_grid']))
 		{ //обработка кнопок грида ajax в модальном окне(пагинация и прочее)
 			$modelPatient->setScenario('paid.cash.search');
+			$modelPatient->modelPaid_Medcard->setScenario('paid.cash.search');
+			$modelPatient->modelPatient_Documents->setScenario('paid.cash.search');
+			$modelPatient->modelPatient_Contacts->setScenario('paid.cash.search');
+			
 			$modelPatient->attributes=Yii::app()->request->getPost('Patients');
+			$modelPatient->modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
+			$modelPatient->modelPatient_Contacts->attributes=Yii::app()->request->getPost('Patient_Contacts');
+			$modelPatient->modelPatient_Documents->attributes=Yii::app()->request->getPost('Patient_Documents');
+			
 			$this->renderPartial('searchResultGrid', ['modelPatient'=>$modelPatient]); //processoutput уже загрузился один раз, снизу
 			Yii::app()->end();
 		}
@@ -143,7 +151,7 @@ class CashController extends MPaidController
 					
 					$transaction->commit();
 					$arrayJson=array();
-					$arrayJson['redirectUrl']=$this->createUrl('cash/index', ['patient_id'=>Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq')]);
+					$arrayJson['redirectUrl']=$this->createUrl('cash/patient', ['patient_id'=>Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq')]);
 					Yii::app()->end(CJSON::encode($arrayJson));
 				}
 				catch(Exception $e)
