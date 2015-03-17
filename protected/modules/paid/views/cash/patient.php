@@ -6,7 +6,7 @@
 ?>
 <?php $this->widget('PaidNavWidget'); ?>
 <div class="container b-paid">
-	<h4>Выбранный пациент: <?= $modelPatient->last_name; ?> <?= $modelPatient->first_name; ?> <?= $modelPatient->middle_name; ?></h4>
+	<h4>Выбранный пациент: <?= CHtml::encode($modelPatient->last_name); ?> <?= CHtml::encode($modelPatient->first_name); ?> <?= CHtml::encode($modelPatient->middle_name); ?></h4>
 	<div class="row">
 		<div class="col-xs-10 b-paid__bodyLeft">
 			<h4 class="b-paid__serviceHeader">Услуги</h4>

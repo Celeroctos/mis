@@ -32,9 +32,14 @@ class CashController extends MPaidController
 		]);
 	}
 
-	public function actionPriceList()
+	public function actionServicesList()
 	{
-		$this->render('priceList');
+		if(Yii::app()->request->isAjaxRequest)
+		{
+			Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0);
+			Yii::app()->end();
+		}
+		$this->render('servicesList');
 	}
 	
 	/**

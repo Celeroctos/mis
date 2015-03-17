@@ -1,4 +1,17 @@
 $(document).ready(function(){
+//for reload page
+	var url=document.location.href;
+	var action=url.split('/');
+	$(".b-paidNav__li").each(function(){
+		$(this).removeClass('active');
+		var nameHref=$(this).children(".b-paidNav__href").attr("href");
+		
+		if(nameHref.indexOf(action[5])!==-1)
+		{
+			$(this).addClass('active');
+		}
+	});
+//no reload page
 //	$('.b-paidNav__li').on('click', function() {
 //		$('.b-paidNav__li').each(function() {
 //			$(this).removeClass('active');
