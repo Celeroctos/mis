@@ -8,13 +8,10 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'filter'=>$model,
 	'ajaxType'=>'post',
 	'template'=>'{items}',
-//	'ajaxVar'=>'ajax_servicesListGrid',
 	'ajaxUpdate'=>true,
-	'ajaxUrl'=>CHtml::normalizeUrl('fsdfsd/fsdfsdfds'),
-	'emptyText'=>'<div style="width: 185px; margin: 0 auto;">'
-	. '<h4>Пациент не найден!</h4>'
-	. CHtml::htmlButton('Добавить услугу', ['class'=>'btn btn-xs btn-block btn-primary', 'id'=>'add_paid_modal_patient', 'name'=>'add_paid_modal_patient'])
-	. '</div>',
+	'emptyText'=>
+	'<h5 class="b-paid__emptyServiceHeader">У данной группы услуги не найдены!</h5>'
+	. CHtml::htmlButton('Добавить услугу', ['class'=>'btn btn-xs btn-block btn-primary b-paid__buttonServiceAdd', 'id'=>'add_paid_modal_patient', 'name'=>'add_paid_modal_patient']),
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered',
 	'pager'=>[
@@ -40,8 +37,25 @@ $this->widget('zii.widgets.grid.CGridView', [
 		[
 			'name'=>'name',
 			'headerHtmlOptions'=>[
-				'class'=>'col-xs-10',
+				'class'=>'col-xs-1',
 			],
+		],
+		[
+			'name'=>'code',
+			'headerHtmlOptions'=>[
+				'class'=>'col-xs-1',
+			],
+		],
+		[
+			'name'=>'price'
+		],
+		[
+			'name'=>'since_date',
+			'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', \'medium\')',
+			],
+		[
+			'name'=>'exp_date',
+			'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', \'medium\')',
 		],
 		[
 			'class'=>'CButtonColumn',

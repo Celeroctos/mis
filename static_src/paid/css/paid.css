@@ -11,6 +11,10 @@
     background-color: #F5F5F5;
     border-radius: 6px 6px 0px 0px;
 }
+	.b-paid_modificator{
+		background-color: white !important;
+		 box-shadow: 0px 1px 7px rgba(0,0,0,0.30);
+	}
     .b-paid__bodyLeft{
         box-shadow: 0px 1px 7px rgba(0,0,0,0.30);
         border-radius: 6px 6px 6px 6px;
@@ -19,6 +23,18 @@
 	.b-paid__serviceHeader{
 		width: 60px !important;
 		margin: 0 auto;
+	}
+	.b-paid__buttonServiceAdd{
+		width: 110px;
+		margin: 0 auto;
+	}
+	.b-paid__emptyServiceHeader{
+		text-align: center;
+		margin-top:0px;
+	}
+	.b-paid__serviceItemGroup{
+		padding-top: 15px;
+		text-align: right;
 	}
     .b-paid__errorFormPatient{
         color: red;

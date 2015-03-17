@@ -32,13 +32,14 @@ class Paid_Service_Groups extends ActiveRecord
 	{
 		foreach($record as $value) //просмотр групп
 		{
-			$modelPaid_Services=new Paid_Services();
-//			if($value->paid_service_group_id===0)
+			$modelPaid_Services=new Paid_Services(); //передача в CGridView
 			$modelPaid_Services->paid_service_group_id=$value->paid_service_group_id;
 			?>
 			<div class="row">
 				<div class="col-xs-3">
-					<?= CHtml::encode($value->name); ?>
+					<div class=" b-paid__serviceItemGroup">
+						<?= CHtml::encode($value->name); ?>
+					</div>
 				</div>
 				<div class="col-xs-9">
 					<?php Yii::app()->controller->renderPartial('servicesListGrid', ['model'=>$modelPaid_Services]); ?>

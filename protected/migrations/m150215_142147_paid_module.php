@@ -33,6 +33,10 @@ HERE;
 						"paid_service_id" serial NOT NULL,
 						"paid_service_group_id" integer, --FK (table paid_service_groups)
 						"name" character varying(255) NOT NULL, --Имя услуги
+						"code" character varying(255) NOT NULL, --Код услуги
+						"price" integer DEFAULT NULL, --цена
+						"since_date" timestamptz, --действует с этой даты
+						"exp_date" timestamptz, --действует по
 						PRIMARY KEY(paid_service_id)
 					);
 HERE;

@@ -31,11 +31,11 @@ class CashController extends MPaidController
 									'genderListData'=>$genderListData,
 		]);
 	}
-
+	
 	public function actionServicesList()
 	{
 		if(Yii::app()->request->isAjaxRequest)
-		{
+		{ //без layouts
 			Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0);
 			Yii::app()->end();
 		}
@@ -54,7 +54,6 @@ class CashController extends MPaidController
 //			$recordPatient_Contacts=Patient_Contacts::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 //			$modelPatient_Documents=isset($recordPatient_Documents) ? $recordPatient_Documents : $modelPatient_Documents;
 //			$modelPatient_Contacts=isset($recordPatient_Contacts) ? $recordPatient_Contacts : $modelPatient_Contacts;
-			
 			$modelPatient=Patients::model()->findByPk($patient_id);
 			$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 			

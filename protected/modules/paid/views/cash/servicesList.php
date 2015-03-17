@@ -5,7 +5,7 @@
  */
 ?>
 <?php $this->widget('PaidNavWidget'); ?>
-<div class="container">
+<div class="container b-paid b-paid_modificator">
 	<div class="row">
 		<div class="col-xs-12">
 			<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0); ?>

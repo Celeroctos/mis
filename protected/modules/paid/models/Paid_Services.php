@@ -8,6 +8,10 @@ class Paid_Services extends ActiveRecord
 	public $paid_service_id;
 	public $paid_service_group_id;
 	public $name;
+	public $code;
+	public $price;
+	public $since_date;
+	public $exp_date;
 	
 	public static function model($className=__CLASS__)
 	{
