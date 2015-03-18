@@ -20,6 +20,7 @@ class m150215_142147_paid_module extends CDbMigration
                     (
                         "paid_service_group_id" serial NOT NULL,
                         "name" character varying(255) NOT NULL, --Имя группы
+						"code" character varying(255) DEFAULT NULL, --Код группы
                         "p_id" integer DEFAULT NULL, --Родитель группы, NULL, если нету
                         PRIMARY KEY (paid_service_group_id)
                     );

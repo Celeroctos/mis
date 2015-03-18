@@ -8,6 +8,7 @@ class Paid_Service_Groups extends ActiveRecord
 {
 	public $paid_service_group_id;					
 	public $name;
+	public $code;
 	public $p_id;
 	
 	public static function model($className=__CLASS__)
@@ -18,7 +19,8 @@ class Paid_Service_Groups extends ActiveRecord
 	public function rules()
 	{
 		return [
-			
+			['name', 'required', 'on'=>'paid.cash.create'],
+			['code', 'type', 'type'=>'string', 'on'=>'paid.cash.create']
 		];
 	}
 	
@@ -30,6 +32,17 @@ class Paid_Service_Groups extends ActiveRecord
 	 */
 	public static function recursServicesOut($record, $level)
 	{
+		if(empty($record))
+		{
+			?>
+			<div class="row">
+				<div class="col-xs-12">
+					<h4 class="b-paid__emptyServiceGroupHeader">Не найдено ни одной группы!</h4>
+					<?= CHtml::htmlButton('Добавить группу', ['class'=>'btn btn-block btn-primary b-paid__buttonServiceGroupAdd', 'id'=>'paid_cash_servicesList-buttonEmptyGroups']); ?>
+				</div>
+			</div>
+			<?php
+		}
 		foreach($record as $value) //просмотр групп
 		{
 			$modelPaid_Services=new Paid_Services(); //передача в CGridView

@@ -111,23 +111,22 @@ $this->pageTitle="Касса";
 				<div class="row">
 					<div class="col-xs-12">
 						<?= CHtml::ajaxSubmitButton('Найти', '', ['data'=>new CJavaScriptExpression('jQuery(this).parents("form").serialize() + "&paid_cash_search_patient_ajax=1"'),
-																  
 																  'success'=>'function(html){
-																				$("#myModalBody").html(html);
+																				$("#paid_cash_index-modalSearchGridBody").html(html);
 																				$("#add_paid_patient_button").animate({opacity: 0}, "fast", function(){
 																					$("#add_paid_patient_button").css("display", "none");
 																				});
-																				$("#myModal").modal("show");
+																				$("#paid_cash_index-modalSearchGrid").modal("show");
 																			  }',
 																 ], 
 																 ['class'=>'btn btn-primary btn-sm',]
 													); ?>
 						<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success btn-sm', 'id'=>'add_paid_patient_button', 'name'=>'add_paid_patient_button', 'style'=>'display: none; opacity: 0;']); ?>
 					</div>
-					<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal" id="paid_cash_index-modalSearchGrid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog b-modalSearchPacient">
 							<div class="modal-content">
-								<div class="modal-body" id="myModalBody">
+								<div class="modal-body" id="paid_cash_index-modalSearchGridBody">
 									...
 								</div>
 								<div class="modal-footer">
