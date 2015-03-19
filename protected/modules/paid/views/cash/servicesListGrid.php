@@ -10,8 +10,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'template'=>'{items}',
 	'ajaxUpdate'=>true,
 	'emptyText'=>
-	'<h5 class="b-paid__emptyServiceHeader">У данной группы услуги не найдены!</h5>'
-	. CHtml::htmlButton('Добавить услугу', ['class'=>'btn btn-xs btn-block btn-primary b-paid__buttonServiceAdd', 'id'=>'add_paid_modal_patient', 'name'=>'add_paid_modal_patient']),
+	'<h5 class="b-paid__emptyServiceHeader">У данной группы услуги не найдены!</h5>',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered',
 	'pager'=>[

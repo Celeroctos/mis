@@ -36,4 +36,24 @@ $(document).ready(function(){
 	$("#paid_cash_servicesList-buttonEmptyGroups").on('click', function(e){
 		$("#paid_cash_servicesList-emptyGroups").modal("show");
 	});
+	$("#paid_cash_servicesList-emptyGroups").on("hidden.bs.modal", function(e){ //обнуляем ошибки при закрытии модали
+		$(".b-paid__errorFormServicesGroup").html("");
+		$(".b-paid__errorFormServicesGroup").css("display", "none");
+	});
+	$(".b-paid__servicesGroupPlus").popover({
+		title : 'Выберите действие',
+		trigger: 'click',
+		html: true,
+		content: '<button class="btn btn-block btn-primary btn-xs" id="paid_cash_servicesList-popoverButtonAddService">Услугу</button>\n\
+				  <button class="btn btn-block btn-primary btn-xs" id="paid_cash_servicesList-popoverButtonAddGroup">Группу</button>'
+    });
+	$('.b-paid__servicesGroupPlus').on('shown.bs.popover', function() {
+		
+		var valueP_id=$(this).attr('id'); //замыкание
+		
+		$('#paid_cash_servicesList-popoverButtonAddGroup').on('click', function() {
+			$("#paid_cash_servicesList-modalAddGroup").modal("show");
+			$("#Paid_Service_Groups_p_id").attr('value', valueP_id);
+		});
+	});
 });
