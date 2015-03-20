@@ -7,11 +7,11 @@
 <?php $this->widget('PaidNavWidget'); ?>
 <div class="container b-paid b-paid_modificator">
 	<div class="row b-paid__Row">
-		<div class="col-xs-5 b-paid__borderRight">
+		<div class="col-xs-4 b-paid__borderRight">
 			<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0); ?>
 			<?= CHtml::htmlButton('Добавить группу', ['class'=>'btn btn-sm btn-primary', 'id'=>'callModalAddGroup']); ?>
 		</div>
-		<div class="col-xs-7">
+		<div class="col-xs-8">
 		<?php
 		$this->widget('zii.widgets.grid.CGridView', [
 			'dataProvider'=>$modelPaid_Service->search(),

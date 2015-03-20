@@ -61,7 +61,7 @@ class Paid_Service_Groups extends ActiveRecord
 			</div>
 			<?php
 		}
-		?><ul><?php
+		?><ul class="b-paid_UL"><?php
 		foreach($record as $value) //просмотр групп
 		{
 			$modelPaid_Services=new Paid_Services(); //передача в CGridView
