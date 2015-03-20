@@ -32,22 +32,30 @@ class CashController extends MPaidController
 		]);
 	}
 	
-	public function actionServicesList()
+	private function ajaxValidate($model)
+	{
+		if(Yii::app()->request->getPost('formAddGroup'))
+		{
+			echo CActiveForm::validate($model);
+			Yii::app()->end();
+		}
+	}
+	
+	/**
+	 * Работа с группами и услугами платного модуля.
+	 * @param integer $group_id #ID группы услуг.
+	 */
+	public function actionServicesList($group_id=null)
 	{
 		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
 		
-		if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('paid_cash_servicesList-emptyGroups'))
-		{ //обработка случая, когда вообще нету групп.
+		$this->ajaxValidate($modelPaid_Service_Group);
+		
+		if(Yii::app()->request->getPost('Paid_Service_Groups'))
+		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
-			$modelPaid_Service_Group->p_id=0;
-			echo CActiveForm::validate($modelPaid_Service_Group);
 			$modelPaid_Service_Group->save();
-			Yii::app()->end();
-		}
-		elseif(Yii::app()->request->isAjaxRequest)
-		{ //без layouts
-			Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0);
-			Yii::app()->end();
+			$this->refresh();
 		}
 		$this->render('servicesList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group]);
 	}

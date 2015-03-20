@@ -41,6 +41,9 @@
         color: #6E7B8B;
         margin-top: 10px;
     }
+	.b-paid__modalAddGroupHeader{
+		text-align: center;
+	}
     .b-paid__serviceItemGroup{
         padding-top: 15px;
         /*text-align: right;*/
@@ -61,11 +64,11 @@
 		outline: none;
 		color: black;
 	}
-	.b-paid__servicesGroupPlus{
+	.b-paid__addSubGroup{
 		font-size: 12px;
 		color: gray;
 	}
-	.b-paid__servicesGroupPlus:focus{
+	.b-paid__addSubGroup:focus{
 		outline: none;
 		color: black;
 	}

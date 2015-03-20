@@ -83,6 +83,7 @@ class Patients extends ActiveRecord
 			['address_reg, address, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			
 			//Поиск пациентов
+			['first_name', 'required', 'on'=>'paid.cash.search'],
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			/**********************************/
 		];

@@ -22,7 +22,7 @@ class Paid_Service_Groups extends ActiveRecord
 			//TODO ограничить макс. кол-во символов в названии групп, иначе будет съезжать
 			['name', 'required', 'on'=>'paid.cash.create'],
 			['code', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
-			['p_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.create']
+			['p_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.create'],
 		];
 	}
 	
@@ -45,36 +45,30 @@ class Paid_Service_Groups extends ActiveRecord
 			</div>
 			<?php
 		}
-		$first = current($record);
+		?><ul><?php
 		foreach($record as $value) //просмотр групп
 		{
 			$modelPaid_Services=new Paid_Services(); //передача в CGridView
 			$modelPaid_Services->paid_service_group_id=$value->paid_service_group_id;
 			?>
-			<div class="row">
-				<div class="col-xs-3">
-					<div class="b-paid__serviceItemGroup">
-						<?= CHtml::encode($value->name); ?>
-						<span class="glyphicon glyphicon-plus b-paid__servicesGroupPlus" id="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" data-contect="" aria-hidden="true"></span>
-						<span class="glyphicon glyphicon-pencil b-paid__servicesGroupPencil" tabindex="-1" aria-hidden="true"></span>
-					</div>
+			<li>
+				<div class="b-paid__serviceItemGroup">
+				<?= CHtml::encode($value->name); ?>
+				<span class="glyphicon glyphicon-plus b-paid__addSubGroup" id="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" data-contect="" aria-hidden="true"></span>
+				<span class="glyphicon glyphicon-pencil b-paid__servicesGroupPencil" tabindex="-1" aria-hidden="true"></span>
 				</div>
-				<div class="col-xs-9">
-					<?php Yii::app()->controller->renderPartial('servicesListGrid', ['model'=>$modelPaid_Services]); ?>
-				</div>
-			</div>
+			</li>
 			<?php
 			$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id', [':p_id'=>$value->paid_service_group_id]); //ищем всех предков
 			//проверяем является ли он чьим-то child
 			if(!empty($recordChild))
 			{ //есть дочерние элементы.
-				$level+=10; //кол-во пикселей для вывода
-				echo '<ul>';
+				$level+=1; //кол-во пикселей для вывода
 				Paid_Service_Groups::recursServicesOut($recordChild, $level);
-				echo '</ul>';
-				$level-=10;
+				$level-=1;
 			}
 		}
+		?></ul><?php
 	}
 	public function tableName()
 	{
