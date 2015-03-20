@@ -33,7 +33,8 @@ class Paid_Services extends ActiveRecord
 	public function search()
 	{
 		$criteria=new CDbCriteria;
-		$criteria->compare('paid_service_group_id', $this->paid_service_group_id);
+		$criteria->condition='paid_service_group_id=:paid_service_group_id';
+		$criteria->params=[':paid_service_group_id'=>$this->paid_service_group_id];
 		return new CActiveDataProvider($this, [
 			'criteria'=>$criteria,
 			'sort'=>[

@@ -6,17 +6,89 @@
 ?>
 <?php $this->widget('PaidNavWidget'); ?>
 <div class="container b-paid b-paid_modificator">
-	<div class="row">
-		<div class="col-xs-12">
+	<div class="row b-paid__Row">
+		<div class="col-xs-4 b-paid__borderRight">
 			<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0); ?>
-			<?= CHtml::htmlButton('Добавить группу', ['class'=>'btn btn-block btn-primary b-paid__buttonServiceGroupAdd', 'id'=>'callModalAddGroup',]); ?>
+			<?= CHtml::htmlButton('Добавить группу', ['class'=>'btn btn-sm btn-primary', 'id'=>'callModalAddGroup']); ?>
+		</div>
+		<div class="col-xs-8">
+		<?php
+		$this->widget('zii.widgets.grid.CGridView', [
+			'dataProvider'=>$modelPaid_Service->search(),
+			'filter'=>$modelPaid_Service,
+			'ajaxType'=>'post',
+			'template'=>'{items}',
+			'ajaxUpdate'=>true,
+			'emptyText'=>
+			'<h4>Пустой результат таблицы с услугами группы</h4>',
+			'showTableOnEmpty'=>false,
+			'itemsCssClass'=>'table table-bordered',
+			'pager'=>[
+				'class'=>'CLinkPager',
+				'cssFile'=>'',
+				'selectedPageCssClass'=>'active',
+				'firstPageCssClass'=>'',
+				'hiddenPageCssClass'=>'',
+				'internalPageCssClass'=>'',
+				'nextPageLabel'=>false,
+				'prevPageLabel'=>false,
+				'lastPageCssClass'=>'',
+				'nextPageCssClass'=>'',
+				'maxButtonCount'=>'7',
+				'previousPageCssClass'=>'',
+				'selectedPageCssClass'=>'active',
+				'header'=>false,
+				'htmlOptions'=>[
+					'class'=>'pagination',
+				]
+			],
+			'columns'=>[
+				[
+					'name'=>'name',
+					'headerHtmlOptions'=>[
+						'class'=>'col-xs-1',
+					],
+				],
+				[
+					'name'=>'code',
+					'headerHtmlOptions'=>[
+						'class'=>'col-xs-1',
+					],
+				],
+				[
+					'name'=>'price'
+				],
+				[
+					'name'=>'since_date',
+					'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', \'medium\')',
+					],
+				[
+					'name'=>'exp_date',
+					'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', \'medium\')',
+				],
+				[
+					'class'=>'CButtonColumn',
+					'template'=>'{view}',
+					'buttons'=>[
+						'view'=>[
+							'imageUrl'=>false,
+							'options'=>[
+								'class'=>'btn btn-success btn-block btn-xs'
+							],
+						],
+						'headerHtmlOptions'=>[
+							'class'=>'col-xs-1',
+						],
+					],
+				],
+			],
+		]);
+		?>
 		</div>
 		<div class="modal" id="modalAddGroup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content b-paid__modalAddGroupHeader">
-					<div class="modal-header">
-						<h5>Добавление группы</h5>
-					</div>
+					<h4>Добавление группы</h4>
 					<div class="modal-body" id="modalBodyAddGroup">
 						<?php $form=$this->beginWidget('CActiveForm', [
 												'enableAjaxValidation'=>'true',

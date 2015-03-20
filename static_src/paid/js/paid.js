@@ -1,16 +1,32 @@
 $(document).ready(function(){
 //for reload page
-	var url=document.location.href;
-	var action=url.split('/');
-	$(".b-paidNav__li").each(function(){
-		$(this).removeClass('active');
-		var nameHref=$(this).children(".b-paidNav__href").attr("href");
+	(function(){
+		var url=document.location.href;
+		var action=url.split('/');
+		$(".b-paidNav__li").each(function(){
+			$(this).removeClass('active');
+			var nameHref=$(this).children(".b-paidNav__href").attr("href");
+
+			if(nameHref.indexOf(action[5])!==-1)
+			{
+				$(this).addClass('active');
+			}
+		});
+	})();
+	(function(){
+		var url=document.location.href;
+		var action=url.split('/');
+		var group_id=action[7];
+		$('.b-paid__serviceItemGroup').each(function() {
+			$(this).removeClass('active');
+			var nameHref=$(this).children('.b-paid__addSubGroup').attr('id');
 		
-		if(nameHref.indexOf(action[5])!==-1)
-		{
-			$(this).addClass('active');
-		}
-	});		
+			if(group_id!==undefined && group_id.indexOf(nameHref)!==-1)
+			{
+				$(this).addClass('active');
+			}
+		});
+	})();
 //for no reload page
 //	$('.b-paidNav__li').on('click', function() {
 //		$('.b-paidNav__li').each(function() {

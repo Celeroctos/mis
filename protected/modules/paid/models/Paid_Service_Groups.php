@@ -40,7 +40,7 @@ class Paid_Service_Groups extends ActiveRecord
 			?>
 			<div class="row">
 				<div class="col-xs-12">
-					<h4 class="b-paid__emptyServiceGroupHeader">Не найдено ни одной группы!</h4>
+					<h4 class="b-paid__emptyServiceGroupHeader">Нет групп</h4>
 				</div>
 			</div>
 			<?php
@@ -53,8 +53,8 @@ class Paid_Service_Groups extends ActiveRecord
 			?>
 			<li>
 				<div class="b-paid__serviceItemGroup">
-				<?= CHtml::encode($value->name); ?>
-				<span class="glyphicon glyphicon-plus b-paid__addSubGroup" id="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" data-contect="" aria-hidden="true"></span>
+					<?= CHtml::link(CHtml::encode($value->name), ['cash/servicesList', 'group_id'=>$value->paid_service_group_id], ['class'=>'b-paid__serviceItemGroupLink']) ?>
+					<span class="glyphicon glyphicon-plus b-paid__addSubGroup" id="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" data-contect="" aria-hidden="true"></span>
 				<span class="glyphicon glyphicon-pencil b-paid__servicesGroupPencil" tabindex="-1" aria-hidden="true"></span>
 				</div>
 			</li>

@@ -15,6 +15,13 @@
         background-color: white !important;
         box-shadow: 0px 1px 7px rgba(0,0,0,0.30);
     }
+	.b-paid__Row{
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	.b-paid__borderRight{
+		border-right: 1px solid #f5f5f5;
+	}
     .b-paid__bodyLeft{
         box-shadow: 0px 1px 7px rgba(0,0,0,0.30);
         border-radius: 6px 6px 6px 6px;
@@ -24,23 +31,24 @@
         width: 60px !important;
         margin: 0 auto;
     }
-    .b-paid__buttonServiceAdd{
+/*    .b-paid__buttonServiceAdd{
         width: 110px;
         margin: 0 auto;
-    }
+    }*/
     .b-paid__buttonServiceGroupAdd{
         width: 134px;
         margin: 5px auto;
     }
-    .b-paid__emptyServiceHeader{
+/*    .b-paid__emptyServiceHeader{
         text-align: center;
+		color: gray;
         margin-top:0px;
-    }
-    .b-paid__emptyServiceGroupHeader{
+    }*/
+/*    .b-paid__emptyServiceGroupHeader{
         text-align: center;
         color: #6E7B8B;
         margin-top: 10px;
-    }
+    }*/
 	.b-paid__modalAddGroupHeader{
 		text-align: center;
 	}
@@ -48,6 +56,19 @@
         padding-top: 15px;
         /*text-align: right;*/
     }
+	.b-paid__serviceItemGroup.active{
+		 color: #337ab7;
+		 font-weight: bold;
+	}
+	.b-paid__serviceItemGroupLink:hover{
+		
+	}
+	.b-paid__serviceItemGroupLink:active{
+		
+	}
+	.b-paid__serviceItemGroupLink:focus{
+	
+	}
     .b-paid__errorFormPatient{
         color: red;
         font-size: 12px;

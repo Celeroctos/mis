@@ -48,16 +48,26 @@ class CashController extends MPaidController
 	public function actionServicesList($group_id=null)
 	{
 		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
+		$modelPaid_Service=new Paid_Services('paid.cash.search');
+		
+		if(isset($group_id))
+		{ //в этом случае выводим CGridView данной группы
+			$record=Paid_Service_Groups::model()->find('paid_service_group_id=:group_id', [':group_id'=>(int)$group_id]);
+			if($record===null)
+			{ //Не найдено ни одной группы
+				throw new CHttpException(404, 'Такой группы не существует!');
+			}
+			$modelPaid_Service->paid_service_group_id=$group_id;
+		}
 		
 		$this->ajaxValidate($modelPaid_Service_Group);
-		
 		if(Yii::app()->request->getPost('Paid_Service_Groups'))
 		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
 			$modelPaid_Service_Group->save();
-			$this->refresh();
+			$this->redirect(['cash/servicesList', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
 		}
-		$this->render('servicesList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group]);
+		$this->render('servicesList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
 	}
 	
 	/**
