@@ -38,6 +38,7 @@ HERE;
 						"price" integer DEFAULT NULL, --цена
 						"since_date" timestamptz, --действует с этой даты
 						"exp_date" timestamptz, --действует по
+						"reason" character varying(255) DEFAULT NULL, --основание добавления (приказ и тд)
 						PRIMARY KEY(paid_service_id)
 					);
 HERE;

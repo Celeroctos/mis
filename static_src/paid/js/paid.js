@@ -49,10 +49,14 @@ $(document).ready(function(){
 				  <button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddGroup">Группу</button>'
     });
 	$('.b-paid__addSubGroup').on('shown.bs.popover', function(e) {
-		var valueP_id=$(this).attr('id'); //замыкание
+		var valueP_id=$(this).attr('id'); //id группы
 		$('#popoverButtonAddGroup').on('click', function(e) {
 			$("#modalAddGroup").modal("show");
-			$("#Paid_Service_Groups_p_id").attr('value', valueP_id);
+			$("#Paid_Service_Groups_p_id").attr('value', valueP_id); //для поля hidden
+		});
+		$('#popoverButtonAddService').on('click', function() {
+			$('#modalAddServices').modal('show');
+			$("#Paid_Services_paid_service_group_id").attr('value', valueP_id);
 		});
 	});
 

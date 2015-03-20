@@ -7,11 +7,11 @@
 <?php $this->widget('PaidNavWidget'); ?>
 <div class="container b-paid b-paid_modificator">
 	<div class="row b-paid__Row">
-		<div class="col-xs-4 b-paid__borderRight">
+		<div class="col-xs-5 b-paid__borderRight">
 			<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0); ?>
 			<?= CHtml::htmlButton('Добавить группу', ['class'=>'btn btn-sm btn-primary', 'id'=>'callModalAddGroup']); ?>
 		</div>
-		<div class="col-xs-8">
+		<div class="col-xs-7">
 		<?php
 		$this->widget('zii.widgets.grid.CGridView', [
 			'dataProvider'=>$modelPaid_Service->search(),
@@ -87,7 +87,7 @@
 		</div>
 		<div class="modal" id="modalAddGroup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
-				<div class="modal-content b-paid__modalAddGroupHeader">
+				<div class="modal-content b-paid__modalHeader">
 					<h4>Добавление группы</h4>
 					<div class="modal-body" id="modalBodyAddGroup">
 						<?php $form=$this->beginWidget('CActiveForm', [
@@ -117,6 +117,48 @@
 													'class'=>'form-control input-sm',
 													'value'=>0, //по умолчанию
 												]); ?>
+									<br>
+									<?= CHtml::SubmitButton('Добавить', ['class'=>'btn btn-block btn-primary btn-sm']); ?>
+								</div>
+							</div>
+							<?php $this->endWidget(); ?>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" id="modalAddServices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content b-paid__modalHeader">
+					<h4>Добавление услуги</h4>
+					<div class="modal-body" id="modalBodyAddServices">
+						<?php $form=$this->beginWidget('CActiveForm', [
+												'enableAjaxValidation'=>'true',
+												'enableClientValidation'=>'true',
+												'clientOptions'=>[
+													'ajaxVar'=>'formAddServices',
+													'validateOnChange'=>true,
+													'validateOnType'=>true,
+													'validateOnSubmit'=>true,
+												],
+											]); ?>
+							<div class="row">
+								<div class="col-xs-4 col-xs-offset-4">
+									<?= $form->Label($modelPaid_Service, 'name', ['class'=>'control-label']); ?>
+									<?= $form->TextField($modelPaid_Service, 'name', ['class'=>'form-control input-sm',]); ?>
+									<?= $form->error($modelPaid_Service, 'name', ['class'=>'b-paid__errorFormServicesGroup']); ?>
+									
+									<?= $form->Label($modelPaid_Service, 'code', ['class'=>'control-label']); ?>
+									<?= $form->TextField($modelPaid_Service, 'code', ['class'=>'form-control input-sm',]); ?>
+									<?= $form->error($modelPaid_Service, 'code', ['class'=>'b-paid__errorFormServicesGroup']); ?>
+									
+									<?= $form->Label($modelPaid_Service, 'paid_service_group_id', ['class'=>'control-label']); ?>
+									<?= $form->DropDownList($modelPaid_Service, 'paid_service_group_id', Paid_Service_Groups::getServiceGroupsListData(), ['class'=>'form-control input-sm']); ?>
+									<?= $form->error($modelPaid_Service, 'paid_service_group_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
+									
+									<?= $form->HiddenField($modelPaid_Service, 'paid_service_group_id', ['class'=>'form-control input-sm',]); ?>
 									<br>
 									<?= CHtml::SubmitButton('Добавить', ['class'=>'btn btn-block btn-primary btn-sm']); ?>
 								</div>

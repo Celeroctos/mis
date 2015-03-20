@@ -26,6 +26,22 @@ class Paid_Service_Groups extends ActiveRecord
 		];
 	}
 	
+	public static function getServiceGroupsListData()
+	{
+		$model=new Paid_Service_Groups;
+		$serviceGroupsList=$model->findAll();
+		return CHtml::listData(
+				CMap::mergeArray([
+							[
+								'paid_service_group_id'=>null,
+								'name'=>null,
+							]
+				], $serviceGroupsList),
+				'paid_service_group_id',
+				'name'
+		);
+	}
+	
 	/**
 	 * Рекурсивный метод для вывода услуг и их групп.
 	 * Программно вложенность неограничена.

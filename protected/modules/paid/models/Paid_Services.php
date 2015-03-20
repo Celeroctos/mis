@@ -12,6 +12,7 @@ class Paid_Services extends ActiveRecord
 	public $price;
 	public $since_date;
 	public $exp_date;
+	public $reason; //основание
 	
 	public static function model($className=__CLASS__)
 	{

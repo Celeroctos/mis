@@ -48,7 +48,7 @@ class CashController extends MPaidController
 	public function actionServicesList($group_id=null)
 	{
 		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
-		$modelPaid_Service=new Paid_Services('paid.cash.search');
+		$modelPaid_Service=new Paid_Services('paid.cash.create');
 		
 		if(isset($group_id))
 		{ //в этом случае выводим CGridView данной группы
@@ -60,8 +60,8 @@ class CashController extends MPaidController
 			$modelPaid_Service->paid_service_group_id=$group_id;
 		}
 		
-		$this->ajaxValidate($modelPaid_Service_Group);
-		if(Yii::app()->request->getPost('Paid_Service_Groups'))
+		$this->ajaxValidate($modelPaid_Service_Group); //сначала валидируем.
+		if(Yii::app()->request->getPost('Paid_Service_Groups'))//после ajax валидации CActiveForm отправляет submit на форму
 		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
 			$modelPaid_Service_Group->save();
