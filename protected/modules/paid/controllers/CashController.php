@@ -38,16 +38,24 @@ class CashController extends MPaidController
 	 */
 	private function ajaxValidatePaidServiceGroup($modelPaid_Service_Group=null, $modelPaid_Service=null)
 	{
-		if(Yii::app()->request->getPost('formAddGroup'))
+		if(Yii::app()->request->isAjaxRequest)
 		{
-			echo CActiveForm::validate($modelPaid_Service_Group);
-			Yii::app()->end();
-		}
-		elseif(Yii::app()->request->getPost('formAddServices'))
-		{
-			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
-			echo CActiveForm::validate($modelPaid_Service);
-			Yii::app()->end();
+			if(Yii::app()->request->getPost('formAddGroup'))
+			{
+				echo CActiveForm::validate($modelPaid_Service_Group);
+				Yii::app()->end();
+			}
+			elseif(Yii::app()->request->getPost('formAddServices'))
+			{
+				$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
+				echo CActiveForm::validate($modelPaid_Service);
+				Yii::app()->end();
+			}
+			elseif(Yii::app()->request->getPost('formUpdateService'))
+			{
+				echo CActiveForm::validate($modelPaid_Service);
+				Yii::app()->end();
+			}
 		}
 	}
 	
@@ -85,6 +93,62 @@ class CashController extends MPaidController
 			$this->refresh();
 		}
 		$this->render('servicesList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
+	}
+	
+	/**
+	 * Редактирование услуги
+	 * @param int $id #ID услуги
+	 */
+	public function actionUpdateService($id)
+	{
+		$modelPaid_Service=Paid_Services::model()->findByPk($id);
+		$modelPaid_Service->setScenario('paid.cash.update');
+		$modelPaid_Service->price=ParseMoney::decodeMoney($modelPaid_Service->price); //преобразуем к деньгам (делим на 100)
+		$modelPaid_Service->since_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->since_date);
+		$modelPaid_Service->exp_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->exp_date);
+		
+		Yii::app()->clientScript->scriptMap['jquery-1.11.2.min.js']=false; //уже подключен.
+		Yii::app()->clientScript->scriptMap['jquery.yiiactiveform.js']=false;
+		
+		if($modelPaid_Service===null)
+		{
+			echo 'Такой услуги не существует!';
+			Yii::app()->end();
+		}
+		
+		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service); // валидируем CActiveFrom ajax
+		//после успешной валидации отправляется событие submit
+		if(Yii::app()->request->getPost('Paid_Services'))
+		{
+			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
+			$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
+			$modelPaid_Service->save();
+			$this->redirect(['cash/servicesList', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
+		}
+
+		$this->renderPartial('updateServiceForm', ['modelPaid_Service'=>$modelPaid_Service], false, true);
+	}
+	
+	/**
+	 * Удаление услуг или одной услуги у группы
+	 * @param int $id #ID услуги
+	 */
+	public function actionDeleteService($id=null)
+	{
+		if(isset($id))
+		{ //выбрали одну услугу
+			
+			$recordPaid_Service=Paid_Services::model()->findByPk($id);
+		
+			if($recordPaid_Service===null)
+			{
+				throw new CHttpException(404, 'Такой услуги не существует!');
+			}
+			elseif($recordPaid_Service->deleteByPk($id))
+			{
+				Yii::app()->end();
+			}
+		}
 	}
 	
 	/**

@@ -1,3 +1,14 @@
+function updateService()
+{
+	$.ajax({'success': function (html) {
+			$('#modalUpdateServicesBody').html(html);
+			$('#modalUpdateServices').modal('show');
+		},
+			'url': $(this).attr('href')
+	});
+	return false;
+}
+
 $(document).ready(function(){
 //for reload page
 	(function(){
@@ -27,6 +38,7 @@ $(document).ready(function(){
 			}
 		});
 	})();
+	
 //for no reload page
 //	$('.b-paidNav__li').on('click', function() {
 //		$('.b-paidNav__li').each(function() {
@@ -59,7 +71,6 @@ $(document).ready(function(){
 			$("#Paid_Services_paid_service_group_id").attr('value', valueP_id);
 		});
 	});
-
 	$('#paid_cash_index-modalSearchGrid').on('show.bs.modal', function(e){ //просто при нажатии
 		$(".b-paid__errorFormPatient").html('');
 		$(".b-paid__errorFormPatient").css('display', 'none');

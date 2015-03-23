@@ -72,15 +72,16 @@
 					'template'=>'{update}{delete}',
 					'buttons'=>[
 						'update'=>[
-							'url'=>'',
+							'url'=>'CHtml::normalizeUrl(["cash/UpdateService", "id"=>$data->paid_service_id])',
 							'imageUrl'=>false,
-							'click'=>'function() {}',
+							'click'=>'updateService',
 							'options'=>[
-								'class'=>'btn btn-success btn-block btn-xs'
+								'class'=>'btn btn-success btn-block btn-xs',
+								'id'=>'ajaxUpdateService', //см paid.js 
 							],
 						],
 						'delete'=>[
-//							'url'=>'',
+							'url'=>'CHtml::normalizeUrl(["cash/deleteService", "id"=>$data->paid_service_id])',
 							'imageUrl'=>false,
 							'options'=>[
 								'class'=>'btn btn-danger btn-block btn-xs',
@@ -224,6 +225,17 @@
 								</div>
 							</div>
 							<?php $this->endWidget(); ?>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" id="modalUpdateServices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog b-modalUpdateServices">
+				<div class="modal-content">
+					<div class="modal-body" id="modalUpdateServicesBody">
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

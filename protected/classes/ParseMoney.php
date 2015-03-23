@@ -3,8 +3,8 @@
  * Класс для работы с деньгами.
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
-class ParseMoney {
-	
+class ParseMoney
+{
 	/**
 	 * Метод для преобразования денег
 	 * и дальнейшей записи их в хранилище.
