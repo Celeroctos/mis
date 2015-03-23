@@ -46,7 +46,7 @@ $(document).ready(function(){
 		trigger: 'focus',
 		html: true,
 		content: '<button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddService">Услугу</button>\n\
-				  <button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddGroup">Группу</button>'
+				  <button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddGroup">Подгруппу</button>'
     });
 	$('.b-paid__addSubGroup').on('shown.bs.popover', function(e) {
 		var valueP_id=$(this).attr('id'); //id группы

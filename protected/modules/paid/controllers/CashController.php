@@ -32,11 +32,21 @@ class CashController extends MPaidController
 		]);
 	}
 	
-	private function ajaxValidate($model)
+	/**
+	 * ajax валидация добавление групп/подгрупп и услуг в эти группы
+	 * @param type $model
+	 */
+	private function ajaxValidatePaidServiceGroup($modelPaid_Service_Group=null, $modelPaid_Service=null)
 	{
 		if(Yii::app()->request->getPost('formAddGroup'))
 		{
-			echo CActiveForm::validate($model);
+			echo CActiveForm::validate($modelPaid_Service_Group);
+			Yii::app()->end();
+		}
+		elseif(Yii::app()->request->getPost('formAddServices'))
+		{
+			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
+			echo CActiveForm::validate($modelPaid_Service);
 			Yii::app()->end();
 		}
 	}
@@ -60,12 +70,19 @@ class CashController extends MPaidController
 			$modelPaid_Service->paid_service_group_id=$group_id;
 		}
 		
-		$this->ajaxValidate($modelPaid_Service_Group); //сначала валидируем.
+		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group, $modelPaid_Service); //сначала валидируем.
 		if(Yii::app()->request->getPost('Paid_Service_Groups'))//после ajax валидации CActiveForm отправляет submit на форму
 		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
 			$modelPaid_Service_Group->save();
 			$this->redirect(['cash/servicesList', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
+		}
+		elseif(Yii::app()->request->getPost('Paid_Services'))
+		{
+			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
+			$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
+			$modelPaid_Service->save();
+			$this->refresh();
 		}
 		$this->render('servicesList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
 	}

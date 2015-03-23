@@ -22,7 +22,7 @@
 			'emptyText'=>
 			'<h4>Пустой результат таблицы с услугами группы</h4>',
 			'showTableOnEmpty'=>false,
-			'itemsCssClass'=>'table table-bordered',
+//			'itemsCssClass'=>'table table-bordered',
 			'pager'=>[
 				'class'=>'CLinkPager',
 				'cssFile'=>'',
@@ -56,25 +56,35 @@
 					],
 				],
 				[
-					'name'=>'price'
+					'name'=>'price',
+					'value'=>'ParseMoney::decodeMoney($data->price)',
 				],
 				[
 					'name'=>'since_date',
-					'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', \'medium\')',
+					'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
 					],
 				[
 					'name'=>'exp_date',
-					'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', \'medium\')',
+					'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
 				],
 				[
 					'class'=>'CButtonColumn',
-					'template'=>'{view}',
+					'template'=>'{update}{delete}',
 					'buttons'=>[
-						'view'=>[
+						'update'=>[
+							'url'=>'',
 							'imageUrl'=>false,
+							'click'=>'function() {}',
 							'options'=>[
 								'class'=>'btn btn-success btn-block btn-xs'
 							],
+						],
+						'delete'=>[
+//							'url'=>'',
+							'imageUrl'=>false,
+							'options'=>[
+								'class'=>'btn btn-danger btn-block btn-xs',
+							]
 						],
 						'headerHtmlOptions'=>[
 							'class'=>'col-xs-1',
@@ -157,6 +167,56 @@
 									<?= $form->Label($modelPaid_Service, 'paid_service_group_id', ['class'=>'control-label']); ?>
 									<?= $form->DropDownList($modelPaid_Service, 'paid_service_group_id', Paid_Service_Groups::getServiceGroupsListData(), ['class'=>'form-control input-sm']); ?>
 									<?= $form->error($modelPaid_Service, 'paid_service_group_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
+									
+									<?= $form->Label($modelPaid_Service, 'price', ['class'=>'control-label']); ?>
+									<?= $form->TextField($modelPaid_Service, 'price', ['class'=>'form-control input-sm']); ?>
+									<?= $form->error($modelPaid_Service, 'price', ['class'=>'b-paid__errorFormServicesGroup']); ?>
+
+									<?= $form->Label($modelPaid_Service, 'since_date', ['class'=>'control-label']); ?>
+									<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
+										'language'=>'ru',
+										'model'=>$modelPaid_Service,
+										'attribute'=>'since_date',
+										'options'=>[
+											'changeMonth'=>'true',
+											'changeYear'=>'true',
+	//										'showButtonPanel'=>true,
+											'showOn'=>'focus', // 'focus', 'button', 'both'
+											'dateFormat'=>'yy-mm-dd',
+											'yearRange'=>'2000:'.Yii::app()->dateformatter->format('yyyy', time()),
+//											'minDate'=>'2000-01-01',
+	//										'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
+										],
+										'htmlOptions'=>[
+											'class'=>'form-control',
+										],
+									]); ?>
+									<?= $form->error($modelPaid_Service, 'since_date', ['class'=>'b-paid__errorFormPatient']); ?>
+									
+									<?= $form->Label($modelPaid_Service, 'exp_date', ['class'=>'control-label']); ?>
+									<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
+										'language'=>'ru',
+										'model'=>$modelPaid_Service,
+										'attribute'=>'exp_date',
+										'options'=>[
+											'changeMonth'=>'true',
+											'changeYear'=>'true',
+	//										'showButtonPanel'=>true,
+											'showOn'=>'focus', // 'focus', 'button', 'both'
+											'dateFormat'=>'yy-mm-dd',
+											'yearRange'=>'2000:'.Yii::app()->dateformatter->format('yyyy', time()),
+//											'minDate'=>'2000-01-01',
+	//										'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
+										],
+										'htmlOptions'=>[
+											'class'=>'form-control',
+										],
+									]); ?>
+									<?= $form->error($modelPaid_Service, 'exp_date', ['class'=>'b-paid__errorFormPatient']); ?>
+									
+									<?= $form->Label($modelPaid_Service, 'reason', ['class'=>'control-label']); ?>
+									<?= $form->TextField($modelPaid_Service, 'reason', ['class'=>'form-control input-sm']); ?>
+									<?= $form->error($modelPaid_Service, 'reason', ['class'=>'b-paid__errorFormServicesGroup']); ?>
 									
 									<?= $form->HiddenField($modelPaid_Service, 'paid_service_group_id', ['class'=>'form-control input-sm',]); ?>
 									<br>

@@ -8,7 +8,7 @@
 	<div class="row">
 		<nav>
 			<ul class="nav nav-pills nav-justified">
-				<li role="presentation" class="b-paidNav__li active"><a class="b-paidNav__href" href="<?= Yii::app()->controller->createUrl('cash/index'); ?>">Касса</a></li>
+				<li role="presentation" class="b-paidNav__li"><a class="b-paidNav__href" href="<?= Yii::app()->controller->createUrl('cash/index'); ?>">Касса</a></li>
 				<li role="presentation" class="b-paidNav__li"><a class="b-paidNav__href" href="#">Журнал</a></li>
 				<li role="presentation" class="b-paidNav__li"><a class="b-paidNav__href" href="#">Отчёты</a></li>
 				<li role="presentation" class="b-paidNav__li"><a class="b-paidNav__href" href=<?= Yii::app()->controller->createUrl('cash/servicesList'); ?>>Услуги</a></li>
