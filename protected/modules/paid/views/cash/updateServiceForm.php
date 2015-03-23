@@ -5,6 +5,7 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
+<h4>Редактирование услуги</h4>
 <?php $form=$this->beginWidget('CActiveForm', [
 					'enableAjaxValidation'=>'true',
 					'id'=>'formUpdateService',

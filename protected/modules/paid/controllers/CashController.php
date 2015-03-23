@@ -109,7 +109,11 @@ class CashController extends MPaidController
 		
 		Yii::app()->clientScript->scriptMap['jquery-1.11.2.min.js']=false; //уже подключен.
 		Yii::app()->clientScript->scriptMap['jquery.yiiactiveform.js']=false;
-		
+//		Yii::app()->clientScript->scriptMap['jquery-ui.min.js']=false;
+//		Yii::app()->clientScript->scriptMap['jquery-ui.js']=false;
+//		Yii::app()->clientScript->scriptMap['jquery-ui-i18n.min.js']=false;
+//		Yii::app()->clientScript->scriptMap['jquery-ui-i18n.js']=false;
+//		Yii::app()->clientScript->scriptMap['jquery-ui.css']=false;
 		if($modelPaid_Service===null)
 		{
 			echo 'Такой услуги не существует!';

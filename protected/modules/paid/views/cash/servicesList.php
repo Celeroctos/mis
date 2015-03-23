@@ -174,45 +174,7 @@
 									<?= $form->error($modelPaid_Service, 'price', ['class'=>'b-paid__errorFormServicesGroup']); ?>
 
 									<?= $form->Label($modelPaid_Service, 'since_date', ['class'=>'control-label']); ?>
-									<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
-										'language'=>'ru',
-										'model'=>$modelPaid_Service,
-										'attribute'=>'since_date',
-										'options'=>[
-											'changeMonth'=>'true',
-											'changeYear'=>'true',
-	//										'showButtonPanel'=>true,
-											'showOn'=>'focus', // 'focus', 'button', 'both'
-											'dateFormat'=>'yy-mm-dd',
-											'yearRange'=>'2000:'.Yii::app()->dateformatter->format('yyyy', time()),
-//											'minDate'=>'2000-01-01',
-	//										'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
-										],
-										'htmlOptions'=>[
-											'class'=>'form-control',
-										],
-									]); ?>
-									<?= $form->error($modelPaid_Service, 'since_date', ['class'=>'b-paid__errorFormPatient']); ?>
-									
-									<?= $form->Label($modelPaid_Service, 'exp_date', ['class'=>'control-label']); ?>
-									<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
-										'language'=>'ru',
-										'model'=>$modelPaid_Service,
-										'attribute'=>'exp_date',
-										'options'=>[
-											'changeMonth'=>'true',
-											'changeYear'=>'true',
-	//										'showButtonPanel'=>true,
-											'showOn'=>'focus', // 'focus', 'button', 'both'
-											'dateFormat'=>'yy-mm-dd',
-											'yearRange'=>'2000:'.Yii::app()->dateformatter->format('yyyy', time()),
-//											'minDate'=>'2000-01-01',
-	//										'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
-										],
-										'htmlOptions'=>[
-											'class'=>'form-control',
-										],
-									]); ?>
+							
 									<?= $form->error($modelPaid_Service, 'exp_date', ['class'=>'b-paid__errorFormPatient']); ?>
 									
 									<?= $form->Label($modelPaid_Service, 'reason', ['class'=>'control-label']); ?>
@@ -234,7 +196,7 @@
 		</div>
 		<div class="modal" id="modalUpdateServices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog b-modalUpdateServices">
-				<div class="modal-content">
+				<div class="modal-content b-paid__modalHeader">
 					<div class="modal-body" id="modalUpdateServicesBody">
 					</div>
 					<div class="modal-footer">
