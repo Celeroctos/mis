@@ -47,7 +47,6 @@ class CashController extends MPaidController
 			}
 			elseif(Yii::app()->request->getPost('formAddServices'))
 			{
-				$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
 				echo CActiveForm::validate($modelPaid_Service);
 				Yii::app()->end();
 			}
@@ -60,39 +59,95 @@ class CashController extends MPaidController
 	}
 	
 	/**
+	 * 
+	 * @return Отключаем уже подключенные скрипты
+	 */
+	public static function disableScripts()
+	{
+		Yii::app()->clientScript->scriptMap['jquery-1.11.2.min.js']=false; //уже подключен.
+//		Yii::app()->clientScript->scriptMap['jquery.yiiactiveform.js']=false;
+		Yii::app()->clientScript->scriptMap['jquery-ui.min.js']=false;
+		Yii::app()->clientScript->scriptMap['jquery-ui.js']=false;
+		Yii::app()->clientScript->scriptMap['jquery-ui-i18n.min.js']=false;
+		Yii::app()->clientScript->scriptMap['jquery-ui-i18n.js']=false;
+		return;
+	}
+	
+	/**
 	 * Работа с группами и услугами платного модуля.
 	 * @param integer $group_id #ID группы услуг.
 	 */
 	public function actionServicesList($group_id=null)
 	{
-		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
-		$modelPaid_Service=new Paid_Services('paid.cash.create');
-		
+		$modelPaid_Service_Group=new Paid_Service_Groups;
+		$modelPaid_Service=new Paid_Services;
+		$modelPaid_Service->paid_service_group_id=$group_id; //выбор услуг данной группы.
 		if(isset($group_id))
 		{ //в этом случае выводим CGridView данной группы
-			$record=Paid_Service_Groups::model()->find('paid_service_group_id=:group_id', [':group_id'=>(int)$group_id]);
+			$record=Paid_Service_Groups::model()->findByPk($group_id);
 			if($record===null)
-			{ //Не найдено ни одной группы
+			{
 				throw new CHttpException(404, 'Такой группы не существует!');
 			}
-			$modelPaid_Service->paid_service_group_id=$group_id;
 		}
+		$this->render('servicesList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
+	}
+	
+	/**
+	 * Добавление группы или подгруппы из модали.
+	 * Вызывается ajax-запросом.
+	 * @param integer $group_id #ID группы или подгруппы. По умолчанию: 0, т.к. это самые главные группы.
+	 */
+	public function actionAddGroup($group_id=0)
+	{
+		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
+		$modelPaid_Service_Group->p_id=$group_id;
 		
-		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group, $modelPaid_Service); //сначала валидируем.
+		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group); //сначала валидируем.
+		self::disableScripts();
 		if(Yii::app()->request->getPost('Paid_Service_Groups'))//после ajax валидации CActiveForm отправляет submit на форму
 		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
-			$modelPaid_Service_Group->save();
-			$this->redirect(['cash/servicesList', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
+			
+			if($modelPaid_Service_Group->save()) 
+			{
+				$this->redirect(['cash/servicesList', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
+			}
 		}
-		elseif(Yii::app()->request->getPost('Paid_Services'))
+		$this->renderPartial('addGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group], false, true);
+	}
+	
+	/**
+	 * Добавление услуги из модали.
+	 * Вызывается экшн ajax-запросом (см. paid.js, addService()).
+	 * @param integer $group_id #ID группы, в которую будем добавлять услугу по умолчанию.
+	 */
+	public function actionAddService($group_id)
+	{
+		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
+		$modelPaid_Service=new Paid_Services('paid.cash.create');
+		$modelPaid_Service->paid_service_group_id=$group_id;
+		
+		if(isset($group_id))
+		{ //ловим ошибку
+			$record=Paid_Service_Groups::model()->findByPk($group_id);
+			if($record===null)
+			{
+				throw new CHttpException(404, 'Такой группы не существует!');
+			}
+		}
+		
+		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group, $modelPaid_Service); //сначала валидируем.
+		self::disableScripts();
+		
+		if(Yii::app()->request->getPost('Paid_Services'))
 		{
 			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
 			$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
 			$modelPaid_Service->save();
-			$this->refresh();
+			$this->redirect(Yii::app()->request->urlReferrer);
 		}
-		$this->render('servicesList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
+		$this->renderPartial('addServiceForm', ['modelPaid_Service'=>$modelPaid_Service], false, true);
 	}
 	
 	/**
@@ -107,13 +162,8 @@ class CashController extends MPaidController
 		$modelPaid_Service->since_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->since_date);
 		$modelPaid_Service->exp_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->exp_date);
 		
-		Yii::app()->clientScript->scriptMap['jquery-1.11.2.min.js']=false; //уже подключен.
-		Yii::app()->clientScript->scriptMap['jquery.yiiactiveform.js']=false;
-//		Yii::app()->clientScript->scriptMap['jquery-ui.min.js']=false;
-//		Yii::app()->clientScript->scriptMap['jquery-ui.js']=false;
-//		Yii::app()->clientScript->scriptMap['jquery-ui-i18n.min.js']=false;
-//		Yii::app()->clientScript->scriptMap['jquery-ui-i18n.js']=false;
-//		Yii::app()->clientScript->scriptMap['jquery-ui.css']=false;
+		self::disableScripts();
+		
 		if($modelPaid_Service===null)
 		{
 			echo 'Такой услуги не существует!';

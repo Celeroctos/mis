@@ -8,6 +8,10 @@ define('_STATIC', $params['_STATIC']);
 
 return [
 	'packages'=>[
+		'jquery-ui'=>[
+			'baseUrl'=>_STATIC . '/jquery-ui/js/',
+			'js'=>['jquery-ui.min.js', 'jquery-ui-i18n.min.js'] //берем из Yii
+		],
 		'jquery'=>[
 			'baseUrl'=>_STATIC . '/jquery/js/',
 			'js'=>[

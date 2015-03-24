@@ -12,6 +12,7 @@
 	<?php Yii::app()->clientScript->registerPackage('paid'); ?>
 	<?php Yii::app()->clientScript->registerPackage('fieldPhonesWidget'); ?>
 	<?php Yii::app()->clientScript->registerPackage('fieldDocumentsWidget'); ?>
+	<?php Yii::app()->clientScript->registerPackage('jquery-ui'); ?>
 	<title><?= CHtml::encode($this->pageTitle); ?></title>
 </head>
 <body>
