@@ -34,6 +34,7 @@ class CashController extends MPaidController
 	
 	/**
 	 * ajax валидация добавление групп/подгрупп и услуг в эти группы
+	 * см. CActiveForm
 	 * @param type $model
 	 */
 	private function ajaxValidatePaidServiceGroup($modelPaid_Service_Group=null, $modelPaid_Service=null)
@@ -59,8 +60,8 @@ class CashController extends MPaidController
 	}
 	
 	/**
-	 * 
-	 * @return Отключаем уже подключенные скрипты
+	 * Отключаем уже подключенные скрипты
+	 * @return
 	 */
 	public static function disableScripts()
 	{
@@ -70,27 +71,26 @@ class CashController extends MPaidController
 		Yii::app()->clientScript->scriptMap['jquery-ui.js']=false;
 		Yii::app()->clientScript->scriptMap['jquery-ui-i18n.min.js']=false;
 		Yii::app()->clientScript->scriptMap['jquery-ui-i18n.js']=false;
-		return;
 	}
 	
 	/**
 	 * Работа с группами и услугами платного модуля.
 	 * @param integer $group_id #ID группы услуг.
 	 */
-	public function actionServicesList($group_id=null)
+	public function actionServiceGroupsList($group_id=null)
 	{
 		$modelPaid_Service_Group=new Paid_Service_Groups;
 		$modelPaid_Service=new Paid_Services;
 		$modelPaid_Service->paid_service_group_id=$group_id; //выбор услуг данной группы.
 		if(isset($group_id))
-		{ //в этом случае выводим CGridView данной группы
+		{
 			$record=Paid_Service_Groups::model()->findByPk($group_id);
 			if($record===null)
 			{
 				throw new CHttpException(404, 'Такой группы не существует!');
 			}
 		}
-		$this->render('servicesList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
+		$this->render('serviceGroupsList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
 	}
 	
 	/**
@@ -100,18 +100,19 @@ class CashController extends MPaidController
 	 */
 	public function actionAddGroup($group_id=0)
 	{
+		self::disableScripts();
 		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
 		$modelPaid_Service_Group->p_id=$group_id;
 		
 		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group); //сначала валидируем.
-		self::disableScripts();
+		
 		if(Yii::app()->request->getPost('Paid_Service_Groups'))//после ajax валидации CActiveForm отправляет submit на форму
 		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
 			
 			if($modelPaid_Service_Group->save()) 
 			{
-				$this->redirect(['cash/servicesList', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
+				$this->redirect(['cash/serviceGroupsList', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
 			}
 		}
 		$this->renderPartial('addGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group], false, true);
@@ -124,6 +125,7 @@ class CashController extends MPaidController
 	 */
 	public function actionAddService($group_id)
 	{
+		self::disableScripts();
 		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
 		$modelPaid_Service=new Paid_Services('paid.cash.create');
 		$modelPaid_Service->paid_service_group_id=$group_id;
@@ -138,7 +140,6 @@ class CashController extends MPaidController
 		}
 		
 		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group, $modelPaid_Service); //сначала валидируем.
-		self::disableScripts();
 		
 		if(Yii::app()->request->getPost('Paid_Services'))
 		{
@@ -156,13 +157,12 @@ class CashController extends MPaidController
 	 */
 	public function actionUpdateService($id)
 	{
+		self::disableScripts();
 		$modelPaid_Service=Paid_Services::model()->findByPk($id);
 		$modelPaid_Service->setScenario('paid.cash.update');
 		$modelPaid_Service->price=ParseMoney::decodeMoney($modelPaid_Service->price); //преобразуем к деньгам (делим на 100)
 		$modelPaid_Service->since_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->since_date);
 		$modelPaid_Service->exp_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->exp_date);
-		
-		self::disableScripts();
 		
 		if($modelPaid_Service===null)
 		{
@@ -171,16 +171,47 @@ class CashController extends MPaidController
 		}
 		
 		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service); // валидируем CActiveFrom ajax
-		//после успешной валидации отправляется событие submit
+		
 		if(Yii::app()->request->getPost('Paid_Services'))
 		{
 			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
 			$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
 			$modelPaid_Service->save();
-			$this->redirect(['cash/servicesList', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
+			$this->redirect(['cash/serviceGroupsList', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
 		}
 
 		$this->renderPartial('updateServiceForm', ['modelPaid_Service'=>$modelPaid_Service], false, true);
+	}
+	
+	public function actionUpdateGroup($group_id)
+	{
+		self::disableScripts();
+		$modelPaid_Service_Group=Paid_Service_Groups::model()->findByPk($group_id);
+		if($modelPaid_Service_Group===null)
+		{
+			throw new CHttpException(404, 'Такой группы не существует!');
+		}
+		$modelPaid_Service_Group->setScenario('paid.cash.update');
+		
+		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group); //сначала валидируем.
+		if(Yii::app()->request->getPost('Paid_Service_Groups'))//после ajax валидации CActiveForm отправляет submit на форму
+		{
+			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
+			if($modelPaid_Service_Group->save()) 
+			{
+				$this->redirect(['cash/serviceGroupsList', 'group_id'=>$group_id]);
+			}
+		}
+		$this->renderPartial('updateGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group], false, true);
+		
+	}
+	
+	/**
+	 * Удаление группы или подгруппы
+	 */
+	public function actionDeleteGroup($id=null)
+	{
+		
 	}
 	
 	/**
@@ -198,10 +229,8 @@ class CashController extends MPaidController
 			{
 				throw new CHttpException(404, 'Такой услуги не существует!');
 			}
-			elseif($recordPaid_Service->deleteByPk($id))
-			{
-				Yii::app()->end();
-			}
+			$recordPaid_Service->deleteByPk($id);
+			Yii::app()->end();
 		}
 	}
 	

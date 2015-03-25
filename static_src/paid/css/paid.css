@@ -92,11 +92,11 @@
 		color: red;
 		font-size: 12px;
 	}
-	.b-paid__servicesGroupPencil{
+	.b-paid__addEditPopover{
 		font-size: 12px;
 		color: gray;
 	}
-	.b-paid__servicesGroupPencil:focus{
+	.b-paid__addEditPopover:focus{
 		outline: none;
 		color: black;
 	}

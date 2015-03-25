@@ -8,8 +8,8 @@
 <div class="container b-paid b-paid_modificator">
 	<div class="row b-paid__Row">
 		<div class="col-xs-4 b-paid__borderRight">
-			<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0); ?>
-			<?= CHtml::htmlButton('Добавить группу', ['class'=>'btn btn-sm btn-primary', 'id'=>'callModalAddGroup']); ?>
+			<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id ORDER BY paid_service_group_id DESC', ['p_id'=>0]), 0); ?>
+			<?= CHtml::htmlButton('Добавить группу', ['class'=>'btn btn-sm btn-primary', 'id'=>'buttonAddGroup']); ?>
 		</div>
 		<div class="col-xs-8">
 		<?php
@@ -62,7 +62,7 @@
 				[
 					'name'=>'since_date',
 					'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
-					],
+				],
 				[
 					'name'=>'exp_date',
 					'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
@@ -74,7 +74,7 @@
 						'update'=>[
 							'url'=>'CHtml::normalizeUrl(["cash/UpdateService", "id"=>$data->paid_service_id])',
 							'imageUrl'=>false,
-							'click'=>'updateService',
+							'click'=>' updateService',
 							'options'=>[
 								'class'=>'btn btn-success btn-block btn-xs',
 								'id'=>'ajaxUpdateService', //см paid.js 
@@ -96,14 +96,14 @@
 		]);
 		?>
 		</div>
-		<div class="modal" id="modalServiceGroups" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog b-modalServiceGroups">
-				<div class="modal-content b-paid__modalHeader">
-					<div class="modal-body" id="modalServiceGroupsBody">
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-					</div>
+	</div>
+	<div class="modal" id="modalServiceGroups" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog b-modalServiceGroups">
+			<div class="modal-content b-paid__modalHeader">
+				<div class="modal-body" id="modalServiceGroupsBody">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 				</div>
 			</div>
 		</div>

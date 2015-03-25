@@ -46,50 +46,72 @@ $(document).ready(function() {
 	//		$(this).addClass('active');
 	////	});
 	function modelServiceGroups() {
-		this.handlerAddService=function () { //add to onclick, modal for add service
+		
+		this.AddService=function () { //add to onclick, modal for add service
 			$.ajax({'success': function (html) {
 					$('#modalServiceGroupsBody').html(html);
 					$('#modalServiceGroups').modal('show');
 //					$("#Paid_Services_paid_service_group_id").attr('value', this.valueP_id);
 				},
-					'url': '/paid/cash/addService/group_id/' + this.valueP_id
+					'url': '/paid/cash/addService/group_id/' + this.group_id
 			});
-			return false;
 		};
 		
-		this.addPopover=function () { //add popover bootstrap for add service/group
+		this.AddGroup=function () { //add to onclick, 
+			$.ajax({'success': function (html) {
+					$('#modalServiceGroupsBody').html(html);
+					$('#modalServiceGroups').modal('show');
+	//				$("#Paid_Service_Groups_p_id").attr('value', this.valueP_id);
+				},
+					'url': '/paid/cash/addGroup/group_id/' + this.group_id
+			});
+		};
+		
+		this.buttonAddGroup=function () { //add to onclick
+			$.ajax({'success': function (html) {
+					$('#modalServiceGroupsBody').html(html);
+					$('#modalServiceGroups').modal('show');
+				},
+					'url': '/paid/cash/addGroup/group_id/0'
+			});
+		};
+		
+		this.UpdateGroup=function () {
+			$.ajax({'success': function (html) {
+					$('#modalServiceGroupsBody').html(html);
+					$('#modalServiceGroups').modal('show');
+	//				$("#Paid_Service_Groups_p_id").attr('value', this.valueP_id);
+				},
+					'url': '/paid/cash/updateGroup/group_id/' + this.group_id
+			});			
+		};
+		
+		this.initHandlers=function () { //add popover bootstrap for add service/group
+			$(".b-paid__addPopover").on('click', function () {
+				modelServiceGroups.group_id=$(this).attr('value'); //потом юзаем ее через замыкание.
+			});
+			$(".b-paid__addEditPopover").on('click', function () {
+				modelServiceGroups.group_id=$(this).attr('value'); //потом юзаем ее через замыкание.
+			});
 			$(".b-paid__addPopover").popover({
 				title : 'Выберите действие',
 				trigger: 'focus',
 				html: true,
-				content: '<button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddService">Услугу</button>\n\
-						  <button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddGroup">Подгруппу</button>'
-			});	
-			return false;
-		};
-		
-		this.handlerAddGroup=function () { //add to onclick, 
-			$.ajax({'success': function (html) {
-					$('#modalServiceGroupsBody').html(html);
-					$('#modalServiceGroups').modal('show');
-//					$("#Paid_Service_Groups_p_id").attr('value', this.valueP_id);
-				},
-					'url': '/paid/cash/addGroup/group_id/' + this.valueP_id
+				content:'<button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddService">Услугу</button>\n\
+						 <button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddGroup">Подгруппу</button>'
 			});
-			return false;
+			$(".b-paid__addEditPopover").popover({
+				title : 'Выберите действие',
+				trigger: 'focus',
+				html: true,
+				content:'<button class="btn btn-block btn-primary btn-xs" id="popoverButtonEditGroup">Редактировать</button>'				
+			});
+			$(document).on('click', '#popoverButtonAddService', $.proxy(modelServiceGroups.AddService, modelServiceGroups));
+			$(document).on('click', '#popoverButtonAddGroup', $.proxy(modelServiceGroups.AddGroup, modelServiceGroups));
+			$(document).on('click', '#popoverButtonEditGroup', $.proxy(modelServiceGroups.UpdateGroup, modelServiceGroups));
 		};
 		
-		this.handlerShownPopover=function () {
-			modelServiceGroups.valueP_id=$(this).attr('id'); //this ссылается на внешний объект jQuery .b-paid__addPopover
-			$('#popoverButtonAddGroup').on('click', $.proxy(modelServiceGroups.handlerAddGroup, modelServiceGroups));
-			$('#popoverButtonAddService').on('click', $.proxy(modelServiceGroups.handlerAddService, modelServiceGroups));			
-		};
-		
-		this.shownEventPopover=function () {
-			$('.b-paid__addPopover').on('shown.bs.popover', modelServiceGroups.handlerShownPopover);
-		};
-		
-		this.hiddenModal=function () {
+		this.handlerHiddenModal=function () {
 			$('#modalServiceGroups').on('hidden.bs.modal', function () {
 				$('#Paid_Services_since_date').unbind();
 				$('#Paid_Services_exp_date').unbind();
@@ -100,17 +122,8 @@ $(document).ready(function() {
 	}
 	
 	var modelServiceGroups=new modelServiceGroups();
-	modelServiceGroups.addPopover();
-	modelServiceGroups.shownEventPopover();
-	modelServiceGroups.hiddenModal();
-	
-//	$('#callModalAddGroup').on('click', function(){
-//		$('#modalAddGroup').modal('show'); //добавление группы без родителя с кнопки
-//	});
-//	
-//	$('#modalAddGroup').on('click', function() {
-//		//TODO редирект на эту же страницу
-//	});
+	modelServiceGroups.initHandlers();
+	modelServiceGroups.handlerHiddenModal();
 	
 	$('#paid_cash_index-modalSearchGrid').on('show.bs.modal', function(e){ //просто при нажатии
 		$(".b-paid__errorFormPatient").html('');

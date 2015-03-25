@@ -1,10 +1,10 @@
 <?php
 /**
- * Добавление группы
+ * Редактирование группы
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
-<h4>Добавление группы (подгруппы)</h4>
+<h4>Редактирование группы (подгруппы)</h4>
 <?php $form=$this->beginWidget('CActiveForm', [
 					'id'=>substr(md5(uniqid("", true)), 0, 7),
 					'enableAjaxValidation'=>'true',
@@ -29,11 +29,14 @@
 							'class'=>'form-control input-sm',
 						]); ?>
 			<?= $form->error($modelPaid_Service_Group, 'code', ['class'=>'b-paid__errorFormServicesGroup']); ?>
-			<?= $form->HiddenField($modelPaid_Service_Group, 'p_id', [
+			
+			<?= $form->Label($modelPaid_Service_Group, 'p_id', ['class'=>'control-label']); ?>
+			<?= $form->DropDownList($modelPaid_Service_Group, 'p_id', Paid_Service_Groups::getServiceGroupsListData(), [
 							'class'=>'form-control input-sm',
 						]); ?>
+			<?= $form->error($modelPaid_Service_Group, 'p_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
 			<br>
-			<?= CHtml::SubmitButton('Добавить', ['class'=>'btn btn-block btn-primary btn-sm']); ?>
+			<?= CHtml::SubmitButton('Редактировать', ['class'=>'btn btn-block btn-primary btn-sm']); ?>
 		</div>
 	</div>
 <?php $this->endWidget(); ?>

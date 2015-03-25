@@ -24,6 +24,9 @@ class Paid_Service_Groups extends ActiveRecord
 			['code', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			['p_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.create'],
 			
+			['name', 'required', 'on'=>'paid.cash.update'],
+			['code', 'type', 'type'=>'string', 'on'=>'paid.cash.update'],
+			['p_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.update'], //здесь изменяет сам пользователь
 		];
 	}
 	
@@ -34,8 +37,8 @@ class Paid_Service_Groups extends ActiveRecord
 		return CHtml::listData(
 				CMap::mergeArray([
 							[
-								'paid_service_group_id'=>null,
-								'name'=>null,
+								'paid_service_group_id'=>0,
+								'name'=>'Главная группа',
 							]
 				], $serviceGroupsList),
 				'paid_service_group_id',
@@ -70,13 +73,13 @@ class Paid_Service_Groups extends ActiveRecord
 			?>
 			<li>
 				<div class="b-paid__serviceItemGroup">
-					<?= CHtml::link(CHtml::encode($value->name), ['cash/servicesList', 'group_id'=>$value->paid_service_group_id], ['class'=>'b-paid__serviceItemGroupLink']) ?>
-					<span class="glyphicon glyphicon-plus b-paid__addPopover" id="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" data-contect="" aria-hidden="true"></span>
-				<span class="glyphicon glyphicon-pencil b-paid__servicesGroupPencil" tabindex="-1" aria-hidden="true"></span>
+					<?= CHtml::link(CHtml::encode($value->name), ['cash/serviceGroupsList', 'group_id'=>$value->paid_service_group_id], ['class'=>'b-paid__serviceItemGroupLink']) ?>
+					<span class="glyphicon glyphicon-plus b-paid__addPopover" value="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" data-contect="" aria-hidden="true"></span>
+				<span class="glyphicon glyphicon-pencil b-paid__addEditPopover" value="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" aria-hidden="true"></span>
 				</div>
 			</li>
 			<?php
-			$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id', [':p_id'=>$value->paid_service_group_id]); //ищем всех предков
+			$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id ORDER BY paid_service_group_id DESC', [':p_id'=>$value->paid_service_group_id]); //ищем всех предков
 			//проверяем является ли он чьим-то child
 			if(!empty($recordChild))
 			{ //есть дочерние элементы.
