@@ -43,6 +43,20 @@ class Paid_Services extends ActiveRecord
 		return 'paid.paid_services';
 	}
 	
+	public function attributeLabels()
+	{
+		return [
+			'paid_service_id'=>'#ID',
+			'paid_service_group_id'=>'#ID группы',
+			'name'=>'Название',
+			'code'=>'Код услуги',
+			'price'=>'Цена',
+			'since_date'=>'Действует с',
+			'exp_date'=>'Действует до',
+			'reason'=>'Основание',
+		];
+	}	
+	
 	public function search()
 	{
 		$criteria=new CDbCriteria;

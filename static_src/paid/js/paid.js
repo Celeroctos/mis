@@ -86,6 +86,14 @@ $(document).ready(function() {
 			});			
 		};
 		
+		this.DeleteGroup=function () {
+			$.ajax({'url': '/paid/cash/deleteGroup/group_id/' + this.group_id,
+					'success': function (html) {
+						location.href='/paid/cash/serviceGroupsList';
+					}
+				});
+		};
+		
 		this.initHandlers=function () { //add popover bootstrap for add service/group
 			$(".b-paid__addPopover").on('click', function () {
 				modelServiceGroups.group_id=$(this).attr('value'); //потом юзаем ее через замыкание.
@@ -97,18 +105,21 @@ $(document).ready(function() {
 				title : 'Выберите действие',
 				trigger: 'focus',
 				html: true,
-				content:'<button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddService">Услугу</button>\n\
-						 <button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddGroup">Подгруппу</button>'
+				content:'<button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddService">Добавить услугу</button>\n\
+						 <button class="btn btn-block btn-primary btn-xs" id="popoverButtonAddGroup">Добавить подгруппу</button>'
 			});
 			$(".b-paid__addEditPopover").popover({
 				title : 'Выберите действие',
 				trigger: 'focus',
 				html: true,
-				content:'<button class="btn btn-block btn-primary btn-xs" id="popoverButtonEditGroup">Редактировать</button>'				
+				content:'<button class="btn btn-block btn-primary btn-xs" id="popoverButtonEditGroup">Редактировать группу</button>\n\
+						 <button class="btn btn-block btn-primary btn-xs" id="popoverButtonDeleteGroup">Удалить группу</button>'
 			});
 			$(document).on('click', '#popoverButtonAddService', $.proxy(modelServiceGroups.AddService, modelServiceGroups));
 			$(document).on('click', '#popoverButtonAddGroup', $.proxy(modelServiceGroups.AddGroup, modelServiceGroups));
+			$(document).on('click', '#buttonAddGroup', $.proxy(modelServiceGroups.buttonAddGroup, modelServiceGroups));
 			$(document).on('click', '#popoverButtonEditGroup', $.proxy(modelServiceGroups.UpdateGroup, modelServiceGroups));
+			$(document).on('click', '#popoverButtonDeleteGroup', $.proxy(modelServiceGroups.DeleteGroup, modelServiceGroups));
 		};
 		
 		this.handlerHiddenModal=function () {

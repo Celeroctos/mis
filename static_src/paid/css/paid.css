@@ -42,16 +42,16 @@
         width: 134px;
         margin: 5px auto;
     }
-/*    .b-paid__emptyServiceHeader{
+    .b-paid__emptyServiceHeader{
         text-align: center;
 		color: gray;
         margin-top:0px;
-    }*/
-/*    .b-paid__emptyServiceGroupHeader{
+    }
+    .b-paid__emptyServiceGroupHeader{
         text-align: center;
         color: #6E7B8B;
         margin-top: 10px;
-    }*/
+    }
 	.b-paid__modalHeader{
 		text-align: center;
 	}

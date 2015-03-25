@@ -15,6 +15,16 @@ class Paid_Service_Groups extends ActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public function attributeLabels()
+	{
+		return [
+			'paid_service_group_id'=>'#ID',
+			'name'=>'Название',
+			'code'=>'Код группы',
+			'p_id'=>'Группа',
+		];
+	}	
 	
 	public function rules()
 	{
@@ -30,10 +40,12 @@ class Paid_Service_Groups extends ActiveRecord
 		];
 	}
 	
-	public static function getServiceGroupsListData()
+	public static function getServiceGroupsListData($group_id=null)
 	{
-		$model=new Paid_Service_Groups;
-		$serviceGroupsList=$model->findAll();
+		$criteria=new CDbCriteria;
+		$criteria->addCondition('paid_service_group_id!=:group_id');
+		$criteria->params=[':group_id'=>$group_id]; //нельзя изменить группу так, чтобы родитель являлся самим собой.
+		$serviceGroupsList=  Paid_Service_Groups::model()->findAll($criteria);
 		return CHtml::listData(
 				CMap::mergeArray([
 							[

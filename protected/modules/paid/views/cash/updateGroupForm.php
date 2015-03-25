@@ -31,7 +31,7 @@
 			<?= $form->error($modelPaid_Service_Group, 'code', ['class'=>'b-paid__errorFormServicesGroup']); ?>
 			
 			<?= $form->Label($modelPaid_Service_Group, 'p_id', ['class'=>'control-label']); ?>
-			<?= $form->DropDownList($modelPaid_Service_Group, 'p_id', Paid_Service_Groups::getServiceGroupsListData(), [
+			<?= $form->DropDownList($modelPaid_Service_Group, 'p_id', $serviceGroupsListData, [
 							'class'=>'form-control input-sm',
 						]); ?>
 			<?= $form->error($modelPaid_Service_Group, 'p_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>

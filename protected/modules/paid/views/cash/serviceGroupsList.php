@@ -20,7 +20,7 @@
 			'template'=>'{items}',
 			'ajaxUpdate'=>true,
 			'emptyText'=>
-			'<h4>Пустой результат таблицы с услугами группы</h4>',
+			'<h4 class="b-paid__emptyServiceHeader">Пустой результат таблицы с услугами группы</h4>',
 			'showTableOnEmpty'=>false,
 //			'itemsCssClass'=>'table table-bordered',
 			'pager'=>[

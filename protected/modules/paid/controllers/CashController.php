@@ -187,6 +187,7 @@ class CashController extends MPaidController
 	{
 		self::disableScripts();
 		$modelPaid_Service_Group=Paid_Service_Groups::model()->findByPk($group_id);
+		$serviceGroupsListData=Paid_Service_Groups::getServiceGroupsListData($group_id);
 		if($modelPaid_Service_Group===null)
 		{
 			throw new CHttpException(404, 'Такой группы не существует!');
@@ -202,16 +203,24 @@ class CashController extends MPaidController
 				$this->redirect(['cash/serviceGroupsList', 'group_id'=>$group_id]);
 			}
 		}
-		$this->renderPartial('updateGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group], false, true);
+		$this->renderPartial('updateGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 
+												 'serviceGroupsListData'=>$serviceGroupsListData,
+							 ], false, true);
 		
 	}
 	
 	/**
 	 * Удаление группы или подгруппы
 	 */
-	public function actionDeleteGroup($id=null)
+	public function actionDeleteGroup($group_id=null)
 	{
-		
+		$recordPaid_Service_Group=Paid_Service_Groups::model()->findByPk($group_id);
+		if($recordPaid_Service_Group===null)
+		{
+			throw new CHttpException(404, 'Такой группы не существует!');
+		}
+		$recordPaid_Service_Group->deleteByPk($group_id);
+		$recordPaid_Service_Group->deleteAll('p_id=:p_id', [':p_id'=>$group_id]);
 	}
 	
 	/**
