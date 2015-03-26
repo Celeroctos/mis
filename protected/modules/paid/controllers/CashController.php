@@ -35,13 +35,13 @@ class CashController extends MPaidController
 	/**
 	 * ajax валидация добавление групп/подгрупп и услуг в эти группы
 	 * см. CActiveForm
-	 * @param type $model
+	 * @param object $model
 	 */
 	private function ajaxValidatePaidServiceGroup($modelPaid_Service_Group=null, $modelPaid_Service=null)
 	{
 		if(Yii::app()->request->isAjaxRequest)
 		{
-			if(Yii::app()->request->getPost('formAddGroup'))
+			if(Yii::app()->request->getPost('formAddGroup')) //совпадает с редактированием (updateGroup)
 			{
 				echo CActiveForm::validate($modelPaid_Service_Group);
 				Yii::app()->end();
@@ -82,6 +82,7 @@ class CashController extends MPaidController
 		$modelPaid_Service_Group=new Paid_Service_Groups;
 		$modelPaid_Service=new Paid_Services;
 		$modelPaid_Service->paid_service_group_id=$group_id; //выбор услуг данной группы.
+		
 		if(isset($group_id))
 		{
 			$record=Paid_Service_Groups::model()->findByPk($group_id);
@@ -95,7 +96,7 @@ class CashController extends MPaidController
 	
 	/**
 	 * Добавление группы или подгруппы из модали.
-	 * Вызывается ajax-запросом.
+	 * Подгрузка метода через ajax-запрос (paid.js)
 	 * @param integer $group_id #ID группы или подгруппы. По умолчанию: 0, т.к. это самые главные группы.
 	 */
 	public function actionAddGroup($group_id=0)
@@ -120,7 +121,7 @@ class CashController extends MPaidController
 	
 	/**
 	 * Добавление услуги из модали.
-	 * Вызывается экшн ajax-запросом (см. paid.js, addService()).
+	 * Подгрузка метода через ajax-запрос (paid.js)
 	 * @param integer $group_id #ID группы, в которую будем добавлять услугу по умолчанию.
 	 */
 	public function actionAddService($group_id)
@@ -152,7 +153,8 @@ class CashController extends MPaidController
 	}
 	
 	/**
-	 * Редактирование услуги
+	 * Редактирование услуги.
+	 * Подгрузка метода через ajax-запрос (paid.js)
 	 * @param int $id #ID услуги
 	 */
 	public function actionUpdateService($id)
@@ -183,18 +185,27 @@ class CashController extends MPaidController
 		$this->renderPartial('updateServiceForm', ['modelPaid_Service'=>$modelPaid_Service], false, true);
 	}
 	
+	/**
+	 * Редактирование группы.
+	 * Подгрузка метода через ajax-запрос (paid.js)
+	 * @param integer $group_id #ID группы
+	 * @throws CHttpException
+	 */
 	public function actionUpdateGroup($group_id)
 	{
 		self::disableScripts();
 		$modelPaid_Service_Group=Paid_Service_Groups::model()->findByPk($group_id);
 		$serviceGroupsListData=Paid_Service_Groups::getServiceGroupsListData($group_id);
+		
 		if($modelPaid_Service_Group===null)
 		{
 			throw new CHttpException(404, 'Такой группы не существует!');
 		}
+		
 		$modelPaid_Service_Group->setScenario('paid.cash.update');
 		
 		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group); //сначала валидируем.
+		
 		if(Yii::app()->request->getPost('Paid_Service_Groups'))//после ajax валидации CActiveForm отправляет submit на форму
 		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
@@ -206,11 +217,11 @@ class CashController extends MPaidController
 		$this->renderPartial('updateGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 
 												 'serviceGroupsListData'=>$serviceGroupsListData,
 												], false, true);
-		
 	}
 	
 	/**
 	 * Удаление группы или подгруппы
+	 * @param integer $group_id #ID группы
 	 */
 	public function actionDeleteGroup($group_id=null)
 	{
@@ -274,7 +285,6 @@ class CashController extends MPaidController
 			{ //уже есть ЭМК платных услуг
 				$modelPaid_Medcard=$recordPaid_Medcard;
 			}
-			
 			$this->render('patient', ['modelPatient'=>$modelPatient, 'modelPaid_Medcard'=>$modelPaid_Medcard]);
 		}		
 	}
@@ -372,11 +382,11 @@ class CashController extends MPaidController
 		$this->renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData);
 	}
 	
-	/*
-	 * Создание платной ЭМК
-	 */
-	public function actionCreate()
-	{
-		$this->render('create');
-	}
+//	/*
+//	 * Создание платной ЭМК
+//	 */
+//	public function actionCreate()
+//	{
+//		$this->render('create');
+//	}
 }

@@ -64,7 +64,7 @@ class Paid_Service_Groups extends ActiveRecord
 	 */
 	public static function recursDeleteGroups($group_id)
 	{
-		if(Paid_Service_Groups::model()->deleteByPk($group_id))
+		if(Paid_Service_Groups::model()->deleteByPk($group_id) && Paid_Services::model()->deleteAll('paid_service_group_id=:group_id', [':group_id'=>$group_id]))
 		{
 			$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>$group_id]); //ищем предков
 
