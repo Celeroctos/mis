@@ -26,10 +26,6 @@
 			<?= $form->TextField($modelPaid_Service, 'code', ['class'=>'form-control input-sm',]); ?>
 			<?= $form->error($modelPaid_Service, 'code', ['class'=>'b-paid__errorFormServicesGroup']); ?>
 
-			<?= $form->Label($modelPaid_Service, 'paid_service_group_id', ['class'=>'control-label']); ?>
-			<?= $form->DropDownList($modelPaid_Service, 'paid_service_group_id', Paid_Service_Groups::getServiceGroupsListData(), ['class'=>'form-control input-sm']); ?>
-			<?= $form->error($modelPaid_Service, 'paid_service_group_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
-
 			<?= $form->Label($modelPaid_Service, 'price', ['class'=>'control-label']); ?>
 			<?= $form->TextField($modelPaid_Service, 'price', ['class'=>'form-control input-sm']); ?>
 			<?= $form->error($modelPaid_Service, 'price', ['class'=>'b-paid__errorFormServicesGroup']); ?>

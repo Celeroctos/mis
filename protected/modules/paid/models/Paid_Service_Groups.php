@@ -43,14 +43,17 @@ class Paid_Service_Groups extends ActiveRecord
 	public static function getServiceGroupsListData($group_id=null)
 	{
 		$criteria=new CDbCriteria;
-		$criteria->addCondition('paid_service_group_id!=:group_id');
-		$criteria->params=[':group_id'=>$group_id]; //нельзя изменить группу так, чтобы родитель являлся самим собой.
-		$serviceGroupsList=  Paid_Service_Groups::model()->findAll($criteria);
+		if(isset($group_id))
+		{
+			$criteria->addCondition('paid_service_group_id!=:group_id');
+			$criteria->params=[':group_id'=>$group_id]; //нельзя изменить группу так, чтобы родитель являлся самим собой.
+		}
+		$serviceGroupsList=Paid_Service_Groups::model()->findAll($criteria);
 		return CHtml::listData(
 				CMap::mergeArray([
 							[
-								'paid_service_group_id'=>0,
-								'name'=>'Главная группа',
+								'paid_service_group_id'=>'0',
+								'name'=>'Без родителя',
 							]
 				], $serviceGroupsList),
 				'paid_service_group_id',
@@ -117,9 +120,9 @@ class Paid_Service_Groups extends ActiveRecord
 			//проверяем является ли он чьим-то child
 			if(!empty($recordChild))
 			{ //есть дочерние элементы.
-				$level+=1;
+				$level++;
 				Paid_Service_Groups::recursServicesOut($recordChild, $level);
-				$level-=1;
+				$level--;
 			}
 		}
 		?></ul><?php

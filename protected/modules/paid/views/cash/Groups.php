@@ -8,7 +8,7 @@
 <div class="container b-paid b-paid_modificator">
 	<div class="row">
 		<div class="col-xs-12">
-		
+			g
 		</div>
 	</div>
 	<div class="row b-paid__Row">
@@ -79,10 +79,10 @@
 						'update'=>[
 							'url'=>'CHtml::normalizeUrl(["cash/UpdateService", "id"=>$data->paid_service_id])',
 							'imageUrl'=>false,
-							'click'=>' updateService',
+							'click'=>'updateService',
 							'options'=>[
 								'class'=>'btn btn-success btn-block btn-xs',
-								'id'=>'ajaxUpdateService', //см paid.js 
+//								'id'=>'ajaxUpdateService', //см paid.js 
 							],
 						],
 						'delete'=>[

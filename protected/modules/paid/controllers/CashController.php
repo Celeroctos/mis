@@ -161,16 +161,18 @@ class CashController extends MPaidController
 	{
 		self::disableScripts();
 		$modelPaid_Service=Paid_Services::model()->findByPk($id);
-		$modelPaid_Service->setScenario('paid.cash.update');
-		$modelPaid_Service->price=ParseMoney::decodeMoney($modelPaid_Service->price); //преобразуем к деньгам (делим на 100)
-		$modelPaid_Service->since_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->since_date);
-		$modelPaid_Service->exp_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->exp_date);
+		$serviceGroupsListData=Paid_Service_Groups::getServiceGroupsListData(null);
 		
 		if($modelPaid_Service===null)
 		{
 			echo 'Такой услуги не существует!';
 			Yii::app()->end();
 		}
+		
+		$modelPaid_Service->setScenario('paid.cash.update');
+		$modelPaid_Service->price=ParseMoney::decodeMoney($modelPaid_Service->price); //преобразуем к деньгам (делим на 100)
+		$modelPaid_Service->since_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->since_date);
+		$modelPaid_Service->exp_date=Yii::app()->dateFormatter->format('yyyy-MM-dd', $modelPaid_Service->exp_date);
 		
 		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service); // валидируем CActiveFrom ajax
 		
@@ -182,7 +184,7 @@ class CashController extends MPaidController
 			$this->redirect(['cash/Groups', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
 		}
 
-		$this->renderPartial('updateServiceForm', ['modelPaid_Service'=>$modelPaid_Service], false, true);
+		$this->renderPartial('updateServiceForm', ['modelPaid_Service'=>$modelPaid_Service, 'serviceGroupsListData'=>$serviceGroupsListData], false, true);
 	}
 	
 	/**
