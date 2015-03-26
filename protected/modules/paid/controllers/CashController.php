@@ -77,7 +77,7 @@ class CashController extends MPaidController
 	 * Работа с группами и услугами платного модуля.
 	 * @param integer $group_id #ID группы услуг.
 	 */
-	public function actionServiceGroupsList($group_id=null)
+	public function actionGroups($group_id=null)
 	{
 		$modelPaid_Service_Group=new Paid_Service_Groups;
 		$modelPaid_Service=new Paid_Services;
@@ -90,7 +90,7 @@ class CashController extends MPaidController
 				throw new CHttpException(404, 'Такой группы не существует!');
 			}
 		}
-		$this->render('serviceGroupsList', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
+		$this->render('Groups', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
 	}
 	
 	/**
@@ -112,7 +112,7 @@ class CashController extends MPaidController
 			
 			if($modelPaid_Service_Group->save()) 
 			{
-				$this->redirect(['cash/serviceGroupsList', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
+				$this->redirect(['cash/Groups', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
 			}
 		}
 		$this->renderPartial('addGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group], false, true);
@@ -177,7 +177,7 @@ class CashController extends MPaidController
 			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
 			$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
 			$modelPaid_Service->save();
-			$this->redirect(['cash/serviceGroupsList', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
+			$this->redirect(['cash/Groups', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
 		}
 
 		$this->renderPartial('updateServiceForm', ['modelPaid_Service'=>$modelPaid_Service], false, true);
@@ -200,12 +200,12 @@ class CashController extends MPaidController
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
 			if($modelPaid_Service_Group->save()) 
 			{
-				$this->redirect(['cash/serviceGroupsList', 'group_id'=>$group_id]);
+				$this->redirect(['cash/Groups', 'group_id'=>$group_id]);
 			}
 		}
 		$this->renderPartial('updateGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 
 												 'serviceGroupsListData'=>$serviceGroupsListData,
-							 ], false, true);
+												], false, true);
 		
 	}
 	
@@ -219,8 +219,7 @@ class CashController extends MPaidController
 		{
 			throw new CHttpException(404, 'Такой группы не существует!');
 		}
-		$recordPaid_Service_Group->deleteByPk($group_id);
-		$recordPaid_Service_Group->deleteAll('p_id=:p_id', [':p_id'=>$group_id]);
+		Paid_Service_Groups::recursDeleteGroups($group_id);
 	}
 	
 	/**

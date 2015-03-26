@@ -24,7 +24,7 @@ class Paid_Service_Groups extends ActiveRecord
 			'code'=>'Код группы',
 			'p_id'=>'Группа',
 		];
-	}	
+	}
 	
 	public function rules()
 	{
@@ -59,6 +59,26 @@ class Paid_Service_Groups extends ActiveRecord
 	}
 	
 	/**
+	 * Рекурсивный метод удаления групп
+	 * @param integer $group_id #ID группы
+	 */
+	public static function recursDeleteGroups($group_id)
+	{
+		if(Paid_Service_Groups::model()->deleteByPk($group_id))
+		{
+			$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>$group_id]); //ищем предков
+
+			if(!empty($recordChild))
+			{
+				foreach($recordChild as $value)
+				{
+					Paid_Service_Groups::recursDeleteGroups($value->paid_service_group_id);
+				}
+			}
+		}
+	}
+	
+	/**
 	 * Рекурсивный метод для вывода услуг и их групп.
 	 * Программно вложенность неограничена.
 	 * Генерирует HTML-код из-за сложности организации его в представлении.
@@ -85,9 +105,11 @@ class Paid_Service_Groups extends ActiveRecord
 			?>
 			<li>
 				<div class="b-paid__serviceItemGroup">
-					<?= CHtml::link(CHtml::encode($value->name), ['cash/serviceGroupsList', 'group_id'=>$value->paid_service_group_id], ['class'=>'b-paid__serviceItemGroupLink']) ?>
-					<span class="glyphicon glyphicon-plus b-paid__addPopover" value="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" data-contect="" aria-hidden="true"></span>
-				<span class="glyphicon glyphicon-pencil b-paid__addEditPopover" value="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" aria-hidden="true"></span>
+					<div class="b-paid__serviceItemGroup-b_color">
+						<?= CHtml::link(CHtml::encode($value->name), ['cash/groups', 'group_id'=>$value->paid_service_group_id], ['class'=>'b-paid__serviceItemGroupLink']) ?>
+						<span class="glyphicon glyphicon-plus b-paid__addPopover" value="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" data-contect="" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-pencil b-paid__addEditPopover" value="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" aria-hidden="true"></span>
+					</div>
 				</div>
 			</li>
 			<?php
@@ -95,7 +117,7 @@ class Paid_Service_Groups extends ActiveRecord
 			//проверяем является ли он чьим-то child
 			if(!empty($recordChild))
 			{ //есть дочерние элементы.
-				$level+=1; //кол-во пикселей для вывода
+				$level+=1;
 				Paid_Service_Groups::recursServicesOut($recordChild, $level);
 				$level-=1;
 			}

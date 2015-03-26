@@ -30,7 +30,7 @@ $(document).ready(function() {
 		var group_id=action[7];
 		$('.b-paid__serviceItemGroup').each(function() {
 			$(this).removeClass('active');
-			var nameHref=$(this).children('.b-paid__addPopover').attr('id');
+			var nameHref=$(this).children('.b-paid__serviceItemGroup-b_color').children('.b-paid__addPopover').attr('value');
 
 			if(group_id!==undefined && group_id.indexOf(nameHref)!==-1)
 			{
@@ -87,9 +87,12 @@ $(document).ready(function() {
 		};
 		
 		this.DeleteGroup=function () {
+			if(!confirm('Вы уверены, что хотите удалить данный элемент?')) {
+				return false;
+			}
 			$.ajax({'url': '/paid/cash/deleteGroup/group_id/' + this.group_id,
 					'success': function (html) {
-						location.href='/paid/cash/serviceGroupsList';
+						location.href='/paid/cash/Groups';
 					}
 				});
 		};

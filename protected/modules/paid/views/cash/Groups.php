@@ -6,6 +6,11 @@
 ?>
 <?php $this->widget('PaidNavWidget'); ?>
 <div class="container b-paid b-paid_modificator">
+	<div class="row">
+		<div class="col-xs-12">
+		
+		</div>
+	</div>
 	<div class="row b-paid__Row">
 		<div class="col-xs-4 b-paid__borderRight">
 			<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id ORDER BY paid_service_group_id DESC', ['p_id'=>0]), 0); ?>
@@ -20,7 +25,7 @@
 			'template'=>'{items}',
 			'ajaxUpdate'=>true,
 			'emptyText'=>
-			'<h4 class="b-paid__emptyServiceHeader">Пустой результат таблицы с услугами группы</h4>',
+			'<h4 class="b-paid__emptyServiceHeader">Пустой результат</h4>',
 			'showTableOnEmpty'=>false,
 //			'itemsCssClass'=>'table table-bordered',
 			'pager'=>[
