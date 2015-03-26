@@ -33,7 +33,7 @@ class CashController extends MPaidController
 	}
 	
 	/**
-	 * ajax валидация добавление групп/подгрупп и услуг в эти группы
+	 * ajax валидация добавления/редактирования/поиска групп/подгрупп или услуг
 	 * см. CActiveForm
 	 * @param object $model
 	 */
@@ -56,12 +56,16 @@ class CashController extends MPaidController
 				echo CActiveForm::validate($modelPaid_Service);
 				Yii::app()->end();
 			}
+			elseif(Yii::app()->request->getPost('formSearchServices'))
+			{
+				echo CActiveForm::validate($modelPaid_Service);
+				Yii::app()->end();
+			}
 		}
 	}
 	
 	/**
 	 * Отключаем уже подключенные скрипты
-	 * @return
 	 */
 	public static function disableScripts()
 	{
@@ -74,14 +78,31 @@ class CashController extends MPaidController
 	}
 	
 	/**
+	 * результат поиска по услугам в модальном окне.
+	 */
+	public function actionSearchServicesAjaxValidation()
+	{
+		$modelPaid_Service=new Paid_Services('paid.cash.search');
+		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service);
+	}
+	
+	/**
+	 * Результат поиска
+	 * Вызывается ajax-запросом
+	 */
+	public function actionSearchServicesResult()
+	{
+		var_dump($_POST);
+	}
+	
+	/**
 	 * Работа с группами и услугами платного модуля.
 	 * @param integer $group_id #ID группы услуг.
 	 */
 	public function actionGroups($group_id=null)
 	{
-		$modelPaid_Service_Group=new Paid_Service_Groups;
 		$modelPaid_Service=new Paid_Services;
-		$modelPaid_Service->paid_service_group_id=$group_id; //выбор услуг данной группы.
+		$searchModelPaid_Service=new Paid_Services;
 		
 		if(isset($group_id))
 		{
@@ -90,8 +111,9 @@ class CashController extends MPaidController
 			{
 				throw new CHttpException(404, 'Такой группы не существует!');
 			}
+			$modelPaid_Service->paid_service_group_id=$group_id; //выбор услуг данной группы.
 		}
-		$this->render('Groups', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelPaid_Service'=>$modelPaid_Service]);
+		$this->render('Groups', ['modelPaid_Service'=>$modelPaid_Service, 'searchModelPaid_Service'=>$searchModelPaid_Service]);
 	}
 	
 	/**
@@ -194,7 +216,7 @@ class CashController extends MPaidController
 	 * @throws CHttpException
 	 */
 	public function actionUpdateGroup($group_id)
-	{
+	{//TODO!!!CRITICAL BUG: при изменении группы у родителя с p_id=0 исчезает вся ветка. добавить проверку
 		self::disableScripts();
 		$modelPaid_Service_Group=Paid_Service_Groups::model()->findByPk($group_id);
 		$serviceGroupsListData=Paid_Service_Groups::getServiceGroupsListData($group_id);
@@ -260,7 +282,7 @@ class CashController extends MPaidController
 	 * @param int $patient_id #ID пациента
 	 */
 	public function actionPatient($patient_id)
-	{
+	{ //TODO REFAC
 		if(isset($patient_id))
 		{//выбрали юзера не(!!) ajax запросом
 //			$recordPatient_Documents=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
@@ -295,7 +317,7 @@ class CashController extends MPaidController
 	 * Основной экш кассы.
 	 */
 	public function actionIndex()
-	{
+	{ //TODO REFACTORING
 		$modelPatient=new Patients;
 		$modelPaid_Medcard=new Paid_Medcards;
 		$modelPatient_Documents=new Patient_Documents;

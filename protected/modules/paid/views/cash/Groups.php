@@ -8,7 +8,41 @@
 <div class="container b-paid b-paid_modificator">
 	<div class="row">
 		<div class="col-xs-12">
-			g
+			<?php $form=$this->beginWidget('CActiveForm', [
+								'id'=>substr(md5(uniqid("", true)), 0, 7),
+								'enableAjaxValidation'=>'true',
+								'enableClientValidation'=>'true',
+								'clientOptions'=>[
+									'ajaxVar'=>'formSearchServices',
+									'validationUrl'=>$this->createUrl('cash/searchServicesAjaxValidation'),
+									'validateOnChange'=>true,
+									'validateOnType'=>true,
+									'validateOnSubmit'=>true,
+									'afterValidate'=>new CJavaScriptExpression('afterValidate'), //см paid.js
+								],
+							]); ?>
+			<div class="row">
+				<div class="col-xs-3">
+					<?= $form->Label($searchModelPaid_Service, 'code', ['class'=>'control-label']); ?>
+					<?= $form->TextField($searchModelPaid_Service, 'code', ['class'=>'form-control input-sm',]); ?>
+					<?= $form->error($searchModelPaid_Service, 'code', ['class'=>'b-paid__errorFormServicesGroup']); ?>
+				</div>
+				<div class="col-xs-3">
+					<?= $form->Label($searchModelPaid_Service, 'paid_service_group_id', ['class'=>'control-label']); ?>
+					<?= $form->TextField($searchModelPaid_Service, 'paid_service_group_id', ['class'=>'form-control input-sm',]); ?>
+					<?= $form->error($searchModelPaid_Service, 'paid_service_group_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
+				</div>
+				<div class="col-xs-3">
+					<?= $form->Label($searchModelPaid_Service, 'name', ['class'=>'control-label']); ?>
+					<?= $form->TextField($searchModelPaid_Service, 'name', ['class'=>'form-control input-sm',]); ?>
+					<?= $form->error($searchModelPaid_Service, 'name', ['class'=>'b-paid__errorFormServicesGroup']); ?>
+				</div>
+				<div class="col-xs-3">
+					<?= CHtml::SubmitButton('Найти услугу', ['class'=>'btn btn-primary btn-sm b-paid__serviceSearchButton']); ?>
+				</div>
+			</div>
+				
+			<?php $this->endWidget(); ?>
 		</div>
 	</div>
 	<div class="row b-paid__Row">

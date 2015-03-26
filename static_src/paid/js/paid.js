@@ -8,6 +8,40 @@ function updateService() { //add to onlick
 	return false;
 }
 
+/**
+ * Конструктор модели
+ * @param {string} code
+ * @param {integer} paid_service_group_id
+ * @param {string} name
+ * @returns {modelPaid_Services}
+ */
+function modelPaid_Services(code, paid_service_group_id, name) {
+	this.code=code;
+	this.paid_service_group_id=paid_service_group_id;
+	this.name=name;
+}
+
+/**
+ * функция передается в yii (CActiveForm)
+ * @param {jQuery} form
+ * @param {JSON} data
+ * @param {Boolean} hasError
+ * @returns {Boolean}
+ */
+function afterValidate(form, data, hasError) { //use in formSearchServices
+	if(!hasError)
+	{
+		var modelPaid_Service=new modelPaid_Services(form[0][0].value, form[0][1].value, form[0][2].value);
+		$.ajax({'data': modelPaid_Service,
+				'url': '/paid/cash/SearchServicesResult',
+				'success': function (html) {
+					console.log(html);
+				}
+		});
+	}
+	return false; //нам не нужно отправлять эту форму.
+}
+
 /***********************************************************/
 $(document).ready(function() {
 	//for reload page
@@ -46,7 +80,6 @@ $(document).ready(function() {
 	//		$(this).addClass('active');
 	////	});
 	function modelServiceGroups() {
-		
 		this.AddService=function () { //add to onclick, modal for add service
 			$.ajax({'success': function (html) {
 					$('#modalServiceGroupsBody').html(html);
