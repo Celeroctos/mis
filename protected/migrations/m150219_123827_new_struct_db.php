@@ -4,7 +4,7 @@
  * Без FK
  * При создании таблиц и ее атрибутов обязательно указывать схему, в которую добавляем таблицы.
  * @author Dzhamal Tayibov <prohps@yandex.ru>
- */
+ */ 
 class m150219_123827_new_struct_db extends CDbMigration
 {
 	public function up()
