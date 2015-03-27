@@ -19,7 +19,7 @@ class Paid_Service_Groups extends ActiveRecord
 	public function attributeLabels()
 	{
 		return [
-			'paid_service_group_id'=>'#ID',
+			'paid_service_group_id'=>'ID',
 			'name'=>'Название',
 			'code'=>'Код группы',
 			'p_id'=>'Группа',
@@ -40,7 +40,24 @@ class Paid_Service_Groups extends ActiveRecord
 		];
 	}
 	
-	public static function getServiceGroupsListData($group_id=null)
+	/**
+	 * Используется в шаблоне редактирования услуг (updateServiceForm.php)
+	 * @return array
+	 */
+	public static function getAddServiceGroupsListData()
+	{
+		$criteria=new CDbCriteria;
+		$serviceGroupsList=Paid_Service_Groups::model()->findAll($criteria);
+		return CHtml::listData($serviceGroupsList, 'paid_service_group_id', 'name');
+	}
+	
+	/**
+	 * Используется при поиске услуг и добавлении/редактировании групп.
+	 * @param integer $group_id
+	 * @param boolean $search
+	 * @return array
+	 */
+	public static function getServiceGroupsListData($group_id=null, $search=null)
 	{
 		$criteria=new CDbCriteria;
 		if(isset($group_id))
@@ -52,8 +69,8 @@ class Paid_Service_Groups extends ActiveRecord
 		return CHtml::listData(
 				CMap::mergeArray([
 							[
-								'paid_service_group_id'=>'0',
-								'name'=>'Без родителя',
+								'paid_service_group_id'=>isset($search) ? '' : 0, //для поиска нужно пустое значение, для добавления: 0
+								'name'=>isset($search) ? '' : 'Отсутствует',
 							]
 				], $serviceGroupsList),
 				'paid_service_group_id',

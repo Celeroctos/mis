@@ -14,11 +14,26 @@
 								'enableClientValidation'=>'true',
 								'clientOptions'=>[
 									'ajaxVar'=>'formSearchServices',
-									'validationUrl'=>$this->createUrl('cash/searchServicesAjaxValidation'),
+									'validationUrl'=>$this->createUrl('cash/searchServicesResult'),
 									'validateOnChange'=>true,
 									'validateOnType'=>true,
 									'validateOnSubmit'=>true,
-									'afterValidate'=>new CJavaScriptExpression('afterValidate'), //см paid.js
+									'afterValidate'=>new CJavaScriptExpression("function(form, data, hasError) { //use in formSearchServices
+																					if(!hasError)
+																					{
+																						//смотри конструктор в paid.js
+																						var modelPaid_Service=new modelPaid_Services(form[0][0].value, form[0][1].value, form[0][2].value);
+																						$.ajax({'data': modelPaid_Service,
+																										'url': '/paid/cash/SearchServicesResult',
+																										'type': 'POST',
+																										'success': function (html) {
+																											$('#modalServiceGroupsBody').html(html);
+																											$('#modalServiceGroups').modal('show');
+																										}
+																						});
+																					}
+																					return false; //нам не нужно отправлять эту форму.
+																				}"), //см paid.js
 								],
 							]); ?>
 			<div class="row">
@@ -29,7 +44,7 @@
 				</div>
 				<div class="col-xs-3">
 					<?= $form->Label($searchModelPaid_Service, 'paid_service_group_id', ['class'=>'control-label']); ?>
-					<?= $form->TextField($searchModelPaid_Service, 'paid_service_group_id', ['class'=>'form-control input-sm',]); ?>
+					<?= $form->DropDownList($searchModelPaid_Service, 'paid_service_group_id', Paid_Service_Groups::getServiceGroupsListData(null, true), ['class'=>'form-control input-sm',]); ?>
 					<?= $form->error($searchModelPaid_Service, 'paid_service_group_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
 				</div>
 				<div class="col-xs-3">
@@ -54,14 +69,18 @@
 		<?php
 		$this->widget('zii.widgets.grid.CGridView', [
 			'dataProvider'=>$modelPaid_Service->search(),
-			'filter'=>$modelPaid_Service,
+//			'filter'=>$modelPaid_Service,
 			'ajaxType'=>'post',
-			'template'=>'{items}',
+			'template'=>'{items}{pager}',
+//			'id'=>substr(md5(uniqid("", true)), 0, 4),
+			'id'=>'gridSearchGroupServices',
+			'ajaxVar'=>'gridSearchGroupServices',
 			'ajaxUpdate'=>true,
+			'enableSorting'=>false,
 			'emptyText'=>
 			'<h4 class="b-paid__emptyServiceHeader">Пустой результат</h4>',
 			'showTableOnEmpty'=>false,
-//			'itemsCssClass'=>'table table-bordered',
+			'itemsCssClass'=>'table table-bordered',
 			'pager'=>[
 				'class'=>'CLinkPager',
 				'cssFile'=>'',

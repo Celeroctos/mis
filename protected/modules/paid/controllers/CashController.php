@@ -78,21 +78,31 @@ class CashController extends MPaidController
 	}
 	
 	/**
-	 * результат поиска по услугам в модальном окне.
-	 */
-	public function actionSearchServicesAjaxValidation()
-	{
-		$modelPaid_Service=new Paid_Services('paid.cash.search');
-		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service);
-	}
-	
-	/**
 	 * Результат поиска
 	 * Вызывается ajax-запросом
+	 * и грузится результат в модальное окно в виде CGridView
 	 */
 	public function actionSearchServicesResult()
-	{
-		var_dump($_POST);
+	{//TODO кнопка перейти переходит на группу, надо на услугу (подсвечивать)
+		self::disableScripts();
+		$modelPaid_Service=new Paid_Services('paid.cash.search');
+		$modelPaid_Service->globalSearch=true; //жесткое или нежёсткое сравнение по группам (для г
+		
+		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service); //for formSearchServices
+		//своего рода рекурсия, метод через ajax запрос вызывает сам себя но не попадает туда, а идёт дальше
+		
+		if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('Paid_Services', $_POST)) //afterValidate form
+		{
+			$modelPaid_Service->hash=substr(md5(uniqid("", true)), 0, 4);
+			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services', $_POST); //запрос ajax
+			$this->renderPartial('gridSearchServices', ['modelPaid_Service'=>$modelPaid_Service], false, true);
+		}
+		elseif(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('gridSearchServices'))
+		{ //обработка кнопок CGridView (ajax)
+			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services'); //hash тоже
+			$this->renderPartial('gridSearchServices', ['modelPaid_Service'=>$modelPaid_Service]);
+			Yii::app()->end();
+		}
 	}
 	
 	/**
@@ -112,6 +122,11 @@ class CashController extends MPaidController
 				throw new CHttpException(404, 'Такой группы не существует!');
 			}
 			$modelPaid_Service->paid_service_group_id=$group_id; //выбор услуг данной группы.
+			
+			if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('gridSearchGroupServices'))
+			{
+				$this->render('Groups', ['modelPaid_Service'=>$modelPaid_Service]);
+			}
 		}
 		$this->render('Groups', ['modelPaid_Service'=>$modelPaid_Service, 'searchModelPaid_Service'=>$searchModelPaid_Service]);
 	}
@@ -203,7 +218,7 @@ class CashController extends MPaidController
 			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
 			$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
 			$modelPaid_Service->save();
-			$this->redirect(['cash/Groups', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
+			$this->redirect(['cash/groups', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
 		}
 
 		$this->renderPartial('updateServiceForm', ['modelPaid_Service'=>$modelPaid_Service, 'serviceGroupsListData'=>$serviceGroupsListData], false, true);
@@ -233,9 +248,10 @@ class CashController extends MPaidController
 		if(Yii::app()->request->getPost('Paid_Service_Groups'))//после ajax валидации CActiveForm отправляет submit на форму
 		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
+			
 			if($modelPaid_Service_Group->save()) 
 			{
-				$this->redirect(['cash/Groups', 'group_id'=>$group_id]);
+				$this->redirect(['cash/groups', 'group_id'=>$group_id]);
 			}
 		}
 		$this->renderPartial('updateGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 
