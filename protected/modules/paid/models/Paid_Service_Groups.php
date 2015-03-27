@@ -20,9 +20,16 @@ class Paid_Service_Groups extends ActiveRecord
 	{
 		return [
 			'paid_service_group_id'=>'ID',
-			'name'=>'Название',
+			'name'=>'Название группы',
 			'code'=>'Код группы',
 			'p_id'=>'Группа',
+		];
+	}
+	
+	public function relations()
+	{
+		return [
+			'services'=>[self::HAS_MANY, 'Paid_Services', 'paid_service_group_id'],
 		];
 	}
 	
@@ -70,7 +77,7 @@ class Paid_Service_Groups extends ActiveRecord
 				CMap::mergeArray([
 							[
 								'paid_service_group_id'=>isset($search) ? '' : 0, //для поиска нужно пустое значение, для добавления: 0
-								'name'=>isset($search) ? '' : 'Отсутствует',
+								'name'=>isset($search) ? 'Не указано' : 'Отсутствует',
 							]
 				], $serviceGroupsList),
 				'paid_service_group_id',
@@ -84,10 +91,10 @@ class Paid_Service_Groups extends ActiveRecord
 	 */
 	public static function recursDeleteGroups($group_id)
 	{
+		Paid_Services::model()->deleteAll('paid_service_group_id=:group_id', [':group_id'=>$group_id]);
 		if(Paid_Service_Groups::model()->deleteByPk($group_id) && Paid_Services::model()->deleteAll('paid_service_group_id=:group_id', [':group_id'=>$group_id]))
 		{
 			$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>$group_id]); //ищем предков
-
 			if(!empty($recordChild))
 			{
 				foreach($recordChild as $value)

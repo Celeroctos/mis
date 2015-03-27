@@ -24,11 +24,11 @@ class CashController extends MPaidController
 	private function renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData)
 	{
 		$this->render('index', ['modelPatient'=>$modelPatient,
-									'modelPaid_Medcard'=>$modelPaid_Medcard,
-									'modelPatient_Documents'=>$modelPatient_Documents,
-									'modelPatient_Contacts'=>$modelPatient_Contacts,
-									'documentTypeListData'=>$documentTypeListData,
-									'genderListData'=>$genderListData,
+								'modelPaid_Medcard'=>$modelPaid_Medcard,
+								'modelPatient_Documents'=>$modelPatient_Documents,
+								'modelPatient_Contacts'=>$modelPatient_Contacts,
+								'documentTypeListData'=>$documentTypeListData,
+								'genderListData'=>$genderListData,
 		]);
 	}
 	
@@ -254,9 +254,7 @@ class CashController extends MPaidController
 				$this->redirect(['cash/groups', 'group_id'=>$group_id]);
 			}
 		}
-		$this->renderPartial('updateGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 
-												 'serviceGroupsListData'=>$serviceGroupsListData,
-												], false, true);
+		$this->renderPartial('updateGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'serviceGroupsListData'=>$serviceGroupsListData], false, true);
 	}
 	
 	/**

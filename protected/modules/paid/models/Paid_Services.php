@@ -23,6 +23,13 @@ class Paid_Services extends ActiveRecord
 		return parent::model($className);
 	}
 	
+	public function relations()
+	{
+		return [
+			'group'=>[self::BELONGS_TO, 'Paid_Service_Groups', 'paid_service_group_id'],
+		];
+	}
+	
 	public function rules()
 	{
 		return [

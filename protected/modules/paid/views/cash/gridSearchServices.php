@@ -50,6 +50,13 @@ $this->widget('zii.widgets.grid.CGridView', [
 				],
 			],
 			[
+				'name'=>'group.name',
+				'filter'=>false,
+				'headerHtmlOptions'=>[
+					'class'=>'col-xs-1',
+				],
+			],
+			[
 				'name'=>'price',
 				'filter'=>false,
 				'value'=>'ParseMoney::decodeMoney($data->price)',
