@@ -34,6 +34,7 @@ class Paid_Services extends ActiveRecord
 	{
 		return [
 			['hash', 'safe'],
+			['code', 'unique'],
 			['paid_service_group_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.create'],
 			['name, code, reason', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			['price', 'type', 'type'=>'float', 'on'=>'paid.cash.create'],
@@ -53,6 +54,12 @@ class Paid_Services extends ActiveRecord
 			['price', 'type', 'type'=>'float', 'on'=>'paid.cash.search'],
 			['since_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.search'],
 			['exp_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.search'],
+			
+			['paid_service_group_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.select'],
+			['name, code, reason', 'type', 'type'=>'string', 'on'=>'paid.cash.select'],
+			['price', 'type', 'type'=>'float', 'on'=>'paid.cash.select'],
+			['since_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.select'],
+			['exp_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.select'],
 		];
 	}
 	
@@ -98,12 +105,7 @@ class Paid_Services extends ActiveRecord
 	{
 		$criteria=new CDbCriteria;
 
-		if(!$this->globalSearch) //см CashController::acionSearchServicesResult()
-		{ //жесткое сравнение (используется при выводе по группам, если не указана группа - ничего не выводить)
-			$criteria->condition='cast(paid_service_group_id as varchar)=:paid_service_group_id';
-			$criteria->params=[':paid_service_group_id'=>$this->paid_service_group_id];
-		}
-		if(!self::isEmpty($this))
+		if(!self::isEmpty($this) || $this->scenario=='paid.cash.select')
 		{
 			$criteria->compare('cast(paid_service_group_id as varchar)', $this->paid_service_group_id);
 			$criteria->compare('name', $this->name);
@@ -121,7 +123,7 @@ class Paid_Services extends ActiveRecord
 				],
 			],
 			'pagination'=>[
-				'pageSize'=>self::PAGE_SIZE,
+				'pageSize'=>2,
 			],
 		]);
 	}

@@ -22,6 +22,12 @@
 		border-top: 1px solid #f5f5f5;
 		margin-top: 5px;
 	}
+	.b-paid__selectServicePagination{
+		margin: 0;
+	}
+	.pager{
+		text-align: center !important;
+	}
 	.b-paid__selectHeader{
 		text-align: center;
 		margin-bottom: 0px;

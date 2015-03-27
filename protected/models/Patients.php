@@ -206,7 +206,7 @@ class Patients extends ActiveRecord
 	}
 	
 	public function search()
-	{	
+	{
 		$criteria=new CDbCriteria;
 		if(!self::isEmpty($this)
 		|| !self::isEmpty($this->modelPatient_Documents)

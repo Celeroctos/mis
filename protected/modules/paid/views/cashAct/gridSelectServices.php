@@ -8,9 +8,10 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPaid_Service->search(),
 	'filter'=>$modelPaid_Service,
 	'ajaxType'=>'post',
+	'id'=>'gridSelectServices',
 //	'id'=>$modelPaid_Service->hash, //сохраняем ID при обновлении ajax
-	'ajaxVar'=>'gridSearchServices',
-	'template'=>'{items}{pager}',
+	'ajaxVar'=>'gridSelectServices',
+	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
 	'emptyText'=>
@@ -33,7 +34,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 			'selectedPageCssClass'=>'active',
 			'header'=>false,
 			'htmlOptions'=>[
-				'class'=>'pagination',
+				'class'=>'pagination pagination-sm b-paid__selectServicePagination',
 			]
 	],
 	'columns'=>[
@@ -76,23 +77,29 @@ $this->widget('zii.widgets.grid.CGridView', [
 				'filter'=>false,
 				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
 			],
-			[
-				'class'=>'CButtonColumn',
-				'template'=>'{view}',
-				'buttons'=>[
-					'view'=>[
-						'url'=>'CHtml::normalizeUrl(["cash/groups", "group_id"=>$data->paid_service_group_id])',
-						'imageUrl'=>false,
-						'label'=>'Перейти',
-						'options'=>[
-							'class'=>'btn btn-success btn-block btn-xs'
-						]
-					],
-					'headerHtmlOptions'=>[
-						'class'=>'col-xs-1',
-					],
-				],
-			],
+//			[
+//				'class'=>'CButtonColumn',
+//				'template'=>'{view}',
+//				'buttons'=>[
+//					'view'=>[
+//						'url'=>'CHtml::normalizeUrl(["cash/groups", "group_id"=>$data->paid_service_group_id])',
+//						'imageUrl'=>false,
+//						'label'=>'Перейти',
+//						'options'=>[
+//							'class'=>'btn btn-success btn-block btn-xs'
+//						]
+//					],
+//					'headerHtmlOptions'=>[
+//						'class'=>'col-xs-1',
+//					],
+//				],
+//			],
 	],
 ]);
 ?>
+<h4>Выбранные услуги</h4>
+<table id="tableSelectionServices" class="table table-bordered table-striped">
+	<thead></thead>
+	<tbody>
+	</tbody>
+</table>

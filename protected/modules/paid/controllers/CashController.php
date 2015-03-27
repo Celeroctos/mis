@@ -86,7 +86,7 @@ class CashController extends MPaidController
 	{//TODO кнопка перейти переходит на группу, надо на услугу (подсвечивать)
 		self::disableScripts();
 		$modelPaid_Service=new Paid_Services('paid.cash.search');
-		$modelPaid_Service->globalSearch=true; //жесткое или нежёсткое сравнение по группам (для г
+//		$modelPaid_Service->globalSearch=true; //жесткое или нежёсткое сравнение по группам (для г
 		
 		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service); //for formSearchServices
 		//своего рода рекурсия, метод через ajax запрос вызывает сам себя но не попадает туда, а идёт дальше
@@ -304,7 +304,7 @@ class CashController extends MPaidController
 		{
 			throw new CHttpException(404, 'Такого пациента не существует!');
 		}
-		$this->render('patient',['modelPatient'=>$modelPatient, 'modelPaid_Service'=>$modelPaid_Service]);
+		$this->render('patient', ['modelPatient'=>$modelPatient, 'modelPaid_Service'=>$modelPaid_Service]);
 //		if(isset($patient_id))
 //		{//выбрали юзера не(!!) ajax запросом
 //			$recordPatient_Documents=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);

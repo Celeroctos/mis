@@ -12,6 +12,7 @@ function updateService() { //add to onlick
 }
 /**
  * insert function into Yii handler
+ * success method for ajax request
  * @param {mixed} success response
  */
 function selectServices(html)
@@ -36,6 +37,27 @@ function modelPaid_Services(code, paid_service_group_id, name) {
 $(document).ready(function() {
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"}),
+	
+	$(document).on('dblclick', '#gridSelectServices tbody tr', function () {
+		var objTr=$(this).clone();
+		var objTd=$('<td>Удалить</td>');
+		objTr.append(objTd);
+		
+		$("#tableSelectionServices tbody").append(objTr);
+		
+		objTd.on('dblclick', function () {
+			$(this).parent().detach();
+		});
+	});
+	
+	$(document).on('mousedown', '#gridSelectServices tbody tr', function () {
+		return false;
+	}); //disabled select text
+	
+	$(document).on('selectstart', '#gridSelectServices tbody tr', function () {
+		return false;
+	}); //disabled select text for IE
+	
     //for reload page
     (function() {
         var url=document.location.href;
