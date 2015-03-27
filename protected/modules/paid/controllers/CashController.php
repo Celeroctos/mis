@@ -150,7 +150,7 @@ class CashController extends MPaidController
 			
 			if($modelPaid_Service_Group->save()) 
 			{
-				$this->redirect(['cash/Groups', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
+				$this->redirect(['cash/groups', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
 			}
 		}
 		$this->renderPartial('addGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group], false, true);
