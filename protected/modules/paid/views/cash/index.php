@@ -6,7 +6,7 @@
 $this->pageTitle="Касса";
 ?>
 <?php $this->widget('PaidNavWidget'); ?>
-<div class="container b-paid">
+
 	<div class="row">
 		<div class="col-xs-10 b-paid__bodyLeft">
 			<?php $form=$this->beginWidget('CActiveForm', [
@@ -78,7 +78,7 @@ $this->pageTitle="Касса";
 					</div>
 				</div>
 			
-				<?php $this->widget('FieldDocumentsWidget', ['model'=>$modelPatient_Documents, 'form'=>$form, 'documentTypeListData'=>$documentTypeListData]); ?>
+				<?php $this->widget('FieldDocumentsWidget', ['model'=>$modelPatient_Documents, 'form'=>$form]); ?>
 				
 				<div class="row">
 					<div class="col-xs-8">
@@ -148,4 +148,3 @@ $this->pageTitle="Касса";
 		<div class="col-xs-2 b-paid__footerRight">
 		</div>
 	</div>
-</div>

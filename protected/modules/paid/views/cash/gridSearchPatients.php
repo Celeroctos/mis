@@ -6,9 +6,8 @@
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPatient->search(),
 	'filter'=>$modelPatient,
-	'id'=>'paid_cash_search-gridPatients',
+	'id'=>$modelPaid_Service->hash, //сохраняем ID при обновлении ajax
 	'ajaxType'=>'post',
-	'ajaxVar'=>'ajax_grid',
 	'ajaxUpdate'=>true,
 	'emptyText'=>'<div style="width: 185px; margin: 0 auto;">'
 	. '<h4>Пациент не найден!</h4>'

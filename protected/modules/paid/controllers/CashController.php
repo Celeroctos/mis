@@ -4,7 +4,7 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 class CashController extends MPaidController
-{
+{ //TODO блокировка кнопок добавления и прочего при ajax-запросе.
 	public function accessRules()
 	{
 		return [
@@ -324,7 +324,84 @@ class CashController extends MPaidController
 				$modelPaid_Medcard=$recordPaid_Medcard;
 			}
 			$this->render('patient', ['modelPatient'=>$modelPatient, 'modelPaid_Medcard'=>$modelPaid_Medcard]);
-		}		
+		}
+	}
+	
+	private function ajaxValidatePatients($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts)
+	{
+		if(Yii::app()->request->isAjaxRequest)
+		{
+			if(Yii::app()->request->getPost('formSearchPatients'))
+			{
+				$modelPatient_Documents_ArrTypes=isset(Yii::app()->request->getPost('Patient_Documents')['typeArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['typeArrMass'] : [];
+				$modelPatient_Documents_ArrSeries=isset(Yii::app()->request->getPost('Patient_Documents')['serieArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['serieArrMass'] : [];
+				$modelPatient_Documents_ArrNumbers=isset(Yii::app()->request->getPost('Patient_Documents')['numberArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['numberArrMass'] : [];
+				$modelPatient_Contacts_Arr=isset(Yii::app()->request->getPost('Patient_Contacts')['valueArrMass']) ? Yii::app()->request->getPost('Patient_Contacts')['valueArrMass'] : [];
+
+				$validatePatient=CJSON::decode(CActiveForm::validate($modelPatient));
+				$validateMedcard=CJSON::decode(CActiveForm::validate($modelPaid_Medcard));
+				$validatePatient_Documents=CJSON::decode(CActiveForm::validate($modelPatient_Documents));
+				$validatePatient_Contacts=CJSON::decode(CActiveForm::validate($modelPatient_Contacts));
+				$arrAllErrors=array_merge($validatePatient, $validateMedcard, $validatePatient_Documents, $validatePatient_Contacts);
+				
+				foreach($modelPatient_Contacts_Arr as $contact)
+				{
+					$modelPatient_Contacts->value=$contact;
+					$arrAllErrors=array_merge($arrAllErrors, CJSON::decode(CActiveForm::validate($modelPatient_Contacts, NULL, false)));
+				}
+				
+				foreach($modelPatient_Documents_ArrTypes as $key=>$value)
+				{
+					$modelPatient_Documents->type=$value; //or $modelPatient_Documents_ArrTypes[$key];
+					$modelPatient_Documents->serie=$modelPatient_Documents_ArrSeries[$key];
+					$modelPatient_Documents->number=$modelPatient_Documents_ArrNumbers[$key];
+					$arrAllErrors=array_merge($arrAllErrors, CJSON::decode(CActiveForm::validate($modelPatient_Documents, NULL, false)));
+				}
+
+				echo CJSON::encode($arrAllErrors);
+				Yii::app()->end();
+			}
+		}
+	}
+	
+	/**
+	 * Основное рабочее место кассира
+	 */
+	public function actionMain()
+	{
+		$modelPatient=new Patients('paid.cash.search');
+		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
+		$modelPatient_Contacts=new Patient_Contacts('paid.cash.search');
+		$modelPatient_Documents=new Patient_Documents('paid.cash.search');	
+
+		$this->ajaxValidatePatients($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts);
+		
+		$this->render('main', ['modelPatient'=>$modelPatient,
+							   'modelPatient_Documents'=>$modelPatient_Documents,
+							   'modelPatient_Contacts'=>$modelPatient_Contacts,
+							   'modelPaid_Medcard'=>$modelPaid_Medcard,
+				]);
+	}
+	
+	/**
+	 * Результат поиска пациента. Выводит CGridView в модальное окно. 
+	 * Вызывается этот экш с main-представления ajax запросом после успешной валидации CActiveForm.
+	 */
+	public function actionSearchPatientsResult()
+	{ //обработка всех кнопок грида попадает так же сюда, т.к. ajax запрос был послан сюда и отсюда был вызван грид
+		self::disableScripts();
+		$modelPatient=new Patients('paid.cash.search');
+		$modelPatient->modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
+		$modelPatient->modelPatient_Contacts=new Patient_Contacts('paid.cash.search');
+		$modelPatient->modelPatient_Documents=new Patient_Documents('paid.cash.search');
+		
+		$modelPatient->attributes=Yii::app()->request->getPost('Patients');
+		$modelPatient->modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
+		$modelPatient->modelPatient_Contacts->attributes=Yii::app()->request->getPost('Patient_Contacts');
+		$modelPatient->modelPatient_Documents->attributes=Yii::app()->request->getPost('Patient_Documents');
+		
+		$this->renderPartial('gridSearchPatients', ['modelPatient'=>$modelPatient], false, true);
+		Yii::app()->end();
 	}
 	
 	/**
@@ -332,6 +409,7 @@ class CashController extends MPaidController
 	 */
 	public function actionIndex()
 	{ //TODO REFACTORING
+		
 		$modelPatient=new Patients;
 		$modelPaid_Medcard=new Paid_Medcards;
 		$modelPatient_Documents=new Patient_Documents;
@@ -351,7 +429,7 @@ class CashController extends MPaidController
 			$modelPatient->modelPaid_Medcard->setScenario('paid.cash.search');
 			$modelPatient->modelPatient_Documents->setScenario('paid.cash.search');
 			$modelPatient->modelPatient_Contacts->setScenario('paid.cash.search');
-			
+//			
 			$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 			$modelPatient->modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
 			$modelPatient->modelPatient_Contacts->attributes=Yii::app()->request->getPost('Patient_Contacts');

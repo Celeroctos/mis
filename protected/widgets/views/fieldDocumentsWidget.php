@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-xs-3">
 			<?= $form->Label($model, 'type', ['class'=>'control-label']); ?>
-			<?= $form->DropDownList($model, 'type', $documentTypeListData, [
+			<?= $form->DropDownList($model, 'type', Patients::getDocumentTypeListData(), [
 							'class'=>'form-control input-sm',
 						]); ?>
 			<?= $form->error($model, 'type', ['class'=>'b-paid__errorFormPatient']); ?>

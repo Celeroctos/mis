@@ -7,8 +7,8 @@
 <h4>Добавление услуги</h4>
 <?php $form=$this->beginWidget('CActiveForm', [
 						'id'=>substr(md5(uniqid("", true)), 0, 7),
-						'enableAjaxValidation'=>'true',
-						'enableClientValidation'=>'true',
+						'enableAjaxValidation'=>true,
+						'enableClientValidation'=>true,
 						'clientOptions'=>[
 							'ajaxVar'=>'formAddServices',
 							'validateOnChange'=>true,

@@ -7,9 +7,9 @@
 ?>
 <h4>Редактирование услуги</h4>
 <?php $form=$this->beginWidget('CActiveForm', [
-					'enableAjaxValidation'=>'true',
 					'id'=>substr(md5(uniqid("", true)), 0, 7),
-					'enableClientValidation'=>'true',
+					'enableAjaxValidation'=>true,
+					'enableClientValidation'=>true,
 					'clientOptions'=>[
 						'ajaxVar'=>'formUpdateService',
 						'validateOnChange'=>true,

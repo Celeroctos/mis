@@ -54,10 +54,10 @@ class Patients extends ActiveRecord
 	const DOCUMENT_TYPE_OTHER_DOCUMENT_NAME = 'Другой документ';
 	
 	const GENDER_MALE_ID = 1;
-	const GENDER_MALE_NAME = 'М';
+	const GENDER_MALE_NAME = 'Мужской';
 	
 	const GENDER_FEMALE_ID = 2;
-	const GENDER_FEMALE_NAME = 'Ж';
+	const GENDER_FEMALE_NAME = 'Женский';
 	
 	public static function model($className=__CLASS__)
 	{
@@ -83,7 +83,6 @@ class Patients extends ActiveRecord
 			['address_reg, address, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			
 			//Поиск пациентов
-			['first_name', 'required', 'on'=>'paid.cash.search'],
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			/**********************************/
 		];
