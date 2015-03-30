@@ -15,11 +15,22 @@ $this->pageTitle='Касса';
 									'validateOnChange'=>false,
 									'ajaxVar'=>'formSearchPatients',
 									'validateOnSubmit'=>true,
-									'afterValidate'=>new CJavaScriptExpression("function(form, data, hasError) { //use in formSearchServices
+									'afterValidate'=>new CJavaScriptExpression("function(form, data, hasError) {
 																				if(!hasError)
 																				{
+																					var action=$('#select_button').attr('name');
+																					var url='/paid/cash/SearchPatientsResult';
+																					switch(action)
+																					{
+																						case 'search':
+																							url='/paid/cash/SearchPatientsResult';
+																							break;
+																						case 'create':
+																							url='/paid/cash/CreatePatient';
+																							break;
+																					}
 																					$.ajax({'data': $('#formSearchPatients').serialize(),
-																							'url': '/paid/cash/SearchPatientsResult',
+																							'url': url,
 																							'type': 'POST',
 																							'success': function (html) {
 																								$('#modalSearchPatientBody').html(html);
@@ -113,8 +124,15 @@ $this->pageTitle='Касса';
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-12">
-				<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-primary btn-sm']); ?>
+			<div id="select_button" name="search" class="col-xs-12"> <!-- какую кнопку нажали? -->
+				<?= CHtml::SubmitButton('Найти', ['class'=>'btn btn-primary btn-sm',
+												  'id'=>'submitSearchPatient',
+												  'name'=>'search',
+					]); ?>
+				<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success btn-sm',
+													  'id'=>'submitCreatePatient',
+													  'name'=>'create',
+					]); ?>
 			</div>
 		</div>
 	<?php $this->endWidget(); ?>
@@ -124,7 +142,6 @@ $this->pageTitle='Касса';
 	<div class="modal-dialog b-modalSearchPacient">
 		<div class="modal-content">
 			<div class="modal-body" id="modalSearchPatientBody">
-				...
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

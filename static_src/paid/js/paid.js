@@ -68,7 +68,7 @@ $(document).ready(function() {
                          'url': '/paid/cash/addService/group_id/' + this.group_id
             });
         };
-
+	
         this.AddGroup=function () { //add to onclick, 
                 $.ajax({'success': function (html) {
                             $('#modalServiceGroupsBody').html(html);
@@ -78,7 +78,7 @@ $(document).ready(function() {
                             'url': '/paid/cash/addGroup/group_id/' + this.group_id
                 });
         };
-
+	
         this.buttonAddGroup=function () { //add to onclick
                 $.ajax({'success': function (html) {
                             $('#modalServiceGroupsBody').html(html);
@@ -87,7 +87,7 @@ $(document).ready(function() {
                             'url': '/paid/cash/addGroup/group_id/0'
                 });
         };
-
+	
         this.UpdateGroup=function () {
                 $.ajax({'success': function (html) {
                             $('#modalServiceGroupsBody').html(html);
@@ -97,7 +97,7 @@ $(document).ready(function() {
                             'url': '/paid/cash/updateGroup/group_id/' + this.group_id
                 });			
         };
-
+	
         this.DeleteGroup=function () {
                 if(!confirm('Вы уверены, что хотите удалить данный элемент?')) {
                     return false;
@@ -108,7 +108,7 @@ $(document).ready(function() {
                             }
                         });
         };
-
+        
         this.initHandlers=function () { //add popover bootstrap for add service/group
             $(".b-paid__addPopover").on('click', function () {
                 modelServiceGroups.group_id=$(this).attr('value'); //потом юзаем ее через замыкание.
@@ -136,7 +136,7 @@ $(document).ready(function() {
             $(document).on('click', '#popoverButtonEditGroup', $.proxy(modelServiceGroups.UpdateGroup, modelServiceGroups));
             $(document).on('click', '#popoverButtonDeleteGroup', $.proxy(modelServiceGroups.DeleteGroup, modelServiceGroups));
         };
-
+        
         this.handlerHiddenModal=function () {
             $('#modalServiceGroups').on('hidden.bs.modal', function () {
                 $('#Paid_Services_since_date').unbind();
@@ -146,26 +146,55 @@ $(document).ready(function() {
             });
         };
     }
-
+    
+    function searchPatient()
+    {
+        this.handlerHiddenModal=function () {
+            $('#modalSearchPatient').on('hidden.bs.modal', function () {
+                $('#modalSearchPatientBody').html('');
+            });
+        };
+	this.handlerSearchPatient=function () {
+		$(document).on('click', '#submitSearchPatient', function () {
+			$(this).parent().attr('name', 'search');
+			
+		});
+	};
+        this.handlerCreatePatient=function () {
+            $(document).on('click', '#gridCreatePatient', function () {
+                $('#submitCreatePatient').css('display', 'inline-block');
+                $('#submitCreatePatient').animate({opacity: 1}, "slow");
+		$('#submitCreatePatient').parent().attr('name', 'create');
+                $('#modalSearchPatient').modal('hide');
+            });
+        };
+    }
     var modelServiceGroups=new modelServiceGroups();
+    var searchPatient=new searchPatient();
     modelServiceGroups.initHandlers();
     modelServiceGroups.handlerHiddenModal();
-
-    $('#paid_cash_index-modalSearchGrid').on('show.bs.modal', function(e){ //просто при нажатии
-        $(".b-paid__errorFormPatient").html('');
-        $(".b-paid__errorFormPatient").css('display', 'none');
-    });
-
-    $('#paid_cash_index-modalSearchGrid').on('hidden.bs.modal', function (e){
-        $("#paid_cash_index-modalSearchGridBody").html(''); //clean
-        $(document).off('click.yiiGridView', $.fn.yiiGridView.settings['paid_cash_search-gridPatients'].updateSelector);
-        $(document).off('click', '#paid_cash_search-gridPatients a.btn.btn-default.btn-block.btn-xs');
-    });
-
-    $(document).on('click', '#add_paid_modal_patient', function(e){ //добавление пациента из модали
-        $('#paid_cash_index-modalSearchGrid').modal('hide');
-        $('#add_paid_patient_button').css('display', 'inline-block');
-        $('#add_paid_patient_button').animate({opacity: 1}, "slow");
-//		$('#add_paid_patient_input').css('display', 'inline'); //добавляем hidden input
-    });
+    
+    searchPatient.handlerHiddenModal();
+  
+    searchPatient.handlerCreatePatient();
+    
+    searchPatient.handlerSearchPatient();
+    
+//    $('#paid_cash_index-modalSearchGrid').on('show.bs.modal', function(e){ //просто при нажатии
+//        $(".b-paid__errorFormPatient").html('');
+//        $(".b-paid__errorFormPatient").css('display', 'none');
+//    });
+//
+//    $('#paid_cash_index-modalSearchGrid').on('hidden.bs.modal', function (e){
+//        $("#paid_cash_index-modalSearchGridBody").html(''); //clean
+//        $(document).off('click.yiiGridView', $.fn.yiiGridView.settings['paid_cash_search-gridPatients'].updateSelector);
+//        $(document).off('click', '#paid_cash_search-gridPatients a.btn.btn-default.btn-block.btn-xs');
+//    });
+//
+//    $(document).on('click', '#add_paid_modal_patient', function(e){ //добавление пациента из модали
+//        $('#paid_cash_index-modalSearchGrid').modal('hide');
+//        $('#add_paid_patient_button').css('display', 'inline-block');
+//        $('#add_paid_patient_button').animate({opacity: 1}, "slow");
+////		$('#add_paid_patient_input').css('display', 'inline'); //добавляем hidden input
+//    });
 });

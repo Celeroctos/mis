@@ -6,12 +6,13 @@
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPatient->search(),
 	'filter'=>$modelPatient,
-	'id'=>$modelPaid_Service->hash, //сохраняем ID при обновлении ajax
+	'id'=>$modelPatient->hash, //сохраняем ID при обновлении ajax
 	'ajaxType'=>'post',
+	'ajaxVar'=>'gridSearchPatients',
 	'ajaxUpdate'=>true,
 	'emptyText'=>'<div style="width: 185px; margin: 0 auto;">'
 	. '<h4>Пациент не найден!</h4>'
-	. CHtml::htmlButton('Добавить', ['class'=>'btn btn-block btn-primary', 'id'=>'add_paid_modal_patient', 'name'=>'add_paid_modal_patient'])
+	. CHtml::htmlButton('Добавить', ['class'=>'btn btn-block btn-primary', 'id'=>'gridCreatePatient'])
 	. '</div>',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered',
@@ -37,7 +38,8 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'columns'=>[
 		[
 			'name'=>'last_name',
-			'filter'=>  CHtml::activeHiddenField($modelPatient->modelPatient_Documents, 'serie') .
+			'filter'=>  CHtml::activeHiddenField($modelPatient, 'hash') .
+						CHtml::activeHiddenField($modelPatient->modelPatient_Documents, 'serie') .
 						CHtml::activeHiddenField($modelPatient, 'last_name') .
 						CHtml::activeHiddenField($modelPatient, 'first_name') .
 						CHtml::activeHiddenField($modelPatient, 'middle_name') .

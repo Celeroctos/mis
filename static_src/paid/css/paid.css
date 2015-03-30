@@ -122,7 +122,10 @@
 .control-label{
 	white-space: nowrap;
 }
-
+#submitCreatePatient {
+    display: none;
+    opacity: 0;
+}
 /*.b-paidHeader{
     margin-bottom: 10px;
 }*/

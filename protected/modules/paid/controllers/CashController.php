@@ -373,14 +373,31 @@ class CashController extends MPaidController
 		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
 		$modelPatient_Contacts=new Patient_Contacts('paid.cash.search');
 		$modelPatient_Documents=new Patient_Documents('paid.cash.search');	
-
+		
+	
+		if(Yii::app()->request->getPost('create'))
+		{ //меняем сценарии если нажата кнопка "сохранить"
+			$modelPatient=new Patients('paid.cash.create');
+			$modelPaid_Medcard=new Paid_Medcards('paid.cash.create');
+			$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
+			$modelPatient_Documents=new Patient_Documents('paid.cash.create');			
+		}
+		
 		$this->ajaxValidatePatients($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts);
 		
 		$this->render('main', ['modelPatient'=>$modelPatient,
 							   'modelPatient_Documents'=>$modelPatient_Documents,
 							   'modelPatient_Contacts'=>$modelPatient_Contacts,
 							   'modelPaid_Medcard'=>$modelPaid_Medcard,
-				]);
+		]);
+	}
+	
+	/**
+	 * Создание пациента
+	 */
+	public function actionCreatePatient()
+	{ //сюда попадают уже свалидированные данные из экшна main(), валидируем только на уровне PHP
+		
 	}
 	
 	/**
@@ -399,6 +416,11 @@ class CashController extends MPaidController
 		$modelPatient->modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
 		$modelPatient->modelPatient_Contacts->attributes=Yii::app()->request->getPost('Patient_Contacts');
 		$modelPatient->modelPatient_Documents->attributes=Yii::app()->request->getPost('Patient_Documents');
+		
+		if(!Yii::app()->request->getParam('gridSearchPatients'))
+		{ //первый заход в этот экшн
+			$modelPatient->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
+		}
 		
 		$this->renderPartial('gridSearchPatients', ['modelPatient'=>$modelPatient], false, true);
 		Yii::app()->end();
