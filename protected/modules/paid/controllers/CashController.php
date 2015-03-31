@@ -167,7 +167,7 @@ class CashController extends MPaidController
 		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
 		$modelPaid_Service=new Paid_Services('paid.cash.create');
 		$modelPaid_Service->paid_service_group_id=$group_id;
-		
+		$modelDoctors=new Doctors();
 		if(isset($group_id))
 		{ //ловим ошибку
 			$record=Paid_Service_Groups::model()->findByPk($group_id);
@@ -181,12 +181,36 @@ class CashController extends MPaidController
 		
 		if(Yii::app()->request->getPost('Paid_Services'))
 		{
-			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
-			$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
-			$modelPaid_Service->save();
-			$this->redirect(Yii::app()->request->urlReferrer);
+			$transaction=Yii::app()->db->beginTransaction();
+			try
+			{
+				$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
+				$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
+				if($modelPaid_Service->save())
+				{
+					is_array(Yii::app()->request->getPost('Doctors')['id']) ? Yii::app()->request->getPost('Doctors')['id'] : [];
+					foreach(Yii::app()->request->getPost('Doctors')['id'] as $doctor_id)
+					{
+						$modelPaid_Services_Doctors=new Paid_Services_Doctors('paid.cash.create');
+						$modelPaid_Services_Doctors->paid_service_group_id=$group_id;
+						$modelPaid_Services_Doctors->doctor_id=$doctor_id;
+						if(!$modelPaid_Services_Doctors->save())
+						{
+							$transaction->rollback();
+							throw new CHttpException(404, 'Ошибка в запросе БД');
+						}
+					}
+				}
+				$transaction->commit();
+				$this->redirect(Yii::app()->request->urlReferrer);
+			}
+			catch(Exception $e)
+			{
+				$transaction->rollback();
+				throw $e;
+			}
 		}
-		$this->renderPartial('addServiceForm', ['modelPaid_Service'=>$modelPaid_Service], false, true);
+		$this->renderPartial('addServiceForm', ['modelPaid_Service'=>$modelPaid_Service, 'modelDoctors'=>$modelDoctors], false, true);
 	}
 	
 	/**

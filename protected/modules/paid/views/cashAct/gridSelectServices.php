@@ -8,8 +8,8 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPaid_Service->search(),
 	'filter'=>$modelPaid_Service,
 	'ajaxType'=>'post',
-	'id'=>'gridSelectServices',
-//	'id'=>$modelPaid_Service->hash, //сохраняем ID при обновлении ajax
+//	'id'=>'gridSelectServices',
+	'id'=>$modelPaid_Service->hash, //сохраняем ID при обновлении ajax
 	'ajaxVar'=>'gridSelectServices',
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
@@ -17,7 +17,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'emptyText'=>
 	'<h4 class="b-paid__emptyServiceHeader">По данным критериям услуги не найдены!</h4>',
 	'showTableOnEmpty'=>false,
-	'itemsCssClass'=>'table table-bordered',
+	'itemsCssClass'=>'table table-bordered gridSelectServices', //gridSelectServices используется в paid.js
 	'pager'=>[
 			'class'=>'CLinkPager',
 			'cssFile'=>'',
@@ -124,7 +124,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	</thead>
 	<tbody>
 		<tr class="empty">
-			<td colspan="7"><span>Выберите услуги выше, нажав два раза мышкой</span></td>
+			<td colspan="7"><span>Выберите услуги</span></td>
 		</tr>
 	</tbody>
 </table>

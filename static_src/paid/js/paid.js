@@ -41,7 +41,7 @@ $(document).ready(function() {
 	function classSelectServices() {
 		var i=0;
 		this.initHandlers=function () {
-			$(document).on('dblclick', '#gridSelectServices tbody tr', function () {
+			$(document).on('dblclick', '.gridSelectServices tbody tr', function () {
 				i++;
 				var objTr=$(this).clone();
 				var objTd=$('<td class="b-paid__removeGrid"><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
@@ -57,19 +57,26 @@ $(document).ready(function() {
 					}
 				});
 			});
-			$(document).on('mousedown', '#gridSelectServices tbody tr', function () {
+			$(document).on('mousedown', '.gridSelectServices tbody tr', function () {
 				return false;
 			}); //disabled select text
 
-			$(document).on('selectstart', '#gridSelectServices tbody tr', function () {
+			$(document).on('selectstart', '.gridSelectServices tbody tr', function () {
 				return false;
 			}); //disabled select text for IE	
 		};
 		this.handlerHiddenModal=function () {
-            $('#modalSelectServices').on('hidden.bs.modal', function () {
-				i=0;
-                $("#tableSelectionServices tbody tr").detach();
-            });
+			$('#modalSelectServices').on('hidden.bs.modal', function () {
+				i=0; //обнуляем через замыкание
+			});
+			$(document).on('click', "#selectedServicesConfirm", function () {
+				$("#selectedServicesTable tbody").remove();
+				tbody=$("#tableSelectionServices tbody").clone();
+				$("#selectedServicesTable table").append(tbody);
+				$("#selectedServicesTable tbody tr .b-paid__removeGrid").each(function () {
+					$(this).remove();
+				});
+			});
         };
 	}
 	

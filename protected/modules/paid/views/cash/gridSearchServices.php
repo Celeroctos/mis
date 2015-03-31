@@ -90,4 +90,3 @@ $this->widget('zii.widgets.grid.CGridView', [
 			],
 	],
 ]);
-?>
