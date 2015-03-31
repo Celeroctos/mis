@@ -14,6 +14,7 @@
 	<?php Yii::app()->clientScript->registerPackage('fieldPhonesWidget'); ?>
 	<?php Yii::app()->clientScript->registerPackage('fieldDocumentsWidget'); ?>
 	<?php Yii::app()->clientScript->registerPackage('jquery-ui'); ?>
+	<?php Yii::app()->clientScript->registerPackage('jquery.inputmask'); ?>
 </head>
 <body>
 	<?php $this->widget('HeaderWidget'); ?>

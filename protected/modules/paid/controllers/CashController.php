@@ -21,16 +21,16 @@ class CashController extends MPaidController
 		];
 	}
 	
-	private function renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData)
-	{
-		$this->render('index', ['modelPatient'=>$modelPatient,
-								'modelPaid_Medcard'=>$modelPaid_Medcard,
-								'modelPatient_Documents'=>$modelPatient_Documents,
-								'modelPatient_Contacts'=>$modelPatient_Contacts,
-								'documentTypeListData'=>$documentTypeListData,
-								'genderListData'=>$genderListData,
-		]);
-	}
+//	private function renderDuplicate($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts, $documentTypeListData, $genderListData)
+//	{
+//		$this->render('index', ['modelPatient'=>$modelPatient,
+//								'modelPaid_Medcard'=>$modelPaid_Medcard,
+//								'modelPatient_Documents'=>$modelPatient_Documents,
+//								'modelPatient_Contacts'=>$modelPatient_Contacts,
+//								'documentTypeListData'=>$documentTypeListData,
+//								'genderListData'=>$genderListData,
+//		]);
+//	}
 	
 	/**
 	 * ajax валидация добавления/редактирования/поиска групп/подгрупп или услуг
@@ -477,6 +477,7 @@ class CashController extends MPaidController
 				
 				$transaction->commit();
 				echo 1;
+				Yii::app()->end();
 			}
 			catch(Exception $e)
 			{
@@ -508,8 +509,19 @@ class CashController extends MPaidController
 			$modelPatient->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		
-		$this->renderPartial('gridSearchPatients', ['modelPatient'=>$modelPatient], false, true);
-		Yii::app()->end();
+		if($modelPatient->validate()
+		&& $modelPatient->modelPaid_Medcard->validate()
+		&& $modelPatient->modelPatient_Contacts->validate()
+		&& $modelPatient->modelPatient_Documents->validate())
+		{
+			$this->renderPartial('gridSearchPatients', ['modelPatient'=>$modelPatient], false, true);
+			Yii::app()->end();
+		}
+		else
+		{
+			echo 'Ошибки в валидации. При возникновении данной ошибки требуется уведомить администратора ресурса!';
+			Yii::app()->end();
+		}
 	}
 	
 	/**

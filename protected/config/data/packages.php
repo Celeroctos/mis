@@ -18,6 +18,15 @@ return [
 				'jquery-1.11.2.min.js',
 			],
 		],
+		'jquery.inputmask'=>[
+			'baseUrl'=>_STATIC .'/jquery.inputmask/js/',
+			'js'=>[
+				'jquery.inputmask.js',
+			],
+			'depends'=>[
+				'jquery',
+			],
+		],
 		'header'=>[
 			'baseUrl'=>_STATIC . '/header/',
 			'css'=>[

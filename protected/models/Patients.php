@@ -77,21 +77,61 @@ class Patients extends ActiveRecord
 	public function rules()
 	{
 		return [
-			['hash', 'safe'],
+			['hash', 'type', 'type'=>'string'],
 			//Добавление пациента
-			['first_name, middle_name, last_name, gender, birthday', 'required', 'on'=>'paid.cash.create'],
+			['first_name, middle_name, last_name, birthday', 'required', 'on'=>'paid.cash.create'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
-			['address_reg, address, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			['address_reg, address, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			
 			//Поиск пациентов
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.search'],
 			['address_reg, address, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
-			['first_name, middle_name, last_name, birthday', 'required', 'on'=>'paid.cash.search'],
-			
-			/**********************************/
+			['last_name', 'validateRequiredLastName', 'on'=>'paid.cash.search'],
 		];
 	}
+	
+	/**
+	 * Валидатор
+	 * Не может производится поиск по имени/отчеству без указания фамилии.
+	 * @param last_name
+	 */
+	public function validateRequiredLastName($attribute)
+	{
+		if((!empty($this->first_name) || !empty($this->middle_name)) && empty($this->last_name))
+		{
+			$this->addError($attribute, 'Заполните данное поле.');
+			return;
+		}
+	}
+	
+	/**
+	 * Валидатор
+	 * Если заполнено поле birthday, то необходимо заполнить ещё поля.
+	 * @param type $attribute
+	 */
+//	public function validateRequiredBirthday($attribute)
+//	{
+//		$error=false;
+//		
+//		if(!empty($this->birthday))
+//		{
+//			$error=true;
+//			
+//			foreach($this as $key=>$value)
+//			{ //итератор по объекту.
+//				if($key!='birthday' && !empty($value))
+//				{
+//					$error=false;
+//				}
+//			}
+//		}
+//		if($error===true)
+//		{
+//			$this->addError($attribute, 'Заполните ещё поля для запроса!');
+//			return;
+//		}
+//	}
 	
 	/**
 	 * Используется в форме paid/cash/search
@@ -151,13 +191,30 @@ class Patients extends ActiveRecord
 				], 'value', 'name');
 	}
 	
+	/**
+	 * Метод, проверяющий есть ли в запросе хоть одно заполненное поле
+	 * @param CDbCriteria $criteria
+	 * @return boolean
+	 */
+	public static function isEmptyIteratorObject($object)
+	{
+		$isEmptyRequest=true;
+		foreach($object as $value)
+		{ //итератор по данному объекту
+			if(!empty($value))
+			{
+				$isEmptyModelPatient=false;
+				break;
+			}
+		}
+	}
+	
 	public function search()
 	{
 		$criteria=new CDbCriteria;
+		
 		$criteria->with=['contacts'=>['select'=>''], 'documents'=>['select'=>''], 'paid_medcards'=>['select'=>'']]; //не выводим в таблице grid, FIX for POSTGRESQL
-		
 		$criteria->together=true;
-		
 		$criteria->select=['t.first_name', 't.last_name', 't.middle_name', 't.birthday'];
 		$criteria->compare('t.last_name', $this->last_name, true);
 		$criteria->compare('t.first_name', $this->first_name);
@@ -168,7 +225,6 @@ class Patients extends ActiveRecord
 		$criteria->compare('documents.serie', $this->modelPatient_Documents->serie);
 		$criteria->compare('documents.number', $this->modelPatient_Documents->number);
 		$criteria->compare('contacts.value', $this->modelPatient_Contacts->value);
-		
 		$criteria->group='t.patient_id';
 		
 		return new CActiveDataProvider('Patients', [

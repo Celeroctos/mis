@@ -23,6 +23,8 @@ function modelPaid_Services(code, paid_service_group_id, name) {
 
 /***********************************************************/
 $(document).ready(function() {
+	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
+	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"}),
     //for reload page
     (function() {
         var url=document.location.href;
