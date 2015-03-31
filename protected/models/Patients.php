@@ -196,37 +196,46 @@ class Patients extends ActiveRecord
 	 * @param CDbCriteria $criteria
 	 * @return boolean
 	 */
-	public static function isEmptyIteratorObject($object)
+	public static function isEmpty($object)
 	{
-		$isEmptyRequest=true;
+		$isEmpty=true;
 		foreach($object as $value)
 		{ //итератор по данному объекту
-			if(!empty($value))
+			if($value!==null && $value!=='')
 			{
-				$isEmptyModelPatient=false;
+				$isEmpty=false;
 				break;
 			}
 		}
+		return $isEmpty;
 	}
 	
 	public function search()
-	{
+	{	
 		$criteria=new CDbCriteria;
-		
-		$criteria->with=['contacts'=>['select'=>''], 'documents'=>['select'=>''], 'paid_medcards'=>['select'=>'']]; //не выводим в таблице grid, FIX for POSTGRESQL
-		$criteria->together=true;
-		$criteria->select=['t.first_name', 't.last_name', 't.middle_name', 't.birthday'];
-		$criteria->compare('t.last_name', $this->last_name, true);
-		$criteria->compare('t.first_name', $this->first_name);
-		$criteria->compare('t.middle_name', $this->middle_name, true);
-		$criteria->compare('t.gender', $this->gender, true);
-		$criteria->compare('paid_medcards.paid_medcard_number', $this->modelPaid_Medcard->paid_medcard_number);
-		$criteria->compare('documents.type', $this->modelPatient_Documents->type);
-		$criteria->compare('documents.serie', $this->modelPatient_Documents->serie);
-		$criteria->compare('documents.number', $this->modelPatient_Documents->number);
-		$criteria->compare('contacts.value', $this->modelPatient_Contacts->value);
-		$criteria->group='t.patient_id';
-		
+		if(!self::isEmpty($this)
+		|| !self::isEmpty($this->modelPatient_Documents)
+		|| !self::isEmpty($this->modelPatient_Contacts)
+		|| !self::isEmpty($this->modelPaid_Medcard))
+		{
+			$criteria->with=['contacts'=>['select'=>''], 'documents'=>['select'=>''], 'paid_medcards'=>['select'=>'']]; //не выводим в таблице grid, FIX for POSTGRESQL
+			$criteria->together=true;
+			$criteria->select=['t.first_name', 't.last_name', 't.middle_name', 't.birthday'];
+			$criteria->compare('t.last_name', $this->last_name, true);
+			$criteria->compare('t.first_name', $this->first_name);
+			$criteria->compare('t.middle_name', $this->middle_name, true);
+			$criteria->compare('t.gender', $this->gender, true);
+			$criteria->compare('paid_medcards.paid_medcard_number', $this->modelPaid_Medcard->paid_medcard_number);
+			$criteria->compare('documents.type', $this->modelPatient_Documents->type);
+			$criteria->compare('documents.serie', $this->modelPatient_Documents->serie);
+			$criteria->compare('documents.number', $this->modelPatient_Documents->number);
+			$criteria->compare('contacts.value', $this->modelPatient_Contacts->value);
+			$criteria->group='t.patient_id';			
+		}
+		else
+		{
+			$criteria->addCondition('t.patient_id=-1');
+		}
 		return new CActiveDataProvider('Patients', [
 			'criteria'=>$criteria,
 			'sort'=>[
