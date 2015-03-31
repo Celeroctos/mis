@@ -14,7 +14,7 @@ return [
 
 	// preloading 'log' component
 	'preload'=>['log', 'params'],
-	'homeUrl'=>'paid/cash/index',
+	'homeUrl'=>'paid/cash/main',
 	'sourceLanguage' => 'ru',
 	'language' => 'ru',
 	'charset'=>'utf-8',

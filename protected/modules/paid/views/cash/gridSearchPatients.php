@@ -88,7 +88,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 				'view'=>[
 					'label'=>'Выбрать пациента',
 					'imageUrl'=>false,
-					'url'=>'CHtml::normalizeUrl(["cash/index", "patient_id"=>$data->patient_id])',
+					'url'=>'CHtml::normalizeUrl(["cash/patient", "patient_id"=>$data->patient_id])',
 					'options'=>[
 						'class'=>'btn btn-success btn-block btn-xs'
 					],

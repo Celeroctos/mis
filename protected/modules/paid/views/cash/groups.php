@@ -18,21 +18,21 @@ $this->pageTitle='Группы и услуги';
 								'validateOnType'=>true,
 								'validateOnSubmit'=>true,
 								'afterValidate'=>new CJavaScriptExpression("function(form, data, hasError) { //use in formSearchServices
-																				if(!hasError)
-																				{
-																					//смотри конструктор в paid.js
-																					var modelPaid_Service=new modelPaid_Services(form[0][0].value, form[0][1].value, form[0][2].value);
-																					$.ajax({'data': modelPaid_Service,
-																									'url': '/paid/cash/SearchServicesResult',
-																									'type': 'POST',
-																									'success': function (html) {
-																										$('#modalServiceGroupsBody').html(html);
-																										$('#modalServiceGroups').modal('show');
-																									}
-																					});
+															if(!hasError)
+															{
+																//смотри конструктор в paid.js
+																var modelPaid_Service=new modelPaid_Services(form[0][0].value, form[0][1].value, form[0][2].value);
+																$.ajax({'data': modelPaid_Service,
+																				'url': '/paid/cash/SearchServicesResult',
+																				'type': 'POST',
+																				'success': function (html) {
+																					$('#modalServiceGroupsBody').html(html);
+																					$('#modalServiceGroups').modal('show');
 																				}
-																				return false; //нам не нужно отправлять эту форму.
-																			}"), //см paid.js
+																});
+															}
+															return false; //нам не нужно отправлять эту форму.
+														}"), //см paid.js
 							],
 						]); ?>
 		<div class="row">

@@ -157,7 +157,8 @@ $(document).ready(function() {
 	this.handlerSearchPatient=function () {
 		$(document).on('click', '#submitSearchPatient', function () {
 			$(this).parent().attr('name', 'search');
-			
+			$('#submitCreatePatient').css('display', 'none');
+			$('#submitCreatePatient').animate({opacity: 0}, "slow");
 		});
 	};
         this.handlerCreatePatient=function () {

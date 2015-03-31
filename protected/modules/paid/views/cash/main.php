@@ -7,40 +7,41 @@ $this->pageTitle='Касса';
 ?>
 <div class="row">
 	<div class="col-xs-10">
+		<h3 class="b-paid__searchHeader">Поиск пациента</h3>
 	<?php $form=$this->beginWidget('CActiveForm', [
-								'id'=>'formSearchPatients',
-								'enableAjaxValidation'=>true,
-								'enableClientValidation'=>false,
-								'clientOptions'=>[
-									'validateOnChange'=>false,
-									'ajaxVar'=>'formSearchPatients',
-									'validateOnSubmit'=>true,
-									'afterValidate'=>new CJavaScriptExpression("function(form, data, hasError) {
-																				if(!hasError)
-																				{
-																					var action=$('#select_button').attr('name');
-																					var url='/paid/cash/SearchPatientsResult';
-																					switch(action)
-																					{
-																						case 'search':
-																							url='/paid/cash/SearchPatientsResult';
-																							break;
-																						case 'create':
-																							url='/paid/cash/CreatePatient';
-																							break;
-																					}
-																					$.ajax({'data': $('#formSearchPatients').serialize(),
-																							'url': url,
-																							'type': 'POST',
-																							'success': function (html) {
-																								$('#modalSearchPatientBody').html(html);
-																								$('#modalSearchPatient').modal('show');
-																							}
-																					});
+					'id'=>'formSearchPatients',
+					'enableAjaxValidation'=>true,
+					'enableClientValidation'=>false,
+					'clientOptions'=>[
+						'validateOnChange'=>false,
+						'ajaxVar'=>'formSearchPatients',
+						'validateOnSubmit'=>true,
+						'afterValidate'=>new CJavaScriptExpression("function(form, data, hasError) {
+																	if(!hasError)
+																	{
+																		var action=$('#select_button').attr('name');
+																		var url='/paid/cash/SearchPatientsResult';
+																		switch(action)
+																		{
+																			case 'search':
+																				url='/paid/cash/SearchPatientsResult';
+																				break;
+																			case 'create':
+																				url='/paid/cash/CreatePatient';
+																				break;
+																		}
+																		$.ajax({'data': $('#formSearchPatients').serialize(),
+																				'url': url,
+																				'type': 'POST',
+																				'success': function (html) {
+																					$('#modalSearchPatientBody').html(html);
+																					$('#modalSearchPatient').modal('show');
 																				}
-																				return false; //нам не нужно отправлять эту форму.
-																			}"), //см paid.js
-								],
+																		});
+																	}
+																	return false; //нам не нужно отправлять эту форму.
+																}"), //см paid.js
+					],
 	]); ?>
 		<div class="row">
 			<div class="col-xs-3">
@@ -67,13 +68,6 @@ $this->pageTitle='Касса';
 		</div>
 		<div class="row">
 			<div class="col-xs-3">
-				<?= $form->Label($modelPatient, 'gender', ['class'=>'control-label']); ?>
-				<?= $form->DropDownList($modelPatient, 'gender', Patients::getGenderListData(), [
-								'class'=>'form-control input-sm',
-							]); ?>
-				<?= $form->error($modelPatient, 'gender', ['class'=>'b-paid__errorFormPatient']); ?>
-			</div>
-			<div class="col-xs-3">
 				<?= $form->Label($modelPatient, 'birthday', ['class'=>'control-label']); ?>
 					<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 						'language'=>'ru',
@@ -92,6 +86,13 @@ $this->pageTitle='Касса';
 						],
 					]); ?>
 				<?= $form->error($modelPatient, 'birthday', ['class'=>'b-paid__errorFormPatient']); ?>
+			</div>
+			<div class="col-xs-3">
+				<?= $form->Label($modelPatient, 'gender', ['class'=>'control-label']); ?>
+				<?= $form->DropDownList($modelPatient, 'gender', Patients::getGenderListData(), [
+								'class'=>'form-control input-sm',
+							]); ?>
+				<?= $form->error($modelPatient, 'gender', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 		</div>
 		<?php $this->widget('FieldDocumentsWidget', ['model'=>$modelPatient_Documents, 'form'=>$form]); ?>

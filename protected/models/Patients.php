@@ -85,6 +85,10 @@ class Patients extends ActiveRecord
 			
 			//Поиск пациентов
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
+			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.search'],
+			['address_reg, address, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
+			['first_name, middle_name, last_name, birthday', 'required', 'on'=>'paid.cash.search'],
+			
 			/**********************************/
 		];
 	}
@@ -167,7 +171,7 @@ class Patients extends ActiveRecord
 		
 		$criteria->group='t.patient_id';
 		
-		return new CActiveDataProvider('Patients',[
+		return new CActiveDataProvider('Patients', [
 			'criteria'=>$criteria,
 			'sort'=>[
 				'defaultOrder'=>[
