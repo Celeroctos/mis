@@ -31,7 +31,14 @@
 			<?= $form->Label($modelPaid_Service_Group, 'p_id', ['class'=>'control-label']); ?>
 			<?= $form->DropDownList($modelPaid_Service_Group, 'p_id', $serviceGroupsListData, ['class'=>'form-control input-sm',]); ?>
 			<?= $form->error($modelPaid_Service_Group, 'p_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
-		</div>	
+		</div>
+		<div class="col-xs-4 col-xs-offset-4">
+			<?= $form->Label($modelDoctors, 'last_name', ['class'=>'control-labe']); ?>
+			<div class="b-paid__checkBoxListDoctors">
+				<?= $form->checkBoxList($modelDoctors, 'id', Doctors::getServiceGroupsListData()); ?>
+				<?= $form->error($modelDoctors, 'id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
+			</div>
+		</div>
 		<div class="col-xs-4 col-xs-offset-4">
 			<br>
 			<?= CHtml::SubmitButton('Редактировать', ['class'=>'btn btn-block btn-primary btn-sm']); ?>

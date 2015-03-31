@@ -129,13 +129,14 @@ $(document).ready(function() {
     //		$(this).addClass('active');
     ////	});
     function modelServiceGroups() {
+		var group_id = null;
         this.AddService=function () { //add to onclick, modal for add service
             $.ajax({'success': function (html) {
                         $('#modalServiceGroupsBody').html(html);
                         $('#modalServiceGroups').modal('show');
 //					$("#Paid_Services_paid_service_group_id").attr('value', this.valueP_id);
                     },
-                         'url': '/paid/cash/addService/group_id/' + this.group_id
+                         'url': '/paid/cash/addService/group_id/' + group_id
             });
         };
 	
@@ -145,7 +146,7 @@ $(document).ready(function() {
                             $('#modalServiceGroups').modal('show');
 //				$("#Paid_Service_Groups_p_id").attr('value', this.valueP_id);
                         },
-                            'url': '/paid/cash/addGroup/group_id/' + this.group_id
+                            'url': '/paid/cash/addGroup/group_id/' + group_id
                 });
         };
 	
@@ -164,7 +165,7 @@ $(document).ready(function() {
                             $('#modalServiceGroups').modal('show');
 //				$("#Paid_Service_Groups_p_id").attr('value', this.valueP_id);
                         },
-                            'url': '/paid/cash/updateGroup/group_id/' + this.group_id
+                            'url': '/paid/cash/updateGroup/group_id/' + group_id
                 });			
         };
 	
@@ -172,7 +173,7 @@ $(document).ready(function() {
                 if(!confirm('Вы уверены, что хотите удалить данный элемент?')) {
                     return false;
                 }
-                $.ajax({'url': '/paid/cash/deleteGroup/group_id/' + this.group_id,
+                $.ajax({'url': '/paid/cash/deleteGroup/group_id/' + group_id,
                             'success': function (html) {
                                     location.href='/paid/cash/groups';
                             }
@@ -181,10 +182,10 @@ $(document).ready(function() {
         
         this.initHandlers=function () { //add popover bootstrap for add service/group
             $(".b-paid__addPopover").on('click', function () {
-                modelServiceGroups.group_id=$(this).attr('value'); //потом юзаем ее через замыкание.
+                group_id=$(this).attr('value');
             });
             $(".b-paid__addEditPopover").on('click', function () {
-                    modelServiceGroups.group_id=$(this).attr('value'); //потом юзаем ее через замыкание.
+                   group_id=$(this).attr('value');
             });
             $(".b-paid__addPopover").popover({
                 title : 'Выберите действие',
@@ -200,11 +201,11 @@ $(document).ready(function() {
                 content:'<button class="btn btn-block btn-primary btn-xs" id="popoverButtonEditGroup">Редактировать группу</button>\n\
                                  <button class="btn btn-block btn-primary btn-xs" id="popoverButtonDeleteGroup">Удалить группу</button>'
             });
-            $(document).on('click', '#popoverButtonAddService', $.proxy(modelServiceGroups.AddService, modelServiceGroups));
-            $(document).on('click', '#popoverButtonAddGroup', $.proxy(modelServiceGroups.AddGroup, modelServiceGroups));
-            $(document).on('click', '#buttonAddGroup', $.proxy(modelServiceGroups.buttonAddGroup, modelServiceGroups));
-            $(document).on('click', '#popoverButtonEditGroup', $.proxy(modelServiceGroups.UpdateGroup, modelServiceGroups));
-            $(document).on('click', '#popoverButtonDeleteGroup', $.proxy(modelServiceGroups.DeleteGroup, modelServiceGroups));
+			$(document).on('click', '#popoverButtonAddService', this.AddService);
+            $(document).on('click', '#popoverButtonAddGroup', this.AddGroup);
+            $(document).on('click', '#buttonAddGroup', this.buttonAddGroup);
+            $(document).on('click', '#popoverButtonEditGroup', this.UpdateGroup);
+            $(document).on('click', '#popoverButtonDeleteGroup', this.DeleteGroup);
         };
         
         this.handlerHiddenModal=function () {

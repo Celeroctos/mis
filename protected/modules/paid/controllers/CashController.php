@@ -153,8 +153,8 @@ class CashController extends MPaidController
 			{
 				if($modelPaid_Service_Group->save()) 
 				{
-					is_array(Yii::app()->request->getPost('Doctors')['id']) ? Yii::app()->request->getPost('Doctors')['id'] : [];
-					foreach(Yii::app()->request->getPost('Doctors')['id'] as $doctor_id)
+					$doctorsArray=is_array(Yii::app()->request->getPost('Doctors')['id']) ? Yii::app()->request->getPost('Doctors')['id'] : [];
+					foreach($doctorsArray as $doctor_id)
 					{
 						$modelPaid_Services_Doctors=new Paid_Services_Doctors('paid.cash.create');
 						$modelPaid_Services_Doctors->paid_service_group_id=Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq');
@@ -194,7 +194,6 @@ class CashController extends MPaidController
 		self::disableScripts();
 		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
 		$modelPaid_Service=new Paid_Services('paid.cash.create');
-
 		if(isset($group_id))
 		{ //ловим ошибку
 			$record=Paid_Service_Groups::model()->findByPk($group_id);
@@ -203,6 +202,7 @@ class CashController extends MPaidController
 				throw new CHttpException(404, 'Такой группы не существует!');
 			}
 		}
+		$modelPaid_Service->paid_service_group_id=$group_id;
 		
 		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group, $modelPaid_Service); //сначала валидируем.
 		
@@ -212,7 +212,7 @@ class CashController extends MPaidController
 			$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
 			if($modelPaid_Service->save())
 			{
-				$this->redirect(Yii::app()->request->urlReferrer);
+				$this->redirect(['cash/groups', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
 			}
 		}
 		$this->renderPartial('addServiceForm', ['modelPaid_Service'=>$modelPaid_Service], false, true);
@@ -260,15 +260,30 @@ class CashController extends MPaidController
 	 * @throws CHttpException
 	 */
 	public function actionUpdateGroup($group_id)
-	{//TODO!!!CRITICAL BUG: при изменении группы у родителя с p_id=0 исчезает вся ветка. добавить проверку
+	{//TODO CRITICAL BUG: при изменении группы у родителя с p_id=0 исчезает вся ветка. добавить проверку
+		//TODO UNIQUE (paid_service_group_id, doctor_id) in Paid_service_doctors table.
 		self::disableScripts();
 		$modelPaid_Service_Group=Paid_Service_Groups::model()->findByPk($group_id);
-		$serviceGroupsListData=Paid_Service_Groups::getServiceGroupsListData($group_id);
-		
 		if($modelPaid_Service_Group===null)
 		{
 			throw new CHttpException(404, 'Такой группы не существует!');
 		}
+		
+		$criteria=new CDbCriteria;
+		$criteria->select='doctor_id';
+		$criteria->condition='paid_service_group_id=:group_id';
+		$criteria->params=[':group_id'=>$group_id];
+		$idDoctors=Paid_services_Doctors::model()->findAll($criteria); //находим всех докторов у данной группы.
+		
+		$i=0;
+		$modelDoctors=new Doctors;
+		foreach($idDoctors as $doctor)
+		{ //вставляем в модель и выводим выделенные чекбоксы.
+			$modelDoctors->id[$i]=$doctor->doctor_id;
+			$i++;
+		}
+		
+		$serviceGroupsListData=Paid_Service_Groups::getServiceGroupsListData($group_id);
 		
 		$modelPaid_Service_Group->setScenario('paid.cash.update');
 		
@@ -277,13 +292,37 @@ class CashController extends MPaidController
 		if(Yii::app()->request->getPost('Paid_Service_Groups'))//после ajax валидации CActiveForm отправляет submit на форму
 		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
-			
-			if($modelPaid_Service_Group->save()) 
+			$transaction=Yii::app()->db->beginTransaction();
+			try
 			{
-				$this->redirect(['cash/groups', 'group_id'=>$group_id]);
+				if($modelPaid_Service_Group->save()) 
+				{
+					Paid_Services_Doctors::model()->deleteAll('paid_service_group_id=:group_id', [':group_id'=>$group_id]);
+					
+					$doctorsArray=is_array(Yii::app()->request->getPost('Doctors')['id']) ? Yii::app()->request->getPost('Doctors')['id'] : [];
+					foreach($doctorsArray as $doctor_id)
+					{
+						$modelPaid_Services_Doctors=new Paid_Services_Doctors('paid.cash.create');
+						$modelPaid_Services_Doctors->paid_service_group_id=$group_id;
+						$modelPaid_Services_Doctors->doctor_id=$doctor_id;
+						if(!$modelPaid_Services_Doctors->save()) //в идеале TODO ajax-валидацию...
+						{
+							$transaction->rollback();
+							throw new CHttpException(404, 'Ошибка в запросе БД');
+						}
+						unset($modelPaid_Service_Doctors);
+					}
+					$transaction->commit();
+					$this->redirect(['cash/groups', 'group_id'=>$group_id]);
+				}
+			}
+			catch(Exception $e)
+			{
+				$transaction->rollback();
+				throw $e;
 			}
 		}
-		$this->renderPartial('updateGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'serviceGroupsListData'=>$serviceGroupsListData], false, true);
+		$this->renderPartial('updateGroupForm', ['modelDoctors'=>$modelDoctors, 'modelPaid_Service_Group'=>$modelPaid_Service_Group, 'serviceGroupsListData'=>$serviceGroupsListData], false, true);
 	}
 	
 	/**

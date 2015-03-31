@@ -31,6 +31,12 @@
 		padding-top: 7px;
 		padding-bottom: 5px;
 	}
+	.b-paid__checkBoxListDoctors span{
+		text-align: left;
+		display: block;
+		padding-left: 15px;
+	}
+	
     .b-paid__serviceSearchButton{
             margin-top: 25px;
     }

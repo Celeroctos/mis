@@ -18,6 +18,7 @@ class Paid_Services_Doctors extends ActiveRecord
 	{
 		return [
 			['paid_service_group_id, doctor_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.create'],
+			['paid_service_group_id, doctor_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.update'],
 		];
 	}
 	

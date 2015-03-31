@@ -36,12 +36,12 @@
 					<th>
 						Цена
 					</th>
-					<th>
+<!--					<th>
 						Действует с
 					</th>
 					<th>
 						Действует до
-					</th>
+					</th>-->
 				</thead>
 				<tbody>
 					<tr class="empty">

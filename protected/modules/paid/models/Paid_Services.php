@@ -123,7 +123,7 @@ class Paid_Services extends ActiveRecord
 				],
 			],
 			'pagination'=>[
-				'pageSize'=>2,
+				'pageSize'=>self::PAGE_SIZE,
 			],
 		]);
 	}

@@ -52,31 +52,34 @@ $this->widget('zii.widgets.grid.CGridView', [
 						  CHtml::activeHiddenField($modelPaid_Service, 'name') .
 						  CHtml::activeHiddenField($modelPaid_Service, 'hash'),
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-1',
+					'class'=>'col-xs-4',
 				],
 			],
 			[
 				'name'=>'group.name',
 				'filter'=>false,
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-1',
+					'class'=>'col-xs-3',
 				],
 			],
 			[
 				'name'=>'price',
 				'filter'=>false,
 				'value'=>'ParseMoney::decodeMoney($data->price)',
+				'headerHtmlOptions'=>[
+					'class'=>'col-xs-1',
+				],
 			],
-			[
-				'name'=>'since_date',
-				'filter'=>false,
-				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
-			],
-			[
-				'name'=>'exp_date',
-				'filter'=>false,
-				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
-			],
+//			[
+//				'name'=>'since_date',
+//				'filter'=>false,
+//				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
+//			],
+//			[
+//				'name'=>'exp_date',
+//				'filter'=>false,
+//				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
+//			],
 //			[
 //				'class'=>'CButtonColumn',
 //				'template'=>'{view}',
@@ -112,12 +115,12 @@ $this->widget('zii.widgets.grid.CGridView', [
 		<th>
 			Цена
 		</th>
-		<th>
+<!--		<th>
 			Действует с
 		</th>
 		<th>
 			Действует до
-		</th>
+		</th>-->
 		<th>
 			Удаление
 		</th>
