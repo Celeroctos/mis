@@ -1,6 +1,6 @@
 <?php
 /**
- * Контроллер действий модуля услуг
+ * Контроллер действий модуля услуг (кнопки справа)
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 class CashActController extends MPaidController

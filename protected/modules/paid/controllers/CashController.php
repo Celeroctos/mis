@@ -141,19 +141,47 @@ class CashController extends MPaidController
 		self::disableScripts();
 		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
 		$modelPaid_Service_Group->p_id=$group_id;
+		$modelDoctors=new Doctors;
 		
 		$this->ajaxValidatePaidServiceGroup($modelPaid_Service_Group); //сначала валидируем.
 		
 		if(Yii::app()->request->getPost('Paid_Service_Groups'))//после ajax валидации CActiveForm отправляет submit на форму
 		{
 			$modelPaid_Service_Group->attributes=Yii::app()->request->getPost('Paid_Service_Groups');
-			
-			if($modelPaid_Service_Group->save()) 
+			$transaction=Yii::app()->db->beginTransaction();
+			try
 			{
-				$this->redirect(['cash/groups', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
+				if($modelPaid_Service_Group->save()) 
+				{
+					is_array(Yii::app()->request->getPost('Doctors')['id']) ? Yii::app()->request->getPost('Doctors')['id'] : [];
+					foreach(Yii::app()->request->getPost('Doctors')['id'] as $doctor_id)
+					{
+						$modelPaid_Services_Doctors=new Paid_Services_Doctors('paid.cash.create');
+						$modelPaid_Services_Doctors->paid_service_group_id=Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq');
+						$modelPaid_Services_Doctors->doctor_id=$doctor_id;
+						if(!$modelPaid_Services_Doctors->save())
+						{
+							$transaction->rollback();
+							throw new CHttpException(404, 'Ошибка в запросе БД');
+						}
+						unset($modelPaid_Service_Doctors);
+					}
+					$transaction->commit();
+					$this->redirect(['cash/groups', 'group_id'=>Yii::app()->db->getLastInsertID('paid.paid_service_groups_paid_service_group_id_seq')]);
+				}
+				else
+				{
+					$transaction->rollback();
+					Yii::app()->end();
+				}
+			}
+			catch(Exception $e)
+			{
+				$transaction->rollback();
+				throw $e;
 			}
 		}
-		$this->renderPartial('addGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group], false, true);
+		$this->renderPartial('addGroupForm', ['modelPaid_Service_Group'=>$modelPaid_Service_Group, 'modelDoctors'=>$modelDoctors], false, true);
 	}
 	
 	/**
@@ -166,8 +194,7 @@ class CashController extends MPaidController
 		self::disableScripts();
 		$modelPaid_Service_Group=new Paid_Service_Groups('paid.cash.create');
 		$modelPaid_Service=new Paid_Services('paid.cash.create');
-		$modelPaid_Service->paid_service_group_id=$group_id;
-		$modelDoctors=new Doctors();
+
 		if(isset($group_id))
 		{ //ловим ошибку
 			$record=Paid_Service_Groups::model()->findByPk($group_id);
@@ -181,36 +208,14 @@ class CashController extends MPaidController
 		
 		if(Yii::app()->request->getPost('Paid_Services'))
 		{
-			$transaction=Yii::app()->db->beginTransaction();
-			try
+			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
+			$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
+			if($modelPaid_Service->save())
 			{
-				$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
-				$modelPaid_Service->price=ParseMoney::encodeMoney($modelPaid_Service->price); //преобразуем к деньгам (умножаем на 100)
-				if($modelPaid_Service->save())
-				{
-					is_array(Yii::app()->request->getPost('Doctors')['id']) ? Yii::app()->request->getPost('Doctors')['id'] : [];
-					foreach(Yii::app()->request->getPost('Doctors')['id'] as $doctor_id)
-					{
-						$modelPaid_Services_Doctors=new Paid_Services_Doctors('paid.cash.create');
-						$modelPaid_Services_Doctors->paid_service_group_id=$group_id;
-						$modelPaid_Services_Doctors->doctor_id=$doctor_id;
-						if(!$modelPaid_Services_Doctors->save())
-						{
-							$transaction->rollback();
-							throw new CHttpException(404, 'Ошибка в запросе БД');
-						}
-					}
-				}
-				$transaction->commit();
 				$this->redirect(Yii::app()->request->urlReferrer);
 			}
-			catch(Exception $e)
-			{
-				$transaction->rollback();
-				throw $e;
-			}
 		}
-		$this->renderPartial('addServiceForm', ['modelPaid_Service'=>$modelPaid_Service, 'modelDoctors'=>$modelDoctors], false, true);
+		$this->renderPartial('addServiceForm', ['modelPaid_Service'=>$modelPaid_Service], false, true);
 	}
 	
 	/**
@@ -244,7 +249,7 @@ class CashController extends MPaidController
 			$modelPaid_Service->save();
 			$this->redirect(['cash/groups', 'group_id'=>$modelPaid_Service->paid_service_group_id]);
 		}
-
+		
 		$this->renderPartial('updateServiceForm', ['modelPaid_Service'=>$modelPaid_Service, 'serviceGroupsListData'=>$serviceGroupsListData], false, true);
 	}
 	

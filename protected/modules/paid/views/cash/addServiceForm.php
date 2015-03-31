@@ -81,10 +81,6 @@
 			<?= $form->TextField($modelPaid_Service, 'reason', ['class'=>'form-control input-sm']); ?>
 			<?= $form->error($modelPaid_Service, 'reason', ['class'=>'b-paid__errorFormServicesGroup']); ?>
 		</div>
-		<div class="col-xs-4 col-xs-offset-4">
-			<?= $form->checkBoxList($modelDoctors, 'id', Doctors::getServiceGroupsListData()); ?>
-			<?= $form->error($modelDoctors, 'id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
-		</div>
 			<?= $form->HiddenField($modelPaid_Service, 'paid_service_group_id', ['class'=>'form-control input-sm',]); ?>
 		<div class="col-xs-4 col-xs-offset-4">
 			<br>
