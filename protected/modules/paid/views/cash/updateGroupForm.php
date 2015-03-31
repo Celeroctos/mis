@@ -33,7 +33,7 @@
 			<?= $form->error($modelPaid_Service_Group, 'p_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
 		</div>
 		<div class="col-xs-4 col-xs-offset-4">
-			<?= $form->Label($modelDoctors, 'last_name', ['class'=>'control-labe']); ?>
+			<?= CHtml::label('Врачи', null, ['class'=>'control-label']); ?>
 			<div class="b-paid__checkBoxListDoctors">
 				<?= $form->checkBoxList($modelDoctors, 'id', Doctors::getServiceGroupsListData()); ?>
 				<?= $form->error($modelDoctors, 'id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
