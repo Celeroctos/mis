@@ -34,10 +34,11 @@ $(document).ready(function() {
         });
 		$(".b-paidNav__li").each(function () {
 			var nameHref=$(this).children(".b-paidNav__href").attr("href");
-		
 			if(action[5]=='patient')
 			{
 				$(this).addClass('active');
+				$('#paidActWidget input').removeAttr('disabled'); //разблокировка act-кнопок
+				$('.b-paid__summHeader').css('color', 'black');
 				return false;
 			}
             else if(nameHref.indexOf(action[5])!==-1)

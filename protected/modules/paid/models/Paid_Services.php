@@ -74,6 +74,25 @@ class Paid_Services extends ActiveRecord
 			'reason'=>'Основание',
 		];
 	}	
+
+	/**
+	 * Метод, проверяющий есть ли в запросе хоть одно заполненное поле
+	 * @param CDbCriteria $criteria
+	 * @return boolean
+	 */
+	public static function isEmpty($object)
+	{
+		$isEmpty=true;
+		foreach($object as $value)
+		{ //итератор по данному объекту
+			if($value!==null && $value!=='')
+			{
+				$isEmpty=false;
+				break;
+			}
+		}
+		return $isEmpty;
+	}
 	
 	public function search()
 	{
@@ -84,10 +103,16 @@ class Paid_Services extends ActiveRecord
 			$criteria->condition='cast(paid_service_group_id as varchar)=:paid_service_group_id';
 			$criteria->params=[':paid_service_group_id'=>$this->paid_service_group_id];
 		}
-		$criteria->compare('cast(paid_service_group_id as varchar)', $this->paid_service_group_id);
-		$criteria->compare('name', $this->name);
-		$criteria->compare('code', $this->code);
-		
+		if(!self::isEmpty($this))
+		{
+			$criteria->compare('cast(paid_service_group_id as varchar)', $this->paid_service_group_id);
+			$criteria->compare('name', $this->name);
+			$criteria->compare('code', $this->code);
+		}
+		else 
+		{
+			$criteria->addCondition('paid_service_group_id=-1');
+		}
 		return new CActiveDataProvider($this, [
 			'criteria'=>$criteria,
 			'sort'=>[

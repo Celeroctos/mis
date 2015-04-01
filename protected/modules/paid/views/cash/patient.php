@@ -4,8 +4,8 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
-<div class="row">
-	<div class="col-xs-8">
+<div class="row b-paid_position">
+	<div class="col-xs-10">
 		<?php $this->widget('zii.widgets.CDetailView', array(
 			'data'=>$modelPatient,
 			'nullDisplay'=>'Пациент не выбран!',
@@ -20,4 +20,6 @@
 			],
 		)); ?>
 	</div>
+	<?php $this->widget('PaidActWidget'); ?>
 </div>
+<?php $this->widget('PaidCashPunch'); ?>

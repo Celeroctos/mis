@@ -11,11 +11,6 @@ class Patients extends ActiveRecord
 	public $last_name;
 	public $gender;
 	public $birthday;
-//	public $document_type;
-//	public $document_serie;
-//	public $document_number;
-//	public $document_who_gived;
-//	public $document_date_gived;
 	public $address_reg;
 	public $address;
 	public $snils;

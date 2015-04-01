@@ -22,19 +22,23 @@
 		<?= $form->Label($modelPaid_Service, 'name', ['class'=>'control-label']); ?>
 		<?= $form->TextField($modelPaid_Service, 'name', ['class'=>'form-control input-sm',]); ?>
 		<?= $form->error($modelPaid_Service, 'name', ['class'=>'b-paid__errorFormServicesGroup']); ?>
-
+	</div>
+	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($modelPaid_Service, 'code', ['class'=>'control-label']); ?>
 		<?= $form->TextField($modelPaid_Service, 'code', ['class'=>'form-control input-sm',]); ?>
 		<?= $form->error($modelPaid_Service, 'code', ['class'=>'b-paid__errorFormServicesGroup']); ?>
-
+	</div>
+	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($modelPaid_Service, 'paid_service_group_id', ['class'=>'control-label']); ?>
 		<?= $form->DropDownList($modelPaid_Service, 'paid_service_group_id', Paid_Service_Groups::getAddServiceGroupsListData(), ['class'=>'form-control input-sm']); ?>
 		<?= $form->error($modelPaid_Service, 'paid_service_group_id', ['class'=>'b-paid__errorFormServicesGroup']); ?>
-
+	</div>
+	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($modelPaid_Service, 'price', ['class'=>'control-label']); ?>
 		<?= $form->TextField($modelPaid_Service, 'price', ['class'=>'form-control input-sm']); ?>
 		<?= $form->error($modelPaid_Service, 'price', ['class'=>'b-paid__errorFormServicesGroup']); ?>
-
+	</div>
+	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($modelPaid_Service, 'since_date', ['class'=>'control-label']); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 			'language'=>'ru',
@@ -55,7 +59,8 @@
 			],
 		]); ?>
 		<?= $form->error($modelPaid_Service, 'since_date', ['class'=>'b-paid__errorFormPatient']); ?>
-
+	</div>
+	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($modelPaid_Service, 'exp_date', ['class'=>'control-label']); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 			'language'=>'ru',
@@ -76,11 +81,13 @@
 			],
 		]); ?>
 		<?= $form->error($modelPaid_Service, 'exp_date', ['class'=>'b-paid__errorFormPatient']); ?>
-
+	</div>
+	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($modelPaid_Service, 'reason', ['class'=>'control-label']); ?>
 		<?= $form->TextField($modelPaid_Service, 'reason', ['class'=>'form-control input-sm']); ?>
 		<?= $form->error($modelPaid_Service, 'reason', ['class'=>'b-paid__errorFormServicesGroup']); ?>
-
+	</div>
+	<div class="col-xs-4 col-xs-offset-4">
 		<br>
 		<?= CHtml::SubmitButton('Редактировать', ['class'=>'btn btn-block btn-primary btn-sm']); ?>
 	</div>

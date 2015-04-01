@@ -150,6 +150,9 @@ $this->pageTitle='Касса';
 	</div>
 	<?php $this->widget('PaidActWidget'); ?>
 </div>
+
+<?php $this->widget('PaidCashPunch'); ?>
+
 <div class="modal" id="modalSearchPatient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalSearchPacient">
 		<div class="modal-content">
