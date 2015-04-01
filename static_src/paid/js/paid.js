@@ -29,15 +29,23 @@ $(document).ready(function() {
     (function() {
         var url=document.location.href;
         var action=url.split('/');
-        $(".b-paidNav__li").each(function(){
+        $(".b-paidNav__li").each(function() {
             $(this).removeClass('active');
-            var nameHref=$(this).children(".b-paidNav__href").attr("href");
-
-            if(nameHref.indexOf(action[5])!==-1)
-            {
-                $(this).addClass('active');
-            }
         });
+		$(".b-paidNav__li").each(function () {
+			var nameHref=$(this).children(".b-paidNav__href").attr("href");
+		
+			if(action[5]=='patient')
+			{
+				$(this).addClass('active');
+				return false;
+			}
+            else if(nameHref.indexOf(action[5])!==-1)
+            {
+				$(this).addClass('active');
+				return false;
+            }
+		});
     })();
     (function() {
         var url=document.location.href;
@@ -160,13 +168,13 @@ $(document).ready(function() {
 		$(document).on('click', '#submitSearchPatient', function () {
 			$(this).parent().attr('name', 'search');
 			$('#submitCreatePatient').css('display', 'none');
-			$('#submitCreatePatient').animate({opacity: 0}, "slow");
+			$('#submitCreatePatient').animate({opacity: 0}, 250);
 		});
 	};
         this.handlerCreatePatient=function () {
             $(document).on('click', '#gridCreatePatient', function () {
                 $('#submitCreatePatient').css('display', 'inline-block');
-                $('#submitCreatePatient').animate({opacity: 1}, "slow");
+                $('#submitCreatePatient').animate({opacity: 1}, 250);
 		$('#submitCreatePatient').parent().attr('name', 'create');
                 $('#modalSearchPatient').modal('hide');
             });

@@ -26,6 +26,16 @@
 	.b-paid_UL{
 		padding-left: 20px;
 	}
+	.b-paid_position{
+		position: relative !important;
+	}
+	.b-paid_grid_position{
+		position: absolute;
+		bottom: 0px;
+		right: 0px;
+/*		padding-left: 30px;
+		padding-right: 30px;*/
+	}
 	.b-paid__borderRight{
 		padding-top: 15px;
 		border-right: 1px solid #f5f5f5;

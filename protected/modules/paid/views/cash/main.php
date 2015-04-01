@@ -5,7 +5,7 @@
  */
 $this->pageTitle='Касса';
 ?>
-<div class="row">
+<div class="row b-paid_position">
 	<div class="col-xs-10">
 		<h3 class="b-paid__searchHeader">Поиск пациента</h3>
 	<?php $form=$this->beginWidget('CActiveForm', [
@@ -23,22 +23,30 @@ $this->pageTitle='Касса';
 																	{
 																		var action=$('#select_button').attr('name');
 																		var url='/paid/cash/SearchPatientsResult';
+																		var success=function () {};
 																		switch(action)
 																		{
 																			case 'search':
 																				url='/paid/cash/SearchPatientsResult';
+																				success=function (html) {
+																					$('#modalSearchPatientBody').html(html);
+																					$('#modalSearchPatient').modal('show');
+																				};
 																				break;
 																			case 'create':
 																				url='/paid/cash/CreatePatient';
+																				success=function (html) {
+																					if(html!=0)
+																					{
+																						location.href='/paid/cash/patient/patient_id/' + html;
+																					}
+																				};
 																				break;
 																		}
 																		$.ajax({'data': $('#formSearchPatients').serialize(),
 																				'url': url,
 																				'type': 'POST',
-																				'success': function (html) {
-																					$('#modalSearchPatientBody').html(html);
-																					$('#modalSearchPatient').modal('show');
-																				}
+																				'success': success,
 																		});
 																	}
 																	return false; //нам не нужно отправлять эту форму.
@@ -46,21 +54,21 @@ $this->pageTitle='Касса';
 					],
 	]); ?>
 		<div class="row">
-			<div class="col-xs-3">
+			<div class="col-xs-4">
 				<?= $form->Label($modelPatient, 'last_name', ['class'=>'control-label']); ?>
 				<?= $form->TextField($modelPatient, 'last_name', [
 								'class'=>'form-control input-sm',
 							]); ?>
 				<?= $form->error($modelPatient, 'last_name', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
-			<div class="col-xs-3">
+			<div class="col-xs-4">
 				<?= $form->Label($modelPatient, 'first_name', ['class'=>'control-label']); ?>
 				<?= $form->TextField($modelPatient, 'first_name', [
 								'class'=>'form-control input-sm',
 							]); ?>
 				<?= $form->error($modelPatient, 'first_name', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
-			<div class="col-xs-3">
+			<div class="col-xs-4">
 				<?= $form->Label($modelPatient, 'middle_name', ['class'=>'control-label']); ?>
 				<?= $form->TextField($modelPatient, 'middle_name', [
 								'class'=>'form-control input-sm',
@@ -99,7 +107,7 @@ $this->pageTitle='Касса';
 		</div>
 		<?php $this->widget('FieldDocumentsWidget', ['model'=>$modelPatient_Documents, 'form'=>$form]); ?>
 		<div class="row">
-			<div class="col-xs-9">
+			<div class="col-xs-12">
 					<?= $form->Label($modelPatient, 'address_reg', ['class'=>'control-label']); ?>
 					<?= $form->TextField($modelPatient, 'address_reg', [
 									'class'=>'form-control input-sm',
@@ -108,21 +116,21 @@ $this->pageTitle='Касса';
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-3">
+			<div class="col-xs-4">
 				<?= $form->Label($modelPatient, 'snils', ['class'=>'control-label']); ?>
 				<?= $form->TextField($modelPatient, 'snils', [
 								'class'=>'form-control input-sm',
 							]); ?>
 				<?= $form->error($modelPatient, 'snils', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
-			<div class="col-xs-3">
+			<div class="col-xs-4">
 				<?= $form->Label($modelPaid_Medcard, 'paid_medcard_number', ['class'=>'control-label']); ?>
 				<?= $form->TextField($modelPaid_Medcard, 'paid_medcard_number', [
 								'class'=>'form-control input-sm',
 							]); ?>
 				<?= $form->error($modelPatient, 'paid_medcard_number', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
-			<div class="col-xs-3">
+			<div class="col-xs-4">
 				<?php $this->widget('FieldPhonesWidget', ['model'=>$modelPatient_Contacts, 'form'=>$form]); ?>
 			</div>
 		</div>
@@ -140,6 +148,7 @@ $this->pageTitle='Касса';
 		</div>
 	<?php $this->endWidget(); ?>
 	</div>
+	<?php $this->widget('PaidActWidget'); ?>
 </div>
 <div class="modal" id="modalSearchPatient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalSearchPacient">

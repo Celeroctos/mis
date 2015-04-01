@@ -297,7 +297,13 @@ class CashController extends MPaidController
 	 */
 	public function actionPatient($patient_id)
 	{
+		$modelPatient=Patients::model()->findByPk($patient_id);
 		
+		if($modelPatient===null)
+		{
+			throw new CHttpException(404, 'Такого пациента не существует!');
+		}
+		$this->render('patient',['modelPatient'=>$modelPatient]);
 //		if(isset($patient_id))
 //		{//выбрали юзера не(!!) ajax запросом
 //			$recordPatient_Documents=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
@@ -476,7 +482,7 @@ class CashController extends MPaidController
 				}
 				
 				$transaction->commit();
-				echo 1;
+				echo Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq'); //выводим patient_id и перенаправляем аяксом на acitonPatient()
 				Yii::app()->end();
 			}
 			catch(Exception $e)
@@ -518,7 +524,7 @@ class CashController extends MPaidController
 			Yii::app()->end();
 		}
 		else
-		{
+		{ //TODO что-нибудь другое
 			echo 'Ошибки в валидации. При возникновении данной ошибки требуется уведомить администратора ресурса!';
 			Yii::app()->end();
 		}
@@ -528,7 +534,7 @@ class CashController extends MPaidController
 	 * Основной экш кассы.
 	 */
 	public function actionIndex()
-	{ //TODO REFACTORING
+	{
 		return $this->actionMain();
 	}
 }
