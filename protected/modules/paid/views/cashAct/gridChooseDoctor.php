@@ -41,6 +41,8 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'columns'=>[
 			[
 				'name'=>'last_name',
+				'type'=>'raw',
+				'value'=>'"<div class=\"lastName\">" . $data->last_name . "</div>"',
 				'filter'=>false,
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-1',
@@ -60,6 +62,8 @@ $this->widget('zii.widgets.grid.CGridView', [
 			],
 			[
 				'name'=>'middle_name',
+				'type'=>'raw',
+				'value'=>'"<div class=\"middleName\">" . $data->middle_name . "</div>"',
 				'filter'=>false,
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-3',

@@ -15,8 +15,7 @@ function updateService() { //add to onlick
  * success method for ajax request
  * @param {mixed} success response
  */
-function selectServices(html)
-{
+function selectServices(html) {
 	$('#modalSelectServicesBody').html(html);
     $('#modalSelectServices').modal('show');
 }
@@ -41,7 +40,8 @@ $(document).ready(function() {
 	function classSelectServices() {
 		var i=0; //замыкание, for echo empty row
 		var obj; //замыкание
-		var doctorTdTag;
+		var doctorTdTag; //замыкание
+		
 		this.initHandlers=function () {
 			$(document).on('click', '.gridSelectServices tbody tr', function () {
 				$.ajax({'success': function (html) {
@@ -76,8 +76,12 @@ $(document).ready(function() {
 			});
 			
 			$(document).on('click', '.gridChooseDoctor tbody tr', function () { //выбор врача
+				var doctor=$(this).clone();
+				var doctorLastName=doctor.find('.lastName').html();
+				var doctorFirstName=doctor.find('.lastName').html().substr(0, 1) + '.';
+				var doctorMiddleName=doctor.find('.middleName').html().substr(0, 1) + '.';
 				
-				doctorTdTag=$(this).clone().find('.firstName').parent();
+				doctorTdTag='<td>' + doctorLastName + ' ' + doctorFirstName + doctorMiddleName + '</td>';
 				$(document).trigger('selectedDoctor');
 				$('#modalSelectDoctorBody').empty();
 				$('#modalSelectDoctor').modal('hide');
@@ -91,6 +95,7 @@ $(document).ready(function() {
 				return false;
 			}); //disabled select text for IE
 		};
+		
 		this.handlerHiddenModal=function () {
 			$('#modalSelectServices').on('hidden.bs.modal', function () {
 				i=0; //обнуляем через замыкание
@@ -110,7 +115,7 @@ $(document).ready(function() {
 	selectServices.initHandlers();
 	selectServices.handlerHiddenModal();
 	
-	function classPunchCheck() {
+	function classPunchCheck() { //пробивка чека
 		var price=0;
 		this.visiblePunchButton=function () { //включаем кнопку пробивки чека, если выбраны услуги и у них есть цена >0
 			$(document).on('click', "#selectedServicesConfirm", function () {
@@ -189,43 +194,43 @@ $(document).ready(function() {
         };
 	
         this.AddGroup=function () { //add to onclick, 
-                $.ajax({'success': function (html) {
-                            $('#modalServiceGroupsBody').html(html);
-                            $('#modalServiceGroups').modal('show');
+			$.ajax({'success': function (html) {
+						$('#modalServiceGroupsBody').html(html);
+						$('#modalServiceGroups').modal('show');
 //				$("#Paid_Service_Groups_p_id").attr('value', this.valueP_id);
-                        },
-                            'url': '/paid/cash/addGroup/group_id/' + group_id
-                });
+					},
+						'url': '/paid/cash/addGroup/group_id/' + group_id
+			});
         };
 	
         this.buttonAddGroup=function () { //add to onclick
-                $.ajax({'success': function (html) {
-                            $('#modalServiceGroupsBody').html(html);
-                            $('#modalServiceGroups').modal('show');
-                        },
-                            'url': '/paid/cash/addGroup/group_id/0'
-                });
+			$.ajax({'success': function (html) {
+						$('#modalServiceGroupsBody').html(html);
+						$('#modalServiceGroups').modal('show');
+					},
+						'url': '/paid/cash/addGroup/group_id/0'
+			});
         };
 	
         this.UpdateGroup=function () {
-                $.ajax({'success': function (html) {
-                            $('#modalServiceGroupsBody').html(html);
-                            $('#modalServiceGroups').modal('show');
+			$.ajax({'success': function (html) {
+						$('#modalServiceGroupsBody').html(html);
+						$('#modalServiceGroups').modal('show');
 //				$("#Paid_Service_Groups_p_id").attr('value', this.valueP_id);
-                        },
-                            'url': '/paid/cash/updateGroup/group_id/' + group_id
-                });			
+					},
+						'url': '/paid/cash/updateGroup/group_id/' + group_id
+			});			
         };
 	
         this.DeleteGroup=function () {
-                if(!confirm('Вы уверены, что хотите удалить данный элемент?')) {
-                    return false;
-                }
-                $.ajax({'url': '/paid/cash/deleteGroup/group_id/' + group_id,
-                            'success': function (html) {
-                                    location.href='/paid/cash/groups';
-                            }
-                        });
+			if(!confirm('Вы уверены, что хотите удалить данный элемент?')) {
+				return false;
+			}
+			$.ajax({'url': '/paid/cash/deleteGroup/group_id/' + group_id,
+						'success': function (html) {
+								location.href='/paid/cash/groups';
+						}
+					});
         };
         
         this.initHandlers=function () { //add popover bootstrap for add service/group
