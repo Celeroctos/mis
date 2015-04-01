@@ -219,6 +219,7 @@ class Patients extends ActiveRecord
 			$criteria->compare('t.last_name', $this->last_name, true);
 			$criteria->compare('t.first_name', $this->first_name);
 			$criteria->compare('t.middle_name', $this->middle_name, true);
+			$criteria->compare('t.birthday', $this->birthday);
 			$criteria->compare('t.gender', $this->gender, true);
 			$criteria->compare('paid_medcards.paid_medcard_number', $this->modelPaid_Medcard->paid_medcard_number);
 			$criteria->compare('documents.type', $this->modelPatient_Documents->type);

@@ -10,6 +10,8 @@ class Doctors extends ActiveRecord
 	public $middle_name;
 	public $last_name;
 	
+	public $hash; //используется для id CGridView
+	
 	public static function getServiceGroupsListData()
 	{
 		$doctorList=Doctors::model()->findAll();

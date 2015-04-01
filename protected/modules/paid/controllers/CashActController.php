@@ -57,6 +57,12 @@ class CashActController extends MPaidController
 		$criteria->params=[':group_id'=>$recordPaid_Service->paid_service_group_id];
 		$criteria->group='t.id';
 		$modelDoctors=new Doctors;
+		
+		if(!Yii::app()->request->getParam('gridSelectDoctor'))
+		{ //первый заход в этот экшн
+			$modelDoctors->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
+		}
+		
 		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria]);
 		
 		$this->renderPartial('gridChooseDoctor', ['modelDoctors'=>$modelDoctors, 'dataProvider'=>$dataProvider], false, true);

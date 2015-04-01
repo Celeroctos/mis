@@ -8,15 +8,15 @@
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$dataProvider,
 	'filter'=>$modelDoctors,
-//	'ajaxType'=>'post',
+	'ajaxType'=>'post',
 //	'id'=>'gridSelectServices',
-//	'id'=>$modelPaid_Service->hash, //сохраняем ID при обновлении ajax
-//	'ajaxVar'=>'gridSelectServices',
+	'id'=>$modelDoctors->hash, //сохраняем ID при обновлении ajax
+	'ajaxVar'=>'gridSelectDoctor',
 	'template'=>'{pager}{items}',
-//	'ajaxUpdate'=>true,
+	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
 	'emptyText'=>
-	'<h4 class="b-paid__emptyServiceHeader">Врач не найден</h4>',
+	'<h4 class="b-paid__emptyServiceHeader">Врач(и) не найден(ы)</h4>',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridChooseDoctor', //gridSelectServices используется в paid.js
 	'pager'=>[
@@ -52,10 +52,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 				'name'=>'first_name',
 				'type'=>'raw',
 				'value'=>'"<div class=\"firstName\">" . $data->first_name . "</div>"',
-//				'filter'=>CHtml::activeHiddenField($modelPaid_Service, 'code') .
-//						  CHtml::activeHiddenField($modelPaid_Service, 'paid_service_group_id') .
-//						  CHtml::activeHiddenField($modelPaid_Service, 'name') .
-//						  CHtml::activeHiddenField($modelPaid_Service, 'hash'),
+				'filter'=>CHtml::activeHiddenField($modelDoctors, 'hash'),
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-4',
 				],
