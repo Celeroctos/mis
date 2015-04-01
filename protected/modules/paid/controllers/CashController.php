@@ -298,12 +298,13 @@ class CashController extends MPaidController
 	public function actionPatient($patient_id)
 	{
 		$modelPatient=Patients::model()->findByPk($patient_id);
+		$modelPaid_Service=new Paid_Services('paid.cash.search');
 		
 		if($modelPatient===null)
 		{
 			throw new CHttpException(404, 'Такого пациента не существует!');
 		}
-		$this->render('patient',['modelPatient'=>$modelPatient]);
+		$this->render('patient',['modelPatient'=>$modelPatient, 'modelPaid_Service'=>$modelPaid_Service]);
 //		if(isset($patient_id))
 //		{//выбрали юзера не(!!) ajax запросом
 //			$recordPatient_Documents=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
@@ -437,7 +438,7 @@ class CashController extends MPaidController
 				$modelPaid_Medcard->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
 				$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
 				$modelPatient_Documents->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-
+				
 				if(!($modelPaid_Medcard->save() && $modelPatient_Contacts->save() && $modelPatient_Documents->save()))
 				{//запросы с ошибками, откатываем транзакцию и выводим ошибку на клиента (0)
 					$transaction->rollback();

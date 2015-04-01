@@ -1,11 +1,23 @@
+/**
+ * insert function into Yii handler
+ */
 function updateService() { //add to onlick
     $.ajax({'success': function (html) {
                 $('#modalServiceGroupsBody').html(html);
                 $('#modalServiceGroups').modal('show');
             },
-                'url': $(this).attr('href')
+			'url': $(this).attr('href')
     });
     return false;
+}
+/**
+ * insert function into Yii handler
+ * @param {mixed} success response
+ */
+function selectServices(html)
+{
+	$('#modalSelectServicesBody').html(html);
+    $('#modalSelectServices').modal('show');
 }
 
 /**
@@ -20,7 +32,6 @@ function modelPaid_Services(code, paid_service_group_id, name) {
     this.paid_service_group_id=paid_service_group_id;
     this.name=name;
 }
-
 /***********************************************************/
 $(document).ready(function() {
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});

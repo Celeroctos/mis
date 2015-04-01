@@ -135,7 +135,7 @@ $this->pageTitle='Касса';
 			</div>
 		</div>
 		<div class="row">
-			<div id="select_button" name="search" class="col-xs-12"> <!-- какую кнопку нажали? -->
+			<div id="select_button" name="search" class="col-xs-12"> <!-- какую кнопку нажали? (search or create) -->
 				<?= CHtml::SubmitButton('Найти', ['class'=>'btn btn-primary btn-sm',
 												  'id'=>'submitSearchPatient',
 												  'name'=>'search',
