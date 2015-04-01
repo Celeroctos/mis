@@ -374,7 +374,7 @@ class CashController extends MPaidController
 		}
 		if(Yii::app()->request->getPost('punchButton'))
 		{
-			var_dump($_POST);
+			
 		}
 		$this->render('patient', ['modelPatient'=>$modelPatient, 'modelPaid_Service'=>$modelPaid_Service]);
 //		if(isset($patient_id))
