@@ -30,12 +30,14 @@ class Paid_Service_Groups extends ActiveRecord
 	{
 		return [
 			'services'=>[self::HAS_MANY, 'Paid_Services', 'paid_service_group_id'],
+			'doctors'=>[self::HAS_MANY, 'Paid_Services_Doctors', 'paid_service_group_id'],
 		];
 	}
 	
 	public function rules()
 	{
 		return [
+			['code', 'unique'],
 			//TODO ограничить макс. кол-во символов в названии групп, иначе будет съезжать
 			['name', 'required', 'on'=>'paid.cash.create'],
 			['code', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],

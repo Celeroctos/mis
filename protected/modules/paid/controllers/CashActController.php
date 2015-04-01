@@ -36,4 +36,29 @@ class CashActController extends MPaidController
 		$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
 		$this->renderPartial('gridSelectServices', ['modelPaid_Service'=>$modelPaid_Service, 'modelDoctors'=>$modelDoctors], false, true);
 	}
+	
+	/**
+	 * Используется ответом на ajax-запрос при выборе услуги (двойном
+	 * нажатии по записи в таблице).
+	 * Смотри classSelectServices() в paid.js
+	 * @param $code код услуги из хранилища, по которой был произведен двойной клик.
+	 */
+	public function actionChooseDoctor($code)
+	{
+		self::disableScripts();
+		$recordPaid_Service=Paid_Services::model()->find('code=:code', [':code'=>$code]);
+		//взяли id группы
+		
+		$criteria=new CDbCriteria;
+		$criteria->select='t.last_name, t.first_name, t.middle_name';
+		$criteria->with=['groups'=>['joinType'=>'INNER JOIN', 'select'=>'']];
+		$criteria->together=true;
+		$criteria->condition='groups.paid_service_group_id=:group_id';
+		$criteria->params=[':group_id'=>$recordPaid_Service->paid_service_group_id];
+		$criteria->group='t.id';
+		$modelDoctors=new Doctors;
+		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria]);
+		
+		$this->renderPartial('gridChooseDoctor', ['modelDoctors'=>$modelDoctors, 'dataProvider'=>$dataProvider], false, true);
+	}
 }

@@ -39,31 +39,57 @@ $(document).ready(function() {
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
 	
 	function classSelectServices() {
-		var i=0;
+		var i=0; //замыкание, for echo empty row
+		var obj; //замыкание
+		var doctorTdTag;
 		this.initHandlers=function () {
-			$(document).on('dblclick', '.gridSelectServices tbody tr', function () {
-				i++;
-				var objTr=$(this).clone();
-				var objTd=$('<td class="b-paid__removeGrid"><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
-				objTr.append(objTd);
-				$("#tableSelectionServices tbody").append(objTr);
-				$("#tableSelectionServices tbody .empty").css("display", "none");
-				objTd.on('click', function () {
-					$(this).parent().detach();
-					i--;
-					if(i===0)
-					{
-						$("#tableSelectionServices tbody .empty").css("display", "table-row");
-					}
+			$(document).on('click', '.gridSelectServices tbody tr', function () {
+				$.ajax({'success': function (html) {
+							$('#modalSelectDoctorBody').html(html);
+							$('#modalSelectDoctor').modal('show');
+						},
+						'url': '/paid/cashAct/chooseDoctor/code/' + $(this).find('.codeService').html()
+				});
+				
+				$(document).off('selectedDoctor');
+				
+				obj=$(this);
+				$(document).on('selectedDoctor', function () {
+					i++;
+					var objTr=obj.clone();
+					var objTd=$('<td class="b-paid__removeGrid"><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
+					objTr.append(doctorTdTag);
+					objTr.append(objTd);
+					$("#tableSelectionServices tbody").append(objTr);
+					$("#tableSelectionServices tbody .empty").css("display", "none");
+					
+					objTd.on('click', function () {
+						$(this).parent().detach();
+						i--;
+						if(i===0)
+						{
+							$("#tableSelectionServices tbody .empty").css("display", "table-row");
+						}
+					});
+					$('#modalSelectDoctorBody').html('');
 				});
 			});
+			
+			$(document).on('click', '.gridChooseDoctor tbody tr', function () { //выбор врача
+				
+				doctorTdTag=$(this).clone().find('.firstName').parent();
+				$(document).trigger('selectedDoctor');
+				$('#modalSelectDoctorBody').empty();
+				$('#modalSelectDoctor').modal('hide');
+			});
+			
 			$(document).on('mousedown', '.gridSelectServices tbody tr', function () {
 				return false;
 			}); //disabled select text
 
 			$(document).on('selectstart', '.gridSelectServices tbody tr', function () {
 				return false;
-			}); //disabled select text for IE	
+			}); //disabled select text for IE
 		};
 		this.handlerHiddenModal=function () {
 			$('#modalSelectServices').on('hidden.bs.modal', function () {
@@ -76,13 +102,35 @@ $(document).ready(function() {
 				$("#selectedServicesTable tbody tr .b-paid__removeGrid").each(function () {
 					$(this).remove();
 				});
-			});
+			});		
         };
 	}
 	
 	var selectServices=new classSelectServices();
 	selectServices.initHandlers();
 	selectServices.handlerHiddenModal();
+	
+	function classPunchCheck() {
+		var price=0;
+		this.visiblePunchButton=function () { //включаем кнопку пробивки чека, если выбраны услуги и у них есть цена >0
+			$(document).on('click', "#selectedServicesConfirm", function () {
+				$("#selectedServicesTable tbody .priceService").each(function () {
+					price+=Number($(this).html());
+				});
+				if(price>0) {
+					$('#punchButton').removeProp('disabled');
+					price=0;
+				}
+				else if(price<=0) {
+					$('#punchButton').attr('disabled', 'disabled');
+					price=0;
+				}
+			});
+		};
+	}
+	
+	var punchCheck=new classPunchCheck();
+	punchCheck.visiblePunchButton();
 	
     //for reload page
     (function() {

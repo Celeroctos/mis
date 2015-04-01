@@ -3,21 +3,22 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
+<h3>Выберите врача</h3>
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
-	'dataProvider'=>$modelPaid_Service->search(),
-	'filter'=>$modelPaid_Service,
-	'ajaxType'=>'post',
+	'dataProvider'=>$dataProvider,
+	'filter'=>$modelDoctors,
+//	'ajaxType'=>'post',
 //	'id'=>'gridSelectServices',
-	'id'=>$modelPaid_Service->hash, //сохраняем ID при обновлении ajax
-	'ajaxVar'=>'gridSelectServices',
+//	'id'=>$modelPaid_Service->hash, //сохраняем ID при обновлении ajax
+//	'ajaxVar'=>'gridSelectServices',
 	'template'=>'{pager}{items}',
-	'ajaxUpdate'=>true,
+//	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
 	'emptyText'=>
-	'<h4 class="b-paid__emptyServiceHeader">По данным критериям услуги не найдены!</h4>',
+	'<h4 class="b-paid__emptyServiceHeader">Врач не найден</h4>',
 	'showTableOnEmpty'=>false,
-	'itemsCssClass'=>'table table-bordered gridSelectServices', //gridSelectServices используется в paid.js
+	'itemsCssClass'=>'table table-bordered gridChooseDoctor', //gridSelectServices используется в paid.js
 	'pager'=>[
 			'class'=>'CLinkPager',
 			'cssFile'=>'',
@@ -39,38 +40,29 @@ $this->widget('zii.widgets.grid.CGridView', [
 	],
 	'columns'=>[
 			[
-				'name'=>'code',
-				'type'=>'raw',
-				'value'=>'"<div class=\"codeService\">" . $data->code . "</div>"',
+				'name'=>'last_name',
 				'filter'=>false,
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-1',
 				],
 			],
 			[
-				'name'=>'name',
-				'filter'=>CHtml::activeHiddenField($modelPaid_Service, 'code') .
-						  CHtml::activeHiddenField($modelPaid_Service, 'paid_service_group_id') .
-						  CHtml::activeHiddenField($modelPaid_Service, 'name') .
-						  CHtml::activeHiddenField($modelPaid_Service, 'hash'),
+				'name'=>'first_name',
+				'type'=>'raw',
+				'value'=>'"<div class=\"firstName\">" . $data->first_name . "</div>"',
+//				'filter'=>CHtml::activeHiddenField($modelPaid_Service, 'code') .
+//						  CHtml::activeHiddenField($modelPaid_Service, 'paid_service_group_id') .
+//						  CHtml::activeHiddenField($modelPaid_Service, 'name') .
+//						  CHtml::activeHiddenField($modelPaid_Service, 'hash'),
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-4',
 				],
 			],
 			[
-				'name'=>'group.name',
+				'name'=>'middle_name',
 				'filter'=>false,
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-3',
-				],
-			],
-			[
-				'name'=>'price',
-				'filter'=>false,
-				'type'=>'raw',
-				'value'=>'"<div class=\"priceService\">" . ParseMoney::decodeMoney(CHtml::encode($data->price)) . "</div>"',
-				'headerHtmlOptions'=>[
-					'class'=>'col-xs-1',
 				],
 			],
 //			[
@@ -102,38 +94,3 @@ $this->widget('zii.widgets.grid.CGridView', [
 //			],
 	],
 ]);
-?>
-<h4>Выбранные услуги</h4>
-<table id="tableSelectionServices" class="table table-bordered table-striped">
-	<thead>
-		<th>
-			Код услуги
-		</th>
-		<th>
-			Название
-		</th>
-		<th>
-			Название группы
-		</th>
-		<th>
-			Цена
-		</th>
-		<th>
-			Врач
-		</th>
-<!--		<th>
-			Действует с
-		</th>
-		<th>
-			Действует до
-		</th>-->
-		<th>
-			Удаление
-		</th>
-	</thead>
-	<tbody>
-		<tr class="empty">
-			<td colspan="7"><span>Выберите услуги</span></td>
-		</tr>
-	</tbody>
-</table>

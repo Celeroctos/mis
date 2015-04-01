@@ -84,7 +84,6 @@ class Paid_Services extends ActiveRecord
 
 	/**
 	 * Метод, проверяющий есть ли в запросе хоть одно заполненное поле
-	 * @param CDbCriteria $criteria
 	 * @return boolean
 	 */
 	public static function isEmpty($object)

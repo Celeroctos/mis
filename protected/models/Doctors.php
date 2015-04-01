@@ -28,6 +28,13 @@ class Doctors extends ActiveRecord
 		];
 	}
 	
+	public function relations()
+	{
+		return [
+			'groups'=>[self::HAS_MANY, 'Paid_Services_Doctors', 'doctor_id'],
+		];
+	}	
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);

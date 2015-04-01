@@ -36,7 +36,10 @@
 					<th>
 						Цена
 					</th>
-<!--					<th>
+					<th>
+						Врач
+					</th>
+<!--				<th>
 						Действует с
 					</th>
 					<th>
@@ -61,6 +64,17 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" id="selectedServicesConfirm" class="btn btn-primary" data-dismiss="modal">Выбрать</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" id="modalSelectDoctor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog b-modalSelectDoctor">
+		<div class="modal-content b-paid__modalHeader">
+			<div class="modal-body" id="modalSelectDoctorBody">
+			</div>
+			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
 			</div>
 		</div>
