@@ -78,10 +78,11 @@ $(document).ready(function() {
 			$(document).on('click', '.gridChooseDoctor tbody tr', function () { //выбор врача
 				var doctor=$(this).clone();
 				var doctorLastName=doctor.find('.lastName').html();
+				var doctorId=doctor.find('.doctorId').html(); //#ID доктора
 				var doctorFirstName=doctor.find('.lastName').html().substr(0, 1) + '.';
 				var doctorMiddleName=doctor.find('.middleName').html().substr(0, 1) + '.';
 				
-				doctorTdTag='<td>' + doctorLastName + ' ' + doctorFirstName + doctorMiddleName + '</td>';
+				doctorTdTag='<td>' + '<div class="doctorId">' + doctorId + '</div>' + doctorLastName + ' ' + doctorFirstName + doctorMiddleName + '</td>';
 				$(document).trigger('selectedDoctor');
 				$('#modalSelectDoctorBody').empty();
 				$('#modalSelectDoctor').modal('hide');
@@ -124,6 +125,22 @@ $(document).ready(function() {
 				});
 				if(price>0) {
 					$('#punchButton').removeProp('disabled');
+					var arr={};
+					arr.punchButton={};
+					var i=0;
+					$('#selectedServicesTable tbody tr').each(function () {
+						arr.punchButton[i]={};
+						arr.punchButton[i].code=$(this).find('.codeService').html();
+						arr.punchButton[i].doctorId=$(this).find('.doctorId').html();
+						i++;
+					});
+					$('#punchButton').on('click', function () {
+						$.ajax({'success': function (html) {
+								},
+								'data': arr,
+								'type': 'post'
+						});
+					});
 					price=0;
 				}
 				else if(price<=0) {

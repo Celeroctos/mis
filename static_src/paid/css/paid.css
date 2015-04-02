@@ -210,6 +210,9 @@
 div[class^="col-xs-"].error .form-control{
 	background-color: #ebccd1;
 }
+.doctorId{
+	display: none;
+}
 /*.b-paidHeader{
     margin-bottom: 10px;
 }*/

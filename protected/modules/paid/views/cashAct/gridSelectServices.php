@@ -3,6 +3,7 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
+<h4>Выберите услуги</h4>
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPaid_Service->search(),

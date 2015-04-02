@@ -372,6 +372,10 @@ class CashController extends MPaidController
 		{
 			throw new CHttpException(404, 'Такого пациента не существует!');
 		}
+		if(Yii::app()->request->getPost('punchButton'))
+		{
+			var_dump($_POST);
+		}
 		$this->render('patient', ['modelPatient'=>$modelPatient, 'modelPaid_Service'=>$modelPaid_Service]);
 //		if(isset($patient_id))
 //		{//выбрали юзера не(!!) ajax запросом
