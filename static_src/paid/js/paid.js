@@ -36,27 +36,46 @@ function modelPaid_Services(code, paid_service_group_id, name) {
 /***********************************************************/
 $(document).ready(function() {
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
-	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"}),
+	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
 	
-	$(document).on('dblclick', '#gridSelectServices tbody tr', function () {
-		var objTr=$(this).clone();
-		var objTd=$('<td>Удалить</td>');
-		objTr.append(objTd);
-		
-		$("#tableSelectionServices tbody").append(objTr);
-		
-		objTd.on('dblclick', function () {
-			$(this).parent().detach();
-		});
-	});
+	function classSelectServices() {
+		var i=0;
+		this.initHandlers=function () {
+			$(document).on('dblclick', '#gridSelectServices tbody tr', function () {
+				i++;
+				var objTr=$(this).clone();
+				var objTd=$('<td class="b-paid__removeGrid"><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
+				objTr.append(objTd);
+				$("#tableSelectionServices tbody").append(objTr);
+				$("#tableSelectionServices tbody .empty").css("display", "none");
+				objTd.on('click', function () {
+					$(this).parent().detach();
+					i--;
+					if(i===0)
+					{
+						$("#tableSelectionServices tbody .empty").css("display", "table-row");
+					}
+				});
+			});
+			$(document).on('mousedown', '#gridSelectServices tbody tr', function () {
+				return false;
+			}); //disabled select text
+
+			$(document).on('selectstart', '#gridSelectServices tbody tr', function () {
+				return false;
+			}); //disabled select text for IE	
+		};
+		this.handlerHiddenModal=function () {
+            $('#modalSelectServices').on('hidden.bs.modal', function () {
+				i=0;
+                $("#tableSelectionServices tbody tr").detach();
+            });
+        };
+	}
 	
-	$(document).on('mousedown', '#gridSelectServices tbody tr', function () {
-		return false;
-	}); //disabled select text
-	
-	$(document).on('selectstart', '#gridSelectServices tbody tr', function () {
-		return false;
-	}); //disabled select text for IE
+	var selectServices=new classSelectServices();
+	selectServices.initHandlers();
+	selectServices.handlerHiddenModal();
 	
     //for reload page
     (function() {

@@ -39,18 +39,18 @@ $this->widget('zii.widgets.grid.CGridView', [
 	],
 	'columns'=>[
 			[
-				'name'=>'name',
-				'filter'=>CHtml::activeHiddenField($modelPaid_Service, 'code') .
-						  CHtml::activeHiddenField($modelPaid_Service, 'paid_service_group_id') .
-						  CHtml::activeHiddenField($modelPaid_Service, 'name') .
-						  CHtml::activeHiddenField($modelPaid_Service, 'hash'),
+				'name'=>'code',
+				'filter'=>false,
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-1',
 				],
 			],
 			[
-				'name'=>'code',
-				'filter'=>false,
+				'name'=>'name',
+				'filter'=>CHtml::activeHiddenField($modelPaid_Service, 'code') .
+						  CHtml::activeHiddenField($modelPaid_Service, 'paid_service_group_id') .
+						  CHtml::activeHiddenField($modelPaid_Service, 'name') .
+						  CHtml::activeHiddenField($modelPaid_Service, 'hash'),
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-1',
 				],
@@ -99,7 +99,32 @@ $this->widget('zii.widgets.grid.CGridView', [
 ?>
 <h4>Выбранные услуги</h4>
 <table id="tableSelectionServices" class="table table-bordered table-striped">
-	<thead></thead>
+	<thead>
+		<th>
+			Код услуги
+		</th>
+		<th>
+			Название
+		</th>
+		<th>
+			Название группы
+		</th>
+		<th>
+			Цена
+		</th>
+		<th>
+			Действует с
+		</th>
+		<th>
+			Действует до
+		</th>
+		<th>
+			Удаление
+		</th>
+	</thead>
 	<tbody>
+		<tr class="empty">
+			<td colspan="7"><span>Выберите услуги выше, нажав два раза мышкой</span></td>
+		</tr>
 	</tbody>
 </table>
