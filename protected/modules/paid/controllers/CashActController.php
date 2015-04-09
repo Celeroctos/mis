@@ -5,6 +5,21 @@
  */
 class CashActController extends MPaidController
 {
+	public function accessRules()
+	{
+		return [
+			[
+				'allow', //разрешить только авториз. юзерам.
+				'controllers'=>['paid/cashAct'],
+				'users'=>['@'],
+			],
+			[
+				'deny', //запрет всем остальным и перенаправление.
+				'deniedCallback'=>[$this, 'redirectToDenied'],
+				'controllers'=>['paid/cashAct'],
+			],
+		];
+	}
 	/**
 	 * Отключаем уже подключенные скрипты
 	 */
@@ -27,13 +42,14 @@ class CashActController extends MPaidController
 	{
 		self::disableScripts();
 		$modelPaid_Service=new Paid_Services('paid.cash.select');
+		$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
+		
 		$modelDoctors=new Doctors();
 		if(!Yii::app()->request->getParam('gridSelectServices'))
 		{
 			$modelPaid_Service->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		
-		$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
 		$this->renderPartial('gridSelectServices', ['modelPaid_Service'=>$modelPaid_Service, 'modelDoctors'=>$modelDoctors], false, true);
 	}
 	
@@ -56,7 +72,8 @@ class CashActController extends MPaidController
 		$criteria->condition='groups.paid_service_group_id=:group_id';
 		$criteria->params=[':group_id'=>$recordPaid_Service->paid_service_group_id];
 		$criteria->group='t.id';
-		$modelDoctors=new Doctors;
+		$modelDoctors=new Doctors('paid.cashAct.search');
+		$modelDoctors->attributes=Yii::app()->request->getParam('Doctors');
 		
 		if(!Yii::app()->request->getParam('gridSelectDoctor'))
 		{ //первый заход в этот экшн
@@ -64,7 +81,18 @@ class CashActController extends MPaidController
 		}
 		
 		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria]);
-		
 		$this->renderPartial('gridChooseDoctor', ['modelDoctors'=>$modelDoctors, 'dataProvider'=>$dataProvider], false, true);
+	}
+	
+	/**
+	 * Пробивка чека (выставление счета и оплата данного счёта).
+	 * См. classPunchCheck() в paid.js
+	 */
+	public function actionPunch()
+	{
+		if(Yii::app()->request->getPost('punchButton'))
+		{
+			
+		}
 	}
 }

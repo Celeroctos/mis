@@ -78,6 +78,7 @@ HERE;
 						"paid_order_detail_id" serial NOT NULL,
 						"paid_order_id" integer NOT NULL, --FK (table paid_orders)
 						"paid_service_id" integer NOT NULL, --FK (table paid_services)
+						"doctor_id" integer, --FK (table doctors)
 						PRIMARY KEY(paid_order_detail_id)
 					);
 HERE;

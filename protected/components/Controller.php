@@ -6,7 +6,7 @@
 class Controller extends CController
 {
 	const VALUES = '';
-	
+	const ERROR_LOGIN_JS = 'ERROR_LOGIN'; //ajax запросы, если нет авторизации
 	public $layout='main';
 	
 	public $menu=array();
@@ -50,7 +50,14 @@ class Controller extends CController
 	public function redirectToDenied()
 	{
 		Yii::app()->user->logout(true);
-		$this->redirect('/' . Yii::app()->user->loginUrl);
+		if(Yii::app()->request->isAjaxRequest)
+		{
+			echo self::ERROR_LOGIN_JS;
+		}
+		else
+		{
+			$this->redirect('/' . Yii::app()->user->loginUrl);
+		}
 	}
 	
 	/**

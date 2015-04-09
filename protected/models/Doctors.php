@@ -27,6 +27,7 @@ class Doctors extends ActiveRecord
 	{
 		return [
 			['id', 'type', 'type'=>'integer'],
+			['hash', 'type', 'type'=>'string', 'on'=>'paid.cashAct.search'],
 		];
 	}
 	

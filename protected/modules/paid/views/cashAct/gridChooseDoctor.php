@@ -53,7 +53,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 			'name'=>'last_name',
 			'type'=>'raw',
 			'value'=>'"<div class=\"doctorId\">" . $data->id . "</div>" . "<div class=\"lastName\">" . $data->last_name . "</div>"',
-			'filter'=>false,
+			'filter'=>CHtml::activeHiddenField($modelDoctors, 'hash'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-1',
 			],
@@ -61,8 +61,8 @@ $this->widget('zii.widgets.grid.CGridView', [
 		[
 			'name'=>'first_name',
 			'type'=>'raw',
+			'filter'=>false,
 			'value'=>'"<div class=\"firstName\">" . $data->first_name . "</div>"',
-			'filter'=>CHtml::activeHiddenField($modelDoctors, 'hash'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-4',
 			],

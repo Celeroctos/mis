@@ -1,3 +1,8 @@
+var ERROR_LOGIN = 'ERROR_LOGIN';
+function redirectToLogin(){
+	location.href='/service/auth/login';
+}
+
 /**
  * insert function into Yii handler
  */
@@ -16,6 +21,11 @@ function updateService() { //add to onlick
  * @param {mixed} success response
  */
 function selectServices(html) {
+	
+	if(html===ERROR_LOGIN) {
+		redirectToLogin();
+		return;
+	}
 	$('#modalSelectServicesBody').html(html);
     $('#modalSelectServices').modal('show');
 }
@@ -125,7 +135,7 @@ $(document).ready(function() {
 				});
 				if(price>0) {
 					$('#punchButton').removeProp('disabled');
-					var arr={};
+					var arr={}; //замыкание для punchButton
 					arr.punchButton={};
 					var i=0;
 					$('#selectedServicesTable tbody tr').each(function () {
@@ -136,9 +146,11 @@ $(document).ready(function() {
 					});
 					$('#punchButton').on('click', function () {
 						$.ajax({'success': function (html) {
+									
 								},
-								'data': arr,
-								'type': 'post'
+								'data': arr, //отправляем codeService-doctorId связки
+								'type': 'post',
+								'url': '/paid/cashAct/punch'
 						});
 					});
 					price=0;
