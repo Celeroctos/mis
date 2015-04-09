@@ -92,7 +92,9 @@ class CashActController extends MPaidController
 	{
 		if(Yii::app()->request->getPost('punchButton'))
 		{
-			
+//			$modelPaid_Orders=new Paid_Orders('paid.cashAct.create');
+//			$modelPaid_Orders=Yii::app()->user->id;
+//			$modelPaid_Orders->order_number=Paid_Orders::generateRandNumber();
 		}
 	}
 }

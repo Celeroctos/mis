@@ -61,9 +61,9 @@ HERE;
 					CREATE TABLE IF NOT EXISTS "paid"."paid_orders"
 					(
 						"paid_order_id" serial NOT NULL,
-						"name" character varying(255),
+						"name" character varying(255), --сомнительно (не будет использоваться), в будущем удалить
+						"order_number" integer NOT NULL, --номер заказа, уникален. TODO UNIQUE
 						"user_create_id" integer NOT NULL, --Пользователь, создавший заказ и в дальнейшем платёж
-						"paid_expense_id" integer, --Номер счета, при статусе "новое" пустое значение, при статусе "включено в счет" ID счета
 						PRIMARY KEY(paid_order_id)
 					);
 HERE;

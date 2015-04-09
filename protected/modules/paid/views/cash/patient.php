@@ -20,7 +20,7 @@
 			],
 		)); ?>
 		
-		<h4 class="b-paid__selectHeader">Выбранные услуги</h4>
+		<h4 class="b-paid__selectHeader">Услуги, включенные в заказ</h4>
 		<div id="selectedServicesTable">
 			<table class="table table-bordered">
 				<thead>
@@ -63,7 +63,7 @@
 			<div class="modal-body" id="modalSelectServicesBody">
 			</div>
 			<div class="modal-footer">
-				<button type="button" id="selectedServicesConfirm" class="btn btn-primary" data-dismiss="modal">Выбрать</button>
+				<button type="button" id="selectedServicesConfirm" class="btn btn-primary" data-dismiss="modal">Сформировать заказ</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
 			</div>
 		</div>

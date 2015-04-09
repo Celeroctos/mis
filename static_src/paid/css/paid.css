@@ -36,7 +36,9 @@
 		display: block;
 		padding-left: 15px;
 	}
-	
+	.b-paid__punchButtons{
+		text-align: right;
+	}
     .b-paid__serviceSearchButton{
             margin-top: 25px;
     }

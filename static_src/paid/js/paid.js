@@ -1,6 +1,11 @@
 var ERROR_LOGIN = 'ERROR_LOGIN';
+/**
+ * Если пользователь не авторизован, то перенаправляем его.
+ * @returns {undefined}
+ */
 function redirectToLogin(){
 	location.href='/service/auth/login';
+	return;
 }
 
 /**
@@ -53,6 +58,16 @@ $(document).ready(function() {
 		var doctorTdTag; //замыкание
 		
 		this.initHandlers=function () {
+			
+			$(document).on('click', "#selectedServicesConfirm", function () { //сформировать заказ
+				$("#selectedServicesTable tbody").remove();
+				tbody=$("#tableSelectionServices tbody").clone();
+				$("#selectedServicesTable table").append(tbody);
+				$("#selectedServicesTable tbody tr .b-paid__removeGrid").each(function () {
+					$(this).remove();
+				});
+			});	
+			
 			$(document).on('click', '.gridSelectServices tbody tr', function () {
 				$.ajax({'success': function (html) {
 							$('#modalSelectDoctorBody').html(html);
@@ -93,6 +108,7 @@ $(document).ready(function() {
 				var doctorMiddleName=doctor.find('.middleName').html().substr(0, 1) + '.';
 				
 				doctorTdTag='<td>' + '<div class="doctorId">' + doctorId + '</div>' + doctorLastName + ' ' + doctorFirstName + doctorMiddleName + '</td>';
+				
 				$(document).trigger('selectedDoctor');
 				$('#modalSelectDoctorBody').empty();
 				$('#modalSelectDoctor').modal('hide');
@@ -110,15 +126,7 @@ $(document).ready(function() {
 		this.handlerHiddenModal=function () {
 			$('#modalSelectServices').on('hidden.bs.modal', function () {
 				i=0; //обнуляем через замыкание
-			});
-			$(document).on('click', "#selectedServicesConfirm", function () {
-				$("#selectedServicesTable tbody").remove();
-				tbody=$("#tableSelectionServices tbody").clone();
-				$("#selectedServicesTable table").append(tbody);
-				$("#selectedServicesTable tbody tr .b-paid__removeGrid").each(function () {
-					$(this).remove();
-				});
-			});		
+			});	
         };
 	}
 	
@@ -129,7 +137,7 @@ $(document).ready(function() {
 	function classPunchCheck() { //пробивка чека
 		var price=0;
 		this.visiblePunchButton=function () { //включаем кнопку пробивки чека, если выбраны услуги и у них есть цена >0
-			$(document).on('click', "#selectedServicesConfirm", function () {
+			$(document).on('click', "#selectedServicesConfirm", function () {//TODO REFACTOR
 				$("#selectedServicesTable tbody .priceService").each(function () {
 					price+=Number($(this).html());
 				});
