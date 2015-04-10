@@ -85,11 +85,16 @@ class CashActController extends MPaidController
 	}
 	
 	/**
-	 * Пробивка чека (выставление счета и оплата данного счёта).
+	 *	Добавление заказа и его счета (сформировать заказ)
 	 * classSelectServices() из paid.js (ajax-запрос)
 	 */
 	public function actionOrderForm()
 	{
+		if(!Yii::app()->request->isAjaxRequest)
+		{ //только AJAX запросы.
+			throw new CHttpException(404, 'Ошибка в запросе');
+		}
+		
 		/**
 		 * Сформированный заказ, состоящий их услуг и доктора (массив данных).
 		 * Из этих данных в последующем будут формироваться направления (группировка по группам и врачам из 
@@ -120,6 +125,17 @@ class CashActController extends MPaidController
 					}
 				}
 				
+				$modelPaid_Expenses=new Paid_Expenses('paid.cashAct.create');
+				$modelPaid_Expenses->date=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+				$modelPaid_Expenses->price=ParseMoney::encodeMoney(Yii::app()->request->getPost('priceSum'));
+				$modelPaid_Expenses->paid_order_id=Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq');
+				$modelPaid_Expenses->status=Paid_Expenses::NOT_PAID; //еще не оплачен
+				
+				if(!$modelPaid_Expenses->save())
+				{
+					throw new CHttpException(404, 'Ошибки валидации в запросе (создание счёта)');
+				}
+				
 				$modelPaid_Order_Details=new Paid_Order_Details('paid.cashAct.create'); //детализация заказа
 				$modelPaid_Order_Details->paid_order_id=Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq');
 
@@ -136,13 +152,44 @@ class CashActController extends MPaidController
 				}
 				
 				$transaction->commit();
-				Yii::app()->end('success'); //успех, разблокируем кнопку "Пробить"
+				Yii::app()->end(Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq')); //успех, разблокируем кнопку "Пробить"
 			}
 			catch(Exception $e)
 			{
 				$transaction->rollback();
 				throw $e;
 			}
+		}
+	}
+	
+	/**
+	 * Удаление заказа со счетом (удаление сформированного заказа)
+	 * @param integer $paid_order_id #ID заказа, который мы будем отменять (удалять), вместе с его счетом.
+	 */
+	public function actionDeleteOrderForm($paid_order_id)
+	{
+		if(!Yii::app()->request->isAjaxRequest)
+		{
+			throw new CHttpException(404, 'Неверный запрос.');
+		}
+		
+		if(!Paid_Orders::model()->findbyPk($paid_order_id))
+		{
+			throw new CHttpException(404, 'Заказ не найден.');
+		}
+		
+		$transaction=Yii::app()->db->beginTransaction();
+		try
+		{
+			Paid_Order_Details::model()->deleteAll('paid_order_id=:id', [':id'=>$paid_order_id]);
+			Paid_Orders::model()->deleteAll('paid_order_id=:id', [':id'=>$paid_order_id]);
+			$transaction->commit();
+			Yii::app()->end('success');
+		}
+		catch (Exception $e) 
+		{
+			$transaction->rollback();
+			throw $e;
 		}
 	}
 }

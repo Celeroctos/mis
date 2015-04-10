@@ -79,12 +79,28 @@ $(document).ready(function() {
 						arr.orderForm[i]={};
 						arr.orderForm[i].serviceId=$(this).find('.serviceId').html();
 						arr.orderForm[i].doctorId=$(this).find('.doctorId').html();
+						arr.priceSum=price;
 						i++;
 					});
 					$.ajax({'success': function (html) { //создаем заказ и счет, после печатаем их
-								if(html==='success')
+								//var html содержит id заказа.
+								if(Number(html) > 0)
+								{
 									$('#punchButton').removeProp('disabled');
 									$('#deleteOrderButton').removeProp('disabled');
+									
+									$('#deleteOrderButton').on('click', function () {
+										$.ajax({
+											'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + html,
+											'success': function (html){
+												if(html==='success')
+												{ //после того, как удалили заказ.
+													location.reload();
+												}
+											}
+										});
+									});
+								}
 							},
 							'data': arr, //отправляем codeService-doctorId связки
 							'type': 'post',
