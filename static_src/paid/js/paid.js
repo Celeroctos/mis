@@ -47,11 +47,23 @@ function modelPaid_Services(code, paid_service_group_id, name) {
     this.paid_service_group_id=paid_service_group_id;
     this.name=name;
 }
+
+//function classChooseExpenses() {
+//	this.initHandlers=function () {
+//		$('#chooseExpenses').on('click', function (){
+//			alert(423432);
+//		});
+//	};
+//}
+
 /***********************************************************/
 $(document).ready(function() {
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
 	
+//	var chooseExpenses=new classChooseExpenses();
+//	chooseExpenses.initHandlers();
+//	
 	function classSelectServices() {
 		var i=0; //замыкание, for echo empty row
 		var obj; //замыкание
@@ -60,6 +72,9 @@ $(document).ready(function() {
 		this.initHandlers=function () {
 			var price = 0;
 			$(document).on('click', "#selectedServicesConfirm", function () { //сформировать заказ
+				$('#punchButton').off('click');
+				$('#deleteOrderButton').off('click');
+				
 				$("#selectedServicesTable tbody").remove();
 				tbody=$("#tableSelectionServices tbody").clone();
 				$("#selectedServicesTable table").append(tbody);
@@ -82,17 +97,26 @@ $(document).ready(function() {
 						arr.priceSum=price;
 						i++;
 					});
-					$.ajax({'success': function (html) { //создаем заказ и счет, после печатаем их
+					
+					$.ajax({'success': function (paid_order_id) { //создаем заказ и счет, после печатаем их
 								//var html содержит id заказа.
-								if(Number(html) > 0)
+								if(Number(paid_order_id) > 0)
 								{
 									$('#punchButton').removeProp('disabled');
-									$('#deleteOrderButton').removeProp('disabled');
+									$('#punchButton').on('click', function () {
+										$.ajax({
+											'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id,
+											'success': function (html) {
+												
+											}
+										});
+									});
 									
+									$('#deleteOrderButton').removeProp('disabled');
 									$('#deleteOrderButton').on('click', function () {
 										$.ajax({
-											'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + html,
-											'success': function (html){
+											'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + paid_order_id,
+											'success': function (html) {
 												if(html==='success')
 												{ //после того, как удалили заказ.
 													location.reload();

@@ -54,6 +54,15 @@ class CashActController extends MPaidController
 	}
 	
 	/**
+	 * Выбор счета, который был добавлен, но не пробит.
+	 */
+	public function actionChooseExpenses()
+	{
+		self::disableScripts();
+		
+	}
+	
+	/**
 	 * Используется ответом на ajax-запрос при выборе услуги (двойном
 	 * нажатии по записи в таблице).
 	 * Смотри classSelectServices() в paid.js
@@ -188,6 +197,33 @@ class CashActController extends MPaidController
 			Yii::app()->end('success');
 		}
 		catch (Exception $e) 
+		{
+			$transaction->rollback();
+			throw $e;
+		}
+	}
+	
+	/**
+	 * Пробивка чека (оплата и закрытие счёта, формирование направлений)
+	 * @param integer $paid_order_id #ID заказа,
+	 */
+	public function actionPunch($paid_order_id)
+	{
+		if(!Yii::app()->request->isAjaxRequest)
+		{
+			throw new CHttpException(404, 'Неверный запрос.');
+		}
+		if(!Paid_Orders::model()->findbyPk($paid_order_id))
+		{
+			throw new CHttpException(404, 'Заказ не найден.');
+		}
+		
+		$transaction=Yii::app()->db->beginTransaction();
+		try
+		{
+			
+		}
+		catch(Exception $e)
 		{
 			$transaction->rollback();
 			throw $e;
