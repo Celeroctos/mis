@@ -13,11 +13,11 @@ class Paid_Orders extends ActiveRecord
 	
 	public static function generateRandNumber()
 	{
-		$rand=(int)mt_rand(1, 9) . time() . mt_rand(1, 9);
+		$rand=time() . (int)mt_rand(1, 999) . mt_rand(1, 999);
 		$rand_arr=str_split($rand); //в массив
 		shuffle($rand_arr); //мешаем массив
 		
-		return substr($rand_str_out=implode($rand_arr), 0, 12);
+		return substr($rand_str_out=implode($rand_arr), 0, 9);
 	}
 	
 	public function tableName()

@@ -86,15 +86,63 @@ class CashActController extends MPaidController
 	
 	/**
 	 * Пробивка чека (выставление счета и оплата данного счёта).
-	 * См. classPunchCheck() в paid.js
+	 * classSelectServices() из paid.js (ajax-запрос)
 	 */
-	public function actionPunch()
+	public function actionOrderForm()
 	{
-		if(Yii::app()->request->getPost('punchButton'))
+		/**
+		 * Сформированный заказ, состоящий их услуг и доктора (массив данных).
+		 * Из этих данных в последующем будут формироваться направления (группировка по группам и врачам из 
+		 * данного массива)
+		 */
+		$ordersForm=Yii::app()->request->getPost('orderForm');
+		if($ordersForm!==null) //заказ отправлен
 		{
-//			$modelPaid_Orders=new Paid_Orders('paid.cashAct.create');
-//			$modelPaid_Orders=Yii::app()->user->id;
-//			$modelPaid_Orders->order_number=Paid_Orders::generateRandNumber();
+			$modelPaid_Orders=new Paid_Orders('paid.cashAct.create'); //создаем заказ.
+//			$modelPaid_Orders->name=null; //сомнительный параметр, в будущем удалить
+			$modelPaid_Orders->user_create_id=Yii::app()->user->id;
+			$modelPaid_Orders->order_number=Paid_Orders::generateRandNumber(); //генерация номера заказа
+			
+			$transaction=Yii::app()->db->beginTransaction();
+			try
+			{
+				$errorCount=0;
+				while(true)
+				{
+					$errorCount++;
+					if($modelPaid_Orders->save()) // при первой успешной валидации сохраняем.
+					{
+						break;
+					}
+					if($errorCount>50)
+					{ //если слишком много прокруток, и уникальность не отрабатывает, то надо менять алгоритм
+						throw new CHttpException(404, 'Ошибка в валидации заказа');
+					}
+				}
+				
+				$modelPaid_Order_Details=new Paid_Order_Details('paid.cashAct.create'); //детализация заказа
+				$modelPaid_Order_Details->paid_order_id=Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq');
+
+				foreach($ordersForm as $value)
+				{
+					$modelPaid_Order_Details->paid_service_id=$value['serviceId'];
+					$modelPaid_Order_Details->doctor_id=$value['doctorId'];
+
+					if(!$modelPaid_Order_Details->save())
+					{
+						throw new CHttpException(404, 'Ошибки валидации в запросе (детализация заказа)');
+					}
+					$modelPaid_Order_Details->isNewRecord=true;
+				}
+				
+				$transaction->commit();
+				Yii::app()->end('success'); //успех, разблокируем кнопку "Пробить"
+			}
+			catch(Exception $e)
+			{
+				$transaction->rollback();
+				throw $e;
+			}
 		}
 	}
 }

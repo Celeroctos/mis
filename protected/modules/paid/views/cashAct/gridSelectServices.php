@@ -42,7 +42,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 			[
 				'name'=>'code',
 				'type'=>'raw',
-				'value'=>'"<div class=\"codeService\">" . $data->code . "</div>"',
+				'value'=>'"<div class=\"serviceId\">" . $data->paid_service_id . "</div><div class=\"codeService\">" . $data->code . "</div>"',
 				'filter'=>false,
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-1',

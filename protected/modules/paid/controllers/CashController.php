@@ -161,7 +161,7 @@ class CashController extends MPaidController
 						$modelPaid_Services_Doctors->doctor_id=$doctor_id;
 						if(!$modelPaid_Services_Doctors->save())
 						{
-							$transaction->rollback();
+//							$transaction->rollback();
 							throw new CHttpException(404, 'Ошибка в запросе БД');
 						}
 						unset($modelPaid_Service_Doctors);
@@ -171,8 +171,7 @@ class CashController extends MPaidController
 				}
 				else
 				{
-					$transaction->rollback();
-					Yii::app()->end();
+					throw new CHttpException(404, 'Ошибка в запросе БД');
 				}
 			}
 			catch(Exception $e)
@@ -307,7 +306,7 @@ class CashController extends MPaidController
 						$modelPaid_Services_Doctors->doctor_id=$doctor_id;
 						if(!$modelPaid_Services_Doctors->save()) //в идеале TODO ajax-валидацию...
 						{
-							$transaction->rollback();
+//							$transaction->rollback();
 							throw new CHttpException(404, 'Ошибка в запросе БД');
 						}
 						unset($modelPaid_Service_Doctors);

@@ -58,7 +58,7 @@ $(document).ready(function() {
 		var doctorTdTag; //замыкание
 		
 		this.initHandlers=function () {
-			
+			var price = 0;
 			$(document).on('click', "#selectedServicesConfirm", function () { //сформировать заказ
 				$("#selectedServicesTable tbody").remove();
 				tbody=$("#tableSelectionServices tbody").clone();
@@ -66,6 +66,36 @@ $(document).ready(function() {
 				$("#selectedServicesTable tbody tr .b-paid__removeGrid").each(function () {
 					$(this).remove();
 				});
+				
+				$("#selectedServicesTable tbody .priceService").each(function () {
+					price+=Number($(this).html());
+				});
+				
+				if(price>0) {
+					var arr={}; //замыкание
+					arr.orderForm={};
+					var i=0;
+					$('#selectedServicesTable tbody tr').each(function () {
+						arr.orderForm[i]={};
+						arr.orderForm[i].serviceId=$(this).find('.serviceId').html();
+						arr.orderForm[i].doctorId=$(this).find('.doctorId').html();
+						i++;
+					});
+					$.ajax({'success': function (html) { //создаем заказ и счет, после печатаем их
+								if(html==='success')
+									$('#punchButton').removeProp('disabled');
+									$('#deleteOrderButton').removeProp('disabled');
+							},
+							'data': arr, //отправляем codeService-doctorId связки
+							'type': 'post',
+							'url': '/paid/cashAct/orderForm'
+					});
+					price=0;
+				}
+				else if(price<=0) {
+					$('#punchButton').attr('disabled', 'disabled');
+					price=0;
+				}
 			});	
 			
 			$(document).on('click', '.gridSelectServices tbody tr', function () {
@@ -134,45 +164,40 @@ $(document).ready(function() {
 	selectServices.initHandlers();
 	selectServices.handlerHiddenModal();
 	
-	function classPunchCheck() { //пробивка чека
-		var price=0;
-		this.visiblePunchButton=function () { //включаем кнопку пробивки чека, если выбраны услуги и у них есть цена >0
-			$(document).on('click', "#selectedServicesConfirm", function () {//TODO REFACTOR
-				$("#selectedServicesTable tbody .priceService").each(function () {
-					price+=Number($(this).html());
-				});
-				if(price>0) {
-					$('#punchButton').removeProp('disabled');
-					var arr={}; //замыкание для punchButton
-					arr.punchButton={};
-					var i=0;
-					$('#selectedServicesTable tbody tr').each(function () {
-						arr.punchButton[i]={};
-						arr.punchButton[i].code=$(this).find('.codeService').html();
-						arr.punchButton[i].doctorId=$(this).find('.doctorId').html();
-						i++;
-					});
-					$('#punchButton').on('click', function () {
-						$.ajax({'success': function (html) {
-									
-								},
-								'data': arr, //отправляем codeService-doctorId связки
-								'type': 'post',
-								'url': '/paid/cashAct/punch'
-						});
-					});
-					price=0;
-				}
-				else if(price<=0) {
-					$('#punchButton').attr('disabled', 'disabled');
-					price=0;
-				}
-			});
-		};
-	}
-	
-	var punchCheck=new classPunchCheck();
-	punchCheck.visiblePunchButton();
+//	function classPunchCheck() { //пробивка чека
+//		var price=0;
+//		this.visiblePunchButton=function () { //включаем кнопку пробивки чека, если выбраны услуги и у них есть цена >0
+//			$(document).on('click', "#selectedServicesConfirm", function () {//TODO REFACTOR
+//				$("#selectedServicesTable tbody .priceService").each(function () {
+//					price+=Number($(this).html());
+//				});
+//				if(price>0) {
+//					$('#punchButton').removeProp('disabled');
+//					var arr={}; //замыкание для punchButton
+//					arr.punchButton={};
+//					var i=0;
+//					$('#selectedServicesTable tbody tr').each(function () {
+//						arr.punchButton[i]={};
+//						arr.punchButton[i].code=$(this).find('.codeService').html();
+//						arr.punchButton[i].doctorId=$(this).find('.doctorId').html();
+//						i++;
+//					});
+//					$.ajax({'success': function (html) {
+//								
+//							},
+//							'data': arr, //отправляем codeService-doctorId связки
+//							'type': 'post',
+//							'url': '/paid/cashAct/punch'
+//					});
+//					price=0;
+//				}
+//				else if(price<=0) {
+//					$('#punchButton').attr('disabled', 'disabled');
+//					price=0;
+//				}
+//			});
+//		};
+//	}
 	
     //for reload page
     (function() {

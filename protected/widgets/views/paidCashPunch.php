@@ -7,4 +7,6 @@
 		<?= CHtml::button('Отменить заказ', ['class'=>'btn btn-default', 'id'=>'deleteOrderButton', 'disabled'=>'disabled']); ?>
 		<?= CHtml::button('Пробить', ['class'=>'btn btn-default', 'id'=>'punchButton', 'disabled'=>'disabled']); ?>
 	</div>
+	<div class="errorOrderForm">
+	</div>
 </div>
