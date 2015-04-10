@@ -183,6 +183,7 @@ class CashActController extends MPaidController
 		{
 			Paid_Order_Details::model()->deleteAll('paid_order_id=:id', [':id'=>$paid_order_id]);
 			Paid_Orders::model()->deleteAll('paid_order_id=:id', [':id'=>$paid_order_id]);
+			Paid_Expenses::model()->deleteAll('paid_order_id=:id AND status=' . Paid_Expenses::NOT_PAID, [':id'=>$paid_order_id]);
 			$transaction->commit();
 			Yii::app()->end('success');
 		}

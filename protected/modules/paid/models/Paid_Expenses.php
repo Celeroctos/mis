@@ -21,7 +21,7 @@ class Paid_Expenses extends ActiveRecord
 	public function rules()
 	{
 		return [
-			
+			['paid_order_id', 'unique'],
 		];
 	}
 	
