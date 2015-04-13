@@ -24,7 +24,7 @@
 					<span>Сдача:</span>
 				</td>
 				<td>
-					<span></span>
+					<span id="oddMoney"></span>
 				</td>
 			</tr>
 		</table>

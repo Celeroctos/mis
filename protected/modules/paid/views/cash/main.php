@@ -54,8 +54,10 @@ $this->pageTitle='Касса';
 					],
 	]); ?>
 		<div class="row">
-			<?= $form->errorSummary($modelPatient, null, null, ['class'=>'alert alert-warning']); ?>
-			<?= $form->HiddenField($modelPatient, 'errorSummary', ['class'=>'form-control input-sm']); ?>
+			<div class="col-xs-12">
+				<?= $form->errorSummary($modelPatient, null, null, ['class'=>'alert alert-warning']); ?>
+				<?= $form->HiddenField($modelPatient, 'errorSummary', ['class'=>'form-control input-sm']); ?>
+			</div>
 			<div style="display: none">
 				<?= $form->error($modelPatient, 'errorSummary', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>

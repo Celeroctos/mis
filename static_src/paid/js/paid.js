@@ -60,7 +60,17 @@ function modelPaid_Services(code, paid_service_group_id, name) {
 $(document).ready(function() {
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
-	$('#CashSum').inputmask("mask", {"mask": "9{2,9}.9{2}"});
+	
+	var inputMaskComplete=function () {
+				var totalSum=$('#TotalSum').html(); //взяли сумму "ИТОГО"
+				if(totalSum>0)
+				{ //если ИТОГО существует
+					var oddMoney=$(this).val() - totalSum;
+					$('#oddMoney').html(oddMoney);
+				}
+	}; //используется в .inputmask, формирует сдачу пациента.
+	
+	$('#CashSum').inputmask("9{2,9}.9{2}", {"oncomplete": inputMaskComplete});
 //	var chooseExpenses=new classChooseExpenses();
 //	chooseExpenses.initHandlers();
 //	
@@ -72,7 +82,6 @@ $(document).ready(function() {
 		this.initHandlers=function () {
 			var price = 0;
 			$(document).on('click', "#selectedServicesConfirm", function () { //сформировать заказ
-				
 				$("#selectedServicesTable tbody").remove();
 				tbody=$("#tableSelectionServices tbody").clone();
 				$("#selectedServicesTable table").append(tbody);
