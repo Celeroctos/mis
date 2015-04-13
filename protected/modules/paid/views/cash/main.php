@@ -25,7 +25,7 @@ $this->pageTitle='Касса';
 																		var url='/paid/cash/SearchPatientsResult';
 																		var success=function () {};
 																		switch(action)
-																		{
+																		{ // смотрим какое действие было совершено (поиск или создание)
 																			case 'search':
 																				url='/paid/cash/SearchPatientsResult';
 																				success=function (html) {
@@ -46,33 +46,34 @@ $this->pageTitle='Касса';
 																		$.ajax({'data': $('#formSearchPatients').serialize(),
 																				'url': url,
 																				'type': 'POST',
-																				'success': success,
-																		});
+																				'success': success, //функция из switch()
+																		}); //и делаем запрос в зависимости от действия
 																	}
 																	return false; //нам не нужно отправлять эту форму.
 																}"), //см paid.js
 					],
 	]); ?>
 		<div class="row">
+			<?= $form->errorSummary($modelPatient, null, null, ['class'=>'alert alert-warning']); ?>
+			<?= $form->HiddenField($modelPatient, 'errorSummary', ['class'=>'form-control input-sm']); ?>
+			<div style="display: none">
+				<?= $form->error($modelPatient, 'errorSummary', ['class'=>'b-paid__errorFormPatient']); ?>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-xs-4">
 				<?= $form->Label($modelPatient, 'last_name', ['class'=>'control-label']); ?>
-				<?= $form->TextField($modelPatient, 'last_name', [
-								'class'=>'form-control input-sm',
-							]); ?>
+				<?= $form->TextField($modelPatient, 'last_name', ['class'=>'form-control input-sm',]); ?>
 				<?= $form->error($modelPatient, 'last_name', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 			<div class="col-xs-4">
 				<?= $form->Label($modelPatient, 'first_name', ['class'=>'control-label']); ?>
-				<?= $form->TextField($modelPatient, 'first_name', [
-								'class'=>'form-control input-sm',
-							]); ?>
+				<?= $form->TextField($modelPatient, 'first_name', ['class'=>'form-control input-sm',]); ?>
 				<?= $form->error($modelPatient, 'first_name', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 			<div class="col-xs-4">
 				<?= $form->Label($modelPatient, 'middle_name', ['class'=>'control-label']); ?>
-				<?= $form->TextField($modelPatient, 'middle_name', [
-								'class'=>'form-control input-sm',
-							]); ?>
+				<?= $form->TextField($modelPatient, 'middle_name', ['class'=>'form-control input-sm',]); ?>
 				<?= $form->error($modelPatient, 'middle_name', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 		</div>
@@ -99,9 +100,7 @@ $this->pageTitle='Касса';
 			</div>
 			<div class="col-xs-3">
 				<?= $form->Label($modelPatient, 'gender', ['class'=>'control-label']); ?>
-				<?= $form->DropDownList($modelPatient, 'gender', Patients::getGenderListData(), [
-								'class'=>'form-control input-sm',
-							]); ?>
+				<?= $form->DropDownList($modelPatient, 'gender', Patients::getGenderListData(), ['class'=>'form-control input-sm',]); ?>
 				<?= $form->error($modelPatient, 'gender', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 		</div>
@@ -109,25 +108,19 @@ $this->pageTitle='Касса';
 		<div class="row">
 			<div class="col-xs-12">
 					<?= $form->Label($modelPatient, 'address_reg', ['class'=>'control-label']); ?>
-					<?= $form->TextField($modelPatient, 'address_reg', [
-									'class'=>'form-control input-sm',
-								]); ?>
+					<?= $form->TextField($modelPatient, 'address_reg', ['class'=>'form-control input-sm',]); ?>
 					<?= $form->error($modelPatient, 'address_reg', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-4">
 				<?= $form->Label($modelPatient, 'snils', ['class'=>'control-label']); ?>
-				<?= $form->TextField($modelPatient, 'snils', [
-								'class'=>'form-control input-sm',
-							]); ?>
+				<?= $form->TextField($modelPatient, 'snils', ['class'=>'form-control input-sm',]); ?>
 				<?= $form->error($modelPatient, 'snils', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 			<div class="col-xs-4">
 				<?= $form->Label($modelPaid_Medcard, 'paid_medcard_number', ['class'=>'control-label']); ?>
-				<?= $form->TextField($modelPaid_Medcard, 'paid_medcard_number', [
-								'class'=>'form-control input-sm',
-							]); ?>
+				<?= $form->TextField($modelPaid_Medcard, 'paid_medcard_number', ['class'=>'form-control input-sm',]); ?>
 				<?= $form->error($modelPatient, 'paid_medcard_number', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 			<div class="col-xs-4">
@@ -136,14 +129,8 @@ $this->pageTitle='Касса';
 		</div>
 		<div class="row">
 			<div id="select_button" name="search" class="col-xs-12"> <!-- какую кнопку нажали? (search or create) -->
-				<?= CHtml::SubmitButton('Найти', ['class'=>'btn btn-primary btn-sm',
-												  'id'=>'submitSearchPatient',
-												  'name'=>'search',
-					]); ?>
-				<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success btn-sm',
-													  'id'=>'submitCreatePatient',
-													  'name'=>'create',
-					]); ?>
+				<?= CHtml::SubmitButton('Найти', ['class'=>'btn btn-primary btn-sm','id'=>'submitSearchPatient', 'name'=>'search',]); ?>
+				<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success btn-sm','id'=>'submitCreatePatient','name'=>'create',]); ?>
 			</div>
 		</div>
 	<?php $this->endWidget(); ?>

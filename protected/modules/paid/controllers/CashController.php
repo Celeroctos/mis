@@ -454,7 +454,7 @@ class CashController extends MPaidController
 		$modelPatient_Documents=new Patient_Documents('paid.cash.search');	
 		
 		if(Yii::app()->request->getPost('create'))
-		{ //меняем сценарии если нажата кнопка "сохранить"
+		{ //меняем сценарии если нажата кнопка "сохранить" для ajax валидации
 			$modelPatient=new Patients('paid.cash.create');
 			$modelPaid_Medcard=new Paid_Medcards('paid.cash.create');
 			$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
@@ -476,6 +476,7 @@ class CashController extends MPaidController
 	 */
 	public function actionCreatePatient()
 	{ //сюда попадают уже свалидированные данные из экшна main(), валидируем только на уровне PHP
+		//TODO generator номера МЕДКАРТ
 		$modelPatient=new Patients('paid.cash.create');
 		$modelPaid_Medcard=new Paid_Medcards('paid.cash.create');
 		$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
@@ -499,62 +500,79 @@ class CashController extends MPaidController
 				 * 1 - значит успешное сохранение.
 				 * 0 - возникли ошибки при сохранении данных в БД (не прошли валидацию и прочее).
 				 */
-				if(!$modelPatient->save())
-				{ //не сохранился пациент, откатываем транзакцию и выводим ошибку на клиента (0)
+				$recordPatient=Patients::model()->find('last_name=:last_name AND first_name=:first_name AND middle_name=:middle_name AND birthday=:birthday',
+				[':last_name'=>$modelPatient->last_name, ':first_name'=>$modelPatient->first_name, ':middle_name'=>$modelPatient->middle_name, ':birthday'=>$modelPatient->birthday]);
+				
+				if($recordPatient===null)
+				{ //проверяем, создан ли уже такой пациент, если да, то не создаем его
+					if(!$modelPatient->save())
+					{ //не сохранился пациент, откатываем транзакцию и выводим ошибку на клиента (0)
+						$transaction->rollback();
+						echo 0;
+						Yii::app()->end();
+					}
+					$modelPatient->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
+				}
+				
+				$modelPatient->patient_id=$recordPatient->patient_id;
+				
+				$modelPaid_Medcard->patient_id=$modelPatient->patient_id;
+				$modelPatient_Contacts->patient_id=$modelPatient->patient_id;
+				$modelPatient_Documents->patient_id=$modelPatient->patient_id;
+				
+				if(!$modelPaid_Medcard->save())
+				{ //запросы с ошибками, откатываем транзакцию и выводим ошибку на клиента (0)
 					$transaction->rollback();
 					echo 0;
 					Yii::app()->end();
 				}
 				
-				$modelPaid_Medcard->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-				$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-				$modelPatient_Documents->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-				
-				if(!($modelPaid_Medcard->save() && $modelPatient_Contacts->save() && $modelPatient_Documents->save()))
-				{//запросы с ошибками, откатываем транзакцию и выводим ошибку на клиента (0)
-					$transaction->rollback();
-					echo 0;
-					Yii:app()->end();
-				}
-				
-				$modelPatient_Documents_ArrTypes=isset(Yii::app()->request->getPost('Patient_Documents')['typeArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['typeArrMass'] : [];
-				$modelPatient_Documents_ArrSeries=isset(Yii::app()->request->getPost('Patient_Documents')['serieArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['serieArrMass'] : [];
-				$modelPatient_Documents_ArrNumbers=isset(Yii::app()->request->getPost('Patient_Documents')['numberArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['numberArrMass'] : [];
-				$modelPatient_Contacts_Arr=isset(Yii::app()->request->getPost('Patient_Contacts')['valueArrMass']) ? Yii::app()->request->getPost('Patient_Contacts')['valueArrMass'] : [];
-				
-				foreach($modelPatient_Contacts_Arr as $contact)
-				{
-					$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
-					$modelPatient_Contacts->value=$contact;
-					$modelPatient_Contacts->type=1;
-					$modelPatient_Contacts->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-					
-					if(!$modelPatient_Contacts->save())
+				if($recordPatient===null)
+				{ //пациент новый, надо создать ему контакты
+					if(!($modelPatient_Contacts->save() && $modelPatient_Documents->save()))
 					{
 						$transaction->rollback();
 						echo 0;
 						Yii::app()->end();
 					}
-				}
-				
-				foreach($modelPatient_Documents_ArrTypes as $key=>$document)
-				{
-					$modelPatient_Documents=new Patient_Documents('paid.cash.create');
-					$modelPatient_Documents->type=$document; //or $modelPatient_Documents_ArrTypes[$key];
-					$modelPatient_Documents->serie=$modelPatient_Documents_ArrSeries[$key];
-					$modelPatient_Documents->number=$modelPatient_Documents_ArrNumbers[$key];
-					$modelPatient_Documents->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
-					
-					if(!$modelPatient_Documents->save())
+					$modelPatient_Documents_ArrTypes=isset(Yii::app()->request->getPost('Patient_Documents')['typeArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['typeArrMass'] : [];
+					$modelPatient_Documents_ArrSeries=isset(Yii::app()->request->getPost('Patient_Documents')['serieArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['serieArrMass'] : [];
+					$modelPatient_Documents_ArrNumbers=isset(Yii::app()->request->getPost('Patient_Documents')['numberArrMass']) ? Yii::app()->request->getPost('Patient_Documents')['numberArrMass'] : [];
+					$modelPatient_Contacts_Arr=isset(Yii::app()->request->getPost('Patient_Contacts')['valueArrMass']) ? Yii::app()->request->getPost('Patient_Contacts')['valueArrMass'] : [];
+
+					foreach($modelPatient_Contacts_Arr as $contact)
 					{
-						$transaction->rollback();
-						echo 0;
-						Yii::app()->end();
+						$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
+						$modelPatient_Contacts->value=$contact;
+						$modelPatient_Contacts->type=1;
+						$modelPatient_Contacts->patient_id=$modelPatient->patient_id;
+
+						if(!$modelPatient_Contacts->save())
+						{
+							$transaction->rollback();
+							echo 0;
+							Yii::app()->end();
+						}
+					}
+
+					foreach($modelPatient_Documents_ArrTypes as $key=>$document)
+					{
+						$modelPatient_Documents=new Patient_Documents('paid.cash.create');
+						$modelPatient_Documents->type=$document; //or $modelPatient_Documents_ArrTypes[$key];
+						$modelPatient_Documents->serie=$modelPatient_Documents_ArrSeries[$key];
+						$modelPatient_Documents->number=$modelPatient_Documents_ArrNumbers[$key];
+						$modelPatient_Documents->patient_id=$modelPatient->patient_id;
+
+						if(!$modelPatient_Documents->save())
+						{
+							$transaction->rollback();
+							echo 0;
+							Yii::app()->end();
+						}
 					}
 				}
-				
 				$transaction->commit();
-				echo Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq'); //выводим patient_id и перенаправляем аяксом на acitonPatient()
+				echo $modelPatient->patient_id; //выводим patient_id и перенаправляем аяксом на acitonPatient()
 				Yii::app()->end();
 			}
 			catch(Exception $e)

@@ -1,3 +1,6 @@
+.container{
+	width: 970px !important;
+}
 .b-paidNav{
     padding-bottom: 15px;
 }
@@ -68,9 +71,22 @@
             margin-right: 15px;
     }
     .b-paid__summHeader{
-            margin-top: 0px;
-            color: rgb(204, 204, 204);
+		font-size: 19px;
+		height: 25px;
+		min-width: 130px;
+		display: inline-block;
     }
+	.b-paid__tableMoney td{
+		text-align: center;
+		vertical-align: middle;
+		font-weight: bold;
+		font-size: 15px;
+		padding: 2px;
+	}
+	.b-paid__tableMoney{
+		margin-top: 3px;
+		float: right;
+	}
     .b-paid_UL{
             padding-left: 20px;
     }
@@ -83,8 +99,6 @@
             position: absolute;
             bottom: 0px;
             right: 0px;
-/*		padding-left: 30px;
-            padding-right: 30px;*/
     }
     .b-paid__borderRight{
             padding-top: 15px;
@@ -220,6 +234,11 @@ div[class^="col-xs-"].error .form-control{
 }
 .serviceId{
 	display: none;
+}
+#CashSum{
+	text-align: center;
+	font-weight: bold;
+	width: 120px;
 }
 /*.b-paidHeader{
     margin-bottom: 10px;

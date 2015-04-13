@@ -60,7 +60,7 @@ function modelPaid_Services(code, paid_service_group_id, name) {
 $(document).ready(function() {
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
-	
+	$('#CashSum').inputmask("mask", {"mask": "9{2,9}.9{2}"});
 //	var chooseExpenses=new classChooseExpenses();
 //	chooseExpenses.initHandlers();
 //	
@@ -97,12 +97,13 @@ $(document).ready(function() {
 						arr.priceSum=price;
 						i++;
 					});
-					
 					$.ajax({'success': function (paid_order_id) { //создаем заказ и счет, после печатаем их
 								//var html содержит id заказа.
 								if(Number(paid_order_id) > 0)
-								{
+								{ //если заказ id корректный
+									$('#TotalSum').html(arr.priceSum);
 									$('#punchButton').removeProp('disabled');
+									$('#CashSum').removeProp('disabled');
 									$('#punchButton').on('click', function () {
 										$.ajax({
 											'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id,
@@ -133,7 +134,10 @@ $(document).ready(function() {
 					price=0;
 				}
 				else if(price<=0) {
+//					$('#TotalSum').html('0'); //обнуляем ИТОГО
 					$('#punchButton').attr('disabled', 'disabled');
+					$('#CashSum').attr('disabled', 'disabled');
+					$('#deleteOrderButton').attr('disabled', 'disabled');
 					price=0;
 				}
 			});	
@@ -252,8 +256,8 @@ $(document).ready(function() {
 			{
 				$(this).addClass('active');
 				$('#paidActWidget input').removeAttr('disabled'); //разблокировка act-кнопок
-				$('.b-paid__summHeader').css('color', 'black');
-				return false;
+//				$('.b-paid__summHeader').css('color', 'black');
+				return false;v
 			}
             else if(nameHref.indexOf(action[5])!==-1)
             {

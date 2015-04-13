@@ -29,6 +29,8 @@ class Patients extends ActiveRecord
 	public $modelPatient_Contacts; // table patient_contacts (activeRecord object)
 	public $modelPaid_Medcard; // table paid_medcards (activeRecord object)
 	
+	public $errorSummary;
+	
 	const PAGE_SIZE = 10;
 	
 	const DOCUMENT_TYPE_PASSPORT_ID = 1;
@@ -74,7 +76,7 @@ class Patients extends ActiveRecord
 		return [
 			['hash', 'type', 'type'=>'string'],
 			//Добавление пациента
-			['first_name, middle_name, last_name, birthday', 'required', 'on'=>'paid.cash.create'],
+			['first_name, middle_name, last_name, birthday, gender', 'required', 'on'=>'paid.cash.create'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
 			['address_reg, address, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			
@@ -82,7 +84,7 @@ class Patients extends ActiveRecord
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.search'],
 			['address_reg, address, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
-			['last_name', 'validateRequiredLastName', 'on'=>'paid.cash.search'],
+			['errorSummary', 'validateRequiredLastName', 'on'=>'paid.cash.search'],
 		];
 	}
 	
@@ -93,10 +95,17 @@ class Patients extends ActiveRecord
 	 */
 	public function validateRequiredLastName($attribute)
 	{
-		if((!empty($this->first_name) || !empty($this->middle_name)) && empty($this->last_name))
-		{
-			$this->addError($attribute, 'Заполните данное поле.');
-			return;
+		if((isset($this->first_name) && strlen($this->first_name)>0) || (isset($this->middle_name) && strlen($this->middle_name)>0) || (isset($this->last_name)  && strlen($this->last_name)>0))
+		{ //если хоть одно заполнено,
+			if((isset($this->first_name) && strlen($this->first_name)>0) && (isset($this->middle_name) && strlen($this->middle_name)>0) && (isset($this->last_name)  && strlen($this->last_name)>0))
+			{ //то должны быть заполнены все поля
+				return;
+			}
+			else
+			{
+				$this->addError($attribute, 'Необходимо полностью заполнить ФИО.');
+				return;
+			}
 		}
 	}
 	
@@ -213,7 +222,7 @@ class Patients extends ActiveRecord
 		|| !self::isEmpty($this->modelPatient_Contacts)
 		|| !self::isEmpty($this->modelPaid_Medcard))
 		{
-			$criteria->with=['contacts'=>['select'=>''], 'documents'=>['select'=>''], 'paid_medcards'=>['select'=>'']]; //не выводим в таблице grid, FIX for POSTGRESQL
+			$criteria->with=['contacts'=>['select'=>''], 'documents'=>['select'=>''], 'paid_medcards'=>['select'=>'', 'joinType'=>'INNER JOIN']]; //не выводим в таблице grid, FIX for POSTGRESQL
 			$criteria->together=true;
 			$criteria->select=['t.first_name', 't.last_name', 't.middle_name', 't.birthday'];
 			$criteria->compare('t.last_name', $this->last_name, true);
