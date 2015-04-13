@@ -72,8 +72,6 @@ $(document).ready(function() {
 		this.initHandlers=function () {
 			var price = 0;
 			$(document).on('click', "#selectedServicesConfirm", function () { //сформировать заказ
-				$('#punchButton').off('click');
-				$('#deleteOrderButton').off('click');
 				
 				$("#selectedServicesTable tbody").remove();
 				tbody=$("#tableSelectionServices tbody").clone();
@@ -101,9 +99,12 @@ $(document).ready(function() {
 								//var html содержит id заказа.
 								if(Number(paid_order_id) > 0)
 								{ //если заказ id корректный
+									$('#punchButton').off('click');
+									$('#deleteOrderButton').off('click');
+									
 									$('#TotalSum').html(arr.priceSum);
-									$('#punchButton').removeProp('disabled');
-									$('#CashSum').removeProp('disabled');
+									$('#punchButton').removeAttr('disabled');
+									$('#CashSum').removeAttr('disabled');
 									$('#punchButton').on('click', function () {
 										$.ajax({
 											'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id,
@@ -113,7 +114,7 @@ $(document).ready(function() {
 										});
 									});
 									
-									$('#deleteOrderButton').removeProp('disabled');
+									$('#deleteOrderButton').removeAttr('disabled');
 									$('#deleteOrderButton').on('click', function () {
 										$.ajax({
 											'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + paid_order_id,
@@ -134,7 +135,8 @@ $(document).ready(function() {
 					price=0;
 				}
 				else if(price<=0) {
-//					$('#TotalSum').html('0'); //обнуляем ИТОГО
+					console.log('ERROR');
+					$('#TotalSum').html('0'); //обнуляем ИТОГО
 					$('#punchButton').attr('disabled', 'disabled');
 					$('#CashSum').attr('disabled', 'disabled');
 					$('#deleteOrderButton').attr('disabled', 'disabled');

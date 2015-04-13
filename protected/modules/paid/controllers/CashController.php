@@ -513,9 +513,10 @@ class CashController extends MPaidController
 					}
 					$modelPatient->patient_id=Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
 				}
-				
-				$modelPatient->patient_id=$recordPatient->patient_id;
-				
+				else
+				{
+					$modelPatient->patient_id=$recordPatient->patient_id;
+				}
 				$modelPaid_Medcard->patient_id=$modelPatient->patient_id;
 				$modelPatient_Contacts->patient_id=$modelPatient->patient_id;
 				$modelPatient_Documents->patient_id=$modelPatient->patient_id;
