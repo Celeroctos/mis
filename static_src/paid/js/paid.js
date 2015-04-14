@@ -13,9 +13,9 @@ function redirectToLogin(){
  */
 function updateService() { //add to onlick
     $.ajax({'success': function (html) {
-                $('#modalServiceGroupsBody').html(html);
-                $('#modalServiceGroups').modal('show');
-            },
+		$('#modalServiceGroupsBody').html(html);
+		$('#modalServiceGroups').modal('show');
+	},
 			'url': $(this).attr('href')
     });
     return false;
@@ -48,32 +48,23 @@ function modelPaid_Services(code, paid_service_group_id, name) {
     this.name=name;
 }
 
-//function classChooseExpenses() {
-//	this.initHandlers=function () {
-//		$('#chooseExpenses').on('click', function (){
-//			alert(423432);
-//		});
-//	};
-//}
-
 /***********************************************************/
 $(document).ready(function() {
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
 	
 	var inputMaskComplete=function () {
-				var totalSum=$('#TotalSum').html(); //взяли сумму "ИТОГО"
-				if(totalSum>0)
-				{ //если ИТОГО существует
-					var oddMoney=$(this).val() - totalSum;
-					$('#oddMoney').html(oddMoney);
-				}
+		var totalSum=$('#TotalSum').html(); //взяли сумму "ИТОГО"
+		if(totalSum>0)
+		{ //если ИТОГО существует
+			var oddMoney=$(this).val() - totalSum;
+			if(Number(oddMoney)===oddMoney)
+				$('#oddMoney').html(oddMoney.toFixed(2)); //формируем сдачу
+		}
 	}; //используется в .inputmask, формирует сдачу пациента.
 	
 	$('#CashSum').inputmask("9{2,9}.9{2}", {"oncomplete": inputMaskComplete});
-//	var chooseExpenses=new classChooseExpenses();
-//	chooseExpenses.initHandlers();
-//	
+	
 	function classSelectServices() {
 		var i=0; //замыкание, for echo empty row
 		var obj; //замыкание
@@ -105,46 +96,51 @@ $(document).ready(function() {
 						i++;
 					});
 					$.ajax({'success': function (paid_order_id) { //создаем заказ и счет, после печатаем их
-								//var html содержит id заказа.
-								if(Number(paid_order_id) > 0)
-								{ //если заказ id корректный
-									$('#punchButton').off('click');
-									$('#deleteOrderButton').off('click');
-									
-									$('#TotalSum').html(arr.priceSum);
-									$('#punchButton').removeAttr('disabled');
-									$('#CashSum').removeAttr('disabled');
-									$('#punchButton').on('click', function () {
-										$.ajax({
-											'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id,
-											'success': function (html) {
-												
-											}
-										});
-									});
-									
-									$('#deleteOrderButton').removeAttr('disabled');
-									$('#deleteOrderButton').on('click', function () {
-										$.ajax({
-											'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + paid_order_id,
-											'success': function (html) {
-												if(html==='success')
-												{ //после того, как удалили заказ.
-													location.reload();
-												}
-											}
-										});
+						if(Number(paid_order_id) > 0)
+						{ //если заказ id корректный
+							$('#punchButton').off('click');
+							$('#deleteOrderButton').off('click');
+
+							$('#TotalSum').html(arr.priceSum);
+							$('#punchButton').removeAttr('disabled');
+							$('#CashSum').removeAttr('disabled');
+							$('#punchButton').on('click', function () {
+								/**
+								 * см. inputMaskComplete
+								 */
+								if( Number( $('#oddMoney').html() ) >= 0 ) //если сдача получилось больше нуля, то можно пробить чек
+								{
+									$.ajax({
+										'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id,
+										'success': function (html) {
+											
+										}
 									});
 								}
-							},
-							'data': arr, //отправляем codeService-doctorId связки
-							'type': 'post',
-							'url': '/paid/cashAct/orderForm'
-					});
-					price=0;
+							});
+
+							$('#deleteOrderButton').removeAttr('disabled');
+							$('#deleteOrderButton').on('click', function () {
+								$.ajax({
+									'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + paid_order_id,
+									'success': function (html) {
+										if(html==='success')
+										{ //после того, как удалили заказ.
+											location.reload();
+										}
+									}
+								});
+							});
+						}
+					},
+						'data': arr, //отправляем codeService-doctorId связки
+						'type': 'post',
+						'url': '/paid/cashAct/orderForm'
+						});
+						price=0;
 				}
 				else if(price<=0) {
-					console.log('ERROR');
+//					console.log('ERROR');
 					$('#TotalSum').html('0'); //обнуляем ИТОГО
 					$('#punchButton').attr('disabled', 'disabled');
 					$('#CashSum').attr('disabled', 'disabled');
@@ -155,9 +151,9 @@ $(document).ready(function() {
 			
 			$(document).on('click', '.gridSelectServices tbody tr', function () {
 				$.ajax({'success': function (html) {
-							$('#modalSelectDoctorBody').html(html);
-							$('#modalSelectDoctor').modal('show');
-						},
+						$('#modalSelectDoctorBody').html(html);
+						$('#modalSelectDoctor').modal('show');
+					},
 						'url': '/paid/cashAct/chooseDoctor/code/' + $(this).find('.codeService').html()
 				});
 				
@@ -302,11 +298,11 @@ $(document).ready(function() {
 		var group_id = null;
         this.AddService=function () { //add to onclick, modal for add service
             $.ajax({'success': function (html) {
-                        $('#modalServiceGroupsBody').html(html);
-                        $('#modalServiceGroups').modal('show');
-//					$("#Paid_Services_paid_service_group_id").attr('value', this.valueP_id);
-                    },
-                         'url': '/paid/cash/addService/group_id/' + group_id
+						$('#modalServiceGroupsBody').html(html);
+						$('#modalServiceGroups').modal('show');
+		//					$("#Paid_Services_paid_service_group_id").attr('value', this.valueP_id);
+					},
+					'url': '/paid/cash/addService/group_id/' + group_id
             });
         };
 	
