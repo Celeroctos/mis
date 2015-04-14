@@ -106,7 +106,7 @@ class CashActController extends MPaidController
 		
 		/**
 		 * Сформированный заказ, состоящий их услуг и доктора (массив данных).
-		 * Из этих данных в последующем будут формироваться направления (группировка по группам и врачам из 
+		 * Из этих данных в последующем будут формироваться направления (группировка по группам и врачам из
 		 * данного массива)
 		 */
 		$ordersForm=Yii::app()->request->getPost('orderForm');
@@ -114,6 +114,7 @@ class CashActController extends MPaidController
 		{
 			$modelPaid_Orders=new Paid_Orders('paid.cashAct.create'); //создаем заказ.
 //			$modelPaid_Orders->name=null; //сомнительный параметр, в будущем удалить
+			$modelPaid_Orders->patient_id=Yii::app()->request->getPost('patient_id');
 			$modelPaid_Orders->user_create_id=Yii::app()->user->id;
 			$modelPaid_Orders->order_number=Paid_Orders::generateRandNumber(); //генерация номера заказа
 			
@@ -129,7 +130,7 @@ class CashActController extends MPaidController
 						break;
 					}
 					if($errorCount>50)
-					{ //если слишком много прокруток, и уникальность не отрабатывает, то надо менять алгоритм
+					{ //если слишком много прокруток, и уникальность не отрабатывает, то надо менять алгоритм генерации номера заказа
 						throw new CHttpException(404, 'Ошибка в валидации заказа');
 					}
 				}
@@ -207,7 +208,7 @@ class CashActController extends MPaidController
 	 * Пробивка чека (оплата и закрытие счёта, формирование направлений)
 	 * @param integer $paid_order_id #ID заказа,
 	 */
-	public function actionPunch($paid_order_id)
+	public function actionPunch($paid_order_id, $patient_id)
 	{
 		if(!Yii::app()->request->isAjaxRequest)
 		{
@@ -219,9 +220,33 @@ class CashActController extends MPaidController
 		}
 		
 		$transaction=Yii::app()->db->beginTransaction();
+		
 		try
 		{
-			
+			$modelPaid_Referrals=new Paid_Referrals('paid.cashAct.create');
+			$modelPaid_Referrals->paid_order_id=$paid_order_id;
+			$modelPaid_Referrals->patient_id=$patient_id;
+			$modelPaid_Referrals->date=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+//			$modelPaid_Referrals->status=null; //весьма сомнительный атрибут.
+			if($modelPaid_Referrals->save())
+			{
+				//select paid_order_details.paid_service_id, doctor_id
+				//FROM paid_order_details
+				//WHERE paid_order_details.paid_order_id=271
+				//GROUP BY paid_order_details.paid_service_id, paid_order_details.doctor_id;
+				$criteria=new CDbCriteria;
+				$criteria->select='t.paid_service_id, t.doctor_id';
+				$criteria->condition='t.paid_order_id=:id';
+				$criteria->params=[':id'=>$paid_order_id];
+				$criteria->group='t.paid_service_id, t.doctor_id';
+				$recordPaid_Order_Details=Paid_Order_Details::model()->findAll($criteria);
+				
+				foreach($recordPaid_Order_Details as $record)
+				{
+					
+				}
+				$transaction->commit();
+			}
 		}
 		catch(Exception $e)
 		{

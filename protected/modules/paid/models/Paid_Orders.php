@@ -8,9 +8,14 @@ class Paid_Orders extends ActiveRecord
 	public $paid_order_id;
 	public $name;
 	public $order_number;
+	public $patient_id; //fk table mis.patients
 	public $user_create_id;
-	public $paid_expense_id;
+//	public $paid_expense_id;
 	
+	/**
+	 * Генератор номера заказа
+	 * @return type
+	 */
 	public static function generateRandNumber()
 	{
 		$rand=time() . (int)mt_rand(1, 999) . mt_rand(1, 999);

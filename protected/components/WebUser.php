@@ -5,7 +5,7 @@
  */
 class WebUser extends CWebUser
 {
-	public $loginUrl='4ref';
+//	public $loginUrl='4ref';
 	const MSG_SUCCESS = 'success';
 	const MSG_ERROR = 'error';
 	const MSG_INFO = 'info';

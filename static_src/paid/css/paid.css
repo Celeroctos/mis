@@ -240,6 +240,9 @@ div[class^="col-xs-"].error .form-control{
 	font-weight: bold;
 	width: 120px;
 }
+#Paid_Services_price{
+	text-align: center;
+}
 /*.b-paidHeader{
     margin-bottom: 10px;
 }*/

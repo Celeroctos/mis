@@ -15,6 +15,7 @@ function updateService() { //add to onlick
     $.ajax({'success': function (html) {
 		$('#modalServiceGroupsBody').html(html);
 		$('#modalServiceGroups').modal('show');
+		$('#Paid_Services_price').inputmask("9{2,9}.9{2}");
 	},
 			'url': $(this).attr('href')
     });
@@ -92,7 +93,10 @@ $(document).ready(function() {
 						arr.orderForm[i]={};
 						arr.orderForm[i].serviceId=$(this).find('.serviceId').html();
 						arr.orderForm[i].doctorId=$(this).find('.doctorId').html();
-						arr.priceSum=price;
+						arr.priceSum=price; //надо разделить на 100
+						var url=document.location.href;
+						var action=url.split('/');
+						arr.patient_id=action[7]; //patient_id сохраняем в заказ
 						i++;
 					});
 					$.ajax({'success': function (paid_order_id) { //создаем заказ и счет, после печатаем их
@@ -108,10 +112,10 @@ $(document).ready(function() {
 								/**
 								 * см. inputMaskComplete
 								 */
-								if( Number( $('#oddMoney').html() ) >= 0 ) //если сдача получилось больше нуля, то можно пробить чек
+								if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
 								{
 									$.ajax({
-										'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id,
+										'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
 										'success': function (html) {
 											
 										}
@@ -300,6 +304,7 @@ $(document).ready(function() {
             $.ajax({'success': function (html) {
 						$('#modalServiceGroupsBody').html(html);
 						$('#modalServiceGroups').modal('show');
+						$('#Paid_Services_price').inputmask("9{2,9}.9{2}");
 		//					$("#Paid_Services_paid_service_group_id").attr('value', this.valueP_id);
 					},
 					'url': '/paid/cash/addService/group_id/' + group_id

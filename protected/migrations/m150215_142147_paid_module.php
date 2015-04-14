@@ -63,6 +63,7 @@ HERE;
 						"paid_order_id" serial NOT NULL,
 						"name" character varying(255), --сомнительно (не будет использоваться), в будущем удалить
 						"order_number" integer NOT NULL, --номер заказа, уникален. TODO UNIQUE
+						"patient_id" integer NOT NULL, --id пациента, сделавшего заказ, FK table mis.patients
 						"user_create_id" integer NOT NULL, --Пользователь, создавший заказ и в дальнейшем платёж
 						PRIMARY KEY(paid_order_id)
 					);
@@ -90,7 +91,7 @@ HERE;
 					(
 						"paid_referrals_id" serial NOT NULL, --Уникальный номер направления
 						"paid_order_id" integer NOT NULL, --FK (table paid_orders)
-						"paid_medcard_id" integer NOT NULL, --FK (table paid_medcards)
+						"patient_id" integer NOT NULL, --FK (table mis.patients)
 						"date" TIMESTAMPTZ,
 						"status" integer, --Сомнительно, возможно удаление (есть в paid_orders)
 						PRIMARY KEY(paid_referrals_id)
