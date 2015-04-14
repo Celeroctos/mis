@@ -25,7 +25,7 @@ class Paid_Order_Details extends ActiveRecord
 	public function relations()
 	{
 		return [
-			
+			'service'=>[self::BELONGS_TO, 'Paid_Services', 'paid_service_id'],
 		];
 	}
 	

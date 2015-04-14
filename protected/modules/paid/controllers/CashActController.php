@@ -223,30 +223,7 @@ class CashActController extends MPaidController
 		
 		try
 		{
-			$modelPaid_Referrals=new Paid_Referrals('paid.cashAct.create');
-			$modelPaid_Referrals->paid_order_id=$paid_order_id;
-			$modelPaid_Referrals->patient_id=$patient_id;
-			$modelPaid_Referrals->date=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-//			$modelPaid_Referrals->status=null; //весьма сомнительный атрибут.
-			if($modelPaid_Referrals->save())
-			{
-				//select paid_order_details.paid_service_id, doctor_id
-				//FROM paid_order_details
-				//WHERE paid_order_details.paid_order_id=271
-				//GROUP BY paid_order_details.paid_service_id, paid_order_details.doctor_id;
-				$criteria=new CDbCriteria;
-				$criteria->select='t.paid_service_id, t.doctor_id';
-				$criteria->condition='t.paid_order_id=:id';
-				$criteria->params=[':id'=>$paid_order_id];
-				$criteria->group='t.paid_service_id, t.doctor_id';
-				$recordPaid_Order_Details=Paid_Order_Details::model()->findAll($criteria);
-				
-				foreach($recordPaid_Order_Details as $record)
-				{
-					
-				}
-				$transaction->commit();
-			}
+			
 		}
 		catch(Exception $e)
 		{

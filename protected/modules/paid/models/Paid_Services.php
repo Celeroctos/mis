@@ -27,6 +27,7 @@ class Paid_Services extends ActiveRecord
 	{
 		return [
 			'group'=>[self::BELONGS_TO, 'Paid_Service_Groups', 'paid_service_group_id'],
+			'paid_order_details'=>[self::HAS_MANY, 'Paid_Order_Details', 'paid_service_id'],
 		];
 	}
 	
@@ -73,7 +74,7 @@ class Paid_Services extends ActiveRecord
 		return [
 			'paid_service_id'=>'ID',
 			'paid_service_group_id'=>'Группа',
-			'name'=>'Название',
+			'name'=>'Название услуги',
 			'code'=>'Код услуги',
 			'price'=>'Цена',
 			'since_date'=>'Действует с',
