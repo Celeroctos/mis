@@ -7,17 +7,17 @@
 <h4>Выберите врача</h4>
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
-	'dataProvider'=>$dataProvider,
-	'filter'=>$modelDoctors,
+	'dataProvider'=>$modelPaid_Expense->search(),
+	'filter'=>$modelPaid_Expense,
 	'ajaxType'=>'post',
 //	'id'=>'gridSelectServices',
-	'id'=>$modelDoctors->hash, //сохраняем ID при обновлении ajax
-	'ajaxVar'=>'gridSelectDoctor',
+	'id'=>$modelPaid_Expense->hash, //сохраняем ID при обновлении ajax
+	'ajaxVar'=>'gridSelectExpense',
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
 	'emptyText'=>
-	'<h4 class="b-paid__emptyServiceHeader">Врач(и) не найден(ы)</h4>',
+	'<h4 class="b-paid__emptyServiceHeader">Счета отсутствуют.</h4>',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridChooseDoctor', //gridSelectServices используется в paid.js
 	'pager'=>[
@@ -41,38 +41,19 @@ $this->widget('zii.widgets.grid.CGridView', [
 	],
 	'columns'=>[
 		[
-			'name'=>'id',
-			'type'=>'raw',
-			'visible'=>false,
-			'value'=>'"<div class=\"id\">" . $data->id . "</div>"',
-			'filter'=>false,
+			'name'=>'expense_number',
 			'headerHtmlOptions'=>[
-				'class'=>'col-xs-1',
+				'class'=>'col-xs-3',
 			],
 		],
 		[
-			'name'=>'last_name',
-			'type'=>'raw',
-			'value'=>'"<div class=\"doctorId\">" . $data->id . "</div>" . "<div class=\"lastName\">" . $data->last_name . "</div>"',
-			'filter'=>CHtml::activeHiddenField($modelDoctors, 'hash'),
+			'name'=>'date',
 			'headerHtmlOptions'=>[
-				'class'=>'col-xs-1',
+				'class'=>'col-xs-3',
 			],
 		],
 		[
-			'name'=>'first_name',
-			'type'=>'raw',
-			'filter'=>false,
-			'value'=>'"<div class=\"firstName\">" . $data->first_name . "</div>"',
-			'headerHtmlOptions'=>[
-				'class'=>'col-xs-4',
-			],
-		],
-		[
-			'name'=>'middle_name',
-			'type'=>'raw',
-			'value'=>'"<div class=\"middleName\">" . $data->middle_name . "</div>"',
-			'filter'=>false,
+			'name'=>'date',
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],

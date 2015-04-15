@@ -9,6 +9,7 @@ class Paid_Expenses extends ActiveRecord
 	public $date;
 	public $price;
 	public $paid_order_id; //ONE TO ONE
+	public $expense_number;
 	public $status;
 	
 	const NOT_PAID = 0;
@@ -23,6 +24,7 @@ class Paid_Expenses extends ActiveRecord
 	{
 		return [
 			['paid_order_id', 'unique'],
+			['expense_number', 'unique'],
 		];
 	}
 	

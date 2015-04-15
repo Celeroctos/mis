@@ -121,6 +121,8 @@ HERE;
 						"price" integer NOT NULL, --Сумма счёта (умноженная на 100)
 						"paid_order_id" integer NOT NULL, --FK (table paid_orders)
 						"status" integer, --Оплачен/не оплачен (1/0)
+						"expense_number" integer, --Уникальный номер счёта
+						"user_create_id" integer NOT NULL, --Пользователь, создавший счет (есть в заказе, но без лишних связей)
 						PRIMARY KEY(paid_expense_id)
 					);
 HERE;

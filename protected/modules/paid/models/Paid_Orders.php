@@ -13,7 +13,7 @@ class Paid_Orders extends ActiveRecord
 //	public $paid_expense_id;
 	
 	/**
-	 * Генератор номера заказа
+	 * Генератор номера заказа/счёта
 	 * @return type
 	 */
 	public static function generateRandNumber()

@@ -59,7 +59,7 @@ class CashActController extends MPaidController
 	public function actionChooseExpenses()
 	{
 		self::disableScripts();
-		$this->render();
+		$this->renderPartial('gridChooseExpense');
 		
 	}
 	
@@ -143,6 +143,7 @@ class CashActController extends MPaidController
 				$modelPaid_Expenses->price=ParseMoney::encodeMoney(Yii::app()->request->getPost('priceSum'));
 				$modelPaid_Expenses->paid_order_id=Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq');
 				$modelPaid_Expenses->status=Paid_Expenses::NOT_PAID; //еще не оплачен
+				$modelPaid_Expenses->expense_number=Paid_Orders::generateRandNumber();
 				
 				if(!$modelPaid_Expenses->save())
 				{
