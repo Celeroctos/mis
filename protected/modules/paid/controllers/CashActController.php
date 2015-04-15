@@ -217,20 +217,35 @@ class CashActController extends MPaidController
 		
 		$recordPaid_Order=Paid_Orders::model()->findbyPk($paid_order_id);
 		$recordPaid_Expenses=Paid_Expenses::model()->find('paid_order_id=:order_id', [':order_id'=>$recordPaid_Order->paid_order_id]);
+		
 		if($recordPaid_Order===null || $recordPaid_Expenses===null)
 		{
 			throw new CHttpException(404, 'Заказ и(или) счёт не найден(ы)');
 		}
+		elseif($recordPaid_Expenses->status==Paid_Expenses::NOT_PAID)
+		{
+			throw new CHttpException(404, 'Счёт уже был оплачен. Транзакция отменена.');
+		}
 		
 		$transaction=Yii::app()->db->beginTransaction();
 		try
-		{
+		{			
 			$modelPaid_Payments=new Paid_Payments();
 			$modelPaid_Payments->paid_expense_id=$recordPaid_Expenses->paid_expense_id;
 			$modelPaid_Payments->date_delete=null;
 			$modelPaid_Payments->reason_date_delete=null;
 			$modelPaid_Payments->user_delete_id=null;
-			$modelPaid_Payments->save();
+			$recordPaid_Expenses->status=Paid_Expenses::PAID; //счёт оплачен
+			
+			if(!$modelPaid_Payments->save())
+			{
+				throw new CHttpException(404, 'Ошибка в проведении платежа по счёту. Транзакция отменена.');
+			}
+			
+			if(!$recordPaid_Expenses->save())
+			{
+				throw new CHttpException(404, 'Ошибка в запросе смены статуса счета. Транзакция отменена.');
+			}
 			
 			$sql='SELECT service.paid_service_group_id, t.doctor_id
 				  FROM "paid"."paid_services" service, "paid"."paid_order_details" t
@@ -241,9 +256,6 @@ class CashActController extends MPaidController
 			$command=Yii::app()->db->createCommand($sql);
 			$command->bindParam(':paid_order_id', $paid_order_id, PDO::PARAM_INT);
 			$groupRows=$command->query()->readAll();
-//			
-//			$modelPaid_Referrals_Details=new Paid_Referrals_Details();
-//			$modelPaid_Referrals_Details->paid_order_id=$paid_order_id;
 			
 			$sql='SELECT t.paid_service_id, t.doctor_id
 				  FROM "paid"."paid_order_details" t, "paid"."paid_services" service
@@ -279,9 +291,10 @@ class CashActController extends MPaidController
 					
 					if(!$modelPaid_Referrals_Details->save())
 					{
-						throw new CHttpException(404, 'Ошибка в запросе создания направлений');
+						throw new CHttpException(404, 'Ошибка в запросе создания направлений. Транзакция отменена.');
 					}
-				} //сформировали одно направление, надо печатать..
+				} //сформировали одно направление, надо печатать их где-то тут. 
+				//TODO!!!!!!!!!!!!!!!!!TODO!!!!!!!!!!ПЕЧАТЬ направлений где-то тут
 			}
 			$transaction->commit();
 		}
