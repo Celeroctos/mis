@@ -1,39 +1,36 @@
 <?php
 /**
- * Счета
+ * Платёж
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
-class Paid_Expenses extends ActiveRecord
+class Paid_Payments extends ActiveRecord
 {
+	public $paid_payment_id;
 	public $paid_expense_id;
-	public $date;
-	public $price;
-	public $paid_order_id; //ONE TO ONE
-	public $status;
-	
-	const NOT_PAID = 0;
-	const PAID = 1;
+	public $date_delete;
+	public $reason_date_delete;
+	public $user_delete_id;
+
 	public function tableName()
 	{
-		return 'paid.paid_expenses';
+		return 'paid.paid_payments';
 	}
 	
 	public function rules()
 	{
 		return [
-			['paid_order_id', 'unique'],
 		];
 	}
 	
 	public function relations()
 	{
-		return [
-			
+		return [	
 		];
 	}
 	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}	
+	}
+	
 }

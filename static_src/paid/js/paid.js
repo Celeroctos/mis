@@ -105,7 +105,7 @@ $(document).ready(function() {
 							$('#punchButton').off('click');
 							$('#deleteOrderButton').off('click');
 
-							$('#TotalSum').html(arr.priceSum);
+							$('#TotalSum').html(arr.priceSum.toFixed(2));
 							$('#punchButton').removeAttr('disabled');
 							$('#CashSum').removeAttr('disabled');
 							$('#punchButton').on('click', function () {
