@@ -11,6 +11,7 @@ class Paid_Expenses extends ActiveRecord
 	public $paid_order_id; //ONE TO ONE
 	public $expense_number;
 	public $status;
+	public $user_create_id;
 	
 	const NOT_PAID = 0;
 	const PAID = 1;
