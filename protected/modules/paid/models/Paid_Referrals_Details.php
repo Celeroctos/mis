@@ -8,7 +8,8 @@ class Paid_Referrals_Details extends ActiveRecord
 	public $paid_referral_detail_id;
 	public $paid_service_id;
 	public $paid_referral_id;
-
+//	public $doctor_id;
+	
 	public function tableName()
 	{
 		return 'paid.paid_referrals_details';

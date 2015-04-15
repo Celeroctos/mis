@@ -223,7 +223,58 @@ class CashActController extends MPaidController
 		
 		try
 		{
+			$sql='SELECT service.paid_service_group_id, t.doctor_id
+				  FROM "paid"."paid_services" service, "paid"."paid_order_details" t
+				  WHERE service.paid_service_id=t.paid_service_id
+				  AND t.paid_order_id=:paid_order_id
+				  GROUP BY service.paid_service_group_id, t.doctor_id;
+			';
+			$command=Yii::app()->db->createCommand($sql);
+			$command->bindParam(':paid_order_id', $paid_order_id, PDO::PARAM_INT);
+			$groupRows=$command->query()->readAll();
+//			
+//			$modelPaid_Referrals_Details=new Paid_Referrals_Details();
+//			$modelPaid_Referrals_Details->paid_order_id=$paid_order_id;
 			
+			$sql='SELECT t.paid_service_id, t.doctor_id
+				  FROM "paid"."paid_order_details" t, "paid"."paid_services" service
+				  WHERE service.paid_service_group_id=:group_id
+				  AND service.paid_service_id=t.paid_service_id
+				  AND t.doctor_id=:doctor_id
+				  AND t.paid_order_id=:paid_order_id;
+			';//получаем все услуги от группировок, последовательно
+			$command=Yii::app()->db->createCommand($sql);
+			
+			//считали группы (связка группа_услуги - номер врача)
+			foreach($groupRows as $groupRow)
+			{ //считываем группу (ее услуги), создаем направление на основе одной группы
+				$command->bindParam(':paid_order_id', $paid_order_id, PDO::PARAM_INT);
+				$command->bindParam(':group_id', $groupRow['paid_service_group_id'], PDO::PARAM_INT);
+				$command->bindParam(':doctor_id', $groupRow['doctor_id'], PDO::PARAM_INT);
+				$serviceRows=$command->query()->readAll(); //считали все услуги из заказа для формирования одного направления
+				
+				$modelPaid_Referrals=new Paid_Referrals();
+				$modelPaid_Referrals->paid_order_id=$paid_order_id;
+				$modelPaid_Referrals->date=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+				$modelPaid_Referrals->patient_id=$patient_id; //избыточность, но зато меньше связей.
+				$modelPaid_Referrals->doctor_id=$groupRow['doctor_id'];
+				$modelPaid_Referrals->status=null; //очень сомнительный параметр
+				$modelPaid_Referrals->save(); //сохранили направление. Теперь добавляем в него услуги.
+				
+				foreach($serviceRows as $serviceRow)
+				{ //добавление услуг в направление
+					$modelPaid_Referrals_Details=new Paid_Referrals_Details();
+					$modelPaid_Referrals_Details->paid_service_id=$serviceRow['paid_service_id'];
+//					$modelPaid_Referrals_Details->doctor_id=$serviceRow['doctor_id'];
+					$modelPaid_Referrals_Details->paid_referral_id=Yii::app()->db->getLastInsertID('paid.paid_referrals_paid_referrals_id_seq');
+					
+					if(!$modelPaid_Referrals_Details->save())
+					{
+						throw new CHttpException(404, 'Ошибка в запросе создания направлений');
+					}
+				} //сформировали одно направление, надо печатать..
+			}
+			$transaction->commit();
 		}
 		catch(Exception $e)
 		{

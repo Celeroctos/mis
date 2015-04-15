@@ -92,6 +92,7 @@ HERE;
 						"paid_referrals_id" serial NOT NULL, --Уникальный номер направления
 						"paid_order_id" integer NOT NULL, --FK (table paid_orders)
 						"patient_id" integer NOT NULL, --FK (table mis.patients)
+						"doctor_id" integer,
 						"date" TIMESTAMPTZ,
 						"status" integer, --Сомнительно, возможно удаление (есть в paid_orders)
 						PRIMARY KEY(paid_referrals_id)

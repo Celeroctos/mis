@@ -8,8 +8,9 @@ class Paid_Referrals extends ActiveRecord
 	public $paid_referrals_id;
 	public $paid_order_id;
 	public $patient_id;
+	public $doctor_id;
 	public $date;
-	public $status;
+	public $status; //очень сомнительный параметр
 	
 	public function tableName()
 	{
