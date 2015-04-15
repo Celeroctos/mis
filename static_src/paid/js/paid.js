@@ -117,7 +117,8 @@ $(document).ready(function() {
 									$.ajax({
 										'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
 										'success': function (html) {
-											
+											//TODO провели платёж, закрыли счёт, создали направления
+											//дальше?
 										}
 									});
 								}

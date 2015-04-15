@@ -216,13 +216,18 @@ class CashActController extends MPaidController
 		}
 		
 		$recordPaid_Order=Paid_Orders::model()->findbyPk($paid_order_id);
-		$recordPaid_Expenses=Paid_Expenses::model()->find('paid_order_id=:order_id', [':order_id'=>$recordPaid_Order->paid_order_id]);
-		
-		if($recordPaid_Order===null || $recordPaid_Expenses===null)
+		if($recordPaid_Order===null)
 		{
-			throw new CHttpException(404, 'Заказ и(или) счёт не найден(ы)');
+			throw new CHttpException(404, 'Заказ не найден.');
 		}
-		elseif($recordPaid_Expenses->status==Paid_Expenses::NOT_PAID)
+		
+		$recordPaid_Expenses=Paid_Expenses::model()->find('paid_order_id=:order_id', [':order_id'=>$recordPaid_Order->paid_order_id]);
+		if($recordPaid_Expenses===null)
+		{
+			throw new CHttpException(404, 'Cчёт не найден.');
+		}
+		
+		if($recordPaid_Expenses->status==Paid_Expenses::PAID)
 		{
 			throw new CHttpException(404, 'Счёт уже был оплачен. Транзакция отменена.');
 		}
@@ -246,7 +251,7 @@ class CashActController extends MPaidController
 			{
 				throw new CHttpException(404, 'Ошибка в запросе смены статуса счета. Транзакция отменена.');
 			}
-			
+			//ActiveRecord не отрабатывает (группировки в релейшнах), поэтому запрос напрямую.
 			$sql='SELECT service.paid_service_group_id, t.doctor_id
 				  FROM "paid"."paid_services" service, "paid"."paid_order_details" t
 				  WHERE service.paid_service_id=t.paid_service_id
