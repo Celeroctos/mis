@@ -59,7 +59,6 @@ class CashActController extends MPaidController
 	public function actionChooseExpenses()
 	{
 		self::disableScripts();
-		
 	}
 	
 	/**
@@ -71,6 +70,7 @@ class CashActController extends MPaidController
 	public function actionChooseDoctor($code)
 	{
 		self::disableScripts();
+		Yii::app()->clientScript->scriptMap['jquery.yiigridview.js']=false;
 		$recordPaid_Service=Paid_Services::model()->find('code=:code', [':code'=>$code]);
 		//взяли id группы
 		
@@ -80,6 +80,7 @@ class CashActController extends MPaidController
 		$criteria->together=true;
 		$criteria->condition='groups.paid_service_group_id=:group_id';
 		$criteria->params=[':group_id'=>$recordPaid_Service->paid_service_group_id];
+		$criteria->distinct=true;
 		$criteria->group='t.id';
 		$modelDoctors=new Doctors('paid.cashAct.search');
 		$modelDoctors->attributes=Yii::app()->request->getParam('Doctors');
@@ -89,7 +90,7 @@ class CashActController extends MPaidController
 			$modelDoctors->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		
-		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria]);
+		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>7],]);
 		$this->renderPartial('gridChooseDoctor', ['modelDoctors'=>$modelDoctors, 'dataProvider'=>$dataProvider], false, true);
 	}
 	

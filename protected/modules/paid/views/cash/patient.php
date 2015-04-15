@@ -59,7 +59,7 @@
 <?php $this->widget('PaidCashPunch'); ?>
 <div class="modal" id="modalSelectServices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalSelectServices">
-		<div class="modal-content b-paid__modalHeader">
+		<div class="modal-content b-modalContentSelectServices b-paid__modalHeader">
 			<div class="modal-body" id="modalSelectServicesBody">
 			</div>
 			<div class="modal-footer">

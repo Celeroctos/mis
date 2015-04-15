@@ -107,20 +107,27 @@ $(document).ready(function() {
 
 							$('#TotalSum').html(arr.priceSum.toFixed(2));
 							$('#punchButton').removeAttr('disabled');
-							$('#CashSum').removeAttr('disabled');
+//							$('#CashSum').removeAttr('disabled');
 							$('#punchButton').on('click', function () {
 								/**
 								 * см. inputMaskComplete
 								 */
 								if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
 								{
+									$('#punchButton').removeClass('btn-warning');
+									$('#punchButton').addClass('btn-default');
 									$.ajax({
 										'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
 										'success': function (html) {
 											//TODO провели платёж, закрыли счёт, создали направления
 											//дальше?
+											location.reload();
 										}
 									});
+								}
+								else {
+									$('#punchButton').removeClass('btn-default'); //если денег дали меньше чем ИТОГО
+									$('#punchButton').addClass('btn-warning');
 								}
 							});
 
@@ -148,7 +155,7 @@ $(document).ready(function() {
 //					console.log('ERROR');
 					$('#TotalSum').html('0'); //обнуляем ИТОГО
 					$('#punchButton').attr('disabled', 'disabled');
-					$('#CashSum').attr('disabled', 'disabled');
+//					$('#CashSum').attr('disabled', 'disabled');
 					$('#deleteOrderButton').attr('disabled', 'disabled');
 					price=0;
 				}
