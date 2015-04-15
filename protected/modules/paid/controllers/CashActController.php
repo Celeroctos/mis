@@ -59,6 +59,8 @@ class CashActController extends MPaidController
 	public function actionChooseExpenses()
 	{
 		self::disableScripts();
+		$this->render();
+		
 	}
 	
 	/**

@@ -114,7 +114,7 @@ $(document).ready(function() {
 								 */
 								if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
 								{
-									$('#punchButton').removeClass('btn-warning');
+									$('#punchButton').removeClass('btn-danger');
 									$('#punchButton').addClass('btn-default');
 									$.ajax({
 										'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
@@ -127,7 +127,7 @@ $(document).ready(function() {
 								}
 								else {
 									$('#punchButton').removeClass('btn-default'); //если денег дали меньше чем ИТОГО
-									$('#punchButton').addClass('btn-warning');
+									$('#punchButton').addClass('btn-danger');
 								}
 							});
 
