@@ -20,7 +20,7 @@ class Paid_Expenses extends ActiveRecord
 	const NOT_PAID = 0;
 	const PAID = 1;
 	
-	const PAGE_SIZE = 2;
+	const PAGE_SIZE = 7;
 	
 	public function tableName()
 	{

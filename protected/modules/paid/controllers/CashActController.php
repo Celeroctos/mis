@@ -99,8 +99,41 @@ class CashActController extends MPaidController
 			$modelDoctors->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		
-		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>7],]);
+		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Doctors::PAGE_SIZE],]);
 		$this->renderPartial('gridChooseDoctor', ['modelDoctors'=>$modelDoctors, 'dataProvider'=>$dataProvider], false, true);
+	}
+	
+	/**
+	 * Используется при ajax-запросе, который инициализируется при нажатии
+	 * на выбранный счет
+	 * Смотри classChooseExpenses() в paid.js
+	 */
+	public function actionChooseExpenseServices($expense_number)
+	{
+		self::disableScripts();
+		Yii::app()->clientScript->scriptMap['jquery.yiigridview.js']=false; //уже есть одна CGridView на странице
+		
+		$recordPaid_Expenses=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);
+		if($recordPaid_Expenses===null)
+		{
+			throw new CHttpException(404, 'Такого счёта не существует.');
+		}
+	
+		$criteria=new CDbCriteria();
+		$criteria->condition='paid_order_id=:paid_order_id';
+		$criteria->params=[':paid_order_id'=>$recordPaid_Expenses->paid_order_id];
+		
+		$modelPaid_Order_Details=new Paid_Order_Details('paid.cashAct.search');
+		$modelPaid_Order_Details->attributes=Yii::app()->request->getParam('Paid_Order_Details');
+		
+		if(!Yii::app()->request->getParam('gridChooseExpenseServices'))
+		{ //первый заход в этот экшн (не обработка пагинатора, сортировки и прочего)
+			$modelPaid_Order_Details->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
+		}
+		
+		$dataProvider=new CActiveDataProvider($modelPaid_Order_Details, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>  Paid_Order_Details::PAGE_SIZE]]);
+		
+		$this->renderPartial('chooseExpenseServices', ['modelPaid_Order_Details'=>$modelPaid_Order_Details, 'dataProvider'=>$dataProvider], false, true);
 	}
 	
 	/**

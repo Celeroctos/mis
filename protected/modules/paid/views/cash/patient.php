@@ -91,3 +91,14 @@
 		</div>
 	</div>
 </div>
+<div class="modal" id="modalSelectExpenseServices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog b-modalSelectExpenseServices">
+		<div class="modal-content b-paid__modalHeader">
+			<div class="modal-body" id="modalSelectExpenseServicesBody">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+			</div>
+		</div>
+	</div>
+</div>

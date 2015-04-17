@@ -10,6 +10,11 @@ class Paid_Order_Details extends ActiveRecord
 	public $paid_service_id;
 	public $doctor_id;
 	
+	public $doctorName; //user in CGridView (chooseExpenseServices)
+	public $hash; //use in CGridView id
+	
+	const PAGE_SIZE = 7; //use in pagination Yii
+	
 	public function tableName()
 	{
 		return 'paid.paid_order_details';
@@ -18,7 +23,7 @@ class Paid_Order_Details extends ActiveRecord
 	public function rules()
 	{
 		return [
-			
+			['hash', 'type', 'type'=>'string']
 		];
 	}
 	
@@ -26,6 +31,7 @@ class Paid_Order_Details extends ActiveRecord
 	{
 		return [
 			'service'=>[self::BELONGS_TO, 'Paid_Services', 'paid_service_id'],
+			'doctor'=>[self::BELONGS_TO, 'Doctors', 'doctor_id'],
 		];
 	}
 	

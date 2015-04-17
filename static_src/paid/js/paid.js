@@ -24,8 +24,32 @@ function updateService() { //add to onlick
 
 /**
  * Класс для работы с выбором счёта
+ * into Yii handlers ajaxButton
  */
-function chooseExpenses() {
+function classChooseExpenses() {
+
+	callBackSuccess=function (result) {
+		$('#modalSelectExpenseServicesBody').html(result);
+		$('#modalSelectExpenseServices').modal('show');
+	};
+	
+	callBackHiddenModalExpenses=function () {
+		$('#modalSelectExpensesBody').empty();
+	};
+	
+	callBackHiddenModalExpenseServices=function () {
+		$('#modalSelectExpenseServicesBody').empty();
+	};
+	
+	callBackClickTr=function () {
+		var data={};
+		data.expense_number=$(this).find(".expense_number").html();
+
+		$.ajax({"url": "/paid/cashAct/ChooseExpenseServices", 
+				"data": data,
+				"success": callBackSuccess
+		});
+	};
 	/**
 	* Insert function into Yii handler (ajaxButton)
 	* success class for ajax request
@@ -41,14 +65,12 @@ function chooseExpenses() {
 	};
 	
 	this.initHandlers=function () {
-		$(document).on('hidden.bs.modal', '#modalSelectExpenses', this.hiddenModalCallBack);	
-	};
-	
-	this.hiddenModalCallBack=function () {
-		$('#modalSelectExpensesBody').empty();
+		$(document).on('hidden.bs.modal', '#modalSelectExpenses', callBackHiddenModalExpenses);
+		$(document).on('click', '.gridChooseExpenses tr', callBackClickTr);
+		$(document).on('hidden.bs.modal', '#modalSelectExpenseServices', callBackHiddenModalExpenseServices);
 	};
 }
-var chooseExpenses=new chooseExpenses();
+var chooseExpenses=new classChooseExpenses();
 chooseExpenses.initHandlers();
 
 /**
@@ -95,6 +117,10 @@ $(document).ready(function() {
 	}; //используется в .inputmask, формирует сдачу пациента.
 	
 	$('#CashSum').inputmask("9{2,9}.9{2}", {"oncomplete": inputMaskComplete});
+	
+//	function classOrderForm() {
+//		
+//	}
 	
 	function classSelectServices() {
 		var i=0; //замыкание, for echo empty row

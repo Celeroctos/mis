@@ -1,24 +1,24 @@
 <?php
 /**
- * Выбор неоплаченного счёта
+ * Выбор услуг по счёту
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
-<h4>Выберите счёт</h4>
+<h4>Выберите услугу(и)</h4>
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
-	'dataProvider'=>$modelPaid_Expenses->search(),
-	'filter'=>$modelPaid_Expenses,
+	'dataProvider'=>$dataProvider,
+	'filter'=>$modelPaid_Order_Details,
 	'ajaxType'=>'post',
-//	'id'=>'gridSelectExpenses',
-	'id'=>$modelPaid_Expenses->hash, //сохраняем ID при обновлении ajax
-	'ajaxVar'=>'gridSelectExpenses',
+//	'id'=>'gridSelectServices',
+	'id'=>$modelPaid_Order_Details->hash, //сохраняем ID при обновлении ajax
+	'ajaxVar'=>'gridChooseExpenseServices',
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
 	'emptyText'=>'',
 	'showTableOnEmpty'=>false,
-	'itemsCssClass'=>'table table-bordered gridChooseExpenses',
+	'itemsCssClass'=>'table table-bordered gridChooseExpenseServices', //gridSelectServices используется в paid.js
 	'pager'=>[
 		'class'=>'CLinkPager',
 		'cssFile'=>'',
@@ -40,44 +40,18 @@ $this->widget('zii.widgets.grid.CGridView', [
 	],
 	'columns'=>[
 		[
-			'name'=>'date',
-			'value'=>'Yii::app()->dateformatter->formatDateTime($data->date, "medium");',
-			'filter'=>false,
+			'name'=>'service.name',
+			'filter'=>CHtml::activeHiddenField($modelPaid_Order_Details, 'hash'),
 			'headerHtmlOptions'=>[
-				'class'=>'col-xs-3',
+				'class'=>'col-xs-1',
 			],
 		],
 		[
-			'name'=>'expense_number',
-			'type'=>'raw',
-			'value'=>'"<div class=\"expense_number\">". CHtml::encode($data->expense_number) . "</div>"',
-			'filter'=>CHtml::activeHiddenField($modelPaid_Expenses, 'hash'),
+			'name'=>'doctorName',
+			'value'=>'$data->doctor->last_name . " " . $data->doctor->first_name . "" . $data->doctor->middle_name',
+			'filter'=>CHtml::activeHiddenField($modelPaid_Order_Details, 'hash'),
 			'headerHtmlOptions'=>[
-				'class'=>'col-xs-3',
-			],
-		],
-		[
-			'name'=>'patientName',
-			'filter'=>false,
-			'value'=>'$data->order->patient->last_name . " " . $data->order->patient->first_name . " " . $data->order->patient->middle_name',
-			'headerHtmlOptions'=>[
-				'class'=>'col-xs-3',
-			],
-		],
-		[
-			'name'=>'services',
-			'value'=>'$data->getServices($data->paid_expense_id)',
-			'filter'=>false,
-			'headerHtmlOptions'=>[
-				'class'=>'col-xs-3',
-			],
-		],
-		[
-			'name'=>'price',
-			'value'=>'ParseMoney::decodeMoney($data->price) . " руб."',
-			'filter'=>false,
-			'headerHtmlOptions'=>[
-				'class'=>'col-xs-3',
+				'class'=>'col-xs-1',
 			],
 		],
 //			[

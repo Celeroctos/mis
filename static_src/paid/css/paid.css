@@ -223,6 +223,9 @@
 .b-modalSelectDoctor{
 	margin-top: 80px !important;
 }
+.b-modalSelectExpenseServices{
+	margin-top: 80px !important;
+}
 .b-modalAddServiceGroup{
     margin-top: 70px;
 }
@@ -253,6 +256,9 @@ div[class^="col-xs-"].error .form-control{
 .b-modalContentSelectServices{
 	height: 600px;
 	overflow-y: scroll;
+}
+.gridChooseExpenseServices .filters{
+	display: none;
 }
 .gridSelectServices .filters{
 	display: none;
