@@ -60,6 +60,21 @@ function classChooseExpenses() {
 			redirectToLogin();
 			return;
 		}
+		
+		/**TODO */
+		//чистим это всё только когда есть выбанный пациент!!! TODODODODO
+		$('#selectedServicesTable tbody tr').each(function () {
+			if ( $(this).attr('class') !== 'empty')
+			{
+				$(this).detach();
+			}
+		});
+		$('#selectedServicesTable tbody .empty').css('display', 'table-row');
+		$('#deleteOrderButton, #punchButton').off('click');		
+		$('#deleteOrderButton, #punchButton').attr('disabled', 'disabled');
+		$('#TotalSum').html(0);
+		/* TODODODODO */
+		
 		$('#modalSelectExpensesBody').html(html);
 		$('#modalSelectExpenses').modal('show');
 	};
