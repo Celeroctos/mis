@@ -6,7 +6,7 @@
 ?>
 <div class="col-xs-2">
 	<?= CHtml::ajaxButton('Возврат оплаты', null, [], ['class'=>'btn btn-default btn-block', 'disabled'=>'disabled']); ?>
-	<?= CHtml::ajaxButton('Выбрать счет', CHtml::normalizeUrl('/paid/cashAct/ChooseExpenses'), ['method'=>'POST', 'success'=>'selectExpenses'], ['class'=>'btn btn-default btn-block', 'id'=>'chooseExpenses']); ?>
+	<?= CHtml::ajaxButton('Выбрать счет', CHtml::normalizeUrl('/paid/cashAct/ChooseExpenses'), ['method'=>'POST', 'success'=>'chooseExpenses.selectExpenses'], ['class'=>'btn btn-default btn-block', 'id'=>'chooseExpenses']); ?>
 </div>
 <div class="col-xs-2 b-paid_grid_position" id="paidActWidget">
 	<?= CHtml::link('К поиску', Yii::app()->controller->createUrl('cash/main'), ['class'=>'btn btn-default btn-block']); ?>

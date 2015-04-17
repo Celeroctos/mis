@@ -23,19 +23,33 @@ function updateService() { //add to onlick
 }
 
 /**
- * Insert function into Yii handler (ajaxButton)
- * success method for ajax request
- * @param html {mixed} success response
+ * Класс для работы с выбором счёта
  */
-function selectExpenses(html)
-{
-	if(html===ERROR_LOGIN) {
-		redirectToLogin();
-		return;
-	}
-	$('#modalSelectExpensesBody').html(html);
-    $('#modalSelectExpenses').modal('show');
+function chooseExpenses() {
+	/**
+	* Insert function into Yii handler (ajaxButton)
+	* success class for ajax request
+	* @param {mixed} html ответ от сервера
+	*/
+	this.selectExpenses=function(html) {
+		if(html===ERROR_LOGIN) {
+			redirectToLogin();
+			return;
+		}
+		$('#modalSelectExpensesBody').html(html);
+		$('#modalSelectExpenses').modal('show');
+	};
+	
+	this.initHandlers=function () {
+		$(document).on('hidden.bs.modal', '#modalSelectExpenses', this.hiddenModalCallBack);	
+	};
+	
+	this.hiddenModalCallBack=function () {
+		$('#modalSelectExpensesBody').empty();
+	};
 }
+var chooseExpenses=new chooseExpenses();
+chooseExpenses.initHandlers();
 
 /**
  * insert function into Yii handler

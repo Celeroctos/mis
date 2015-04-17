@@ -92,11 +92,11 @@ class Paid_Expenses extends ActiveRecord
 		
 		return new CActiveDataProvider('Paid_Expenses', [
 			'criteria'=>$criteria,
-//			'sort'=>[
-//				'defaultOrder'=>[
-//					'patient_id'=>CSort::SORT_DESC,
-//				],
-//			],
+			'sort'=>[
+				'defaultOrder'=>[
+					'paid_expense_id'=>CSort::SORT_DESC,
+				],
+			],
 			'pagination'=>[
 				'pageSize'=>self::PAGE_SIZE,
 			],
