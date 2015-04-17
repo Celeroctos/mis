@@ -21,10 +21,26 @@ function updateService() { //add to onlick
     });
     return false;
 }
+
+/**
+ * Insert function into Yii handler (ajaxButton)
+ * success method for ajax request
+ * @param html {mixed} success response
+ */
+function selectExpenses(html)
+{
+	if(html===ERROR_LOGIN) {
+		redirectToLogin();
+		return;
+	}
+	$('#modalSelectExpensesBody').html(html);
+    $('#modalSelectExpenses').modal('show');
+}
+
 /**
  * insert function into Yii handler
  * success method for ajax request
- * @param {mixed} success response
+ * @param html {mixed} success response
  */
 function selectServices(html) {
 	

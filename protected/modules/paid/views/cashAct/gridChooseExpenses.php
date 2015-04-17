@@ -7,19 +7,18 @@
 <h4>Выберите врача</h4>
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
-	'dataProvider'=>$modelPaid_Expense->search(),
-	'filter'=>$modelPaid_Expense,
+	'dataProvider'=>$modelPaid_Expenses->search(),
+	'filter'=>$modelPaid_Expenses,
 	'ajaxType'=>'post',
-//	'id'=>'gridSelectServices',
-	'id'=>$modelPaid_Expense->hash, //сохраняем ID при обновлении ajax
-	'ajaxVar'=>'gridSelectExpense',
+//	'id'=>'gridSelectExpenses',
+	'id'=>$modelPaid_Expenses->hash, //сохраняем ID при обновлении ajax
+	'ajaxVar'=>'gridSelectExpenses',
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
-	'emptyText'=>
-	'<h4 class="b-paid__emptyServiceHeader">Счета отсутствуют.</h4>',
+	'emptyText'=>'',
 	'showTableOnEmpty'=>false,
-	'itemsCssClass'=>'table table-bordered gridChooseDoctor', //gridSelectServices используется в paid.js
+	'itemsCssClass'=>'table table-bordered gridChooseExpenses',
 	'pager'=>[
 		'class'=>'CLinkPager',
 		'cssFile'=>'',
@@ -41,19 +40,39 @@ $this->widget('zii.widgets.grid.CGridView', [
 	],
 	'columns'=>[
 		[
+			'name'=>'date',
+			'filter'=>false,
+			'headerHtmlOptions'=>[
+				'class'=>'col-xs-3',
+			],
+		],
+		[
 			'name'=>'expense_number',
+			'filter'=>CHtml::activeHiddenField($modelPaid_Expenses, 'hash'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],
 		],
 		[
-			'name'=>'date',
+			'name'=>'patientName',
+			'filter'=>false,
+			'value'=>'$data->order->patient->last_name . " " . $data->order->patient->first_name . " " . $data->order->patient->middle_name',
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],
 		],
 		[
-			'name'=>'date',
+			'name'=>'services',
+			'value'=>'$data->getServices($data->paid_expense_id)',
+			'filter'=>false,
+			'headerHtmlOptions'=>[
+				'class'=>'col-xs-3',
+			],
+		],
+		[
+			'name'=>'price',
+			'value'=>'ParseMoney::decodeMoney($data->price) . " руб."',
+			'filter'=>false,
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],

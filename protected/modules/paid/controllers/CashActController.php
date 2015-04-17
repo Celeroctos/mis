@@ -4,7 +4,7 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 class CashActController extends MPaidController
-{
+{ //TODO нажатие кнопок проверять, выбран ли пациент
 	public function accessRules()
 	{
 		return [
@@ -59,7 +59,14 @@ class CashActController extends MPaidController
 	public function actionChooseExpenses()
 	{
 		self::disableScripts();
-		$this->renderPartial('gridChooseExpense');
+		$modelPaid_Expenses=new Paid_Expenses('paid.cashAct.search');
+		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		
+		if(!Yii::app()->request->getParam('gridSelectExpenses'))
+		{ //первый заход в этот экшн
+			$modelPaid_Expenses->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
+		}
+		$this->renderPartial('gridChooseExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses], false, true);
 		
 	}
 	
@@ -144,6 +151,7 @@ class CashActController extends MPaidController
 				$modelPaid_Expenses->paid_order_id=Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq');
 				$modelPaid_Expenses->status=Paid_Expenses::NOT_PAID; //еще не оплачен
 				$modelPaid_Expenses->expense_number=Paid_Orders::generateRandNumber();
+				$modelPaid_Expenses->user_create_id=Yii::app()->user->id;
 				
 				if(!$modelPaid_Expenses->save())
 				{

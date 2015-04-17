@@ -250,6 +250,12 @@ div[class^="col-xs-"].error .form-control{
 	height: 600px;
 	overflow-y: scroll;
 }
+.gridSelectServices .filters{
+	display: none;
+}
+.gridChooseExpenses .filters{
+	display: none;
+}
 /*.b-paidHeader{
     margin-bottom: 10px;
 }*/

@@ -40,7 +40,7 @@ class Paid_Orders extends ActiveRecord
 	public function relations()
 	{
 		return [
-			
+			'patient'=>[self::BELONGS_TO, 'Patients', 'patient_id'],
 		];
 	}
 	
