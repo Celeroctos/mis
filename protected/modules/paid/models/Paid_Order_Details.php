@@ -13,7 +13,7 @@ class Paid_Order_Details extends ActiveRecord
 	public $doctorName; //user in CGridView (chooseExpenseServices)
 	public $hash; //use in CGridView id
 	
-	const PAGE_SIZE = 7; //use in pagination Yii
+	const PAGE_SIZE = 1; //use in pagination Yii
 	
 	public function tableName()
 	{

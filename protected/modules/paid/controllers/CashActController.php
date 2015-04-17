@@ -137,6 +137,18 @@ class CashActController extends MPaidController
 	}
 	
 	/**
+	 * Удаление услуги из сформированного заказа
+	 * use in CGridView
+	 */
+	public function actionDeleteExpenseService($paid_order_detail_id)
+	{
+		if(!$recordPaid_Order_Details=Paid_Order_Details::model()->deleteByPk($paid_order_detail_id))
+		{
+			throw new CHttpException(404, 'Такой услуги в заказе не существует.');
+		}
+	}
+	
+	/**
 	 *	Добавление заказа и его счета (сформировать заказ)
 	 * classSelectServices() из paid.js (ajax-запрос)
 	 */
