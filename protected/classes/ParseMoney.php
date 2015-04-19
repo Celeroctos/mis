@@ -27,6 +27,6 @@ class ParseMoney
 	{
 		$money=(float)$money/100;
 		
-		return number_format($money,2); //выводить всегда 2 знака после запятой
+		return number_format($money,2, '.', ''); //выводить всегда 2 знака после запятой
 	}
 }
