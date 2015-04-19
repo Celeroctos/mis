@@ -48,7 +48,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 		],
 		[
 			'name'=>'doctorName',
-			'value'=>'$data->doctor->last_name . " " . $data->doctor->first_name . "" . $data->doctor->middle_name',
+			'value'=>'$data->doctor->last_name . " " . $data->doctor->first_name . " " . $data->doctor->middle_name',
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-6',
 			],
