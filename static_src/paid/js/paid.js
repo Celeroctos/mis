@@ -216,7 +216,32 @@ function classSelectServices() {
 	 * навесить обработчики пробивки чека.
 	 */
 	_callBackPrepareOrder = function() {
-		alert(423432);
+		console.log(4234242);
+	};
+
+	_punch=function () { //private method
+		$("#selectedServicesTable tbody .priceService").each(function () {
+			price+=Number($(this).html());
+		});
+		if(price>0) {
+			
+			if(!prepareOrder) //если заказ не подготовлен
+			{
+				_callBackCreateOrder();
+			}
+			else
+			{
+				_callBackPrepareOrder();
+			}
+		}
+		else if(price<=0) {
+//					console.log('ERROR');
+			$('#TotalSum').html('0'); //обнуляем ИТОГО
+			$('#punchButton').attr('disabled', 'disabled');
+//					$('#CashSum').attr('disabled', 'disabled');
+			$('#deleteOrderButton').attr('disabled', 'disabled');
+			price=0;
+		}
 	};
 	
 	/**
@@ -247,7 +272,7 @@ function classSelectServices() {
 		$('#modalSelectExpenses').modal('hide');
 	};
 	
-	_callBackNoPrepareClick=function () {
+	_callBackCreateOrderClick=function () {
 		$("#selectedServicesTable tbody").remove();
 		tbody=$("#tableSelectionServices tbody").clone();
 		$("#selectedServicesTable table").append(tbody);
@@ -257,34 +282,11 @@ function classSelectServices() {
 		prepareOrder=false; //нужно сохранять заказ прежде чем переносить его во фронт кассира
 		_punch(); //формируем заказ и счёт в том числе.	
 	};
-	
-	_punch=function () { //private method
-		$("#selectedServicesTable tbody .priceService").each(function () {
-			price+=Number($(this).html());
-		});
-		if(price>0) {
-			if(!prepareOrder) //если заказ не подготовлен
-			{
-				_callBackCreateOrder();
-			}
-			else
-			{
-				_callBackPrepareOrder();
-			}
-		}
-		else if(price<=0) {
-//					console.log('ERROR');
-			$('#TotalSum').html('0'); //обнуляем ИТОГО
-			$('#punchButton').attr('disabled', 'disabled');
-//					$('#CashSum').attr('disabled', 'disabled');
-			$('#deleteOrderButton').attr('disabled', 'disabled');
-			price=0;
-		}
-	};
+
 	this.initHandlers=function () {
 		
 		$('#chooseNoPaidExpense').on('click', _callBackPrepareClick);
-		$(document).on('click', "#selectedServicesConfirm", _callBackNoPrepareClick);	
+		$(document).on('click', "#selectedServicesConfirm", _callBackCreateOrderClick);	
 
 		$(document).on('click', '.gridSelectServices tbody tr', function () {
 			$.ajax({'success': function (html) {

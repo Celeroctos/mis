@@ -54,6 +54,8 @@ $this->widget('zii.widgets.grid.CGridView', [
 		],
 		[
 			'name'=>'service.price',
+			'type'=>'raw',
+			'value'=>'"<div class=\"priceService\">" . ParseMoney::decodeMoney(CHtml::encode($data->service->price)) . "</div>"',
 		],
 		[
 			'name'=>'doctorName',
