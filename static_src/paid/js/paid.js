@@ -89,6 +89,9 @@ function classChooseExpenses() {
 		$('#selectedServicesTable tbody .empty').css('display', 'table-row');
 		$('#deleteOrderButton, #punchButton').off('click');		
 		$('#deleteOrderButton, #punchButton').attr('disabled', 'disabled');
+		$('#CashSum').val('');
+		$('#punchButton').removeClass('btn-danger');
+		$('#punchButton').addClass('btn-default');
 		$('#TotalSum').html(0);
 		/* TODODODODO */
 		
@@ -134,20 +137,21 @@ function modelPaid_Services(code, paid_service_group_id, name) {
 }
 
 function classSelectServices() {
-	var i=0; //замыкание, for echo empty row
-	var obj; //замыкание
-	var doctorTdTag; //замыкание
+	var i=0; //for echo empty row
+	var obj;
+	var doctorTdTag;
 	var price = 0;
-	var arr={}; //замыкание
+	var arr={};
 	var prepareOrder=false; //по умолчанию нужно создавать заказ
 	var expense_number;
 	
-	_callBackAjaxSuccessPunch=function (paid_order_id) {
+	var _callBackSuccessHandlerPunch=function (paid_order_id) {
 		if(Number(paid_order_id) > 0)
 		{ //если заказ id корректный
 			$('#punchButton').off('click');
 			$('#deleteOrderButton').off('click');
 
+			$('#CashSum').val('');
 			$('#TotalSum').html(arr.priceSum.toFixed(2));
 			$('#punchButton').removeAttr('disabled');
 			$('#punchButton').on('click', function () {
@@ -191,31 +195,32 @@ function classSelectServices() {
 	/**
 	 * Метод, используется когда нужно формировать заказ и счёт на оплату в хранилище
 	 */
-	_callBackCreateOrder=function() {
-
-		$.ajax({'success': _callBackAjaxSuccessPunch,
+	var _createOrder=function() {
+		$.ajax({
+			'success': _callBackSuccessHandlerPunch,
 			'data': arr, //отправляем codeService-doctorId связки
 			'type': 'post',
 			'url': '/paid/cashAct/orderForm'
-			});
-			price=0;		
+		});
+		price=0;	
 	};
 	
 	/**
 	 * Метод, когда заказ уже сформирован, нужно только
 	 * навесить обработчики пробивки чека.
 	 */
-	_callBackPrepareOrder = function() {
+	var _prepareOrder = function() {
 		var data={};
 		data.expense_number=expense_number;
 		$.ajax({
-			"success": _callBackAjaxSuccessPunch,
+			"success": _callBackSuccessHandlerPunch,
 			"url": '/paid/cashAct/prepareOrder',
 			"data": data
 		});
+		price=0;
 	};
 
-	_punch=function () { //private method
+	var _punch=function () { //private method
 		$("#selectedServicesTable tbody .priceService").each(function () {
 			price+=Number($(this).html());
 		});
@@ -226,7 +231,7 @@ function classSelectServices() {
 				arr.orderForm[i]={};
 				arr.orderForm[i].serviceId=$(this).find('.serviceId').html();
 				arr.orderForm[i].doctorId=$(this).find('.doctorId').html();
-				arr.priceSum=price; //надо разделить на 100
+				arr.priceSum=price;
 				var url=document.location.href;
 				var action=url.split('/');
 				arr.patient_id=action[7]; //patient_id сохраняем в заказ
@@ -234,18 +239,18 @@ function classSelectServices() {
 			});
 			if(!prepareOrder) //если заказ не подготовлен
 			{
-				_callBackCreateOrder();
+				_createOrder();
 			}
 			else
 			{
-				_callBackPrepareOrder();
+				_prepareOrder();
 			}
 		}
 		else if(price<=0) {
 //					console.log('ERROR');
 			$('#TotalSum').html('0'); //обнуляем ИТОГО
 			$('#punchButton').attr('disabled', 'disabled');
-//					$('#CashSum').attr('disabled', 'disabled');
+			$('#CashSum').val('');
 			$('#deleteOrderButton').attr('disabled', 'disabled');
 			price=0;
 		}
@@ -254,8 +259,7 @@ function classSelectServices() {
 	/**
 	 * Обработчик клика переноса заказа во фронт кассира (no save in DB)
 	 */
-	_callBackPrepareClick = function () {
-		
+	var _callBackPrepareClick = function () {
 		tbody=$('.gridChooseExpenseServices tbody').clone();
 		if(tbody.length===0)
 		{ //не найден
@@ -280,7 +284,7 @@ function classSelectServices() {
 		$('#modalSelectExpenses').modal('hide');
 	};
 	
-	_callBackCreateOrderClick=function () {
+	var _callBackCreateOrderClick=function () {
 		$("#selectedServicesTable tbody").remove();
 		tbody=$("#tableSelectionServices tbody").clone();
 		$("#selectedServicesTable table").append(tbody);
