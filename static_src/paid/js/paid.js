@@ -142,68 +142,58 @@ function classSelectServices() {
 	var prepareOrder=false; //по умолчанию нужно создавать заказ
 	var expense_number;
 	
+	_callBackAjaxSuccessPunch=function (paid_order_id) {
+		if(Number(paid_order_id) > 0)
+		{ //если заказ id корректный
+			$('#punchButton').off('click');
+			$('#deleteOrderButton').off('click');
+
+			$('#TotalSum').html(arr.priceSum.toFixed(2));
+			$('#punchButton').removeAttr('disabled');
+			$('#punchButton').on('click', function () {
+				/**
+				 * см. inputMaskComplete
+				 */
+				if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
+				{
+					$('#punchButton').removeClass('btn-danger');
+					$('#punchButton').addClass('btn-default');
+					$.ajax({
+						'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
+						'success': function (html) {
+							//TODO провели платёж, закрыли счёт, создали направления
+							//дальше?
+							location.reload();
+						}
+					});
+				}
+				else {
+					$('#punchButton').removeClass('btn-default'); //если денег дали меньше чем ИТОГО
+					$('#punchButton').addClass('btn-danger');
+				}
+			});
+
+			$('#deleteOrderButton').removeAttr('disabled');
+			$('#deleteOrderButton').on('click', function () {
+				$.ajax({
+					'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + paid_order_id,
+					'success': function (html) {
+						if(html==='success')
+						{ //после того, как удалили заказ.
+							location.reload();
+						}
+					}
+				});
+			});
+		}
+	};
+	
 	/**
 	 * Метод, используется когда нужно формировать заказ и счёт на оплату в хранилище
 	 */
 	_callBackCreateOrder=function() {
-		arr.orderForm={};
-		var i=0;
-		$('#selectedServicesTable tbody tr').each(function () {
-			arr.orderForm[i]={};
-			arr.orderForm[i].serviceId=$(this).find('.serviceId').html();
-			arr.orderForm[i].doctorId=$(this).find('.doctorId').html();
-			arr.priceSum=price; //надо разделить на 100
-			var url=document.location.href;
-			var action=url.split('/');
-			arr.patient_id=action[7]; //patient_id сохраняем в заказ
-			i++;
-		});
-		$.ajax({'success': function (paid_order_id) { //создаем заказ и счет, после печатаем их
-			if(Number(paid_order_id) > 0)
-			{ //если заказ id корректный
-				$('#punchButton').off('click');
-				$('#deleteOrderButton').off('click');
 
-				$('#TotalSum').html(arr.priceSum.toFixed(2));
-				$('#punchButton').removeAttr('disabled');
-//							$('#CashSum').removeAttr('disabled');
-				$('#punchButton').on('click', function () {
-					/**
-					 * см. inputMaskComplete
-					 */
-					if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
-					{
-						$('#punchButton').removeClass('btn-danger');
-						$('#punchButton').addClass('btn-default');
-						$.ajax({
-							'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
-							'success': function (html) {
-								//TODO провели платёж, закрыли счёт, создали направления
-								//дальше?
-								location.reload();
-							}
-						});
-					}
-					else {
-						$('#punchButton').removeClass('btn-default'); //если денег дали меньше чем ИТОГО
-						$('#punchButton').addClass('btn-danger');
-					}
-				});
-
-				$('#deleteOrderButton').removeAttr('disabled');
-				$('#deleteOrderButton').on('click', function () {
-					$.ajax({
-						'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + paid_order_id,
-						'success': function (html) {
-							if(html==='success')
-							{ //после того, как удалили заказ.
-								location.reload();
-							}
-						}
-					});
-				});
-			}
-		},
+		$.ajax({'success': _callBackAjaxSuccessPunch,
 			'data': arr, //отправляем codeService-doctorId связки
 			'type': 'post',
 			'url': '/paid/cashAct/orderForm'
@@ -216,7 +206,13 @@ function classSelectServices() {
 	 * навесить обработчики пробивки чека.
 	 */
 	_callBackPrepareOrder = function() {
-		console.log(4234242);
+		var data={};
+		data.expense_number=expense_number;
+		$.ajax({
+			"success": _callBackAjaxSuccessPunch,
+			"url": '/paid/cashAct/prepareOrder',
+			"data": data
+		});
 	};
 
 	_punch=function () { //private method
@@ -224,7 +220,18 @@ function classSelectServices() {
 			price+=Number($(this).html());
 		});
 		if(price>0) {
-			
+			arr.orderForm={};
+			var i=0;
+			$('#selectedServicesTable tbody tr').each(function () {
+				arr.orderForm[i]={};
+				arr.orderForm[i].serviceId=$(this).find('.serviceId').html();
+				arr.orderForm[i].doctorId=$(this).find('.doctorId').html();
+				arr.priceSum=price; //надо разделить на 100
+				var url=document.location.href;
+				var action=url.split('/');
+				arr.patient_id=action[7]; //patient_id сохраняем в заказ
+				i++;
+			});
 			if(!prepareOrder) //если заказ не подготовлен
 			{
 				_callBackCreateOrder();
@@ -248,6 +255,7 @@ function classSelectServices() {
 	 * Обработчик клика переноса заказа во фронт кассира (no save in DB)
 	 */
 	_callBackPrepareClick = function () {
+		
 		tbody=$('.gridChooseExpenseServices tbody').clone();
 		if(tbody.length===0)
 		{ //не найден

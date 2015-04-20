@@ -315,6 +315,28 @@ class CashActController extends MPaidController
 	}
 	
 	/**
+	 * Подготовка услуг для дальнейшей пробивки чека (без сохранения
+	 * заказа и счёта в хранилище, т.к. они уже там есть)
+	 * "Выбрать счёт"
+	 * @param integer $expense_number номер заказа
+	 */
+	public function actionPrepareOrder($expense_number)
+	{
+		$recordPaid_Expense=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);
+		if($recordPaid_Expense===null)
+		{
+			throw new CHttpException(404, 'Счёт не найден.');
+		}
+		
+		$recordPaid_Orders=Paid_Orders::model()->find('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordPaid_Expense->paid_order_id]);
+		if($recordPaid_Orders===null)
+		{
+			throw new CHttpException(404, 'Заказ не найден.');
+		}
+		echo $recordPaid_Orders->paid_order_id;
+	}
+	
+	/**
 	 * Пробивка чека (оплата и закрытие счёта, формирование направлений)
 	 * @param integer $paid_order_id #ID заказа,
 	 */
