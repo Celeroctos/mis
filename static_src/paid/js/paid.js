@@ -27,9 +27,10 @@ function updateService() { //add to onlick
  * into Yii handlers ajaxButton
  */
 function classChooseExpenses() {
-
+	var data={};
 	callBackSuccess=function (result) {
 		$('#modalSelectExpenseServicesBody').html(result);
+		$('._expense_number').html(data.expense_number);
 		$('#modalSelectExpenseServices').modal('show');
 	};
 	
@@ -44,7 +45,6 @@ function classChooseExpenses() {
 	};
 	
 	callBackClickTr=function () {
-		var data={};
 		data.expense_number=$(this).find(".expense_number").html();
 
 		$.ajax({"url": "/paid/cashAct/ChooseExpenseServices", 
@@ -52,25 +52,40 @@ function classChooseExpenses() {
 				"success": callBackSuccess
 		});
 	};
+	
 	/**
 	* Insert function into Yii handler (ajaxButton)
-	* success class for ajax request
+	* success method for ajax request
 	* @param {mixed} html ответ от сервера
 	*/
 	this.selectExpenses=function(html) {
-		if(html===ERROR_LOGIN) {
+		
+		if(html===ERROR_LOGIN) 
+		{ //пришёл ответ от сервера в виде: echo "ERROR_LOGIN"
 			redirectToLogin();
 			return;
 		}
 		
 		/**TODO */
 		//чистим это всё только когда есть выбанный пациент!!! TODODODODO
+		
+		var i=0;
 		$('#selectedServicesTable tbody tr').each(function () {
-			if ( $(this).attr('class') !== 'empty')
+			if ($(this).attr('class') !== 'empty')
 			{
 				$(this).detach();
 			}
+			else
+			{ //php PSR style..
+				i++;
+			}
 		});
+		
+		if(i===0)
+		{ // в таблице selectedServicesTable нету тега tr с классом empty
+			$('#selectedServicesTable tbody').append('<tr class="empty"><td colspan="7"><span>Выберите услуги</span></td></tr>');
+		}
+		
 		$('#selectedServicesTable tbody .empty').css('display', 'table-row');
 		$('#deleteOrderButton, #punchButton').off('click');		
 		$('#deleteOrderButton, #punchButton').attr('disabled', 'disabled');
@@ -118,6 +133,221 @@ function modelPaid_Services(code, paid_service_group_id, name) {
     this.name=name;
 }
 
+function classSelectServices() {
+	var i=0; //замыкание, for echo empty row
+	var obj; //замыкание
+	var doctorTdTag; //замыкание
+	var price = 0;
+	var arr={}; //замыкание
+	var prepareOrder=false; //по умолчанию нужно создавать заказ
+	var expense_number;
+	
+	/**
+	 * Метод, используется когда нужно формировать заказ и счёт на оплату в хранилище
+	 */
+	_callBackCreateOrder=function() {
+		arr.orderForm={};
+		var i=0;
+		$('#selectedServicesTable tbody tr').each(function () {
+			arr.orderForm[i]={};
+			arr.orderForm[i].serviceId=$(this).find('.serviceId').html();
+			arr.orderForm[i].doctorId=$(this).find('.doctorId').html();
+			arr.priceSum=price; //надо разделить на 100
+			var url=document.location.href;
+			var action=url.split('/');
+			arr.patient_id=action[7]; //patient_id сохраняем в заказ
+			i++;
+		});
+		$.ajax({'success': function (paid_order_id) { //создаем заказ и счет, после печатаем их
+			if(Number(paid_order_id) > 0)
+			{ //если заказ id корректный
+				$('#punchButton').off('click');
+				$('#deleteOrderButton').off('click');
+
+				$('#TotalSum').html(arr.priceSum.toFixed(2));
+				$('#punchButton').removeAttr('disabled');
+//							$('#CashSum').removeAttr('disabled');
+				$('#punchButton').on('click', function () {
+					/**
+					 * см. inputMaskComplete
+					 */
+					if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
+					{
+						$('#punchButton').removeClass('btn-danger');
+						$('#punchButton').addClass('btn-default');
+						$.ajax({
+							'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
+							'success': function (html) {
+								//TODO провели платёж, закрыли счёт, создали направления
+								//дальше?
+								location.reload();
+							}
+						});
+					}
+					else {
+						$('#punchButton').removeClass('btn-default'); //если денег дали меньше чем ИТОГО
+						$('#punchButton').addClass('btn-danger');
+					}
+				});
+
+				$('#deleteOrderButton').removeAttr('disabled');
+				$('#deleteOrderButton').on('click', function () {
+					$.ajax({
+						'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + paid_order_id,
+						'success': function (html) {
+							if(html==='success')
+							{ //после того, как удалили заказ.
+								location.reload();
+							}
+						}
+					});
+				});
+			}
+		},
+			'data': arr, //отправляем codeService-doctorId связки
+			'type': 'post',
+			'url': '/paid/cashAct/orderForm'
+			});
+			price=0;		
+	};
+	
+	/**
+	 * Метод, когда заказ уже сформирован, нужно только
+	 * навесить обработчики пробивки чека.
+	 */
+	_callBackPrepareOrder = function() {
+		alert(423432);
+	};
+	
+	/**
+	 * Обработчик клика переноса заказа во фронт кассира (no save in DB)
+	 */
+	_callBackPrepareClick = function () {
+		tbody=$('.gridChooseExpenseServices tbody').clone();
+		if(tbody.length===0)
+		{ //не найден
+			alert('Услуги отсутствуют');
+			return;
+		}
+
+		$('#selectedServicesTable tbody').remove();
+		$("#selectedServicesTable table").append(tbody);
+		$("#selectedServicesTable tbody tr .button-column").each(function () {
+			$(this).remove();
+		});
+
+		expense_number=$('._expense_number').html();
+		prepareOrder=true; //заказ уже был сформирован, создавать его не нужно.
+		_punch(); //no save in DB
+
+		//чистим и прячем открытые модали
+		$('#modalSelectExpenseServicesBody').empty();
+		$('#modalSelectExpenseServices').modal('hide');
+		$('#modalSelectExpensesBody').empty();
+		$('#modalSelectExpenses').modal('hide');
+	};
+	
+	_callBackNoPrepareClick=function () {
+		$("#selectedServicesTable tbody").remove();
+		tbody=$("#tableSelectionServices tbody").clone();
+		$("#selectedServicesTable table").append(tbody);
+		$("#selectedServicesTable tbody tr .b-paid__removeGrid").each(function () {
+			$(this).remove();
+		});
+		prepareOrder=false; //нужно сохранять заказ прежде чем переносить его во фронт кассира
+		_punch(); //формируем заказ и счёт в том числе.	
+	};
+	
+	_punch=function () { //private method
+		$("#selectedServicesTable tbody .priceService").each(function () {
+			price+=Number($(this).html());
+		});
+		if(price>0) {
+			if(!prepareOrder) //если заказ не подготовлен
+			{
+				_callBackCreateOrder();
+			}
+			else
+			{
+				_callBackPrepareOrder();
+			}
+		}
+		else if(price<=0) {
+//					console.log('ERROR');
+			$('#TotalSum').html('0'); //обнуляем ИТОГО
+			$('#punchButton').attr('disabled', 'disabled');
+//					$('#CashSum').attr('disabled', 'disabled');
+			$('#deleteOrderButton').attr('disabled', 'disabled');
+			price=0;
+		}
+	};
+	this.initHandlers=function () {
+		
+		$('#chooseNoPaidExpense').on('click', _callBackPrepareClick);
+		$(document).on('click', "#selectedServicesConfirm", _callBackNoPrepareClick);	
+
+		$(document).on('click', '.gridSelectServices tbody tr', function () {
+			$.ajax({'success': function (html) {
+					$('#modalSelectDoctorBody').html(html);
+					$('#modalSelectDoctor').modal('show');
+				},
+					'url': '/paid/cashAct/chooseDoctor/code/' + $(this).find('.codeService').html()
+			});
+
+			$(document).off('selectedDoctor');
+
+			obj=$(this);
+			$(document).on('selectedDoctor', function () {
+				i++;
+				var objTr=obj.clone();
+				var objTd=$('<td class="b-paid__removeGrid"><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
+				objTr.append(doctorTdTag);
+				objTr.append(objTd);
+				$("#tableSelectionServices tbody").append(objTr);
+				$("#tableSelectionServices tbody .empty").css("display", "none");
+
+				objTd.on('click', function () {
+					$(this).parent().detach();
+					i--;
+					if(i===0)
+					{
+						$("#tableSelectionServices tbody .empty").css("display", "table-row");
+					}
+				});
+				$('#modalSelectDoctorBody').html('');
+			});
+		});
+
+		$(document).on('click', '.gridChooseDoctor tbody tr', function () { //выбор врача
+			var doctor=$(this).clone();
+			var doctorLastName=doctor.find('.lastName').html();
+			var doctorId=doctor.find('.doctorId').html(); //#ID доктора
+			var doctorFirstName=doctor.find('.lastName').html().substr(0, 1) + '.';
+			var doctorMiddleName=doctor.find('.middleName').html().substr(0, 1) + '.';
+
+			doctorTdTag='<td>' + '<div class="doctorId">' + doctorId + '</div>' + doctorLastName + ' ' + doctorFirstName + doctorMiddleName + '</td>';
+
+			$(document).trigger('selectedDoctor');
+			$('#modalSelectDoctorBody').empty();
+			$('#modalSelectDoctor').modal('hide');
+		});
+
+		$(document).on('mousedown', '.gridSelectServices tbody tr', function () {
+			return false;
+		}); //disabled select text
+
+		$(document).on('selectstart', '.gridSelectServices tbody tr', function () {
+			return false;
+		}); //disabled select text for IE
+	};
+
+	this.handlerHiddenModal=function () {
+		$('#modalSelectServices').on('hidden.bs.modal', function () {
+			i=0; //обнуляем через замыкание
+		});	
+	};
+}
+
 /***********************************************************/
 $(document).ready(function() {
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
@@ -138,163 +368,6 @@ $(document).ready(function() {
 //	function classOrderForm() {
 //		
 //	}
-	
-	function classSelectServices() {
-		var i=0; //замыкание, for echo empty row
-		var obj; //замыкание
-		var doctorTdTag; //замыкание
-		
-		this.initHandlers=function () {
-			var price = 0;
-			$(document).on('click', "#selectedServicesConfirm", function () { //сформировать заказ
-				$("#selectedServicesTable tbody").remove();
-				tbody=$("#tableSelectionServices tbody").clone();
-				$("#selectedServicesTable table").append(tbody);
-				$("#selectedServicesTable tbody tr .b-paid__removeGrid").each(function () {
-					$(this).remove();
-				});
-				
-				$("#selectedServicesTable tbody .priceService").each(function () {
-					price+=Number($(this).html());
-				});
-				
-				if(price>0) {
-					var arr={}; //замыкание
-					arr.orderForm={};
-					var i=0;
-					$('#selectedServicesTable tbody tr').each(function () {
-						arr.orderForm[i]={};
-						arr.orderForm[i].serviceId=$(this).find('.serviceId').html();
-						arr.orderForm[i].doctorId=$(this).find('.doctorId').html();
-						arr.priceSum=price; //надо разделить на 100
-						var url=document.location.href;
-						var action=url.split('/');
-						arr.patient_id=action[7]; //patient_id сохраняем в заказ
-						i++;
-					});
-					$.ajax({'success': function (paid_order_id) { //создаем заказ и счет, после печатаем их
-						if(Number(paid_order_id) > 0)
-						{ //если заказ id корректный
-							$('#punchButton').off('click');
-							$('#deleteOrderButton').off('click');
-
-							$('#TotalSum').html(arr.priceSum.toFixed(2));
-							$('#punchButton').removeAttr('disabled');
-//							$('#CashSum').removeAttr('disabled');
-							$('#punchButton').on('click', function () {
-								/**
-								 * см. inputMaskComplete
-								 */
-								if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
-								{
-									$('#punchButton').removeClass('btn-danger');
-									$('#punchButton').addClass('btn-default');
-									$.ajax({
-										'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
-										'success': function (html) {
-											//TODO провели платёж, закрыли счёт, создали направления
-											//дальше?
-											location.reload();
-										}
-									});
-								}
-								else {
-									$('#punchButton').removeClass('btn-default'); //если денег дали меньше чем ИТОГО
-									$('#punchButton').addClass('btn-danger');
-								}
-							});
-
-							$('#deleteOrderButton').removeAttr('disabled');
-							$('#deleteOrderButton').on('click', function () {
-								$.ajax({
-									'url': '/paid/cashAct/DeleteOrderForm/paid_order_id/' + paid_order_id,
-									'success': function (html) {
-										if(html==='success')
-										{ //после того, как удалили заказ.
-											location.reload();
-										}
-									}
-								});
-							});
-						}
-					},
-						'data': arr, //отправляем codeService-doctorId связки
-						'type': 'post',
-						'url': '/paid/cashAct/orderForm'
-						});
-						price=0;
-				}
-				else if(price<=0) {
-//					console.log('ERROR');
-					$('#TotalSum').html('0'); //обнуляем ИТОГО
-					$('#punchButton').attr('disabled', 'disabled');
-//					$('#CashSum').attr('disabled', 'disabled');
-					$('#deleteOrderButton').attr('disabled', 'disabled');
-					price=0;
-				}
-			});	
-			
-			$(document).on('click', '.gridSelectServices tbody tr', function () {
-				$.ajax({'success': function (html) {
-						$('#modalSelectDoctorBody').html(html);
-						$('#modalSelectDoctor').modal('show');
-					},
-						'url': '/paid/cashAct/chooseDoctor/code/' + $(this).find('.codeService').html()
-				});
-				
-				$(document).off('selectedDoctor');
-				
-				obj=$(this);
-				$(document).on('selectedDoctor', function () {
-					i++;
-					var objTr=obj.clone();
-					var objTd=$('<td class="b-paid__removeGrid"><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
-					objTr.append(doctorTdTag);
-					objTr.append(objTd);
-					$("#tableSelectionServices tbody").append(objTr);
-					$("#tableSelectionServices tbody .empty").css("display", "none");
-					
-					objTd.on('click', function () {
-						$(this).parent().detach();
-						i--;
-						if(i===0)
-						{
-							$("#tableSelectionServices tbody .empty").css("display", "table-row");
-						}
-					});
-					$('#modalSelectDoctorBody').html('');
-				});
-			});
-			
-			$(document).on('click', '.gridChooseDoctor tbody tr', function () { //выбор врача
-				var doctor=$(this).clone();
-				var doctorLastName=doctor.find('.lastName').html();
-				var doctorId=doctor.find('.doctorId').html(); //#ID доктора
-				var doctorFirstName=doctor.find('.lastName').html().substr(0, 1) + '.';
-				var doctorMiddleName=doctor.find('.middleName').html().substr(0, 1) + '.';
-				
-				doctorTdTag='<td>' + '<div class="doctorId">' + doctorId + '</div>' + doctorLastName + ' ' + doctorFirstName + doctorMiddleName + '</td>';
-				
-				$(document).trigger('selectedDoctor');
-				$('#modalSelectDoctorBody').empty();
-				$('#modalSelectDoctor').modal('hide');
-			});
-			
-			$(document).on('mousedown', '.gridSelectServices tbody tr', function () {
-				return false;
-			}); //disabled select text
-
-			$(document).on('selectstart', '.gridSelectServices tbody tr', function () {
-				return false;
-			}); //disabled select text for IE
-		};
-		
-		this.handlerHiddenModal=function () {
-			$('#modalSelectServices').on('hidden.bs.modal', function () {
-				i=0; //обнуляем через замыкание
-			});	
-        };
-	}
 	
 	var selectServices=new classSelectServices();
 	selectServices.initHandlers();

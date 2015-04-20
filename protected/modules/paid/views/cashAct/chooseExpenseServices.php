@@ -40,11 +40,20 @@ $this->widget('zii.widgets.grid.CGridView', [
 	],
 	'columns'=>[
 		[
+			'name'=>'service.code',
+		],
+		[
 			'name'=>'service.name',
 			'filter'=>CHtml::activeHiddenField($modelPaid_Order_Details, 'hash'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],
+		],
+		[
+			'name'=>'service.group.name',
+		],
+		[
+			'name'=>'service.price',
 		],
 		[
 			'name'=>'doctorName',
@@ -73,3 +82,5 @@ $this->widget('zii.widgets.grid.CGridView', [
 	],
 ]);
 ?>
+<div class="_expense_number" style="display: none;">
+</div>

@@ -28,7 +28,7 @@
 						Код услуги
 					</th>
 					<th>
-						Название
+						Название услуги
 					</th>
 					<th>
 						Название группы
@@ -97,6 +97,7 @@
 			<div class="modal-body" id="modalSelectExpenseServicesBody">
 			</div>
 			<div class="modal-footer">
+				<?= CHtml::button('Выбрать', ['class'=>'btn btn-primary', 'id'=>'chooseNoPaidExpense']); ?>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 			</div>
 		</div>
