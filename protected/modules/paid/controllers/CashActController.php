@@ -138,6 +138,37 @@ class CashActController extends MPaidController
 	}
 	
 	/**
+	 * Удаление счёта и его заказа (который еще не включен в платёж и не оплачен, т.е. status=0)
+	 */
+	public function actionDeleteExpense($paid_expense_id)
+	{
+		$recordExpense=Paid_Expenses::model()->findByPk($paid_expense_id);
+		
+		if($recordExpense===null && $recordExpense->status==Paid_Expenses::NOT_PAID) //существует и не включен в счёт
+		{
+			throw new CHttpException(404, 'Такого счёта не существует.');
+		}
+		
+		$transaction=Yii::app()->db->beginTransaction();
+		try
+		{
+			if(Paid_Orders::model()->deleteByPk($recordExpense->paid_order_id)
+			&& Paid_Expenses::model()->deleteByPk($paid_expense_id))
+			{
+				Paid_Order_Details::model()->deleteAll('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordExpense->paid_order_id]);
+				$transaction->commit();
+				Yii::app()->end();
+			}
+			throw new CHttpException(404, 'Ошибка в запросе к БД.');
+		}
+		catch(Exception $e)
+		{
+			$transaction->rollback();
+			throw $e;
+		}
+	}
+	
+	/**
 	 * Удаление услуги (записи из paid_order_details) из сформированного заказа
 	 * use in CGridView
 	 */
@@ -155,13 +186,13 @@ class CashActController extends MPaidController
 		
 		$transaction=Yii::app()->db->beginTransaction();
 		try
-		{ //изменение стоимости заказа при удалении услуги
+		{ //изменение стоимости счёта при удалении услуги из заказа
 			if($recordPaid_Expense->save() && $recordPaid_Order_Details->deleteByPk($paid_order_detail_id))
 			{
 				$transaction->commit();
 				Yii::app()->end();
 			}
-			throw new CHttpException(404, 'Ошибка в запросе');
+			throw new CHttpException(404, 'Ошибка в запросе к БД.');
 		}
 		catch(Exception $e)
 		{

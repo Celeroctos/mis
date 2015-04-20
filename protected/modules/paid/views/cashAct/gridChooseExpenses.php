@@ -16,7 +16,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
-	'emptyText'=>'',
+	'emptyText'=>'Неоплаченные счета отсутствуют!',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridChooseExpenses',
 	'pager'=>[
@@ -80,32 +80,22 @@ $this->widget('zii.widgets.grid.CGridView', [
 				'class'=>'col-xs-3',
 			],
 		],
-//			[
-//				'name'=>'since_date',
-//				'filter'=>false,
-//				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
-//			],
-//			[
-//				'name'=>'exp_date',
-//				'filter'=>false,
-//				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
-//			],
-//			[
-//				'class'=>'CButtonColumn',
-//				'template'=>'{view}',
-//				'buttons'=>[
-//					'view'=>[
-//						'url'=>'CHtml::normalizeUrl(["cash/groups", "group_id"=>$data->paid_service_group_id])',
-//						'imageUrl'=>false,
-//						'label'=>'Перейти',
-//						'options'=>[
-//							'class'=>'btn btn-success btn-block btn-xs'
-//						]
-//					],
-//					'headerHtmlOptions'=>[
-//						'class'=>'col-xs-1',
-//					],
-//				],
-//			],
+		[
+			'class'=>'CButtonColumn',
+			'template'=>'{delete}',
+			'buttons'=>[
+				'delete'=>[
+					'url'=>'CHtml::normalizeUrl(["cashAct/deleteExpense", "paid_expense_id"=>$data->paid_expense_id])',
+					'imageUrl'=>false,
+					'label'=>'Удалить',
+					'options'=>[
+						'class'=>'btn btn-danger btn-block btn-xs'
+					]
+				],
+				'headerHtmlOptions'=>[
+					'class'=>'col-xs-1',
+				],
+			],
+		],
 	],
 ]);

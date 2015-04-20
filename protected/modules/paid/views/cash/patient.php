@@ -75,7 +75,7 @@
 			<div class="modal-body" id="modalSelectDoctorBody">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 			</div>
 		</div>
 	</div>
@@ -86,7 +86,7 @@
 			<div class="modal-body" id="modalSelectExpensesBody">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 			</div>
 		</div>
 	</div>
@@ -97,7 +97,7 @@
 			<div class="modal-body" id="modalSelectExpenseServicesBody">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 			</div>
 		</div>
 	</div>
