@@ -32,6 +32,7 @@ class Paid_Order_Details extends ActiveRecord
 		return [
 			'service'=>[self::BELONGS_TO, 'Paid_Services', 'paid_service_id'],
 			'doctor'=>[self::BELONGS_TO, 'Doctors', 'doctor_id'],
+			'order'=>[self::BELONGS_TO, 'Paid_Orders', 'paid_order_id'],
 		];
 	}
 	

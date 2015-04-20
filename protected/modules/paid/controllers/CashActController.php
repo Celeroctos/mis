@@ -122,6 +122,7 @@ class CashActController extends MPaidController
 		$criteria=new CDbCriteria();
 		$criteria->condition='paid_order_id=:paid_order_id';
 		$criteria->params=[':paid_order_id'=>$recordPaid_Expenses->paid_order_id];
+//		$criteria->distinct=true;
 		
 		$modelPaid_Order_Details=new Paid_Order_Details('paid.cashAct.search');
 		$modelPaid_Order_Details->attributes=Yii::app()->request->getParam('Paid_Order_Details');
@@ -131,20 +132,41 @@ class CashActController extends MPaidController
 			$modelPaid_Order_Details->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		
-		$dataProvider=new CActiveDataProvider($modelPaid_Order_Details, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>  Paid_Order_Details::PAGE_SIZE]]);
+		$dataProvider=new CActiveDataProvider($modelPaid_Order_Details, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Order_Details::PAGE_SIZE]]);
 		
 		$this->renderPartial('chooseExpenseServices', ['modelPaid_Order_Details'=>$modelPaid_Order_Details, 'dataProvider'=>$dataProvider], false, true);
 	}
 	
 	/**
-	 * Удаление услуги из сформированного заказа
+	 * Удаление услуги (записи из paid_order_details) из сформированного заказа
 	 * use in CGridView
 	 */
 	public function actionDeleteExpenseService($paid_order_detail_id)
 	{
-		if(!$recordPaid_Order_Details=Paid_Order_Details::model()->deleteByPk($paid_order_detail_id))
+		$recordPaid_Order_Details=Paid_Order_Details::model()->findByPk($paid_order_detail_id);
+		
+		if($recordPaid_Order_Details===null)
 		{
 			throw new CHttpException(404, 'Такой услуги в заказе не существует.');
+		}
+		$recordPaid_Expense=Paid_Expenses::model()->find('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordPaid_Order_Details->paid_order_id]);
+		// выбранный заказ
+		$recordPaid_Expense->price-=$recordPaid_Order_Details->service->price;
+		
+		$transaction=Yii::app()->db->beginTransaction();
+		try
+		{ //изменение стоимости заказа при удалении услуги
+			if($recordPaid_Expense->save() && $recordPaid_Order_Details->deleteByPk($paid_order_detail_id))
+			{
+				$transaction->commit();
+				Yii::app()->end();
+			}
+			throw new CHttpException(404, 'Ошибка в запросе');
+		}
+		catch(Exception $e)
+		{
+			$transaction->rollback();
+			throw $e;
 		}
 	}
 	

@@ -16,7 +16,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
-	'emptyText'=>'',
+	'emptyText'=>'Услуги в заказе отсутствуют!',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridChooseExpenseServices', //gridSelectServices используется в paid.js
 	'pager'=>[

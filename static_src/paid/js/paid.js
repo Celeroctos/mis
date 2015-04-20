@@ -39,6 +39,8 @@ function classChooseExpenses() {
 	
 	callBackHiddenModalExpenseServices=function () {
 		$('#modalSelectExpenseServicesBody').empty();
+		var gridChooseExpensesId=$('#modalSelectExpensesBody').find('div').attr('id'); //считываем id грида
+		$('#'+gridChooseExpensesId).yiiGridView('update');
 	};
 	
 	callBackClickTr=function () {
