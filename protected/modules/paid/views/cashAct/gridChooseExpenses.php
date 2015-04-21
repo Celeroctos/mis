@@ -42,7 +42,6 @@ $this->widget('zii.widgets.grid.CGridView', [
 		[
 			'name'=>'date',
 			'value'=>'Yii::app()->dateformatter->formatDateTime($data->date, "medium");',
-			'filter'=>false,
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],
@@ -51,7 +50,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 			'name'=>'expense_number',
 			'type'=>'raw',
 			'value'=>'"<div class=\"expense_number\">". CHtml::encode($data->expense_number) . "</div>"',
-			'filter'=>CHtml::activeHiddenField($modelPaid_Expenses, 'hash'),
+			'filter'=>CHtml::activeTextField($modelPaid_Expenses, 'expense_number') . CHtml::activeTextField($modelPaid_Expenses, 'hash'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],

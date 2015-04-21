@@ -89,6 +89,8 @@ class Paid_Expenses extends ActiveRecord
 	{
 		$criteria=new CDbCriteria;
 		$criteria->addCondition('status='. self::NOT_PAID);
+		$criteria->compare('date', $this->date, true);
+		$criteria->compare('expense_number', $this->expense_number, true);
 		
 		return new CActiveDataProvider('Paid_Expenses', [
 			'criteria'=>$criteria,

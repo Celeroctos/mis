@@ -101,7 +101,7 @@ function classChooseExpenses() {
 	
 	this.initHandlers=function () {
 		$(document).on('hidden.bs.modal', '#modalSelectExpenses', callBackHiddenModalExpenses);
-		$(document).on('click', '.gridChooseExpenses tr', callBackClickTr);
+		$(document).on('click', '.gridChooseExpenses tbody tr', callBackClickTr);
 		$(document).on('hidden.bs.modal', '#modalSelectExpenseServices', callBackHiddenModalExpenseServices);
 	};
 }
@@ -164,9 +164,9 @@ function classSelectServices() {
 					$('#punchButton').addClass('btn-default');
 					$.ajax({
 						'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
-						'success': function (html) {
+						'success': function (print_refferals) {
 							//TODO провели платёж, закрыли счёт, создали направления
-							//дальше?
+							//TODO печатаем направления
 							location.reload();
 						}
 					});
@@ -250,6 +250,8 @@ function classSelectServices() {
 //					console.log('ERROR');
 			$('#TotalSum').html('0'); //обнуляем ИТОГО
 			$('#punchButton').attr('disabled', 'disabled');
+			$('#punchButton').removeClass('btn-danger');
+			$('#punchButton').addClass('btn-default');
 			$('#CashSum').val('');
 			$('#deleteOrderButton').attr('disabled', 'disabled');
 			price=0;
