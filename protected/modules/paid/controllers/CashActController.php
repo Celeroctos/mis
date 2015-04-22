@@ -59,9 +59,22 @@ class CashActController extends MPaidController
 	public function actionChooseExpenses()
 	{
 		self::disableScripts();
+		
 		$modelPaid_Expenses=new Paid_Expenses('paid.cashAct.search');
+		
+		if(Yii::app()->request->getPost('formSearchExpenses'))
+		{ //validate CActiveForm
+			echo CActiveForm::validate($modelPaid_Expenses);
+			Yii::app()->end();
+		}
+		
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
 		$modelPaid_Expenses->hashForm=substr(md5(uniqid("", true)), 0, 4);
+		
+		if(strlen($modelPaid_Expenses->dateEnd)>0)
+		{
+			$modelPaid_Expenses->dateEnd.=' 23:59:59';
+		}
 		
 		if(!Yii::app()->request->getParam('gridSelectExpenses'))
 		{ //первый заход в этот экшн

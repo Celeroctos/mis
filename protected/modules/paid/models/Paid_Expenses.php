@@ -34,6 +34,7 @@ class Paid_Expenses extends ActiveRecord
 		return [
 			['hash', 'type', 'type'=>'string'],
 			['date, dateEnd', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cashAct.search'],
+//			['date, dateEnd', 'required', 'on'=>'paid.cashAct.search'],
 			['paid_order_id', 'unique'],
 			['expense_number', 'unique'],
 		];
@@ -92,7 +93,12 @@ class Paid_Expenses extends ActiveRecord
 	{
 		$criteria=new CDbCriteria;
 		$criteria->addCondition('status='. self::NOT_PAID);
-		$criteria->compare('date', $this->date);
+		
+		if(isset($this->date) && isset($this->dateEnd) && strlen($this->date)>0 && strlen($this->dateEnd)>0)
+		{
+			$criteria->addBetweenCondition('date', $this->date, $this->dateEnd);
+		}
+		
 		$criteria->compare('cast(expense_number as varchar)', $this->expense_number, true);
 		return new CActiveDataProvider('Paid_Expenses', [
 			'criteria'=>$criteria,

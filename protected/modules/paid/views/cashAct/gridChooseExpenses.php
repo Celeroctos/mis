@@ -4,7 +4,19 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
-<?php $form=$this->beginWidget('CActiveForm', []); ?>
+<?php $form=$this->beginWidget('CActiveForm', [
+											'id'=>'formSearchExpenses',
+											'enableAjaxValidation'=>true,
+											'enableClientValidation'=>true,
+											'clientOptions'=>[
+//												'validateOnChange'=>true,
+//												'validateOnType'=>true,
+//												'validationDelay'=>30,
+												'ajaxVar'=>'formSearchExpenses',
+												'validateOnSubmit'=>true,
+												'afterValidate'=>new CJavaScriptExpression('chooseExpenses.afterValidateSearchExp'),
+											]
+]); ?>
 	<div class="row">
 		<div class="col-xs-4">
 			<?= $form->Label($modelPaid_Expenses, 'date', ['class'=>'control-label']); ?>
@@ -15,17 +27,18 @@
 				'options'=>[
 					'changeMonth'=>'true',
 					'changeYear'=>'true',
-//										'showButtonPanel'=>true,
+//					'showButtonPanel'=>true,
 					'showOn'=>'focus', // 'focus', 'button', 'both'
 					'dateFormat'=>'yy-mm-dd',
 					'yearRange'=>'1900:'.Yii::app()->dateformatter->format('yyyy', time()),
 					'minDate'=>'1900-01-01',
-//										'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
+//					'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
 					'class'=>'form-control',
 				],
 			]); ?>
+			<?= $form->error($modelPaid_Expenses, 'date', ['class'=>'b-paid__errorFormPatient']); ?>
 		</div>
 		<div class="col-xs-4">
 			<?= $form->Label($modelPaid_Expenses, 'dateEnd', ['class'=>'control-label']); ?>
@@ -36,21 +49,22 @@
 				'options'=>[
 					'changeMonth'=>'true',
 					'changeYear'=>'true',
-//										'showButtonPanel'=>true,
+//					'showButtonPanel'=>true,
 					'showOn'=>'focus', // 'focus', 'button', 'both'
 					'dateFormat'=>'yy-mm-dd',
 					'yearRange'=>'1900:'.Yii::app()->dateformatter->format('yyyy', time()),
 					'minDate'=>'1900-01-01',
-//										'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
+//					'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
 					'class'=>'form-control',
 				],
 			]); ?>
+			<?= $form->error($modelPaid_Expenses, 'dateEnd', ['class'=>'b-paid__errorFormPatient']); ?>
 		</div>
 		<div class="col-xs-4">
 			<?= CHtml::label('Поиск', '', ['class'=>'control-label', 'style'=>'opacity: 0;']); ?>
-			<?= CHtml::ajaxSubmitButton('Поиск', '', ['success'=>'chooseExpenses.ajaxResponseSearch'], ['id'=>$modelPaid_Expenses->hashForm, 'class'=>'btn btn-block btn-primary btn-sm']); ?>
+			<?= CHtml::submitButton('Поиск', ['id'=>$modelPaid_Expenses->hashForm, 'class'=>'btn btn-block btn-primary btn-sm']); ?>
 		</div>
 	</div>
 <?php $this->endWidget(); ?>

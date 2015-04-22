@@ -57,8 +57,30 @@ function classChooseExpenses() {
 	 * callback success into Yii CHtml::ajaxSubmitButton.
 	 * @see gridChooseExpenses.php
 	 */
-	this.ajaxResponseSearch = function (gridContent) {
+	var ajaxResponseSearch = function (gridContent) {
 		$("#modalSelectExpensesBody").html(gridContent);
+		$('#Paid_Expenses_date').inputmask("mask", {"mask": "9999-99-99"});
+		$('#Paid_Expenses_dateEnd').inputmask("mask", {"mask": "9999-99-99"});
+	};
+	
+	/**
+	 * callback afterValidate Yii handler
+	 * @param {jQuery} form is the jquery representation of the form object
+	 * @param {JSON} data is the JSON response from the server-side validation
+	 * @param {boolean} hasError is a boolean value indicating whether there is any validation error
+	 * If the return value of this function is NOT true, the normal form submission will be cancelled
+	 * @see CActiveForm
+	 */
+	this.afterValidateSearchExp = function (form, data, hasError) {
+		
+		if(!hasError) {
+			$.ajax({'data': $('#formSearchExpenses').serialize(),
+					'url': '/paid/cashAct/chooseExpenses',
+					'type': 'POST',
+					'success': ajaxResponseSearch
+			});
+		}
+		return false; //не нужно отправлять submit
 	};
 	
 	/**
@@ -104,6 +126,8 @@ function classChooseExpenses() {
 		/* TODODODODO */
 		
 		$('#modalSelectExpensesBody').html(html);
+		$('#Paid_Expenses_date').inputmask("mask", {"mask": "9999-99-99"});
+		$('#Paid_Expenses_dateEnd').inputmask("mask", {"mask": "9999-99-99"});
 		$('#modalSelectExpenses').modal('show');
 	};
 	
