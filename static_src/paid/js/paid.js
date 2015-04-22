@@ -54,6 +54,14 @@ function classChooseExpenses() {
 	};
 	
 	/**
+	 * callback success into Yii CHtml::ajaxSubmitButton.
+	 * @see gridChooseExpenses.php
+	 */
+	this.ajaxResponseSearch = function (gridContent) {
+		$("#modalSelectExpensesBody").html(gridContent);
+	};
+	
+	/**
 	* Insert function into Yii handler (ajaxButton)
 	* success method for ajax request
 	* @param {mixed} html ответ от сервера

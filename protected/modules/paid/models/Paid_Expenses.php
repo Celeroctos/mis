@@ -17,6 +17,7 @@ class Paid_Expenses extends ActiveRecord
 	public $services; //услуги, включенные в счёт (gridChooseExpenses.php)
 	public $hash; //use in CGridView id
 	public $hashForm; //use in Form id
+	public $dateEnd;
 	
 	const NOT_PAID = 0;
 	const PAID = 1;
@@ -32,6 +33,7 @@ class Paid_Expenses extends ActiveRecord
 	{
 		return [
 			['hash', 'type', 'type'=>'string'],
+			['date, dateEnd', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cashAct.search'],
 			['paid_order_id', 'unique'],
 			['expense_number', 'unique'],
 		];
@@ -90,7 +92,7 @@ class Paid_Expenses extends ActiveRecord
 	{
 		$criteria=new CDbCriteria;
 		$criteria->addCondition('status='. self::NOT_PAID);
-		$criteria->compare('date', $this->date, true);
+		$criteria->compare('date', $this->date);
 		$criteria->compare('cast(expense_number as varchar)', $this->expense_number, true);
 		return new CActiveDataProvider('Paid_Expenses', [
 			'criteria'=>$criteria,

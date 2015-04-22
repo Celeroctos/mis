@@ -82,7 +82,7 @@
 </div>
 <div class="modal" id="modalSelectExpenses" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalSelectExpenses">
-		<div class="modal-content b-paid__modalHeader">
+		<div class="modal-content b-modalSelectExpenseServices__content b-paid__modalHeader">
 			<div class="modal-body" id="modalSelectExpensesBody">
 			</div>
 			<div class="modal-footer">
