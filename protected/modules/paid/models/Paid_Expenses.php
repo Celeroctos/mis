@@ -16,6 +16,7 @@ class Paid_Expenses extends ActiveRecord
 	public $patientName; //user in CGridView (gridChooseExpenses.php)
 	public $services; //услуги, включенные в счёт (gridChooseExpenses.php)
 	public $hash; //use in CGridView id
+	public $hashForm; //use in Form id
 	
 	const NOT_PAID = 0;
 	const PAID = 1;
@@ -90,8 +91,7 @@ class Paid_Expenses extends ActiveRecord
 		$criteria=new CDbCriteria;
 		$criteria->addCondition('status='. self::NOT_PAID);
 		$criteria->compare('date', $this->date, true);
-		$criteria->compare('expense_number', $this->expense_number, true);
-		
+		$criteria->compare('cast(expense_number as varchar)', $this->expense_number, true);
 		return new CActiveDataProvider('Paid_Expenses', [
 			'criteria'=>$criteria,
 			'sort'=>[

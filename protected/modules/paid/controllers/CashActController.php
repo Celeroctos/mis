@@ -61,13 +61,13 @@ class CashActController extends MPaidController
 		self::disableScripts();
 		$modelPaid_Expenses=new Paid_Expenses('paid.cashAct.search');
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		$modelPaid_Expenses->hashForm=substr(md5(uniqid("", true)), 0, 4);
 		
 		if(!Yii::app()->request->getParam('gridSelectExpenses'))
 		{ //первый заход в этот экшн
 			$modelPaid_Expenses->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		$this->renderPartial('gridChooseExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses], false, true);
-		
 	}
 	
 	/**

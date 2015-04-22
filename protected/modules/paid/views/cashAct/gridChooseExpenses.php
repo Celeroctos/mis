@@ -4,6 +4,10 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
+<?= CHtml::beginForm('', 'post') ?>
+	<?= CHtml::activeTextField($modelPaid_Expenses, 'expense_number', ['id'=>'goo']); ?>
+	<?= CHtml::ajaxSubmitButton('Найти', '', ['success'=>'function (html) {$("#modalSelectExpensesBody").html(html)}'], ['id'=>$modelPaid_Expenses->hashForm, 'class'=>'btn btn-primary btn-sm']); ?>
+<?= CHtml::endForm(); ?>
 <h4>Выберите счёт</h4>
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
