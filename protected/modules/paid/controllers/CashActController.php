@@ -396,7 +396,7 @@ class CashActController extends MPaidController
 			{
 				throw new CHttpException(404, 'Ошибка в запросе смены статуса счета. Транзакция отменена.');
 			}
-			//ActiveRecord не отрабатывает (группировки в релейшнах), поэтому запрос напрямую.
+			//ActiveRecord не отрабатывает (сложный запрос для AR), поэтому запрос напрямую.
 			$sql='SELECT service.paid_service_group_id, t.doctor_id
 				  FROM "paid"."paid_services" service, "paid"."paid_order_details" t
 				  WHERE service.paid_service_id=t.paid_service_id

@@ -231,7 +231,7 @@
 }
 	.b-modalSelectExpenseServices__content
 	{
-		height: 600px;
+		max-height: 600px;
 		overflow-y: scroll;
 	}
 .b-modalAddServiceGroup{
@@ -265,14 +265,17 @@ div[class^="col-xs-"].error .form-control{
 	height: 600px;
 	overflow-y: scroll;
 }
-/*.gridChooseExpenseServices .filters{
+.gridChooseExpenseServices .filters{
 	display: none;
-}*/
+}
 .gridSelectServices .filters{
 	display: none;
 }
 .gridChooseExpenses .filters{
 	display: none;
+}
+.modalOverlay{
+	
 }
 /*.b-paidHeader{
     margin-bottom: 10px;

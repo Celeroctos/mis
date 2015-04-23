@@ -83,10 +83,12 @@
 <div class="modal" id="modalSelectExpenses" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalSelectExpenses">
 		<div class="modal-content b-modalSelectExpenseServices__content b-paid__modalHeader">
-			<div class="modal-body" id="modalSelectExpensesBody">
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+			<div class="modalOverlay">
+				<div class="modal-body" id="modalSelectExpensesBody">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+				</div>
 			</div>
 		</div>
 	</div>

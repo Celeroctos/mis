@@ -59,6 +59,7 @@ function classChooseExpenses() {
 	 */
 	var ajaxResponseSearch = function (gridContent) {
 		$("#modalSelectExpensesBody").html(gridContent);
+		$('.modalOverlay').animate({opacity: 1}, 120);
 		$('#Paid_Expenses_date').inputmask("mask", {"mask": "9999-99-99"});
 		$('#Paid_Expenses_dateEnd').inputmask("mask", {"mask": "9999-99-99"});
 	};
@@ -72,7 +73,7 @@ function classChooseExpenses() {
 	 * @see CActiveForm
 	 */
 	this.afterValidateSearchExp = function (form, data, hasError) {
-		
+		$('.modalOverlay').animate({opacity: 0.3}, 50);
 		if(!hasError) {
 			$.ajax({'data': $('#formSearchExpenses').serialize(),
 					'url': '/paid/cashAct/chooseExpenses',
