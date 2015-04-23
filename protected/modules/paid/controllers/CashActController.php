@@ -4,7 +4,7 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 class CashActController extends MPaidController
-{ //TODO нажатие кнопок проверять, выбран ли пациент
+{
 	public function accessRules()
 	{
 		return [

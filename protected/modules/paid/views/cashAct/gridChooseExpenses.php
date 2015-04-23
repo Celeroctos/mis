@@ -19,7 +19,7 @@
 											]
 ]); ?>
 	<div class="row">
-		<div class="col-xs-4">
+		<div class="col-xs-4 col-xs-offset-1">
 			<?= $form->Label($modelPaid_Expenses, 'date', ['class'=>'control-label']); ?>
 			<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 				'language'=>'ru',
@@ -28,7 +28,6 @@
 				'options'=>[
 					'changeMonth'=>'true',
 					'changeYear'=>'true',
-//					'showButtonPanel'=>true,
 					'showOn'=>'focus', // 'focus', 'button', 'both'
 					'dateFormat'=>'yy-mm-dd',
 					'yearRange'=>'1900:'.Yii::app()->dateformatter->format('yyyy', time()),
@@ -36,7 +35,7 @@
 //					'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
-					'class'=>'form-control',
+					'class'=>'form-control input-sm',
 				],
 			]); ?>
 			<?= $form->error($modelPaid_Expenses, 'date', ['class'=>'b-paid__errorFormPatient']); ?>
@@ -50,20 +49,18 @@
 				'options'=>[
 					'changeMonth'=>'true',
 					'changeYear'=>'true',
-//					'showButtonPanel'=>true,
-					'showOn'=>'focus', // 'focus', 'button', 'both'
+					'showOn'=>'focus',
 					'dateFormat'=>'yy-mm-dd',
 					'yearRange'=>'1900:'.Yii::app()->dateformatter->format('yyyy', time()),
 					'minDate'=>'1900-01-01',
-//					'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
-					'class'=>'form-control',
+					'class'=>'form-control input-sm',
 				],
 			]); ?>
 			<?= $form->error($modelPaid_Expenses, 'dateEnd', ['class'=>'b-paid__errorFormPatient']); ?>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-xs-2">
 			<?= CHtml::label('Поиск', '', ['class'=>'control-label', 'style'=>'opacity: 0;']); ?>
 			<?= CHtml::submitButton('Поиск', ['id'=>$modelPaid_Expenses->hashForm, 'class'=>'btn btn-block btn-primary btn-sm']); ?>
 		</div>
