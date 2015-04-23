@@ -40,7 +40,7 @@ function classChooseExpenses() {
 	
 	callBackHiddenModalExpenseServices=function () {
 		$('#modalSelectExpenseServicesBody').empty();
-		var gridChooseExpensesId=$('#modalSelectExpensesBody').find('div').attr('id'); //считываем id грида
+		var gridChooseExpensesId=$('#modalSelectExpensesBody').find('.grid-view').attr('id'); //считываем id грида
 		$('#'+gridChooseExpensesId).yiiGridView('update');
 	};
 	
@@ -75,8 +75,11 @@ function classChooseExpenses() {
 	this.afterValidateSearchExp = function (form, data, hasError) {
 		$('.modalOverlay').animate({opacity: 0.3}, 50);
 		if(!hasError) {
+			var url=document.location.href;
+			var action=url.split('/');
+			
 			$.ajax({'data': $('#formSearchExpenses').serialize(),
-					'url': '/paid/cashAct/chooseExpenses',
+					'url': '/paid/cashAct/chooseExpenses/patient_id/' + action[7],
 					'type': 'POST',
 					'success': ajaxResponseSearch
 			});
@@ -469,7 +472,7 @@ $(document).ready(function() {
 			if(action[5]=='patient')
 			{
 				$(this).addClass('active');
-				$('#paidActWidget input').removeAttr('disabled'); //разблокировка act-кнопок
+				$('.paidActWidget input').removeAttr('disabled'); //разблокировка act-кнопок
 //				$('.b-paid__summHeader').css('color', 'black');
 				return false;v
 			}

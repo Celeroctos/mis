@@ -3,6 +3,7 @@
  * Шаблон пациента
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
+$this->pageTitle='Пациент';
 ?>
 <div class="row b-paid_position">
 	<div class="col-xs-10">
@@ -54,7 +55,7 @@
 			</table>
 		</div>
 	</div>
-	<?php $this->widget('PaidActWidget'); ?>
+	<?php $this->widget('PaidActWidget', ['modelPatient'=>$modelPatient]); ?>
 </div>
 <?php $this->widget('PaidCashPunch'); ?>
 <div class="modal" id="modalSelectServices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

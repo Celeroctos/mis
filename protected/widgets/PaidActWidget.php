@@ -5,8 +5,10 @@
  */
 class PaidActWidget extends CWidget
 {
+	public $modelPatient;
+	
 	public function run()
 	{
-		$this->render('paidActWidget');
+		$this->render('paidActWidget', ['modelPatient'=>$this->modelPatient]);
 	}
 }

@@ -18,9 +18,10 @@ class Paid_Expenses extends ActiveRecord
 	public $hash; //use in CGridView id
 	public $hashForm; //use in Form id
 	public $dateEnd;
-	
+	public $patient_id; //use in compare
 	const NOT_PAID = 0;
 	const PAID = 1;
+	const RETURN_PAID = 2; //возврат оплаты
 	
 	const PAGE_SIZE = 7;
 	
@@ -93,12 +94,14 @@ class Paid_Expenses extends ActiveRecord
 	{
 		$criteria=new CDbCriteria;
 		$criteria->addCondition('status='. self::NOT_PAID);
+		$criteria->with=['order'=>['joinType'=>'INNER JOIN']];
+		$criteria->together=true;
 		
 		if(isset($this->date) && isset($this->dateEnd) && strlen($this->date)>0 && strlen($this->dateEnd)>0)
 		{
 			$criteria->addBetweenCondition('date', $this->date, $this->dateEnd);
 		}
-		
+		$criteria->compare('"order"."patient_id"', $this->patient_id);
 		$criteria->compare('cast(expense_number as varchar)', $this->expense_number, true);
 		return new CActiveDataProvider('Paid_Expenses', [
 			'criteria'=>$criteria,

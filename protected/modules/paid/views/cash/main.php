@@ -137,7 +137,7 @@ $this->pageTitle='Касса';
 		</div>
 	<?php $this->endWidget(); ?>
 	</div>
-	<?php $this->widget('PaidActWidget'); ?>
+	<?php $this->widget('PaidActWidget', ['modelPatient'=>$modelPatient]); ?>
 </div>
 
 <?php $this->widget('PaidCashPunch'); ?>

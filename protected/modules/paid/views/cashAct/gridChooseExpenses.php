@@ -4,6 +4,7 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
+<h4>Неоплаченные счета пациента</h4>
 <?php $form=$this->beginWidget('CActiveForm', [
 											'id'=>'formSearchExpenses',
 											'enableAjaxValidation'=>true,
@@ -68,7 +69,6 @@
 		</div>
 	</div>
 <?php $this->endWidget(); ?>
-<h4>Выберите счёт</h4>
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPaid_Expenses->search(),
@@ -106,6 +106,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 		[
 			'name'=>'date',
 			'value'=>'Yii::app()->dateformatter->formatDateTime($data->date, "medium");',
+			'filter'=>CHtml::activeTextField($modelPaid_Expenses, 'date') . CHtml::activeTextField($modelPaid_Expenses, 'dateEnd'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],

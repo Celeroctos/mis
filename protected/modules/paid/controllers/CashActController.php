@@ -56,7 +56,7 @@ class CashActController extends MPaidController
 	/**
 	 * Выбор счета, который был добавлен, но не пробит.
 	 */
-	public function actionChooseExpenses()
+	public function actionChooseExpenses($patient_id)
 	{
 		self::disableScripts();
 		
@@ -68,10 +68,12 @@ class CashActController extends MPaidController
 			Yii::app()->end();
 		}
 		
+		$modelPaid_Expenses->patient_id=$patient_id;
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
 		$modelPaid_Expenses->hashForm=substr(md5(uniqid("", true)), 0, 4);
 		
-		if(strlen($modelPaid_Expenses->dateEnd)>0)
+		
+		if(!Yii::app()->request->getParam('gridSelectExpenses') && strlen($modelPaid_Expenses->dateEnd)>0)
 		{
 			$modelPaid_Expenses->dateEnd.=' 23:59:59';
 		}
