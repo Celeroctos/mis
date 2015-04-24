@@ -5,3 +5,4 @@
  */
 $this->pageTitle='Все счета';
 ?>
+<?php $this->widget('NavJournalWidget'); ?>

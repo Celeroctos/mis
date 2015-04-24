@@ -7,9 +7,6 @@ function JournalController () {
 		var callBackExpensesClick = function () {
 			
 		};
-		
-		
-		
 	};
 }
 JournalController.prototype=Controller;

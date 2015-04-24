@@ -399,9 +399,10 @@ function classSelectServices() {
 		});	
 	};
 }
-
 /***********************************************************/
 $(document).ready(function() {
+	$.fn.modal.Constructor.prototype.enforceFocus = function() {}; //firefox fix focus modal+datetimepicker
+
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
 	
@@ -470,11 +471,11 @@ $(document).ready(function() {
 		$(".b-paidNav__li").each(function () {
 			var nameHref=$(this).children(".b-paidNav__href").attr("href");
 			if(action[5]=='patient')
-			{
+			{ //первое вхождение
 				$(this).addClass('active');
 				$('.paidActWidget input').removeAttr('disabled'); //разблокировка act-кнопок
 //				$('.b-paid__summHeader').css('color', 'black');
-				return false;v
+				return false;
 			}
             else if(nameHref.indexOf(action[5])!==-1)
             {
@@ -483,7 +484,7 @@ $(document).ready(function() {
             }
 		});
     })();
-    (function() {
+    (function() { //for groups
         var url=document.location.href;
         var action=url.split('/');
         var group_id=action[7];

@@ -29,4 +29,9 @@ class JournalController extends MPaidController
 		Yii::app()->clientScript->registerScriptFile('/static_src/paid/js/journal.js');
 		$this->render('allExpenses');
 	}
+	
+	public function actionIndex()
+	{
+		return $this->actionAllExpenses();
+	}
 }
