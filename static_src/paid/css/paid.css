@@ -281,8 +281,14 @@ div[class^="col-xs-"].error .form-control{
 .gridChooseExpenses .filters{
 	display: none;
 }
+.gridJournalExpenses .filters{
+    display:none;
+}
 .modalOverlay{
 	
+}
+.grid-view td{
+    word-break: break-all; 
 }
 /*.b-paidHeader{
     margin-bottom: 10px;

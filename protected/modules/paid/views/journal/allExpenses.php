@@ -20,7 +20,7 @@ $this->pageTitle='Все счета';
 		'enableSorting'=>false,
 		'emptyText'=>'Неоплаченные счета отсутствуют!',
 		'showTableOnEmpty'=>false,
-		'itemsCssClass'=>'table table-bordered gridChooseExpenses',
+		'itemsCssClass'=>'table table-bordered gridJournalExpenses',
 		'pager'=>[
 			'class'=>'CLinkPager',
 			'cssFile'=>'',
@@ -82,23 +82,23 @@ $this->pageTitle='Все счета';
 					'class'=>'col-xs-3',
 				],
 			],
-			[
-				'class'=>'CButtonColumn',
-				'template'=>'{delete}',
-				'buttons'=>[
-					'delete'=>[
-						'url'=>'CHtml::normalizeUrl(["cashAct/deleteExpense", "paid_expense_id"=>$data->paid_expense_id])',
-						'imageUrl'=>false,
-						'label'=>'Удалить',
-						'options'=>[
-							'class'=>'btn btn-danger btn-block btn-xs'
-						]
-					],
-					'headerHtmlOptions'=>[
-						'class'=>'col-xs-1',
-					],
-				],
-			],
+//			[
+//				'class'=>'CButtonColumn',
+//				'template'=>'{delete}',
+//				'buttons'=>[
+//					'delete'=>[
+//						'url'=>'CHtml::normalizeUrl(["cashAct/deleteExpense", "paid_expense_id"=>$data->paid_expense_id])',
+//						'imageUrl'=>false,
+//						'label'=>'Удалить',
+//						'options'=>[
+//							'class'=>'btn btn-danger btn-block btn-xs'
+//						]
+//					],
+//					'headerHtmlOptions'=>[
+//						'class'=>'col-xs-1',
+//					],
+//				],
+//			],
 		],
 	]);
 	?>

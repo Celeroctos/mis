@@ -1,9 +1,9 @@
 <?php
 /**
- * Шаблон счетов на оплату
+ * Шаблон оплаченных счетов
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
-$this->pageTitle='Счета на оплату';
+$this->pageTitle='Оплаченные счета';
 ?>
 <?php $this->widget('NavJournalWidget'); ?>
 <div class="b-content__journal">

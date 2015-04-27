@@ -69,6 +69,11 @@ class Paid_Expenses extends ActiveRecord
 		//ловим сами услуги из заказа, который привязан к данному счёту
 		$recordPaid_Order_Details=Paid_Order_Details::model()->findAll('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordPaid_Order->paid_order_id]);
 		$count=count($recordPaid_Order_Details); //сколько всего нашлось услуг
+		if($count===0)
+		{
+			return 'Услуги отсутствуют';
+		}
+		
 		$i=1;
 		foreach($recordPaid_Order_Details as $value)
 		{

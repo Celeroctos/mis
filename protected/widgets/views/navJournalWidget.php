@@ -13,7 +13,7 @@
 			<li class="b-paidNavJ__li" id="notPaidExpenses">
 				<a class="" href="">Счета на оплату</a>	
 			</li>
-			<li class="b-paidNavJ__li">
+			<li class="b-paidNavJ__li" id="paidExpenses">
 				<a class="" href="">Оплаченные счета</a>
 			</li>
 			<li class="b-paidNavJ__li">
