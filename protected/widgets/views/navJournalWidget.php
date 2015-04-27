@@ -4,9 +4,9 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
-<div class="row b-paidNav">
+<div class="row">
 	<nav>
-		<ul class="nav nav-pills">
+		<ul class="nav nav-pills b-paidNavJ">
 			<li class="b-paidNavJ__li" id="allExpenses" role="presentation">
 				<a class="" href="">Все счета</a>
 			</li>

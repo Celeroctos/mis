@@ -1,9 +1,9 @@
 <?php
 /**
- * Шаблон вывода всех счетов
+ * Шаблон счетов на оплату
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
-$this->pageTitle='Все счета';
+$this->pageTitle='Счета на оплату';
 ?>
 <?php $this->widget('NavJournalWidget'); ?>
 <div class="b-content__journal">
