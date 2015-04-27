@@ -21,7 +21,9 @@
 	<?php $this->widget('FlashMessager'); ?>
 	<div class="container b-paid">
 		<?php $this->widget('PaidNavWidget'); ?>
-		<?= $content; ?>
+		<div class="b-content">
+			<?= $content; ?>
+		</div>
 	</div>
 	<?php $this->widget('FooterWidget'); ?>
 </body>

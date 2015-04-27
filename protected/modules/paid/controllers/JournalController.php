@@ -22,14 +22,45 @@ class JournalController extends MPaidController
 	}
 	
 	/**
+	 * include js files for journal page
+	 */
+	public static function enableScripts()
+	{
+		Yii::app()->clientScript->registerPackage('journal');
+	}
+	
+	/**
 	 * All expenses
 	 */
 	public function actionAllExpenses()
 	{
-		Yii::app()->clientScript->registerScriptFile('/static_src/paid/js/journal.js');
-		$this->render('allExpenses');
+		if(!Yii::app()->request->isAjaxRequest) {
+			self::enableScripts();
+			$this->render('allExpenses');
+		}
+		else {
+			$this->renderPartial('allExpenses', null, false, true);
+		}
 	}
 	
+	/**
+	 * No paid expenses
+	 */
+	public function actionNotPaidExpenses()
+	{
+		if(!Yii::app()->request->isAjaxRequest) {
+			self::enableScripts();
+			$this->render('notPaidExpenses');
+		}
+		else {
+			$this->renderPartial('notPaidExpenses', null, false, true);
+		}		
+	}
+	
+	/**
+	 * Main action
+	 * @return mixed
+	 */
 	public function actionIndex()
 	{
 		return $this->actionAllExpenses();

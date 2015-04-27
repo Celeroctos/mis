@@ -1,6 +1,9 @@
 .container{
 	width: 970px !important;
 }
+.b-content{ /*Yii content container*/
+    
+}
 .b-paidNav{
     padding-bottom: 15px;
 }

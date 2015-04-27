@@ -96,6 +96,16 @@ return [
 				'footer',
 			],
 		],
+		'journal'=>[
+			'baseUrl'=>_STATIC . '/paid/',
+			'js'=>[
+				'js/journal.js',
+			],
+			'depends'=>[
+				'bootstrap',
+				'jquery'
+			],
+		],
 		//module service
 		'service'=>[
 			'baseUrl'=>_STATIC . '/service/',
