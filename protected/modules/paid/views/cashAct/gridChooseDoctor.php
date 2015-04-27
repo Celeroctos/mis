@@ -44,7 +44,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 			'type'=>'raw',
 			'visible'=>false,
 			'value'=>'"<div class=\"id\">" . $data->id . "</div>"',
-			'filter'=>false,
+//			'filter'=>false,
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-1',
 			],
@@ -53,7 +53,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 			'name'=>'last_name',
 			'type'=>'raw',
 			'value'=>'"<div class=\"doctorId\">" . $data->id . "</div>" . "<div class=\"lastName\">" . $data->last_name . "</div>"',
-			'filter'=>CHtml::activeHiddenField($modelDoctors, 'hash'),
+			'filter'=>CHtml::activeTextField($modelDoctors, 'last_name') . CHtml::activeHiddenField($modelDoctors, 'hash'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-1',
 			],
@@ -61,7 +61,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 		[
 			'name'=>'first_name',
 			'type'=>'raw',
-			'filter'=>false,
+//			'filter'=>false,
 			'value'=>'"<div class=\"firstName\">" . $data->first_name . "</div>"',
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-4',
@@ -71,7 +71,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 			'name'=>'middle_name',
 			'type'=>'raw',
 			'value'=>'"<div class=\"middleName\">" . $data->middle_name . "</div>"',
-			'filter'=>false,
+//			'filter'=>false,
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],

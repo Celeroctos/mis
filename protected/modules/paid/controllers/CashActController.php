@@ -107,14 +107,20 @@ class CashActController extends MPaidController
 		$criteria->distinct=true;
 		$criteria->group='t.id';
 		$modelDoctors=new Doctors('paid.cashAct.search');
-		$modelDoctors->attributes=Yii::app()->request->getParam('Doctors');
+		
+		$modelDoctors->attributes=Yii::app()->request->getPost('Doctors');
+		$modelDoctors->first_name=strtolower($modelDoctors->first_name);
+		
+		$criteria->compare('lower(t.first_name)', mb_strtolower($modelDoctors->first_name, 'UTF-8'), true);
+		$criteria->compare('lower(t.last_name)', mb_strtolower($modelDoctors->last_name, 'UTF-8'), true);
+		$criteria->compare('lower(t.middle_name)', mb_strtolower($modelDoctors->middle_name, 'UTF-8'), true);
 		
 		if(!Yii::app()->request->getParam('gridSelectDoctor'))
 		{ //первый заход в этот экшн
 			$modelDoctors->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		
-		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Doctors::PAGE_SIZE],]);
+		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Doctors::PAGE_SIZE]]);
 		$this->renderPartial('gridChooseDoctor', ['modelDoctors'=>$modelDoctors, 'dataProvider'=>$dataProvider], false, true);
 	}
 	

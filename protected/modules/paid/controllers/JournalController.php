@@ -95,6 +95,9 @@ class JournalController extends MPaidController
 		}		
 	}
 	
+	/**
+	 * Paid expenses
+	 */
 	public function actionPaidExpenses()
 	{
 		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
@@ -112,13 +115,21 @@ class JournalController extends MPaidController
 		}
 		if(!Yii::app()->request->isAjaxRequest) {
 			self::enableScripts();
-			$this->render('PaidExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
+			$this->render('paidExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
 		}
 		else {
 			self::disableScripts();
-			$this->renderPartial('PaidExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
+			$this->renderPartial('paidExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
 		}	
 	}
+	
+	/**
+	 * Return expenses
+	 */
+	public function actionReturnExpenses()
+	{
+		
+	}	
 	
 	/**
 	 * Main action
