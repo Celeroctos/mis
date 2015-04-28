@@ -282,13 +282,19 @@ div[class^="col-xs-"].error .form-control{
 	display: none;
 }
 .gridJournalExpenses .filters{
-    display:none;
+    display: none;
+}
+.gridReturnPayment .filters{
+	display: none;
 }
 .modalOverlay{
 	
 }
 .grid-view td{
     word-break: break-all; 
+}
+#Paid_Services_since_date, #Paid_Services_exp_date{
+	text-align: center;
 }
 /*.b-paidHeader{
     margin-bottom: 10px;

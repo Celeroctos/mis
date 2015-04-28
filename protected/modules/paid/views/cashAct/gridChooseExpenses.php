@@ -102,7 +102,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'columns'=>[
 		[
 			'name'=>'date',
-			'value'=>'Yii::app()->dateformatter->formatDateTime($data->date, "medium");',
+			'value'=>'Yii::app()->dateformatter->format("yyyy-MM-dd HH:mm", $data->date);',
 			'filter'=>CHtml::activeTextField($modelPaid_Expenses, 'date') . CHtml::activeTextField($modelPaid_Expenses, 'dateEnd'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',

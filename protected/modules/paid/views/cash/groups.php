@@ -102,7 +102,7 @@ $this->pageTitle='Группы и услуги';
 			[
 				'name'=>'name',
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-1',
+					'class'=>'col-xs-3',
 				],
 			],
 			[
@@ -117,11 +117,11 @@ $this->pageTitle='Группы и услуги';
 			],
 			[
 				'name'=>'since_date',
-				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
+				'value'=>'Yii::app()->dateFormatter->format("yyyy-MM-dd", $data->since_date)',
 			],
 			[
 				'name'=>'exp_date',
-				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
+				'value'=>'Yii::app()->dateFormatter->format("yyyy-MM-dd", $data->since_date)',
 			],
 			[
 				'class'=>'CButtonColumn',

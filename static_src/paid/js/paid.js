@@ -164,6 +164,8 @@ function selectServices(html) {
 		redirectToLogin();
 		return;
 	}
+	$('#punchButton').removeClass('btn-danger');
+	$('#punchButton').addClass('btn-default');
 	$('#modalSelectServicesBody').html(html);
     $('#modalSelectServices').modal('show');
 }

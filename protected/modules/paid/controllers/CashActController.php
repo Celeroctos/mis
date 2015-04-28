@@ -54,6 +54,41 @@ class CashActController extends MPaidController
 	}
 	
 	/**
+	 * Возврат платежа
+	 */
+	public function actionReturnPayment($patient_id)
+	{
+		self::disableScripts();
+		
+		$modelPaid_Expenses=new Paid_Expenses('paid.cashAct.search');
+		
+//		if(Yii::app()->request->getPost('formSearchExpenses'))
+//		{ //validate CActiveForm
+//			echo CActiveForm::validate($modelPaid_Expenses);
+//			Yii::app()->end();
+//		}
+		
+		$modelPaid_Expenses->patient_id=$patient_id;
+		$modelPaid_Expenses->action=Paid_Expenses::PAID; //выбираем только оплаченные счета
+		$modelPaid_Expenses->hashForm=substr(md5(uniqid("", true)), 0, 4);
+		
+		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		
+		
+//		if(!Yii::app()->request->getParam('gridSelectExpenses') && strlen($modelPaid_Expenses->dateEnd)>0)
+//		{
+//			$modelPaid_Expenses->dateEnd.=' 23:59:59';
+//		}
+		
+		if(!Yii::app()->request->getParam('gridReturnPayment'))
+		{ //первый заход в этот экшн
+			$modelPaid_Expenses->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
+		}
+		
+		$this->renderPartial('gridReturnPayment', ['modelPaid_Expenses'=>$modelPaid_Expenses], false, true);
+	}
+	
+	/**
 	 * Выбор счета, который был добавлен, но не пробит.
 	 */
 	public function actionChooseExpenses($patient_id)
