@@ -77,7 +77,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
-	'emptyText'=>'Неоплаченные счета отсутствуют!',
+	'emptyText'=>'Счета не найдены.',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridChooseExpenses',
 	'pager'=>[
