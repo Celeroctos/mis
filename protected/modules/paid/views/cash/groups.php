@@ -15,7 +15,7 @@ $this->pageTitle='Группы и услуги';
 								'ajaxVar'=>'formSearchServices',
 								'validationUrl'=>$this->createUrl('cash/searchServicesResult'),
 								'validateOnChange'=>true,
-								'validateOnType'=>true,
+//								'validateOnType'=>true,
 								'validateOnSubmit'=>true,
 								'afterValidate'=>new CJavaScriptExpression("function(form, data, hasError) { //use in formSearchServices
 															if(!hasError)

@@ -16,7 +16,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
 	'emptyText'=>
-	'<h4 class="b-paid__emptyServiceHeader">По данным критериям услуги не найдены!</h4>',
+	'<h4 class="b-paid__emptyServiceHeader">' . $modelPaid_Service->emptyTextGrid . '</h4>',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridSelectServices', //gridSelectServices используется в paid.js
 	'pager'=>[

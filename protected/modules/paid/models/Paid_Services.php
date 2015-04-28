@@ -15,6 +15,7 @@ class Paid_Services extends ActiveRecord
 	public $reason; //основание
 	
 	public $hash;
+	public $emptyTextGrid;
 	public $globalSearch=false;
 	const PAGE_SIZE=7;
 	
@@ -35,7 +36,8 @@ class Paid_Services extends ActiveRecord
 	{
 		return [
 			['hash', 'safe'],
-			['code', 'unique'],
+			['code', 'unique', 'on'=>'paid.cash.create'],
+			['code', 'unique', 'on'=>'paid.cash.update'],
 			['paid_service_group_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.create'],
 			['name, code, reason', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			['price', 'type', 'type'=>'float', 'on'=>'paid.cash.create'],
@@ -108,12 +110,14 @@ class Paid_Services extends ActiveRecord
 		if(!self::isEmpty($this) || $this->scenario=='paid.cash.select')
 		{
 			$criteria->compare('cast(paid_service_group_id as varchar)', $this->paid_service_group_id);
-			$criteria->compare('name', $this->name);
+			$criteria->compare('name', $this->name, true);
 			$criteria->compare('code', $this->code);
+			$this->emptyTextGrid='Услуги не найдены.';
 		}
 		else 
 		{
 			$criteria->addCondition('paid_service_group_id=-1');
+			$this->emptyTextGrid='Необходимо заполнить поисковую форму.';
 		}
 		return new CActiveDataProvider($this, [
 			'criteria'=>$criteria,

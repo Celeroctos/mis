@@ -155,6 +155,8 @@ class CashActController extends MPaidController
 		
 		$dataProvider=new CActiveDataProvider($modelPaid_Order_Details, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Order_Details::PAGE_SIZE]]);
 		
+		
+		
 		$this->renderPartial('chooseExpenseServices', ['modelPaid_Order_Details'=>$modelPaid_Order_Details, 'dataProvider'=>$dataProvider], false, true);
 	}
 	
@@ -451,7 +453,7 @@ class CashActController extends MPaidController
 					{
 						throw new CHttpException(404, 'Ошибка в запросе создания направлений. Транзакция отменена.');
 					}
-				} //сформировали одно направление, надо печатать их где-то тут. 
+				} //сформировали одно направление с услугами, надо печатать их где-то тут. 
 				//TODO!!!!!!!!!!!!!!!!!TODO!!!!!!!!!!ПЕЧАТЬ направлений где-то тут
 			}
 			$transaction->commit();

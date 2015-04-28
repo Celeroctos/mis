@@ -86,7 +86,6 @@ class CashController extends MPaidController
 	{//TODO кнопка перейти переходит на группу, надо на услугу (подсвечивать)
 		self::disableScripts();
 		$modelPaid_Service=new Paid_Services('paid.cash.search');
-//		$modelPaid_Service->globalSearch=true; //жесткое или нежёсткое сравнение по группам (для г
 		
 		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service); //for formSearchServices
 		//своего рода рекурсия, метод через ajax запрос вызывает сам себя но не попадает туда, а идёт дальше
@@ -97,12 +96,12 @@ class CashController extends MPaidController
 			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services', $_POST); //запрос ajax
 			$this->renderPartial('gridSearchServices', ['modelPaid_Service'=>$modelPaid_Service], false, true);
 		}
-		elseif(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('gridSearchServices'))
-		{ //обработка кнопок CGridView (ajax)
-			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services'); //hash тоже
-			$this->renderPartial('gridSearchServices', ['modelPaid_Service'=>$modelPaid_Service]);
-			Yii::app()->end();
-		}
+//		elseif(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('gridSearchServices'))
+//		{ //обработка кнопок CGridView (ajax)
+//			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services'); //hash тоже
+//			$this->renderPartial('gridSearchServices', ['modelPaid_Service'=>$modelPaid_Service]);
+//			Yii::app()->end();
+//		}
 	}
 	
 	/**

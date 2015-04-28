@@ -563,7 +563,7 @@ $(document).ready(function() {
 			$.ajax({'url': '/paid/cash/deleteGroup/group_id/' + group_id,
 						'success': function (error) {
 								if(error==0) {
-									alert('Удаление группы невозможно, т.к. у данной группы (или её подгрупп) присутствуют связи.');
+									alert('Удаление группы невозможно, т.к. у данной группы (или её подгрупп) присутствуют услуги или врачи.');
 								} 
 								else if(error==1) {
 									location.href='/paid/cash/groups';

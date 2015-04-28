@@ -147,9 +147,9 @@ class Paid_Service_Groups extends ActiveRecord
 			<li>
 				<div class="b-paid__serviceItemGroup">
 					<div class="b-paid__serviceItemGroup-b_color">
-						<?= CHtml::link(CHtml::encode($value->name), ['cash/groups', 'group_id'=>$value->paid_service_group_id], ['class'=>'b-paid__serviceItemGroupLink']) ?>
 						<span class="glyphicon glyphicon-plus b-paid__addPopover" value="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" data-contect="" aria-hidden="true"></span>
 						<span class="glyphicon glyphicon-pencil b-paid__addEditPopover" value="<?= CHtml::encode($value->paid_service_group_id); ?>" tabindex="-1" aria-hidden="true"></span>
+						<?= CHtml::link(CHtml::encode($value->name), ['cash/groups', 'group_id'=>$value->paid_service_group_id], ['class'=>'b-paid__serviceItemGroupLink']) ?>
 					</div>
 				</div>
 			</li>
