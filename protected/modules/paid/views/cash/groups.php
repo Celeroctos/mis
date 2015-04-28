@@ -60,7 +60,7 @@ $this->pageTitle='Группы и услуги';
 </div>
 <div class="row b-paid__Row">
 	<div class="col-xs-4 b-paid__borderRight">
-		<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id ORDER BY paid_service_group_id DESC', ['p_id'=>0]), 0); ?>
+		<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0); ?>
 		<?= CHtml::htmlButton('Добавить группу', ['class'=>'btn btn-sm btn-primary', 'id'=>'buttonAddGroup']); ?>
 	</div>
 	<div class="col-xs-8">

@@ -88,7 +88,7 @@ class Paid_Service_Groups extends ActiveRecord
 				'name'
 		);
 	}
-	static $i=0;
+	
 	/**
 	 * Рекурсивный метод удаления групп
 	 * @param integer $group_id #ID группы
@@ -117,8 +117,6 @@ class Paid_Service_Groups extends ActiveRecord
 				Paid_Service_Groups::recursDeleteGroups($value->paid_service_group_id);
 			}
 		}
-		
-		
 	}
 	
 	/**
@@ -156,7 +154,7 @@ class Paid_Service_Groups extends ActiveRecord
 				</div>
 			</li>
 			<?php
-			$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id ORDER BY paid_service_group_id DESC', [':p_id'=>$value->paid_service_group_id]); //ищем всех предков
+			$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id', [':p_id'=>$value->paid_service_group_id]); //ищем всех предков
 			//проверяем является ли он чьим-то child
 			if(!empty($recordChild))
 			{ //есть дочерние элементы.
