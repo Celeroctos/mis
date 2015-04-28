@@ -126,6 +126,7 @@ $this->pageTitle='Группы и услуги';
 			[
 				'class'=>'CButtonColumn',
 				'template'=>'{update}{delete}',
+				'afterDelete'=>'afterDeleteService',
 				'buttons'=>[
 					'update'=>[
 						'url'=>'CHtml::normalizeUrl(["cash/UpdateService", "id"=>$data->paid_service_id])',

@@ -11,6 +11,8 @@ class Paid_Service_Groups extends ActiveRecord
 	public $code;
 	public $p_id;
 	
+	static $error_delete_group = 1; //1 - ошибок нет, 0 - есть ошибки
+	
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
@@ -86,25 +88,37 @@ class Paid_Service_Groups extends ActiveRecord
 				'name'
 		);
 	}
-	
+	static $i=0;
 	/**
 	 * Рекурсивный метод удаления групп
 	 * @param integer $group_id #ID группы
 	 */
 	public static function recursDeleteGroups($group_id)
 	{
-		Paid_Services::model()->deleteAll('paid_service_group_id=:group_id', [':group_id'=>$group_id]);
-		if(Paid_Service_Groups::model()->deleteByPk($group_id) && Paid_Services::model()->deleteAll('paid_service_group_id=:group_id', [':group_id'=>$group_id]))
+		if(Paid_Service_Groups::$error_delete_group==0)
 		{
-			$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>$group_id]); //ищем предков
-			if(!empty($recordChild))
+			return;
+		}
+		$recordServices=Paid_Services::model()->find('paid_service_group_id=:group_id', [':group_id'=>$group_id]);
+		$recordServices_Doctors=Paid_Services_Doctors::model()->find('paid_service_group_id=:group_id', [':group_id'=>$group_id]);
+		if($recordServices!=null || $recordServices_Doctors!=null)
+		{ //У группы есть услуги или привязанные врачи
+			Paid_Service_Groups::$error_delete_group=0;
+			return;
+		}
+		
+		Paid_Service_Groups::model()->deleteByPk($group_id);
+		
+		$recordChild=Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>$group_id]); //ищем предков
+		if(!empty($recordChild))
+		{
+			foreach($recordChild as $value)
 			{
-				foreach($recordChild as $value)
-				{
-					Paid_Service_Groups::recursDeleteGroups($value->paid_service_group_id);
-				}
+				Paid_Service_Groups::recursDeleteGroups($value->paid_service_group_id);
 			}
 		}
+		
+		
 	}
 	
 	/**

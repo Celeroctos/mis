@@ -11,6 +11,15 @@ function redirectToLogin(){
 /**
  * insert function into Yii handler
  */
+function afterDeleteService(link, success, data)
+{
+	if(success && data==0)
+		alert("Удаление невозможно, т.к. у услуги имеются связи.");
+}
+
+/**
+ * insert function into Yii handler
+ */
 function updateService() { //add to onlick
     $.ajax({'success': function (html) {
 		$('#modalServiceGroupsBody').html(html);
@@ -552,8 +561,13 @@ $(document).ready(function() {
 				return false;
 			}
 			$.ajax({'url': '/paid/cash/deleteGroup/group_id/' + group_id,
-						'success': function (html) {
-								location.href='/paid/cash/groups';
+						'success': function (error) {
+								if(error==0) {
+									alert('Удаление группы невозможно, т.к. у данной группы (или её подгрупп) присутствуют связи.');
+								} 
+								else if(error==1) {
+									location.href='/paid/cash/groups';
+								}
 						}
 					});
         };
