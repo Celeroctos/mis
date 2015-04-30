@@ -134,8 +134,9 @@ HERE;
 					(
 						"paid_payment_id" serial NOT NULL,
 						"paid_expense_id" integer NOT NULL, --FK (table paid_expenses)
+						"date_create" TIMESTAMPTZ NOT NULL, --Дата проведения платежа
 						"date_delete" TIMESTAMPTZ, --Дата удаления платежа
-						"reason_date_delete" TIMESTAMPTZ, --Причина удаления платежа
+						"reason_delete" TIMESTAMPTZ, --Причина удаления платежа
 						"user_delete_id" integer, --FK (table users), Пользователь, удаливший платёж
 						PRIMARY KEY(paid_payment_id)
 					);

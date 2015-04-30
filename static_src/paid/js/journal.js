@@ -1,7 +1,3 @@
-function Controller () {
-	
-}
-
 function JournalController () {
 	
 	var ajaxSuccess = function (html) {
@@ -44,7 +40,7 @@ function JournalController () {
 		this.handlerPaidExpenses();
 	};
 }
-JournalController.prototype=Controller;
+JournalController.prototype = new Controller;
 
 var journal=new JournalController();
 journal.init(); // грузим экшн

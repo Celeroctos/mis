@@ -1,44 +1,100 @@
 function ReturnPaymentController() {
 	
-	/**
-	 * Ajax success method
-	 * @param {mixed} result
-	 */
-	var ajaxSuccess = function (result) {
-		$('#modalReturnPaymentBody').html(result);
-		$('#modalReturnPayment').modal('show');		
+	var cleanCashFront = function () {
+		$('#TotalSum').html('0'); //обнуляем ИТОГО
+		$('#punchButton').prop('disabled', 'false');
+		$('#punchButton').removeClass('btn-danger');
+		$('#punchButton').addClass('btn-default');
+		$('#CashSum').val('');
+		$('#deleteOrderButton').attr('disabled', 'disabled');
+		$('#selectedServicesTable tbody').empty();
+		$('#selectedServicesTable tbody').append('<tr class="empty"><td colspan="7"><span>Выберите услуги</span></td></tr>');
 	};
 	
 	/**
+	 * CallBack
 	 * load bootstrap modal, if successful
 	 */
 	var loadModal = function () {
+		/**
+		* Ajax success method (первое модальное окно)
+		* @param {mixed} result
+		*/
+		var ajaxSuccess = function (result) {
+			$('#modalReturnPaymentBody').html(result);
+			$('#modalReturnPayment').modal('show');
+		};
 		var url=document.location.href;
 		var action=url.split('/');
-		$(document).ready(function () {
-			$.ajax({
-				url: '/paid/cashAct/ReturnPayment/patient_id/' + action[7],
-				success: ajaxSuccess
-				
-			});
+		$.ajax({
+			url: '/paid/cashAct/ReturnPayment/patient_id/' + action[7],
+			success: ajaxSuccess
 		});
 	};
 	
-	this.handlerButton = function () {
-		$(document).on('click', '#returnPayment', loadModal);
+	/**
+	 * Callback
+	 * confirm return payment
+	 */
+	var returnPaymentConfirm = function () {
+		/**
+		 * GridView id
+		 */
+		var gridId=$('#modalReturnPayment').find('.grid-view').prop('id');
+		
+		var expense_number = $(this).find('.expense_number').html();
+		
+		/**
+		 * ajax success method
+		 */
+		var ajaxSuccess = function (result) {
+			$('#' + gridId).yiiGridView('update');
+		};
+		
+		if(!confirm('Вы уверены, что хотите произвести возврат выбранного платежа?')) {
+			return false;
+		}
+
+		$.ajax({
+			url: '/paid/cashAct/ReturlPaymentConfirm/expense_number/' + expense_number,
+			success: ajaxSuccess
+		});	
 	};
 	
-	this.handlerHiddenModal = function () {
-		$('#modalReturnPayment').on('hidden.bs.modal', function () {
+	this.handlerButton = function () {
+		/**
+		 * Загрузка модали по нажатию на кнопку "Возврат оплаты"
+		 */
+		$(document).on('click', '#returnPayment', loadModal);
+		
+		/**
+		 * Обработка нажатий на строку грида в самой модали
+		 */
+		$(document).on('click', '.gridReturnPayment tbody tr', returnPaymentConfirm);
+	};
+	
+	this.handlerModal = function () {
+		/**
+		 * Чистим модаль после её скрытия
+		 */
+		$(document).on('hidden.bs.modal', '#modalReturnPayment', function () {
 			$('#modalReturnPaymentBody').empty();
-		});		
+		});
+		
+		/**
+		 * Чистим фронт кассира перед тем, как пользователь увидит модаль
+		 */
+		$(document).on('show.bs.modal', '#modalReturnPayment', function () {
+			cleanCashFront();
+		});
 	};
 	
 	this.init = function () {
 		this.handlerButton();
-		this.handlerHiddenModal();
+		this.handlerModal();
 	};
 }
+ReturnPaymentController.prototype = new Controller;
 
 returnPayment=new ReturnPaymentController();
 returnPayment.init();

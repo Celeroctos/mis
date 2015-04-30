@@ -1,3 +1,7 @@
+function Controller () {
+	
+}
+
 var ERROR_LOGIN = 'ERROR_LOGIN';
 /**
  * Если пользователь не авторизован, то перенаправляем его.
@@ -110,7 +114,7 @@ function classChooseExpenses() {
 		}
 		
 		/**TODO */
-		//чистим это всё только когда есть выбанный пациент!!! TODODODODO
+		//чистим это всё только когда есть выбранный пациент!!! TODODODODO
 		
 		var i=0;
 		$('#selectedServicesTable tbody tr').each(function () {
