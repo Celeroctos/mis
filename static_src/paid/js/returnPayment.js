@@ -37,28 +37,30 @@ function ReturnPaymentController() {
 	 * confirm return payment
 	 */
 	var returnPaymentConfirm = function () {
-		/**
-		 * GridView id
-		 */
-		var gridId=$('#modalReturnPayment').find('.grid-view').prop('id');
 		
 		var expense_number = $(this).find('.expense_number').html();
 		
-		/**
-		 * ajax success method
-		 */
-		var ajaxSuccess = function (result) {
-			$('#' + gridId).yiiGridView('update');
-		};
+		$('#modalReturnPaymentConfirm').modal('show');
 		
-		if(!confirm('Вы уверены, что хотите произвести возврат выбранного платежа?')) {
-			return false;
-		}
-
-		$.ajax({
-			url: '/paid/cashAct/ReturlPaymentConfirm/expense_number/' + expense_number,
-			success: ajaxSuccess
-		});	
+		$('#returnPaymentConfirm').on('click', function () {
+			/**
+			 * GridView id
+			 */
+			var gridId=$('#modalReturnPayment').find('.grid-view').prop('id');
+			
+			/**
+			 * ajax success method
+			 */
+			var ajaxSuccess = function (result) {
+				$('#modalReturnPaymentConfirm').modal('hide');
+				$('#' + gridId).yiiGridView('update');
+			};
+	
+			$.ajax({
+				url: '/paid/cashAct/ReturnPaymentConfirm/expense_number/' + expense_number,
+				success: ajaxSuccess
+			});
+		});
 	};
 	
 	this.handlerButton = function () {
@@ -80,7 +82,14 @@ function ReturnPaymentController() {
 		$(document).on('hidden.bs.modal', '#modalReturnPayment', function () {
 			$('#modalReturnPaymentBody').empty();
 		});
-		
+
+		/**
+		 * Чистим модаль после её скрытия
+		 */
+		$(document).on('hidden.bs.modal', '#modalReturnPaymentConfirm', function () {
+			$('#returnPaymentConfirm').off('click');
+//			$('#modalReturnPaymentConfirmBody').empty();
+		});
 		/**
 		 * Чистим фронт кассира перед тем, как пользователь увидит модаль
 		 */
@@ -96,5 +105,5 @@ function ReturnPaymentController() {
 }
 ReturnPaymentController.prototype = new Controller;
 
-returnPayment=new ReturnPaymentController();
+var returnPayment=new ReturnPaymentController();
 returnPayment.init();

@@ -91,7 +91,7 @@ class CashActController extends MPaidController
 	 * Выбранный платёж на возврат
 	 * @param string $expense_number Номер счета
 	 */
-	public function actionReturlPaymentConfirm($expense_number)
+	public function actionReturnPaymentConfirm($expense_number)
 	{
 		self::disableScripts();
 		$modelPaid_Expense=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);

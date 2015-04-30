@@ -40,7 +40,7 @@ function JournalController () {
 		this.handlerPaidExpenses();
 	};
 }
-JournalController.prototype = new Controller;
+//JournalController.prototype = new Controller;
 
 var journal=new JournalController();
 journal.init(); // грузим экшн
