@@ -1,0 +1,109 @@
+function ReturnPaymentController() {
+	
+	var cleanCashFront = function () {
+		$('#TotalSum').html('0'); //обнуляем ИТОГО
+		$('#punchButton').prop('disabled', 'false');
+		$('#punchButton').removeClass('btn-danger');
+		$('#punchButton').addClass('btn-default');
+		$('#CashSum').val('');
+		$('#deleteOrderButton').attr('disabled', 'disabled');
+		$('#selectedServicesTable tbody').empty();
+		$('#selectedServicesTable tbody').append('<tr class="empty"><td colspan="7"><span>Выберите услуги</span></td></tr>');
+	};
+	
+	/**
+	 * CallBack
+	 * load bootstrap modal, if successful
+	 */
+	var loadModal = function () {
+		/**
+		* Ajax success method (первое модальное окно)
+		* @param {mixed} result
+		*/
+		var ajaxSuccess = function (result) {
+			$('#modalReturnPaymentBody').html(result);
+			$('#modalReturnPayment').modal('show');
+		};
+		var url=document.location.href;
+		var action=url.split('/');
+		$.ajax({
+			url: '/paid/cashAct/ReturnPayment/patient_id/' + action[7],
+			success: ajaxSuccess
+		});
+	};
+	
+	/**
+	 * Callback
+	 * confirm return payment
+	 */
+	var returnPaymentConfirm = function () {
+		
+		var expense_number = $(this).find('.expense_number').html();
+		
+		$('#modalReturnPaymentConfirm').modal('show');
+		
+		$('#returnPaymentConfirm').on('click', function () {
+			/**
+			 * GridView id
+			 */
+			var gridId=$('#modalReturnPayment').find('.grid-view').prop('id');
+			
+			/**
+			 * ajax success method
+			 */
+			var ajaxSuccess = function (result) {
+				$('#modalReturnPaymentConfirm').modal('hide');
+				$('#' + gridId).yiiGridView('update');
+			};
+	
+			$.ajax({
+				url: '/paid/cashAct/ReturnPaymentConfirm/expense_number/' + expense_number,
+				success: ajaxSuccess
+			});
+		});
+	};
+	
+	this.handlerButton = function () {
+		/**
+		 * Загрузка модали по нажатию на кнопку "Возврат оплаты"
+		 */
+		$(document).on('click', '#returnPayment', loadModal);
+		
+		/**
+		 * Обработка нажатий на строку грида в самой модали
+		 */
+		$(document).on('click', '.gridReturnPayment tbody tr', returnPaymentConfirm);
+	};
+	
+	this.handlerModal = function () {
+		/**
+		 * Чистим модаль после её скрытия
+		 */
+		$(document).on('hidden.bs.modal', '#modalReturnPayment', function () {
+			$('#modalReturnPaymentBody').empty();
+		});
+
+		/**
+		 * Чистим модаль после её скрытия
+		 */
+		$(document).on('hidden.bs.modal', '#modalReturnPaymentConfirm', function () {
+			$('#returnPaymentConfirm').off('click');
+//			$('#modalReturnPaymentConfirmBody').empty();
+		});
+		/**
+		 * Чистим фронт кассира перед тем, как пользователь увидит модаль
+		 */
+		$(document).on('show.bs.modal', '#modalReturnPayment', function () {
+			cleanCashFront();
+		});
+	};
+	
+	this.init = function () {
+		this.handlerButton();
+		this.handlerModal();
+	};
+}
+ReturnPaymentController.prototype = new Controller;
+
+var returnPayment=new ReturnPaymentController();
+returnPayment.init();

@@ -20,6 +20,7 @@ class CashActController extends MPaidController
 			],
 		];
 	}
+	
 	/**
 	 * Отключаем уже подключенные скрипты
 	 */
@@ -54,6 +55,55 @@ class CashActController extends MPaidController
 	}
 	
 	/**
+	 * Возврат платежа
+	 */
+	public function actionReturnPayment($patient_id)
+	{
+		self::disableScripts();
+		
+		$modelPaid_Expenses=new Paid_Expenses('paid.cashAct.search');
+		
+//		if(Yii::app()->request->getPost('formSearchExpenses'))
+//		{ //validate CActiveForm
+//			echo CActiveForm::validate($modelPaid_Expenses);
+//			Yii::app()->end();
+//		}
+		
+		$modelPaid_Expenses->patient_id=$patient_id;
+		$modelPaid_Expenses->action=Paid_Expenses::PAID; //выбираем только оплаченные счета
+		$modelPaid_Expenses->hashForm=substr(md5(uniqid("", true)), 0, 4);
+		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		
+//		if(!Yii::app()->request->getParam('gridSelectExpenses') && strlen($modelPaid_Expenses->dateEnd)>0)
+//		{
+//			$modelPaid_Expenses->dateEnd.=' 23:59:59';
+//		}
+		
+		if(!Yii::app()->request->getParam('gridReturnPayment'))
+		{ //первый заход в этот экшн
+			$modelPaid_Expenses->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
+		}
+		
+		$this->renderPartial('gridReturnPayment', ['modelPaid_Expenses'=>$modelPaid_Expenses], false, true);
+	}
+	
+	/**
+	 * Выбранный платёж на возврат
+	 * @param string $expense_number Номер счета
+	 */
+	public function actionReturnPaymentConfirm($expense_number)
+	{
+		self::disableScripts();
+		$modelPaid_Expense=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);
+		
+		if($modelPaid_Expense===null)
+		{
+			throw new CHttpException(404, 'Такого счёта не существует.');
+		}
+		
+	}
+	
+	/**
 	 * Выбор счета, который был добавлен, но не пробит.
 	 */
 	public function actionChooseExpenses($patient_id)
@@ -72,7 +122,6 @@ class CashActController extends MPaidController
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
 		$modelPaid_Expenses->hashForm=substr(md5(uniqid("", true)), 0, 4);
 		
-		
 		if(!Yii::app()->request->getParam('gridSelectExpenses') && strlen($modelPaid_Expenses->dateEnd)>0)
 		{
 			$modelPaid_Expenses->dateEnd.=' 23:59:59';
@@ -82,6 +131,7 @@ class CashActController extends MPaidController
 		{ //первый заход в этот экшн
 			$modelPaid_Expenses->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
+		
 		$this->renderPartial('gridChooseExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses], false, true);
 	}
 	
@@ -387,9 +437,10 @@ class CashActController extends MPaidController
 		
 		$transaction=Yii::app()->db->beginTransaction();
 		try
-		{			
+		{
 			$modelPaid_Payments=new Paid_Payments();
 			$modelPaid_Payments->paid_expense_id=$recordPaid_Expenses->paid_expense_id;
+			$modelPaid_Payments->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
 			$modelPaid_Payments->date_delete=null;
 			$modelPaid_Payments->reason_date_delete=null;
 			$modelPaid_Payments->user_delete_id=null;
@@ -451,7 +502,7 @@ class CashActController extends MPaidController
 					{
 						throw new CHttpException(404, 'Ошибка в запросе создания направлений. Транзакция отменена.');
 					}
-				} //сформировали одно направление, надо печатать их где-то тут. 
+				} //сформировали одно направление с услугами, надо печатать их где-то тут. 
 				//TODO!!!!!!!!!!!!!!!!!TODO!!!!!!!!!!ПЕЧАТЬ направлений где-то тут
 			}
 			$transaction->commit();

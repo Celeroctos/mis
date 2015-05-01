@@ -89,6 +89,7 @@ return [
 			],
 			'js'=>[
 				'js/paid.js',
+				'js/returnPayment.js',
 			],
 			'depends'=>[
 				'bootstrap',

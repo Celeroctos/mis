@@ -15,7 +15,7 @@ $this->pageTitle='Группы и услуги';
 								'ajaxVar'=>'formSearchServices',
 								'validationUrl'=>$this->createUrl('cash/searchServicesResult'),
 								'validateOnChange'=>true,
-								'validateOnType'=>true,
+//								'validateOnType'=>true,
 								'validateOnSubmit'=>true,
 								'afterValidate'=>new CJavaScriptExpression("function(form, data, hasError) { //use in formSearchServices
 															if(!hasError)
@@ -60,7 +60,7 @@ $this->pageTitle='Группы и услуги';
 </div>
 <div class="row b-paid__Row">
 	<div class="col-xs-4 b-paid__borderRight">
-		<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id ORDER BY paid_service_group_id DESC', ['p_id'=>0]), 0); ?>
+		<?= Paid_Service_Groups::recursServicesOut(Paid_Service_Groups::model()->findAll('p_id=:p_id', ['p_id'=>0]), 0); ?>
 		<?= CHtml::htmlButton('Добавить группу', ['class'=>'btn btn-sm btn-primary', 'id'=>'buttonAddGroup']); ?>
 	</div>
 	<div class="col-xs-8">
@@ -102,7 +102,7 @@ $this->pageTitle='Группы и услуги';
 			[
 				'name'=>'name',
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-1',
+					'class'=>'col-xs-3',
 				],
 			],
 			[
@@ -117,15 +117,16 @@ $this->pageTitle='Группы и услуги';
 			],
 			[
 				'name'=>'since_date',
-				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
+				'value'=>'Yii::app()->dateFormatter->format("yyyy-MM-dd", $data->since_date)',
 			],
 			[
 				'name'=>'exp_date',
-				'value'=>'Yii::app()->dateFormatter->formatDateTime($data->since_date, \'medium\', null)',
+				'value'=>'Yii::app()->dateFormatter->format("yyyy-MM-dd", $data->since_date)',
 			],
 			[
 				'class'=>'CButtonColumn',
 				'template'=>'{update}{delete}',
+				'afterDelete'=>'afterDeleteService',
 				'buttons'=>[
 					'update'=>[
 						'url'=>'CHtml::normalizeUrl(["cash/UpdateService", "id"=>$data->paid_service_id])',

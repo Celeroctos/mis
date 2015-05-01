@@ -106,3 +106,27 @@ $this->pageTitle='Пациент';
 		</div>
 	</div>
 </div>
+<div class="modal" id="modalReturnPayment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog b-modalReturnPayment">
+		<div class="modal-content b-modalReturnPayment b-paid__modalHeader">
+			<div class="modal-body" id="modalReturnPaymentBody">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" id="modalReturnPaymentConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog b-modalReturnPaymentConfirm">
+		<div class="modal-content b-modalReturnPaymentConfirm b-paid__modalHeader">
+			<div class="modal-body" id="modalReturnPaymentConfirmBody">
+				<?= CHtml::button('Выполнить возврат', ['class'=>'btn btn-primary', 'id'=>'returnPaymentConfirm']); ?>
+				<?= CHtml::button('Отмена', ['class'=>'btn btn-default', 'data-dismiss'=>'modal']); ?>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>

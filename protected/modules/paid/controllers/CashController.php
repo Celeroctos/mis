@@ -86,7 +86,6 @@ class CashController extends MPaidController
 	{//TODO кнопка перейти переходит на группу, надо на услугу (подсвечивать)
 		self::disableScripts();
 		$modelPaid_Service=new Paid_Services('paid.cash.search');
-//		$modelPaid_Service->globalSearch=true; //жесткое или нежёсткое сравнение по группам (для г
 		
 		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service); //for formSearchServices
 		//своего рода рекурсия, метод через ajax запрос вызывает сам себя но не попадает туда, а идёт дальше
@@ -97,12 +96,12 @@ class CashController extends MPaidController
 			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services', $_POST); //запрос ajax
 			$this->renderPartial('gridSearchServices', ['modelPaid_Service'=>$modelPaid_Service], false, true);
 		}
-		elseif(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('gridSearchServices'))
-		{ //обработка кнопок CGridView (ajax)
-			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services'); //hash тоже
-			$this->renderPartial('gridSearchServices', ['modelPaid_Service'=>$modelPaid_Service]);
-			Yii::app()->end();
-		}
+//		elseif(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('gridSearchServices'))
+//		{ //обработка кнопок CGridView (ajax)
+//			$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services'); //hash тоже
+//			$this->renderPartial('gridSearchServices', ['modelPaid_Service'=>$modelPaid_Service]);
+//			Yii::app()->end();
+//		}
 	}
 	
 	/**
@@ -335,27 +334,46 @@ class CashController extends MPaidController
 		{
 			throw new CHttpException(404, 'Такой группы не существует!');
 		}
-		Paid_Service_Groups::recursDeleteGroups($group_id);
+		
+		$transaction=Yii::app()->db->beginTransaction();
+		try 
+		{
+			Paid_Service_Groups::recursDeleteGroups($group_id);
+			if(Paid_Service_Groups::$error_delete_group==1) //нет ошибок
+			{
+				$transaction->commit();
+				Yii::app()->end("1");
+			}
+			throw new CHttpException(404);
+		}
+		catch(Exception $e)
+		{
+			$transaction->rollback();
+			Yii::app()->end("0");
+		}
 	}
 	
 	/**
 	 * Удаление услуг или одной услуги у группы
 	 * @param int $id #ID услуги
 	 */
-	public function actionDeleteService($id=null)
+	public function actionDeleteService($id)
 	{
-		if(isset($id))
-		{ //выбрали одну услугу
-			
-			$recordPaid_Service=Paid_Services::model()->findByPk($id);
-		
-			if($recordPaid_Service===null)
-			{
-				throw new CHttpException(404, 'Такой услуги не существует!');
-			}
-			$recordPaid_Service->deleteByPk($id);
-			Yii::app()->end();
+		$recordPaid_Service=Paid_Services::model()->findByPk($id);
+
+		if($recordPaid_Service===null)
+		{
+			throw new CHttpException(404, 'Такой услуги не существует!');
 		}
+		$recordPaid_Order_Details=Paid_Order_Details::model()->find('paid_service_id=:id', [':id'=>$id]);
+		$recordPaid_Referrals_Details=Paid_Referrals_Details::model()->find('paid_service_id=:id', [':id'=>$id]);
+		
+		if(isset($recordPaid_Order_Details) || isset($recordPaid_Referrals_Details))
+		{ //если у группы есть связи, то удаление невозможно
+			Yii::app()->end("0");
+		}
+		$recordPaid_Service->deleteByPk($id);
+		Yii::app()->end("1");
 	}
 	
 	/**

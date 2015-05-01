@@ -19,6 +19,14 @@ class Paid_Expenses extends ActiveRecord
 	public $hashForm; //use in Form id
 	public $dateEnd;
 	public $patient_id; //use in compare
+	
+	/**
+	 * Выбор счетов в зависимости от действия (оплаченные, неоплаченные и т.д.)
+	 * Не связано с хранилищем, принимает константу как значение.
+	 * @var string
+	 */
+	public $action=self::NOT_PAID;
+	
 	const NOT_PAID = 0;
 	const PAID = 1;
 	const RETURN_PAID = 2; //возврат оплаты
@@ -96,9 +104,9 @@ class Paid_Expenses extends ActiveRecord
 	}
 	
 	public function search()
-	{
+	{ /* search for actionChooseExpenses */
 		$criteria=new CDbCriteria;
-		$criteria->addCondition('status='. self::NOT_PAID);
+		$criteria->addCondition('status='. $this->action);
 		$criteria->with=['order'=>['joinType'=>'INNER JOIN']];
 		$criteria->together=true;
 		
@@ -108,6 +116,7 @@ class Paid_Expenses extends ActiveRecord
 		}
 		$criteria->compare('"order"."patient_id"', $this->patient_id);
 		$criteria->compare('cast(expense_number as varchar)', $this->expense_number, true);
+		
 		return new CActiveDataProvider('Paid_Expenses', [
 			'criteria'=>$criteria,
 			'sort'=>[

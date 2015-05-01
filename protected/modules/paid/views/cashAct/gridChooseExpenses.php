@@ -77,7 +77,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
-	'emptyText'=>'Неоплаченные счета отсутствуют!',
+	'emptyText'=>'Счета не найдены.',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridChooseExpenses',
 	'pager'=>[
@@ -102,7 +102,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'columns'=>[
 		[
 			'name'=>'date',
-			'value'=>'Yii::app()->dateformatter->formatDateTime($data->date, "medium");',
+			'value'=>'Yii::app()->dateformatter->format("yyyy-MM-dd HH:mm", $data->date);',
 			'filter'=>CHtml::activeTextField($modelPaid_Expenses, 'date') . CHtml::activeTextField($modelPaid_Expenses, 'dateEnd'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',

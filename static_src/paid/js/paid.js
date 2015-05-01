@@ -1,3 +1,7 @@
+function Controller () {
+	
+}
+
 var ERROR_LOGIN = 'ERROR_LOGIN';
 /**
  * Если пользователь не авторизован, то перенаправляем его.
@@ -6,6 +10,15 @@ var ERROR_LOGIN = 'ERROR_LOGIN';
 function redirectToLogin(){
 	location.href='/service/auth/login';
 	return;
+}
+
+/**
+ * insert function into Yii handler
+ */
+function afterDeleteService(link, success, data)
+{
+	if(success && data==0)
+		alert("Удаление невозможно, т.к. у услуги имеются связи.");
 }
 
 /**
@@ -101,7 +114,7 @@ function classChooseExpenses() {
 		}
 		
 		/**TODO */
-		//чистим это всё только когда есть выбанный пациент!!! TODODODODO
+		//чистим это всё только когда есть выбранный пациент!!! TODODODODO
 		
 		var i=0;
 		$('#selectedServicesTable tbody tr').each(function () {
@@ -155,6 +168,8 @@ function selectServices(html) {
 		redirectToLogin();
 		return;
 	}
+	$('#punchButton').removeClass('btn-danger');
+	$('#punchButton').addClass('btn-default');
 	$('#modalSelectServicesBody').html(html);
     $('#modalSelectServices').modal('show');
 }
@@ -552,8 +567,13 @@ $(document).ready(function() {
 				return false;
 			}
 			$.ajax({'url': '/paid/cash/deleteGroup/group_id/' + group_id,
-						'success': function (html) {
-								location.href='/paid/cash/groups';
+						'success': function (error) {
+								if(error==0) {
+									alert('Удаление группы невозможно, т.к. у данной группы (или её подгрупп) присутствуют услуги или врачи.');
+								} 
+								else if(error==1) {
+									location.href='/paid/cash/groups';
+								}
 						}
 					});
         };
