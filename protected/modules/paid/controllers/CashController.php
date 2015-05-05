@@ -430,16 +430,9 @@ class CashController extends MPaidController
 		{
 			if(Yii::app()->request->getPost('formSearchPatients'))
 			{
+				$modelPatient->setAttributes(Yii::app()->request->getPost('Patients'), false); //для unique валидатора, инициализация переменных
 				
-				//TODO добавить на клиент проверку UNIQUE валидатора (переменные criteria UNIQUE пустые) ->validatE()
-				$modelPatient->attributes=Yii::app()->request->getPost('Patients'); //для unique валидатора, инициализация переменных
-				$modelPatient->validate();
-				foreach($modelPatient->getErrors() as $errors)
-				{
-					var_dump($errors);
-				}
 				$validatePatient=CJSON::decode(CActiveForm::validate($modelPatient, null, false));
-				
 				$validateMedcard=CJSON::decode(CActiveForm::validate($modelPaid_Medcard));
 				$validatePatient_Documents=CJSON::decode(CActiveForm::validate($modelPatient_Documents));
 				$validatePatient_Contacts=CJSON::decode(CActiveForm::validate($modelPatient_Contacts));
