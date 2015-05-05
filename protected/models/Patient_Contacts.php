@@ -11,6 +11,8 @@ class Patient_Contacts extends ActiveRecord
 	public $value;
 //	public $valueArrMass; //js input
 	
+	public $errorSummary;
+	
 	const MOBILE_PHONE_ID = 1;
 	const MOBILE_PHONE_NAME = 'Мобильный телефон';
 	
@@ -31,6 +33,8 @@ class Patient_Contacts extends ActiveRecord
 	{
 		return [
 			['value', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
+			
+			['value', 'required', 'on'=>'paid.cash.create'],
 			['value', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 		];
 	}

@@ -13,6 +13,8 @@ class Patient_Documents extends ActiveRecord
 	public $type;
 	public $patient_id; //FK
 	
+	public $errorSummary;
+	
 //	public $typeArrMass;
 //	public $serieArrMass;
 //	public $numberArrMass;
@@ -28,8 +30,35 @@ class Patient_Documents extends ActiveRecord
 	{
 		return [
 			['type, serie, number', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
-			['type, serie, number', 'type', 'type'=>'string', 'on'=>'paid.cash.search']
+			['errorSummary', 'validateRequiredFields', 'on'=>'paid.cash.create'],
+			
+			['type, serie, number', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
+			['errorSummary', 'validateRequiredFields', 'on'=>'paid.cash.search'],
 		];
+	}
+	
+	/**
+	 * Валидатор
+	 * Если заполнен номер, то обязательно заполнение серии и тип, и наоборот
+	 */
+	public function validateRequiredFields($attribute)
+	{
+		if((isset($this->type) && strlen($this->type)>0)
+		|| (isset($this->serie) && strlen($this->serie)>0)
+		|| (isset($this->number) && strlen($this->number)>0))
+		{ //если хоть одно заполнено,
+			if((isset($this->type) && strlen($this->type)>0)
+			&& (isset($this->serie) && strlen($this->serie)>0)
+			&& (isset($this->number) && strlen($this->number)>0))
+			{ //то должны быть заполнены все поля
+				return;
+			}
+			else
+			{
+				$this->addError($attribute, 'Поля с документами не должны быть пустыми.');
+				return;
+			}
+		}		
 	}
 	
 //	public static function saveFewDocumentsFromForm($modelPatient_Documents, $transaction)

@@ -14,7 +14,7 @@ $this->pageTitle='Касса';
 					'enableClientValidation'=>false,
 					'clientOptions'=>[
 						'validateOnChange'=>true,
-						'validateOnType'=>true,
+						'validateOnType'=>false,
 						'validationDelay'=>30,
 						'ajaxVar'=>'formSearchPatients',
 						'validateOnSubmit'=>true,
@@ -57,9 +57,17 @@ $this->pageTitle='Касса';
 			<div class="col-xs-12">
 				<?= $form->errorSummary($modelPatient, null, null, ['class'=>'alert alert-warning']); ?>
 				<?= $form->HiddenField($modelPatient, 'errorSummary', ['class'=>'form-control input-sm']); ?>
+				
+				<?= $form->errorSummary($modelPatient_Documents, null, null, ['class'=>'alert alert-warning']); ?>
+				<?= $form->HiddenField($modelPatient_Documents, 'errorSummary', ['class'=>'form-control input-sm']); ?>
+				
+				<?= $form->errorSummary($modelPatient_Contacts, null, null, ['class'=>'alert alert-warning']); ?>
+				<?= $form->HiddenField($modelPatient_Contacts, 'errorSummary', ['class'=>'form-control input-sm']); ?>				
 			</div>
 			<div style="display: none">
 				<?= $form->error($modelPatient, 'errorSummary', ['class'=>'b-paid__errorFormPatient']); ?>
+				<?= $form->error($modelPatient_Documents, 'errorSummary', ['class'=>'b-paid__errorFormPatient']); ?>
+				<?= $form->error($modelPatient_Contacts, 'errorSummary', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 		</div>
 		<div class="row">

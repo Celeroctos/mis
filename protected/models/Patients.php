@@ -231,16 +231,16 @@ class Patients extends ActiveRecord
 			$criteria->with=['contacts'=>['select'=>''], 'documents'=>['select'=>''], 'paid_medcards'=>['select'=>'', 'joinType'=>'INNER JOIN']]; //не выводим в таблице grid, FIX for POSTGRESQL
 			$criteria->together=true;
 			$criteria->select=['t.first_name', 't.last_name', 't.middle_name', 't.birthday'];
-			$criteria->compare('t.last_name', $this->last_name);
-			$criteria->compare('t.first_name', $this->first_name);
-			$criteria->compare('t.middle_name', $this->middle_name);
+			$criteria->compare('lower(t.last_name)', mb_strtolower($this->last_name, 'UTF-8'));
+			$criteria->compare('lower(t.first_name)', mb_strtolower($this->first_name, 'UTF-8'));
+			$criteria->compare('lower(t.middle_name)', mb_strtolower($this->middle_name, 'UTF-8'));
 			$criteria->compare('t.birthday', $this->birthday);
-			$criteria->compare('t.gender', $this->gender);
+			$criteria->compare('lower(t.gender)', mb_strtolower($this->gender, 'UTF-8'));
 			$criteria->compare('paid_medcards.paid_medcard_number', $this->modelPaid_Medcard->paid_medcard_number, true);
 			$criteria->compare('documents.type', $this->modelPatient_Documents->type);
-			$criteria->compare('documents.serie', $this->modelPatient_Documents->serie);
-			$criteria->compare('documents.number', $this->modelPatient_Documents->number);
-			$criteria->compare('contacts.value', $this->modelPatient_Contacts->value);
+			$criteria->compare('lower(documents.serie)', mb_strtolower($this->modelPatient_Documents->serie, 'UTF-8'));
+			$criteria->compare('lower(documents.number)', mb_strtolower($this->modelPatient_Documents->number, 'UTF-8'));
+			$criteria->compare('lower(contacts.value)', mb_strtolower($this->modelPatient_Contacts->value, 'UTF-8'));
 			$criteria->group='t.patient_id';
 			$this->emptyText = 'Пациент не найден.';
 		}
