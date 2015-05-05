@@ -430,7 +430,16 @@ class CashController extends MPaidController
 		{
 			if(Yii::app()->request->getPost('formSearchPatients'))
 			{
-				$validatePatient=CJSON::decode(CActiveForm::validate($modelPatient));
+				
+				//TODO добавить на клиент проверку UNIQUE валидатора (переменные criteria UNIQUE пустые) ->validatE()
+				$modelPatient->attributes=Yii::app()->request->getPost('Patients'); //для unique валидатора, инициализация переменных
+				$modelPatient->validate();
+				foreach($modelPatient->getErrors() as $errors)
+				{
+					var_dump($errors);
+				}
+				$validatePatient=CJSON::decode(CActiveForm::validate($modelPatient, null, false));
+				
 				$validateMedcard=CJSON::decode(CActiveForm::validate($modelPaid_Medcard));
 				$validatePatient_Documents=CJSON::decode(CActiveForm::validate($modelPatient_Documents));
 				$validatePatient_Contacts=CJSON::decode(CActiveForm::validate($modelPatient_Contacts));
@@ -476,7 +485,7 @@ class CashController extends MPaidController
 			$modelPatient=new Patients('paid.cash.create');
 			$modelPaid_Medcard=new Paid_Medcards('paid.cash.create');
 			$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
-			$modelPatient_Documents=new Patient_Documents('paid.cash.create');			
+			$modelPatient_Documents=new Patient_Documents('paid.cash.create');	
 		}
 		
 		$this->ajaxValidatePatients($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts);
@@ -535,17 +544,22 @@ class CashController extends MPaidController
 				{
 					$modelPatient->patient_id=$recordPatient->patient_id;
 				}
-				$modelPaid_Medcard->patient_id=$modelPatient->patient_id;
-				$modelPatient_Contacts->patient_id=$modelPatient->patient_id;
-				$modelPatient_Documents->patient_id=$modelPatient->patient_id;
 				
-				if(!$modelPaid_Medcard->save())
-				{ //запросы с ошибками, откатываем транзакцию и выводим ошибку на клиента (0)
-					$transaction->rollback();
-					echo 0;
-					Yii::app()->end();
+				$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', ['patient_id'=>$modelPatient->patient_id]);
+				
+				if($recordPaid_Medcard!==null)
+				{ //у пользователя нет ЭМК платных услуг
+					$modelPaid_Medcard->patient_id=$modelPatient->patient_id;
+					$modelPatient_Contacts->patient_id=$modelPatient->patient_id;
+					$modelPatient_Documents->patient_id=$modelPatient->patient_id;
+
+					if(!$modelPaid_Medcard->save())
+					{ //запросы с ошибками, откатываем транзакцию и выводим ошибку на клиента (0)
+						$transaction->rollback();
+						echo 0;
+						Yii::app()->end();
+					}
 				}
-				
 				if($recordPatient===null)
 				{ //пациент новый, надо создать ему контакты
 					if(!($modelPatient_Contacts->save() && $modelPatient_Documents->save()))

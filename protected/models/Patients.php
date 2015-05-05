@@ -80,6 +80,7 @@ class Patients extends ActiveRecord
 			['first_name, middle_name, last_name, birthday, gender', 'required', 'on'=>'paid.cash.create'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
 			['address_reg, address, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			['first_name', 'unique', 'criteria'=>['condition'=>'middle_name=:middle_name AND last_name=:last_name AND birthday=:birthday', 'params'=>[':middle_name'=>$this->middle_name, ':last_name'=>$this->last_name, ':birthday'=>$this->birthday]], 'on'=>'paid.cash.create'],
 			
 			//Поиск пациентов
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
@@ -242,7 +243,7 @@ class Patients extends ActiveRecord
 			$criteria->compare('lower(documents.number)', mb_strtolower($this->modelPatient_Documents->number, 'UTF-8'));
 			$criteria->compare('lower(contacts.value)', mb_strtolower($this->modelPatient_Contacts->value, 'UTF-8'));
 			$criteria->group='t.patient_id';
-			$this->emptyText = 'Пациент не найден.';
+			$this->emptyText = 'Не найдено пациента с ЭМК платных услуг.';
 		}
 		else
 		{
