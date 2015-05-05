@@ -86,6 +86,11 @@
 		min-width: 130px;
 		display: inline-block;
     }
+	.b-paid__returnPrice{
+		font-size: 19px;
+		min-width: 130px;	
+		margin-bottom: 10px;
+	}
 	.b-paid__tableMoney td{
 		text-align: center;
 		vertical-align: middle;

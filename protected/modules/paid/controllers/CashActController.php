@@ -94,6 +94,7 @@ class CashActController extends MPaidController
 	public function actionReturnPaymentConfirm($expense_number)
 	{
 		self::disableScripts();
+		
 		$modelPaid_Expense=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);
 		
 		if($modelPaid_Expense===null)
@@ -101,6 +102,20 @@ class CashActController extends MPaidController
 			throw new CHttpException(404, 'Такого счёта не существует.');
 		}
 		
+		$modelPaid_Payment=Paid_Payments::model()->find('paid_expense_id=:paid_expense_id', [':paid_expense_id'=>$modelPaid_Expense->paid_expense_id]);
+		
+		if($modelPaid_Payment===null)
+		{
+			throw new CHttpException(404, 'Такого платежа не существует.');
+		}
+		
+		$modelPaid_Expense->status=Paid_Expenses::RETURN_PAID;
+		$modelPaid_Expense->save();
+		
+		$modelPaid_Payment->date_delete=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+		$modelPaid_Payment->reason_delete=Paid_Payments::RETURN_REASON_DELETE;
+		$modelPaid_Payment->user_delete_id=Yii::app()->user->id;
+		$modelPaid_Payment->save();
 	}
 	
 	/**
@@ -442,7 +457,7 @@ class CashActController extends MPaidController
 			$modelPaid_Payments->paid_expense_id=$recordPaid_Expenses->paid_expense_id;
 			$modelPaid_Payments->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
 			$modelPaid_Payments->date_delete=null;
-			$modelPaid_Payments->reason_date_delete=null;
+			$modelPaid_Payments->reason_delete=null;
 			$modelPaid_Payments->user_delete_id=null;
 			$recordPaid_Expenses->status=Paid_Expenses::PAID; //счёт оплачен
 			

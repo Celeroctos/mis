@@ -121,8 +121,13 @@ $this->pageTitle='Пациент';
 	<div class="modal-dialog b-modalReturnPaymentConfirm">
 		<div class="modal-content b-modalReturnPaymentConfirm b-paid__modalHeader">
 			<div class="modal-body" id="modalReturnPaymentConfirmBody">
-				<?= CHtml::button('Выполнить возврат', ['class'=>'btn btn-primary', 'id'=>'returnPaymentConfirm']); ?>
-				<?= CHtml::button('Отмена', ['class'=>'btn btn-default', 'data-dismiss'=>'modal']); ?>
+				<div class="b-paid__returnPrice">
+					Сумма возврата: <span class="price"></span>
+				</div>
+				<div>
+					<?= CHtml::button('Выполнить возврат', ['class'=>'btn btn-primary', 'id'=>'returnPaymentConfirm']); ?>
+					<?= CHtml::button('Отмена', ['class'=>'btn btn-default', 'data-dismiss'=>'modal']); ?>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

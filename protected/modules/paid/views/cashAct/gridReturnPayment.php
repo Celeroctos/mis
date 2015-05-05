@@ -74,7 +74,8 @@ $this->widget('zii.widgets.grid.CGridView', [
 		],
 		[
 			'name'=>'price',
-			'value'=>'ParseMoney::decodeMoney($data->price) . " руб."',
+			'type'=>'html',
+			'value'=>'"<div class=\"price\">" . ParseMoney::decodeMoney($data->price) . " руб." . "</div>"',
 			'filter'=>false,
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',

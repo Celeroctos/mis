@@ -30,6 +30,7 @@ class Patients extends ActiveRecord
 	public $modelPaid_Medcard; // table paid_medcards (activeRecord object)
 	
 	public $errorSummary;
+	public $emptyText; // for CGridView emptyGrid
 	
 	const PAGE_SIZE = 10;
 	
@@ -90,20 +91,25 @@ class Patients extends ActiveRecord
 	
 	/**
 	 * Валидатор
-	 * Не может производится поиск по имени/отчеству без указания фамилии.
-	 * @param last_name
+	 * Если указан хоть один из (ФИО, дата рождения), то нужно заполнить их все
 	 */
 	public function validateRequiredLastName($attribute)
 	{
-		if((isset($this->first_name) && strlen($this->first_name)>0) || (isset($this->middle_name) && strlen($this->middle_name)>0) || (isset($this->last_name)  && strlen($this->last_name)>0))
+		if((isset($this->first_name) && strlen($this->first_name)>0)
+		|| (isset($this->middle_name) && strlen($this->middle_name)>0)
+		|| (isset($this->last_name)  && strlen($this->last_name)>0)
+		|| (isset($this->birthday) && strlen($this->birthday)>0))
 		{ //если хоть одно заполнено,
-			if((isset($this->first_name) && strlen($this->first_name)>0) && (isset($this->middle_name) && strlen($this->middle_name)>0) && (isset($this->last_name)  && strlen($this->last_name)>0))
+			if((isset($this->first_name) && strlen($this->first_name)>0)
+			&& (isset($this->middle_name) && strlen($this->middle_name)>0)
+			&& (isset($this->last_name)  && strlen($this->last_name)>0)
+			&& (isset($this->birthday)  && strlen($this->birthday)>0))
 			{ //то должны быть заполнены все поля
 				return;
 			}
 			else
 			{
-				$this->addError($attribute, 'Необходимо полностью заполнить ФИО.');
+				$this->addError($attribute, 'Необходимо полностью заполнить ФИО и дату рождения.');
 				return;
 			}
 		}
@@ -225,22 +231,25 @@ class Patients extends ActiveRecord
 			$criteria->with=['contacts'=>['select'=>''], 'documents'=>['select'=>''], 'paid_medcards'=>['select'=>'', 'joinType'=>'INNER JOIN']]; //не выводим в таблице grid, FIX for POSTGRESQL
 			$criteria->together=true;
 			$criteria->select=['t.first_name', 't.last_name', 't.middle_name', 't.birthday'];
-			$criteria->compare('t.last_name', $this->last_name, true);
+			$criteria->compare('t.last_name', $this->last_name);
 			$criteria->compare('t.first_name', $this->first_name);
-			$criteria->compare('t.middle_name', $this->middle_name, true);
+			$criteria->compare('t.middle_name', $this->middle_name);
 			$criteria->compare('t.birthday', $this->birthday);
-			$criteria->compare('t.gender', $this->gender, true);
-			$criteria->compare('paid_medcards.paid_medcard_number', $this->modelPaid_Medcard->paid_medcard_number);
+			$criteria->compare('t.gender', $this->gender);
+			$criteria->compare('paid_medcards.paid_medcard_number', $this->modelPaid_Medcard->paid_medcard_number, true);
 			$criteria->compare('documents.type', $this->modelPatient_Documents->type);
 			$criteria->compare('documents.serie', $this->modelPatient_Documents->serie);
 			$criteria->compare('documents.number', $this->modelPatient_Documents->number);
 			$criteria->compare('contacts.value', $this->modelPatient_Contacts->value);
-			$criteria->group='t.patient_id';			
+			$criteria->group='t.patient_id';
+			$this->emptyText = 'Пациент не найден.';
 		}
 		else
 		{
 			$criteria->addCondition('t.patient_id=-1');
+			$this->emptyText = 'Необходимо заполнить поисковую форму.';
 		}
+		
 		return new CActiveDataProvider('Patients', [
 			'criteria'=>$criteria,
 			'sort'=>[

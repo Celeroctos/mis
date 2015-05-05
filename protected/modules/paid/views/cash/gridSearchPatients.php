@@ -10,9 +10,10 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'ajaxType'=>'post',
 	'ajaxVar'=>'gridSearchPatients',
 	'ajaxUpdate'=>true,
-	'emptyText'=>'<div style="width: 185px; margin: 0 auto;">'
-	. '<h4>Пациент не найден!</h4>'
-	. CHtml::htmlButton('Добавить', ['class'=>'btn btn-block btn-primary', 'id'=>'gridCreatePatient'])
+	'emptyText'=>'<div style="font-size: 17px; text-align: center;">'
+	. $modelPatient->emptyText
+	. '<br>'
+	. CHtml::htmlButton('Добавить пациента', ['class'=>'btn btn-primary', 'id'=>'gridCreatePatient'])
 	. '</div>',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered',

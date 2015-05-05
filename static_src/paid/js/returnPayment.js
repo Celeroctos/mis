@@ -38,11 +38,21 @@ function ReturnPaymentController() {
 	 */
 	var returnPaymentConfirm = function () {
 		
+		/**
+		 * @var {Number}
+		 */
 		var expense_number = $(this).find('.expense_number').html();
 		
+		/**
+		 * @var {Float}
+		 */
+		var price = $(this).find('.price').html();
+		
+		$('#modalReturnPaymentConfirm .price').html(price); //чистим цену
 		$('#modalReturnPaymentConfirm').modal('show');
 		
 		$('#returnPaymentConfirm').on('click', function () {
+			
 			/**
 			 * GridView id
 			 */
@@ -53,12 +63,14 @@ function ReturnPaymentController() {
 			 */
 			var ajaxSuccess = function (result) {
 				$('#modalReturnPaymentConfirm').modal('hide');
-				$('#' + gridId).yiiGridView('update');
 			};
 	
 			$.ajax({
 				url: '/paid/cashAct/ReturnPaymentConfirm/expense_number/' + expense_number,
-				success: ajaxSuccess
+				success: ajaxSuccess,
+				complete: function () {
+					$('#' + gridId).yiiGridView('update');
+				}
 			});
 		});
 	};
@@ -84,12 +96,13 @@ function ReturnPaymentController() {
 		});
 
 		/**
-		 * Чистим модаль после её скрытия
+		 * Операции с модалью после её скрытия
 		 */
 		$(document).on('hidden.bs.modal', '#modalReturnPaymentConfirm', function () {
 			$('#returnPaymentConfirm').off('click');
-//			$('#modalReturnPaymentConfirmBody').empty();
+			$('#modalReturnPaymentConfirm .price').empty(); //чистим цену
 		});
+		
 		/**
 		 * Чистим фронт кассира перед тем, как пользователь увидит модаль
 		 */

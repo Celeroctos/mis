@@ -607,7 +607,7 @@ class CashController extends MPaidController
 	 * Вызывается этот экш с main-представления ajax запросом после успешной валидации CActiveForm.
 	 */
 	public function actionSearchPatientsResult()
-	{ //обработка всех кнопок грида попадает так же сюда, т.к. ajax запрос был послан сюда и отсюда был вызван грид
+	{
 		self::disableScripts();
 		$modelPatient=new Patients('paid.cash.search');
 		$modelPatient->modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
