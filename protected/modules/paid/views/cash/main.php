@@ -131,8 +131,8 @@ $this->pageTitle='Касса';
 		</div>
 		<div class="row">
 			<div id="select_button" name="search" class="col-xs-12"> <!-- какую кнопку нажали? (search or create) -->
-				<?= CHtml::SubmitButton('Найти', ['class'=>'btn btn-primary btn-sm','id'=>'submitSearchPatient', 'name'=>'search',]); ?>
-				<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success btn-sm','id'=>'submitCreatePatient','name'=>'create',]); ?>
+				<?= CHtml::SubmitButton('Найти', ['class'=>'btn btn-primary','id'=>'submitSearchPatient', 'name'=>'search',]); ?>
+				<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success','id'=>'submitCreatePatient','name'=>'create',]); ?>
 			</div>
 		</div>
 	<?php $this->endWidget(); ?>
