@@ -523,7 +523,7 @@ class CashController extends MPaidController
 			$modelPatient_Documents->attributes=Yii::app()->request->getPost('Patient_Documents');
 			$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
 //			$modelPaid_Medcard->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-			
+
 			$transaction=Yii::app()->db->beginTransaction();
 			try
 			{
@@ -556,8 +556,6 @@ class CashController extends MPaidController
 //				if($recordPaid_Medcard===null)
 //				{ //у пользователя нет ЭМК платных услуг
 //					$modelPaid_Medcard->patient_id=$modelPatient->patient_id;
-//					$modelPatient_Contacts->patient_id=$modelPatient->patient_id;
-//					$modelPatient_Documents->patient_id=$modelPatient->patient_id;
 //
 //					if(!$modelPaid_Medcard->save())
 //					{ //запросы с ошибками, откатываем транзакцию и выводим ошибку на клиента (0)
@@ -566,6 +564,10 @@ class CashController extends MPaidController
 //						Yii::app()->end();
 //					}
 //				}
+				
+				$modelPatient_Contacts->patient_id=$modelPatient->patient_id;
+				$modelPatient_Documents->patient_id=$modelPatient->patient_id;
+				
 				if($recordPatient===null)
 				{ //пациент новый, надо создать ему контакты
 					if(!($modelPatient_Contacts->save() && $modelPatient_Documents->save()))

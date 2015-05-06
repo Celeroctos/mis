@@ -10,6 +10,8 @@
 			blockObj.append(inputObj);
 			blockObj.append(deleteButtonObj);
 			
+			$('.b-phones__input .form-control').inputmask("mask", {"mask": "+7 (999) 999-99-99"});
+			
 			deleteButtonObj.on('click', function() {
 //				$(this).parent().animate({opacity: 0}, 'slow', function(){
 				$(this).parent().detach();

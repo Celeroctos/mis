@@ -20,7 +20,6 @@ $this->pageTitle='Пациент';
 				'address_reg',
 			],
 		)); ?>
-		
 		<h4 class="b-paid__selectHeader">Услуги, включенные в заказ</h4>
 		<div id="selectedServicesTable">
 			<table class="table table-bordered">

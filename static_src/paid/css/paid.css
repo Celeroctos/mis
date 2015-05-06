@@ -27,6 +27,12 @@
 	vertical-align: middle !important;
 	text-align: center;
 }
+.b-phones{
+	
+}
+	.b-phones__input form-control{
+		
+	}
 .b-paid{
     background-color: white !important;
     box-shadow: 0px 1px 7px rgba(0,0,0,0.30);
@@ -313,6 +319,9 @@ b-modalReturnPayment
     word-break: break-all; 
 }
 #Paid_Services_since_date, #Paid_Services_exp_date{
+	text-align: center;
+}
+#Patients_birthday{
 	text-align: center;
 }
 /*.b-paidHeader{
