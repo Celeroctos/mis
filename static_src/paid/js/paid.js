@@ -418,7 +418,7 @@ function classSelectServices() {
 $(document).ready(function() {
 	$.fn.modal.Constructor.prototype.enforceFocus = function() {}; //firefox fix focus modal+datetimepicker
 
-	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-9999"});
+	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-99-99"});
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
 	
 	var inputMaskComplete=function () {
@@ -625,6 +625,8 @@ $(document).ready(function() {
         };
 	this.handlerSearchPatient=function () {
 		$(document).on('click', '#submitSearchPatient', function () {
+			$(this).val('Загрузка..');
+			$(this).animate({opacity: 0.6}, 250);
 			$(this).parent().attr('name', 'search');
 			$('#submitCreatePatient').css('display', 'none');
 			$('#submitCreatePatient').animate({opacity: 0}, 250);

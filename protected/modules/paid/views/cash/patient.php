@@ -9,7 +9,7 @@ $this->pageTitle='Пациент';
 	<div class="col-xs-10">
 		<?php $this->widget('zii.widgets.CDetailView', array(
 			'data'=>$modelPatient,
-			'nullDisplay'=>'Пациент не выбран!',
+			'nullDisplay'=>'<font color="red">Значение не заполнено</font>',
 			'attributes'=>[
 				[
 					'name'=>'last_name',

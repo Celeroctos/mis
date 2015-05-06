@@ -382,46 +382,58 @@ class CashController extends MPaidController
 	 */
 	public function actionPatient($patient_id)
 	{
+//		$count = 2000000;
+//		for($i=0; $i<=$count; $i++)
+//		{
+//			$patients=new Patients();
+//			$patients->first_name =  'Тест' . $i;
+//			$patients->middle_name =  'Тестович' . $i;
+//			$patients->last_name =  'Тестов' .$i;
+//			$patients->gender = rand(0, 1);
+//			$patients->birthday=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+//			$patients->create_timestamp = Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+//			
+//			$patients->save(false);
+//			$patients->isNewRecord=true;
+//			$idPatient = Yii::app()->db->getLastInsertID('mis.patients_patient_id_seq');
+//			
+//			$document=new Patient_Documents();
+//			$document->serie = $i;
+//			$document->number = $i;
+//			$document->type = $i;
+//			$document->patient_id = $idPatient;
+//			$document->save();
+//			$document->isNewRecord=true;
+//			
+//			$contact = new Patient_Contacts();
+//			$contact->patient_id = $idPatient;
+//			$contact->type = $i;
+//			$contact->value = $i . $i;
+//			$contact->save();
+//			$contact->isNewRecord = true;
+//		}
 		$modelPatient=Patients::model()->findByPk($patient_id);
-		$modelPaid_Service=new Paid_Services('paid.cash.search');
 		
 		if($modelPatient===null)
 		{
 			throw new CHttpException(404, 'Такого пациента не существует!');
 		}
-		if(Yii::app()->request->getPost('punchButton'))
-		{
+		
+		$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', ['patient_id'=>$patient_id]);
+
+		if($recordPaid_Medcard===null)
+		{ //у пользователя нет ЭМК платных услуг
+			$modelPaid_Medcard=new Paid_Medcards('paid.cash.create');
+			$modelPaid_Medcard->patient_id=$patient_id;
+			$modelPaid_Medcard->paid_medcard_number=
+			$modelPaid_Medcard->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
 			
+			if(!$modelPaid_Medcard->save())
+			{
+				throw new CHttpException(404, 'Запрос на создание ЭМК не был выполнен. Перезагрузите страницу (кнопка F5 на клавиатуре).');
+			}
 		}
-		$this->render('patient', ['modelPatient'=>$modelPatient, 'modelPaid_Service'=>$modelPaid_Service]);
-//		if(isset($patient_id))
-//		{//выбрали юзера не(!!) ajax запросом
-//			$recordPatient_Documents=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
-//			$recordPatient_Contacts=Patient_Contacts::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
-//			$modelPatient_Documents=isset($recordPatient_Documents) ? $recordPatient_Documents : $modelPatient_Documents;
-//			$modelPatient_Contacts=isset($recordPatient_Contacts) ? $recordPatient_Contacts : $modelPatient_Contacts;
-//			$modelPatient=Patients::model()->findByPk($patient_id);
-//			$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
-//			
-//			if($modelPatient===null)
-//			{ //нет такого пациента
-//				throw new CHttpException(404, 'Пациент на найден!');
-//			}
-//			elseif($recordPaid_Medcard===null)
-//			{ //нет медкарты у пациента, нужно создать
-//				$modelPaid_Medcard=new Paid_Medcards('paid.medcard.create');
-//				$modelPaid_Medcard->paid_medcard_number=uniqid('', true); //TODO временно
-//				$modelPaid_Medcard->enterprise_id=null;
-//				$modelPaid_Medcard->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-//				$modelPaid_Medcard->patient_id=$patient_id;
-//				$modelPaid_Medcard->save();
-//			}
-//			elseif($recordPaid_Medcard!==null)
-//			{ //уже есть ЭМК платных услуг
-//				$modelPaid_Medcard=$recordPaid_Medcard;
-//			}
-//			$this->render('patient', ['modelPatient'=>$modelPatient, 'modelPaid_Medcard'=>$modelPaid_Medcard]);
-//		}
+		$this->render('patient', ['modelPatient'=>$modelPatient]);	
 	}
 	
 	private function ajaxValidatePatients($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts)
@@ -498,7 +510,7 @@ class CashController extends MPaidController
 	{ //сюда попадают уже свалидированные данные из экшна main(), валидируем только на уровне PHP
 		//TODO generator номера МЕДКАРТ
 		$modelPatient=new Patients('paid.cash.create');
-		$modelPaid_Medcard=new Paid_Medcards('paid.cash.create');
+//		$modelPaid_Medcard=new Paid_Medcards('paid.cash.create');
 		$modelPatient_Contacts=new Patient_Contacts('paid.cash.create');
 		$modelPatient_Documents=new Patient_Documents('paid.cash.create');
 		
@@ -506,11 +518,11 @@ class CashController extends MPaidController
 		&& Yii::app()->request->getPost('Patient_Contacts') && Yii::app()->request->getPost('Patient_Documents'))
 		{
 			$modelPatient->attributes=Yii::app()->request->getPost('Patients');
-			$modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
+//			$modelPaid_Medcard->attributes=Yii::app()->request->getPost('Paid_Medcards');
 			$modelPatient_Contacts->attributes=Yii::app()->request->getPost('Patient_Contacts');
 			$modelPatient_Documents->attributes=Yii::app()->request->getPost('Patient_Documents');
 			$modelPatient->create_timestamp=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-			$modelPaid_Medcard->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+//			$modelPaid_Medcard->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
 			
 			$transaction=Yii::app()->db->beginTransaction();
 			try
@@ -520,6 +532,7 @@ class CashController extends MPaidController
 				 * 1 - значит успешное сохранение.
 				 * 0 - возникли ошибки при сохранении данных в БД (не прошли валидацию и прочее).
 				 */
+				
 				$recordPatient=Patients::model()->find('last_name=:last_name AND first_name=:first_name AND middle_name=:middle_name AND birthday=:birthday',
 				[':last_name'=>$modelPatient->last_name, ':first_name'=>$modelPatient->first_name, ':middle_name'=>$modelPatient->middle_name, ':birthday'=>$modelPatient->birthday]);
 				
@@ -538,21 +551,21 @@ class CashController extends MPaidController
 					$modelPatient->patient_id=$recordPatient->patient_id;
 				}
 				
-				$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', ['patient_id'=>$modelPatient->patient_id]);
-				
-				if($recordPaid_Medcard!==null)
-				{ //у пользователя нет ЭМК платных услуг
-					$modelPaid_Medcard->patient_id=$modelPatient->patient_id;
-					$modelPatient_Contacts->patient_id=$modelPatient->patient_id;
-					$modelPatient_Documents->patient_id=$modelPatient->patient_id;
-
-					if(!$modelPaid_Medcard->save())
-					{ //запросы с ошибками, откатываем транзакцию и выводим ошибку на клиента (0)
-						$transaction->rollback();
-						echo 0;
-						Yii::app()->end();
-					}
-				}
+//				$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', ['patient_id'=>$modelPatient->patient_id]);
+//				
+//				if($recordPaid_Medcard===null)
+//				{ //у пользователя нет ЭМК платных услуг
+//					$modelPaid_Medcard->patient_id=$modelPatient->patient_id;
+//					$modelPatient_Contacts->patient_id=$modelPatient->patient_id;
+//					$modelPatient_Documents->patient_id=$modelPatient->patient_id;
+//
+//					if(!$modelPaid_Medcard->save())
+//					{ //запросы с ошибками, откатываем транзакцию и выводим ошибку на клиента (0)
+//						$transaction->rollback();
+//						echo 0;
+//						Yii::app()->end();
+//					}
+//				}
 				if($recordPatient===null)
 				{ //пациент новый, надо создать ему контакты
 					if(!($modelPatient_Contacts->save() && $modelPatient_Documents->save()))

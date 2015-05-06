@@ -19,6 +19,11 @@ $this->pageTitle='Касса';
 						'ajaxVar'=>'formSearchPatients',
 						'validateOnSubmit'=>true,
 						'afterValidate'=>new CJavaScriptExpression("function(form, data, hasError) {
+																	if(hasError)
+																	{
+																		$('#submitSearchPatient').val('Найти');
+																		$('#submitSearchPatient').animate({opacity: 1}, 50);
+																	}
 																	if(!hasError)
 																	{
 																		var action=$('#select_button').attr('name');
@@ -30,6 +35,8 @@ $this->pageTitle='Касса';
 																				url='/paid/cash/SearchPatientsResult';
 																				success=function (html) {
 																					$('#modalSearchPatientBody').html(html);
+																					$('#submitSearchPatient').val('Найти');
+																		$('#submitSearchPatient').animate({opacity: 1}, 50);
 																					$('#modalSearchPatient').modal('show');
 																				};
 																				break;
@@ -139,7 +146,7 @@ $this->pageTitle='Касса';
 		</div>
 		<div class="row">
 			<div id="select_button" name="search" class="col-xs-12"> <!-- какую кнопку нажали? (search or create) -->
-				<?= CHtml::SubmitButton('Найти', ['class'=>'btn btn-primary','id'=>'submitSearchPatient', 'name'=>'search',]); ?>
+				<?= CHtml::SubmitButton('Найти', ['class'=>'btn btn-primary', 'data-loading-text'=>'Загрузка..', 'data-role'=>'button', 'id'=>'submitSearchPatient', 'name'=>'search',]); ?>
 				<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-success','id'=>'submitCreatePatient','name'=>'create',]); ?>
 			</div>
 		</div>
