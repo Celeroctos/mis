@@ -466,10 +466,8 @@ class CashController extends MPaidController
 			
 			$recordPatient_Contacts=Patient_Contacts::model()->findAll('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 			
-			
 			$this->renderPartial('updatePatient', ['recordPatient'=>$recordPatient, 'recordPatient_Contacts'=>$recordPatient_Contacts], false, true);
 		}
-		
 	}
 	
 	private function ajaxValidatePatients($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts)
