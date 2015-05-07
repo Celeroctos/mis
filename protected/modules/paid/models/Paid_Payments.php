@@ -26,7 +26,7 @@ class Paid_Payments extends ActiveRecord
 	
 	public function relations()
 	{
-		return [	
+		return [
 		];
 	}
 	

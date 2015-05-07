@@ -20,6 +20,8 @@ $this->pageTitle='Пациент';
 				'address_reg',
 			],
 		)); ?>
+<?= CHtml::button('Редактировать пациента', ['class'=>'btn btn-primary btn-sm', 'id'=>'updatePatient']); ?>
+		
 		<h4 class="b-paid__selectHeader">Услуги, включенные в заказ</h4>
 		<div id="selectedServicesTable">
 			<table class="table table-bordered">
@@ -109,6 +111,17 @@ $this->pageTitle='Пациент';
 	<div class="modal-dialog b-modalReturnPayment">
 		<div class="modal-content b-modalReturnPayment b-paid__modalHeader">
 			<div class="modal-body" id="modalReturnPaymentBody">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" id="modalUpdatePatient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog b-modalUpdatePatient">
+		<div class="modal-content b-modalUpdatePatient b-paid__modalHeader">
+			<div class="modal-body" id="modalUpdatePatientBody">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

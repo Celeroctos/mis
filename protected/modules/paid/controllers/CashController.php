@@ -412,6 +412,7 @@ class CashController extends MPaidController
 //			$contact->save();
 //			$contact->isNewRecord = true;
 //		}
+		Yii::app()->clientScript->registerPackage('updatePatient');
 		$modelPatient=Patients::model()->findByPk($patient_id);
 		
 		if($modelPatient===null)
@@ -434,6 +435,41 @@ class CashController extends MPaidController
 			}
 		}
 		$this->render('patient', ['modelPatient'=>$modelPatient]);	
+	}
+	
+	/**
+	 * ajax validation for CActiveForm
+	 */
+	private function ajaxValidateUpdatePatients()
+	{
+		
+	}
+	
+	/**
+	 * Редактирование пациента
+	 * @param integer $patient_id
+	 */
+	public function actionUpdatePatient($patient_id)
+	{
+		/**
+		 * Только ajax запросы (загрузка формы из модали)
+		 */
+		if(Yii::app()->request->isAjaxRequest)
+		{
+			self::disableScripts();
+			$recordPatient=Patients::model()->findByPk($patient_id);
+			
+			if($recordPatient===null)
+			{
+				throw new CHttpException(404, 'Такого пациента не существует.');
+			}
+			
+			$recordPatient_Contacts=Patient_Contacts::model()->findAll('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+			
+			
+			$this->renderPartial('updatePatient', ['recordPatient'=>$recordPatient, 'recordPatient_Contacts'=>$recordPatient_Contacts], false, true);
+		}
+		
 	}
 	
 	private function ajaxValidatePatients($modelPatient, $modelPaid_Medcard, $modelPatient_Documents, $modelPatient_Contacts)

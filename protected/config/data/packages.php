@@ -107,6 +107,16 @@ return [
 				'jquery'
 			],
 		],
+		'updatePatient'=>[
+			'baseUrl'=>_STATIC . '/paid/',
+			'js'=>[
+				'js/updatePatient.js'
+			],
+			'depends'=>[
+				'bootstrap',
+				'jquery'
+			]
+		],
 		//module service
 		'service'=>[
 			'baseUrl'=>_STATIC . '/service/',
