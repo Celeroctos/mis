@@ -37,6 +37,9 @@
     background-color: white !important;
     box-shadow: 0px 1px 7px rgba(0,0,0,0.30);
 }
+	.b-paid__contactUpdatePatient{
+		margin-bottom: 2px;
+	}
     .b-paid__searchHeader{
             margin-top: 0px;
     }

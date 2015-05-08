@@ -18,6 +18,83 @@
 				]); ?>
 <div class="row">
 	<div class="col-xs-4 col-xs-offset-4">
+		<?= $form->Label($recordPatient, 'last_name', ['class'=>'control-label']); ?>
+		<?= $form->TextField($recordPatient, 'last_name', ['class'=>'form-control input-sm',]); ?>
+		<?= $form->error($recordPatient, 'name', ['class'=>'b-paid__errorFormPatient']); ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-4 col-xs-offset-4">
+		<?= $form->Label($recordPatient, 'first_name', ['class'=>'control-label']); ?>
+		<?= $form->TextField($recordPatient, 'first_name', ['class'=>'form-control input-sm',]); ?>
+		<?= $form->error($recordPatient, 'name', ['class'=>'b-paid__errorFormPatient']); ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-4 col-xs-offset-4">
+		<?= $form->Label($recordPatient, 'middle_name', ['class'=>'control-label']); ?>
+		<?= $form->TextField($recordPatient, 'middle_name', ['class'=>'form-control input-sm',]); ?>
+		<?= $form->error($recordPatient, 'name', ['class'=>'b-paid__errorFormPatient']); ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-4 col-xs-offset-4">
+		<?= $form->Label($recordPatient, 'gender', ['class'=>'control-label']); ?>
+		<?= $form->DropDownList($recordPatient, 'gender', Patients::getGenderListData(), ['class'=>'form-control input-sm',]); ?>
+		<?= $form->error($recordPatient, 'gender', ['class'=>'b-paid__errorFormPatient']); ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-4 col-xs-offset-4">
+		<?= $form->Label($recordPatient, 'birthday', ['class'=>'control-label']); ?>
+			<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
+				'language'=>'ru',
+				'model'=>$recordPatient,
+				'attribute'=>'birthday',
+				'options'=>[
+					'changeMonth'=>'true',
+					'changeYear'=>'true',
+					'showOn'=>'focus', // 'focus', 'button', 'both'
+					'dateFormat'=>'yy-mm-dd',
+					'yearRange'=>'1900:'.Yii::app()->dateformatter->format('yyyy', time()),
+					'minDate'=>'1900-01-01',
+				],
+				'htmlOptions'=>[
+					'class'=>'form-control',
+				],
+			]); ?>
+		<?= $form->error($recordPatient, 'birthday', ['class'=>'b-paid__errorFormPatient']); ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-4 col-xs-offset-4">
+		<?= $form->Label($recordPatient, 'address_reg', ['class'=>'control-label']); ?>
+		<?= $form->TextField($recordPatient, 'address_reg', ['class'=>'form-control input-sm',]); ?>
+		<?= $form->error($recordPatient, 'address_reg', ['class'=>'b-paid__errorFormPatient']); ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-4 col-xs-offset-4">
+		<?= $form->Label($recordPatient, 'snils', ['class'=>'control-label']); ?>
+		<?= $form->TextField($recordPatient, 'snils', ['class'=>'form-control input-sm',]); ?>
+		<?= $form->error($recordPatient, 'snils', ['class'=>'b-paid__errorFormPatient']); ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-4 col-xs-offset-4 b-contactUpdate">
+		<?= CHtml::Label('Телефон(ы)', 'value', ['class'=>'control-label']); ?>
+		
+		<span class="b-phones__spanPlus glyphicon glyphicon-plus" id="b-phones__add" aria-hidden="true"></span>
+		<?php foreach($recordPatient_Contact as $key=>$contact) : ?>
+			<div class="b-paid__contactUpdatePatient input-group">
+				<?= CHtml::textField('Patient_Contacts[]', $contact['value'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>
+				<span class="b-phones__spanDelete input-group-addon glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+			</div>
+		<?php endforeach; ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-4 col-xs-offset-4">
 		<br>
 		<?= CHtml::SubmitButton('Редактировать', ['class'=>'btn btn-block btn-primary btn-sm']); ?>
 	</div>

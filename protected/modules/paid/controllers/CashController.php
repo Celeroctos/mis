@@ -442,7 +442,11 @@ class CashController extends MPaidController
 	 */
 	private function ajaxValidateUpdatePatients()
 	{
-		
+		if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('formUpdatePatient'))
+		{
+			
+			Yii::app()->end();
+		}
 	}
 	
 	/**
@@ -451,6 +455,16 @@ class CashController extends MPaidController
 	 */
 	public function actionUpdatePatient($patient_id)
 	{
+		$this->ajaxValidateUpdatePatients();
+		
+		/**
+		 * Отправка submit() после ajax-валидации CActiveForm
+		 */
+		if(Yii::app()->request->getPost('Patients') && Yii::app()->request->getPost('Patient_Contacts'))
+		{
+			
+		}
+		
 		/**
 		 * Только ajax запросы (загрузка формы из модали)
 		 */
@@ -464,9 +478,9 @@ class CashController extends MPaidController
 				throw new CHttpException(404, 'Такого пациента не существует.');
 			}
 			
-			$recordPatient_Contacts=Patient_Contacts::model()->findAll('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+			$recordPatient_Contact=Patient_Contacts::model()->findAll('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 			
-			$this->renderPartial('updatePatient', ['recordPatient'=>$recordPatient, 'recordPatient_Contacts'=>$recordPatient_Contacts], false, true);
+			$this->renderPartial('updatePatient', ['recordPatient'=>$recordPatient, 'recordPatient_Contact'=>$recordPatient_Contact], false, true);
 		}
 	}
 	
