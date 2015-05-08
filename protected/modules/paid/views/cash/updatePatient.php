@@ -93,20 +93,23 @@
 	</div>
 </div>
 <div class="row b-documentUpdate">
+	<div class="row">
+		<div class="col-xs-4 col-xs-offset-4">
+			<?= CHtml::Label('Документы', '', ['class'=>'control-label']); ?>
+			<span class="glyphicon glyphicon-plus" id="b-documents__add" aria-hidden="true"></span>
+		</div>
+	</div>
 	<?php foreach($recordPatient_Document as $document) : ?>
 		<div class="col-xs-4">
 			<?= CHtml::Label('Тип документа', '', ['class'=>'control-label']); ?>
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-4">
 			<?= CHtml::Label('Серия', '', ['class'=>'control-label']); ?>
 			<?= CHtml::textField('Patient_Documents[]', $document['serie'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>
 		</div>
 		<div class="col-xs-3">
 			<?= CHtml::Label('Номер', '', ['class'=>'control-label']); ?>
 			<?= CHtml::textField('Patient_Documents[]', $document['number'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>				
-		</div>
-		<div class="col-xs-1">
-			
 		</div>
 	<?php endforeach; ?>
 </div>
