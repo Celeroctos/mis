@@ -43,19 +43,17 @@ function UpdatePatient () {
 	function loadModal() {
 		
 		/**
-		 * @private
 		 * @type Number
 		 */
 		var patient_id=document.location.href.split('/');
 		
 		/**
-		 * @private
+		 * Using in ajax
 		 * @type String
 		 */
 		var url='/paid/cash/updatePatient/patient_id/' + patient_id[7];
 		
 		/**
-		 * @private
 		 * @param {mixed} result
 		 * @callback UpdatePatient~ajaxSuccess
 		 * @type function
