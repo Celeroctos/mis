@@ -507,7 +507,7 @@ class CashController extends MPaidController
 		&& Yii::app()->request->getPost('Patient_Contacts')
 		&& Yii::app()->request->getPost('Patient_Documents'))
 		{
-			echo '43242';
+			
 		}
 		
 		/**
