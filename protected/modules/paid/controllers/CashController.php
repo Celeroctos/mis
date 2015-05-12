@@ -440,11 +440,43 @@ class CashController extends MPaidController
 	/**
 	 * ajax validation for CActiveForm
 	 */
-	private function ajaxValidateUpdatePatients()
+	private function ajaxValidateUpdatePatient($modelPatient)
 	{
 		if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('formUpdatePatient'))
 		{
+			$errorsPatient=CJSON::decode(CActiveForm::validate($modelPatient));
+			$errorsAll=$errorsPatient;
+			$Patient_Contacts=Yii::app()->request->getPost('Patient_Contacts')!==null ? Yii::app()->request->getPost('Patient_Contacts') : array();
+			$Patient_Documents=Yii::app()->request->getPost('Patient_Documents')!==null ? Yii::app()->request->getPost('Patient_Documents') : array();
 			
+			foreach($Patient_Contacts as $key=>$contact)
+			{
+				if($key==='errorSummary')
+				{
+					continue;
+				}
+				$modelPatient_Contacts=new Patient_Contacts('paid.cash.create'); // передача по ссылке
+				$modelPatient_Contacts->value=$contact;
+				$modelPatient_Contacts->type=1; //сомнительный параметр
+				$errorsPatient_Contacts=CJSON::decode(CActiveForm::validate($modelPatient_Contacts, null, false));
+				$errorsAll=array_merge($errorsAll, $errorsPatient_Contacts);
+			}
+			
+			$i=0;
+//			$errorsPatient_Documents=array();
+			$errorsAll=array_merge($errorsPatient, $errorsPatient_Contacts);
+			
+			foreach($Patient_Documents['type'] as $document)
+			{
+				$modelPatient_Documents=new Patient_Documents('paid.cash.create'); // передача по ссылке
+				$modelPatient_Documents->type=$Patient_Documents['type'][$i];
+				$modelPatient_Documents->serie=$Patient_Documents['serie'][$i];
+				$modelPatient_Documents->number=$Patient_Documents['number'][$i];
+				$errorsPatient_Documents=CJSON::decode(CActiveForm::validate($modelPatient_Documents, null, false));
+				$errorsAll=array_merge($errorsAll, $errorsPatient_Documents);
+				$i++;
+			}
+			echo CJSON::encode($errorsAll);
 			Yii::app()->end();
 		}
 	}
@@ -455,14 +487,27 @@ class CashController extends MPaidController
 	 */
 	public function actionUpdatePatient($patient_id)
 	{
-		$this->ajaxValidateUpdatePatients();
+		$recordPatient=Patients::model()->findByPk($patient_id);
+		$recordPatient->setScenario('paid.cash.update');
+		$modelPatient_Document=new Patient_Documents('paid.cash.create'); // для ajax-валидации
+		$modelPatient_Contact=new Patient_Contacts('paid.cash.create'); // для ajax-валидации
+		
+		if($recordPatient===null)
+		{
+			throw new CHttpException(404, 'Такого пациента не существует.');
+		}
+		
+		$this->ajaxValidateUpdatePatient($recordPatient);
 		
 		/**
 		 * Отправка submit() после ajax-валидации CActiveForm
 		 */
-		if(Yii::app()->request->getPost('Patients') && Yii::app()->request->getPost('Patient_Contacts'))
+		if(!Yii::app()->request->isAjaxRequest
+		&& Yii::app()->request->getPost('Patients')
+		&& Yii::app()->request->getPost('Patient_Contacts')
+		&& Yii::app()->request->getPost('Patient_Documents'))
 		{
-			
+			echo '43242';
 		}
 		
 		/**
@@ -471,17 +516,16 @@ class CashController extends MPaidController
 		if(Yii::app()->request->isAjaxRequest)
 		{
 			self::disableScripts();
-			$recordPatient=Patients::model()->findByPk($patient_id);
-			
-			if($recordPatient===null)
-			{
-				throw new CHttpException(404, 'Такого пациента не существует.');
-			}
 			
 			$recordPatient_Contact=Patient_Contacts::model()->findAll('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 			$recordPatient_Document=Patient_Documents::model()->findAll('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 			
-			$this->renderPartial('updatePatient', ['recordPatient'=>$recordPatient, 'recordPatient_Contact'=>$recordPatient_Contact, 'recordPatient_Document'=>$recordPatient_Document], false, true);
+			$this->renderPartial('updatePatient', ['recordPatient'=>$recordPatient,
+												   'recordPatient_Contact'=>$recordPatient_Contact,
+												   'recordPatient_Document'=>$recordPatient_Document,
+												   'modelPatient_Document'=>$modelPatient_Document,
+												   'modelPatient_Contact'=>$modelPatient_Contact,
+			], false, true);
 		}
 	}
 	

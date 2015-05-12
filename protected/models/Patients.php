@@ -85,6 +85,11 @@ class Patients extends ActiveRecord
 			'message'=>'Такой пациент уже существует в базе данных.',
 			'on'=>'paid.cash.create'],
 			
+			//Редактирование пациента
+			['first_name, middle_name, last_name, birthday, gender', 'required', 'on'=>'paid.cash.update'],
+			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.update'],
+			['address_reg, address, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.update'],
+			
 			//Поиск пациентов
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.search'],

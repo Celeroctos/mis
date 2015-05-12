@@ -119,7 +119,7 @@ $this->pageTitle='Пациент';
 	</div>
 </div>
 <div class="modal" id="modalUpdatePatient" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog b-modalUpdatePatient">
+	<div class="modal-dialog">
 		<div class="modal-content b-modalUpdatePatient b-paid__modalHeader">
 			<div class="modal-body" id="modalUpdatePatientBody">
 			</div>

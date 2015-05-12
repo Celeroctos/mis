@@ -33,6 +33,37 @@
 	.b-phones__input form-control{
 		
 	}
+.b-documentUpdate{
+	
+}
+	.b-documentUpdate__row{
+		margin-top: 1px;
+	}
+	.b-documentUpdate__spanPlus{
+        color: gray;
+        font-size: 12px;
+        cursor: default;
+        margin-left: 1px !important;
+        margin-top: 30px;
+        cursor: default;		
+	}
+	.b-documentUpdate__spanPlus:hover{
+        color: black !important;		
+	}
+	.b-documentUpdate__spanMinus{
+		color: gray;
+        font-size: 15px;
+        cursor: default;
+        margin-top: 5px;
+        cursor: default;
+	}
+	.b-documentUpdate__spanMinus:hover{
+        color: black;		
+	}
+	.b-documentUpdate__delete{
+		padding-left: 0px !important;
+	}
+	
 .b-paid{
     background-color: white !important;
     box-shadow: 0px 1px 7px rgba(0,0,0,0.30);
@@ -285,6 +316,10 @@ b-modalReturnPayment
 }
 .b-modalContentSelectServices{
 	max-height: 600px;
+	overflow-y: scroll;
+}
+.b-modalUpdatePatient{
+	max-height: 700px;
 	overflow-y: scroll;
 }
 .b-modalReturnPaymentConfirm{

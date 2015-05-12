@@ -12,6 +12,60 @@ function UpdatePatient () {
 	 */
 	function deleteInputContact () {
 		$(this).on('click', function () {
+			alert('Основной контакт удалить нельзя!');
+		});
+	}
+	
+	/**
+	 * Удаление поля с документов.
+	 * @callback UpdatePatient~deleteInputDocument
+	 * @this jQuery - $('.b-documentUpdate .b-documentUpdate__delete')
+	 * @private
+	 */	
+	function deleteInputDocument () {
+		$(this).on('click', function () {
+			alert('Основной документ удалить нельзя!');
+		});
+	}
+	
+	/**
+	 * Добавление полей с документами пациента
+	 * @callback UpdatePatient~createInputDocument
+	 * @this jQuery - $('.b-documentUpdate .b-documentUpdate__delete')
+	 * @private
+	 */	
+	function createInputDocument () {
+		var rowTag = $('<div class="row b-documentUpdate__row">' +
+							'<div class="col-xs-4">' +
+								'<select class="form-control input-sm" id="'+ Math.floor((Math.random() * 5000) + 1) + '" name="Patient_Documents[type][]">' +
+									'<option value="" selected="selected"></option>' +
+									'<option value="1">Паспорт</option>' +
+									'<option value="2">Свидетельство о рождении</option>' +
+									'<option value="3">Вид на жительство</option>' +
+									'<option value="4">Паспорт иностранного гражданина</option>' +
+									'<option value="5">Удостоверение личности</option>' +
+									'<option value="6">Другой документ</option>' +
+								'</select>' +
+							'</div>' +
+							'<div class="col-xs-4">' +
+								'<input class="form-control input-sm" id="'+ Math.floor((Math.random() * 5000) + 1) + '" type="text" name="Patient_Documents[serie][]">' +
+							'</div>' +
+							'<div class="col-xs-3">' +
+								'<input class="form-control input-sm" id="'+ Math.floor((Math.random() * 5000) + 1) + '" type="text" name="Patient_Documents[number][]">' +		
+							'</div>' +
+						'</div>');
+		var spanTag=$('<div class="col-xs-1 b-documentUpdate__delete">' +
+						  '<span class="b-documentUpdate__spanMinus glyphicon glyphicon-minus" aria-hidden="true"></span>' +
+					  '</div>');
+		rowTag.append(spanTag);
+		console.log(rowTag);
+		$('.b-documentUpdate').append(rowTag);
+		
+		/**
+		 * Кнопка на удаление документа,
+		 * который был сгенерирован выше
+		 */
+		spanTag.on('click', function () {
 			$(this).parent().detach();
 		});
 	}
@@ -62,9 +116,13 @@ function UpdatePatient () {
 			$('#modalUpdatePatientBody').html(result);
 			$('#modalUpdatePatient').modal('show');
 			
+			$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
+			
 			$('.b-contactUpdate .b-phones__spanPlus').on('click', createInputContact);
+			$('.b-documentUpdate .b-documentUpdate__spanPlus').on('click', createInputDocument);
 			
 			$('.b-contactUpdate .b-phones__spanDelete').each(deleteInputContact);
+			$('.b-documentUpdate .b-documentUpdate__delete').each(deleteInputDocument);
 		};
 		
 		$.ajax({

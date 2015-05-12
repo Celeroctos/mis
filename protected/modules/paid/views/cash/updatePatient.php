@@ -8,7 +8,7 @@
 <?php $form=$this->beginWidget('CActiveForm', [
 					'id'=>substr(md5(uniqid("", true)), 0, 7),
 					'enableAjaxValidation'=>true,
-					'enableClientValidation'=>true,
+					'enableClientValidation'=>false,
 					'clientOptions'=>[
 						'ajaxVar'=>'formUpdatePatient',
 						'validateOnChange'=>true,
@@ -16,6 +16,10 @@
 						'validateOnSubmit'=>true,
 					],
 				]); ?>
+<div class="row">
+	<?= $form->HiddenField($modelPatient_Document, 'errorSummary', ['class'=>'form-control input-sm']); ?>
+	<?= $form->HiddenField($modelPatient_Contact, 'value', ['class'=>'form-control input-sm']); ?>
+</div>
 <div class="row">
 	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($recordPatient, 'last_name', ['class'=>'control-label']); ?>
@@ -60,7 +64,7 @@
 					'minDate'=>'1900-01-01',
 				],
 				'htmlOptions'=>[
-					'class'=>'form-control',
+					'class'=>'form-control birthday',
 				],
 			]); ?>
 		<?= $form->error($recordPatient, 'birthday', ['class'=>'b-paid__errorFormPatient']); ?>
@@ -83,35 +87,51 @@
 <div class="row">
 	<div class="col-xs-4 col-xs-offset-4 b-contactUpdate">
 		<?= CHtml::Label('Телефон(ы)', '', ['class'=>'control-label']); ?>
-		<span class="b-phones__spanPlus glyphicon glyphicon-plus" id="b-phones__add" aria-hidden="true"></span>
+		<span class="b-phones__spanPlus glyphicon glyphicon-plus" aria-hidden="true"></span>
 		<?php foreach($recordPatient_Contact as $contact) : ?>
 			<div class="b-paid__contactUpdatePatient input-group">
 				<?= CHtml::textField('Patient_Contacts[]', $contact['value'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>
 				<span class="b-phones__spanDelete input-group-addon glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
 			</div>
 		<?php endforeach; ?>
+		<?= $form->error($modelPatient_Contact, 'value', ['class'=>'b-paid__errorFormPatient']); ?>
 	</div>
 </div>
-<div class="row b-documentUpdate">
+<div class="b-documentUpdate">
 	<div class="row">
 		<div class="col-xs-4 col-xs-offset-4">
-			<?= CHtml::Label('Документы', '', ['class'=>'control-label']); ?>
-			<span class="glyphicon glyphicon-plus" id="b-documents__add" aria-hidden="true"></span>
+			<?= CHtml::Label('Документ(ы)', null, ['class'=>'control-label']); ?>
+			<span class="b-documentUpdate__spanPlus glyphicon glyphicon-plus" aria-hidden="true"></span>
 		</div>
 	</div>
-	<?php foreach($recordPatient_Document as $document) : ?>
+	<div class="row">
 		<div class="col-xs-4">
 			<?= CHtml::Label('Тип документа', '', ['class'=>'control-label']); ?>
 		</div>
 		<div class="col-xs-4">
 			<?= CHtml::Label('Серия', '', ['class'=>'control-label']); ?>
-			<?= CHtml::textField('Patient_Documents[]', $document['serie'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>
 		</div>
 		<div class="col-xs-3">
 			<?= CHtml::Label('Номер', '', ['class'=>'control-label']); ?>
-			<?= CHtml::textField('Patient_Documents[]', $document['number'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>				
+		</div>
+	</div>
+	<div class="row">
+	<?php foreach($recordPatient_Document as $document) : ?>
+		<div class="col-xs-4">
+			<?= CHtml::dropDownList('Patient_Documents[type][]', $document['type'], Patients::getDocumentTypeListData(), ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]) ?>
+		</div>
+		<div class="col-xs-4">
+			<?= CHtml::textField('Patient_Documents[serie][]', $document['serie'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>
+		</div>
+		<div class="col-xs-3">
+			<?= CHtml::textField('Patient_Documents[number][]', $document['number'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>				
+		</div>
+		<div class="col-xs-1 b-documentUpdate__delete">
+			<span class="b-documentUpdate__spanMinus glyphicon glyphicon-minus" aria-hidden="true"></span>
 		</div>
 	<?php endforeach; ?>
+	</div>
+	<?= $form->error($modelPatient_Document, 'errorSummary', ['class'=>'b-paid__errorFormPatient']); ?>
 </div>
 <div class="row">
 	<div class="col-xs-4 col-xs-offset-4">
