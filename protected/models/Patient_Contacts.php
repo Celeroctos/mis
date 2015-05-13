@@ -29,6 +29,39 @@ class Patient_Contacts extends ActiveRecord
 		];
 	}
 	
+	/**
+	 * Обновление контактов у пациента
+	 * @param integer $patient_id
+	 * @param mixed $Patient_Contacts $_POST данные
+	 * @throws Exception
+	 */
+	public static function updateContacts($patient_id, $Patient_Contacts)
+	{
+		$transaction=Yii::app()->db->beginTransaction();
+		try
+		{
+			Patient_Contacts::model()->deleteAll('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+			foreach($Patient_Contacts as $key=>$contact)
+			{
+				if($key==='value')
+				{
+					continue;
+				}
+				$modelPatient_Contacts=new Patient_Contacts('paid.cash.create'); // передача по ссылке
+				$modelPatient_Contacts->value=$contact;
+				$modelPatient_Contacts->type=1; //сомнительный параметр
+				$modelPatient_Contacts->patient_id=$patient_id;
+				$modelPatient_Contacts->save();
+			}
+			$transaction->commit();
+		}
+		catch(Exception $e)
+		{
+			$transaction->rollback();
+			throw $e;
+		}
+	}
+	
 	public function rules()
 	{
 		return [

@@ -24,21 +24,21 @@
 	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($recordPatient, 'last_name', ['class'=>'control-label']); ?>
 		<?= $form->TextField($recordPatient, 'last_name', ['class'=>'form-control input-sm',]); ?>
-		<?= $form->error($recordPatient, 'name', ['class'=>'b-paid__errorFormPatient']); ?>
+		<?= $form->error($recordPatient, 'last_name', ['class'=>'b-paid__errorFormPatient']); ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($recordPatient, 'first_name', ['class'=>'control-label']); ?>
 		<?= $form->TextField($recordPatient, 'first_name', ['class'=>'form-control input-sm',]); ?>
-		<?= $form->error($recordPatient, 'name', ['class'=>'b-paid__errorFormPatient']); ?>
+		<?= $form->error($recordPatient, 'first_name', ['class'=>'b-paid__errorFormPatient']); ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->Label($recordPatient, 'middle_name', ['class'=>'control-label']); ?>
 		<?= $form->TextField($recordPatient, 'middle_name', ['class'=>'form-control input-sm',]); ?>
-		<?= $form->error($recordPatient, 'name', ['class'=>'b-paid__errorFormPatient']); ?>
+		<?= $form->error($recordPatient, 'middle_name', ['class'=>'b-paid__errorFormPatient']); ?>
 	</div>
 </div>
 <div class="row">
@@ -94,6 +94,10 @@
 				<span class="b-phones__spanDelete input-group-addon glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
 			</div>
 		<?php endforeach; ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-4 col-xs-offset-4">
 		<?= $form->error($modelPatient_Contact, 'value', ['class'=>'b-paid__errorFormPatient']); ?>
 	</div>
 </div>
@@ -131,7 +135,11 @@
 		</div>
 	<?php endforeach; ?>
 	</div>
-	<?= $form->error($modelPatient_Document, 'errorSummary', ['class'=>'b-paid__errorFormPatient']); ?>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<?= $form->error($modelPatient_Document, 'errorSummary', ['class'=>'b-paid__errorFormPatient']); ?>		
+	</div>
 </div>
 <div class="row">
 	<div class="col-xs-4 col-xs-offset-4">

@@ -121,8 +121,8 @@ function UpdatePatient () {
 			$('.b-contactUpdate .b-phones__spanPlus').on('click', createInputContact);
 			$('.b-documentUpdate .b-documentUpdate__spanPlus').on('click', createInputDocument);
 			
-			$('.b-contactUpdate .b-phones__spanDelete').each(deleteInputContact);
-			$('.b-documentUpdate .b-documentUpdate__delete').each(deleteInputDocument);
+//			$('.b-contactUpdate .b-phones__spanDelete').each(deleteInputContact);
+//			$('.b-documentUpdate .b-documentUpdate__delete').each(deleteInputDocument);
 		};
 		
 		$.ajax({

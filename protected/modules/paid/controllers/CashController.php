@@ -83,7 +83,7 @@ class CashController extends MPaidController
 	 * и грузится результат в модальное окно в виде CGridView
 	 */
 	public function actionSearchServicesResult()
-	{//TODO кнопка перейти переходит на группу, надо на услугу (подсвечивать)
+	{ //TODO кнопка перейти переходит на группу, надо на услугу (подсвечивать)
 		self::disableScripts();
 		$modelPaid_Service=new Paid_Services('paid.cash.search');
 		
@@ -451,7 +451,7 @@ class CashController extends MPaidController
 			
 			foreach($Patient_Contacts as $key=>$contact)
 			{
-				if($key==='errorSummary')
+				if($key==='value')
 				{
 					continue;
 				}
@@ -463,9 +463,6 @@ class CashController extends MPaidController
 			}
 			
 			$i=0;
-//			$errorsPatient_Documents=array();
-			$errorsAll=array_merge($errorsPatient, $errorsPatient_Contacts);
-			
 			foreach($Patient_Documents['type'] as $document)
 			{
 				$modelPatient_Documents=new Patient_Documents('paid.cash.create'); // передача по ссылке
@@ -507,7 +504,14 @@ class CashController extends MPaidController
 		&& Yii::app()->request->getPost('Patient_Contacts')
 		&& Yii::app()->request->getPost('Patient_Documents'))
 		{
+			$recordPatient->attributes=Yii::app()->request->getPost('Patients');
+			$Patient_Contacts=Yii::app()->request->getPost('Patient_Contacts')!==null ? Yii::app()->request->getPost('Patient_Contacts') : array();
+			$Patient_Documents=Yii::app()->request->getPost('Patient_Documents')!==null ? Yii::app()->request->getPost('Patient_Documents') : array();
 			
+			$recordPatient->save();
+			Patient_Contacts::updateContacts($patient_id, $Patient_Contacts);
+			Patient_Documents::updateDocuments($patient_id, $Patient_Documents);
+			$this->redirect(['cash/patient', 'patient_id'=>$patient_id]);
 		}
 		
 		/**
