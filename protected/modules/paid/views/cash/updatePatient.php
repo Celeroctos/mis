@@ -119,22 +119,22 @@
 			<?= CHtml::Label('Номер', '', ['class'=>'control-label']); ?>
 		</div>
 	</div>
-	<div class="row">
 	<?php foreach($recordPatient_Document as $document) : ?>
-		<div class="col-xs-4">
-			<?= CHtml::dropDownList('Patient_Documents[type][]', $document['type'], Patients::getDocumentTypeListData(), ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]) ?>
-		</div>
-		<div class="col-xs-4">
-			<?= CHtml::textField('Patient_Documents[serie][]', $document['serie'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>
-		</div>
-		<div class="col-xs-3">
-			<?= CHtml::textField('Patient_Documents[number][]', $document['number'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>				
-		</div>
-		<div class="col-xs-1 b-documentUpdate__delete">
-			<span class="b-documentUpdate__spanMinus glyphicon glyphicon-minus" aria-hidden="true"></span>
+		<div class="row">
+			<div class="col-xs-4">
+				<?= CHtml::dropDownList('Patient_Documents[type][]', $document['type'], Patients::getDocumentTypeListData(), ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]) ?>
+			</div>
+			<div class="col-xs-4">
+				<?= CHtml::textField('Patient_Documents[serie][]', $document['serie'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>
+			</div>
+			<div class="col-xs-3">
+				<?= CHtml::textField('Patient_Documents[number][]', $document['number'], ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]); ?>				
+			</div>
+			<div class="col-xs-1 b-documentUpdate__delete">
+				<span class="b-documentUpdate__spanMinus glyphicon glyphicon-minus" aria-hidden="true"></span>
+			</div>
 		</div>
 	<?php endforeach; ?>
-	</div>
 </div>
 <div class="row">
 	<div class="col-xs-12">

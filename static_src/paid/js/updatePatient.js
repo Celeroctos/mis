@@ -12,7 +12,12 @@ function UpdatePatient () {
 	 */
 	function deleteInputContact () {
 		$(this).on('click', function () {
-			alert('Основной контакт удалить нельзя!');
+			var count=$('.b-contactUpdate .b-paid__contactUpdatePatient').length;
+			if(count>1) {
+				$(this).parent().detach();
+			} else {
+				alert('Нельзя удалить последний контакт пациента.');
+			}
 		});
 	}
 	
@@ -24,7 +29,12 @@ function UpdatePatient () {
 	 */	
 	function deleteInputDocument () {
 		$(this).on('click', function () {
-			alert('Основной документ удалить нельзя!');
+			var count=$('.b-documentUpdate .b-documentUpdate__delete').length;
+			if(count>1) {
+				$(this).parent().detach();
+			} else {
+				alert('Нельзя удалить последний документ пациента.');
+			}
 		});
 	}
 	
@@ -121,8 +131,8 @@ function UpdatePatient () {
 			$('.b-contactUpdate .b-phones__spanPlus').on('click', createInputContact);
 			$('.b-documentUpdate .b-documentUpdate__spanPlus').on('click', createInputDocument);
 			
-//			$('.b-contactUpdate .b-phones__spanDelete').each(deleteInputContact);
-//			$('.b-documentUpdate .b-documentUpdate__delete').each(deleteInputDocument);
+			$('.b-contactUpdate .b-phones__spanDelete').each(deleteInputContact);
+			$('.b-documentUpdate .b-documentUpdate__delete').each(deleteInputDocument);
 		};
 		
 		$.ajax({
