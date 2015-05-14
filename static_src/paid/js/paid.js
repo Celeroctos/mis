@@ -624,15 +624,15 @@ $(document).ready(function() {
                 $('#modalSearchPatientBody').html('');
             });
         };
-	this.handlerSearchPatient=function () {
-		$(document).on('click', '#submitSearchPatient', function () {
-			$(this).val('Загрузка..');
-			$(this).animate({opacity: 0.6}, 250);
-			$(this).parent().attr('name', 'search');
-			$('#submitCreatePatient').css('display', 'none');
-			$('#submitCreatePatient').animate({opacity: 0}, 250);
-		});
-	};
+		this.handlerSearchPatient=function () {
+			$(document).on('click', '#submitSearchPatient', function () {
+				$(this).val('Загрузка..');
+				$(this).animate({opacity: 0.6}, 250);
+				$(this).parent().attr('name', 'search');
+				$('#submitCreatePatient').css('display', 'none');
+				$('#submitCreatePatient').animate({opacity: 0}, 250);
+			});
+		};
         this.handlerCreatePatient=function () {
             $(document).on('click', '#gridCreatePatient', function () {
                 $('#submitCreatePatient').css('display', 'inline-block');

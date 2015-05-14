@@ -7,7 +7,7 @@ $this->pageTitle='Пациент';
 ?>
 <div class="row b-paid_position">
 	<div class="col-xs-10">
-		<?php $this->widget('zii.widgets.CDetailView', array(
+		<?php $this->widget('zii.widgets.CDetailView', [
 			'data'=>$modelPatient,
 			'nullDisplay'=>'<font color="red">Значение не заполнено</font>',
 			'attributes'=>[
@@ -20,7 +20,7 @@ $this->pageTitle='Пациент';
 				'address_reg',
 				'birthday',
 			],
-		)); ?>
+		]); ?>
 <?= CHtml::button('Редактировать пациента', ['class'=>'btn btn-primary btn-sm', 'id'=>'updatePatient']); ?>
 		
 		<h4 class="b-paid__selectHeader">Услуги, включенные в заказ</h4>

@@ -31,6 +31,10 @@ function JournalController () {
 		$(document).on('click', '#paidExpenses', loadPage);
 	};
 	
+	this.handlerPaidReturn = function () {
+		$(document).on('click', '#paidReturnExpenses', loadPage);
+	};
+	
 	this.init = function () {
 		$(document).ready(function () {
 			$('#allExpenses').addClass('active');
@@ -38,6 +42,7 @@ function JournalController () {
 		this.handlerAllExpenses();
 		this.handlerNotPaidExpenses();
 		this.handlerPaidExpenses();
+		this.handlerPaidReturn();
 	};
 }
 //JournalController.prototype = new Controller;

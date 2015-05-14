@@ -141,6 +141,7 @@ function UpdatePatient () {
 			
 			$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
 			$('#Patients_snils').inputmask("mask", {"mask": "999-999-999-99"});
+			$('.b-paid__contactUpdatePatient .form-control').inputmask("mask", {"mask": "+7 (999) 999-99-99"});
 			
 			$('.b-contactUpdate .b-phones__spanPlus').on('click', createInputContact);
 			$('.b-documentUpdate .b-documentUpdate__spanPlus').on('click', createInputDocument);

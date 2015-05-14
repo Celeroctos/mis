@@ -16,7 +16,7 @@
 			<li class="b-paidNavJ__li" id="paidExpenses">
 				<a class="" href="">Оплаченные счета</a>
 			</li>
-			<li class="b-paidNavJ__li">
+			<li class="b-paidNavJ__li" id="paidReturnExpenses">
 				<a class="" href="">Возвраты</a>				
 			</li>
 			<li class="b-paidNavJ__li">

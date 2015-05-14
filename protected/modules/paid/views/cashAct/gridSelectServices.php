@@ -135,7 +135,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	</thead>
 	<tbody>
 		<tr class="empty">
-			<td colspan="7"><span>Выберите услуги</span></td>
+			<td colspan="7"><span>Пусто</span></td>
 		</tr>
 	</tbody>
 </table>

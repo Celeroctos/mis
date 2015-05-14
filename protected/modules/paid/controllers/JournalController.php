@@ -126,9 +126,29 @@ class JournalController extends MPaidController
 	/**
 	 * Return expenses
 	 */
-	public function actionReturnExpenses()
+	public function actionPaidReturnExpenses()
 	{
+		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
+		$criteria=new CDbCriteria;
+		$criteria->condition='status=:status';
+		$criteria->params=[':status'=>Paid_Expenses::RETURN_PAID];
 		
+		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
+		
+		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		
+		if(!Yii::app()->request->getParam('gridSelectExpenses'))
+		{
+			$modelPaid_Expenses->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
+		}
+		if(!Yii::app()->request->isAjaxRequest) {
+			self::enableScripts();
+			$this->render('returnExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
+		}
+		else {
+			self::disableScripts();
+			$this->renderPartial('returnExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
+		}	
 	}	
 	
 	/**
