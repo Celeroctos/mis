@@ -16,7 +16,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	. CHtml::htmlButton('Добавить пациента', ['class'=>'btn btn-primary', 'id'=>'gridCreatePatient'])
 	. '</div>',
 	'showTableOnEmpty'=>false,
-	'itemsCssClass'=>'table table-bordered',
+	'itemsCssClass'=>'table table-bordered gridSearchPatients',
 	'pager'=>[
 		'class'=>'CLinkPager',
 		'cssFile'=>'',

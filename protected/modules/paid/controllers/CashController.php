@@ -85,6 +85,7 @@ class CashController extends MPaidController
 	public function actionSearchServicesResult()
 	{ //TODO кнопка перейти переходит на группу, надо на услугу (подсвечивать)
 		self::disableScripts();
+		Yii::app()->clientScript->scriptMap['jquery.yiigridview.js']=false; //уже подключен, т.к. на странице присутствует GridView
 		$modelPaid_Service=new Paid_Services('paid.cash.search');
 		
 		$this->ajaxValidatePaidServiceGroup(null, $modelPaid_Service); //for formSearchServices

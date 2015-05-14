@@ -328,6 +328,9 @@ b-modalReturnPayment
 .gridChooseExpenseServices .filters{
 	display: none;
 }
+.gridSearchServicesResult .filters{
+	display: none;
+}
 .gridSelectServices .filters{
 	display: none;
 }
@@ -338,6 +341,9 @@ b-modalReturnPayment
     display: none;
 }
 .gridReturnPayment .filters{
+	display: none;
+}
+.gridSearchPatients .filters{
 	display: none;
 }
 .gridReturnPayment tbody tr:hover {

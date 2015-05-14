@@ -7,11 +7,11 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'ajaxVar'=>'gridSearchServices',
 	'template'=>'{items}{pager}',
 	'ajaxUpdate'=>true,
-	'enableSorting'=>false,
+//	'enableSorting'=>false,
 	'emptyText'=>
 	'<h4 class="b-paid__emptyServiceHeader">' . $modelPaid_Service->emptyTextGrid . '</h4>',
 	'showTableOnEmpty'=>false,
-	'itemsCssClass'=>'table table-bordered',
+	'itemsCssClass'=>'table table-bordered gridSearchServicesResult',
 	'pager'=>[
 			'class'=>'CLinkPager',
 			'cssFile'=>'',

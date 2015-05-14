@@ -105,12 +105,12 @@ class Patients extends ActiveRecord
 	public function validateRequiredLastName($attribute)
 	{
 		if((isset($this->first_name) && strlen($this->first_name)>0)
-		|| (isset($this->middle_name) && strlen($this->middle_name)>0)
+//		|| (isset($this->middle_name) && strlen($this->middle_name)>0)
 		|| (isset($this->last_name)  && strlen($this->last_name)>0)
 		|| (isset($this->birthday) && strlen($this->birthday)>0))
 		{ //если хоть одно заполнено,
 			if((isset($this->first_name) && strlen($this->first_name)>0)
-			&& (isset($this->middle_name) && strlen($this->middle_name)>0)
+//			&& (isset($this->middle_name) && strlen($this->middle_name)>0)
 			&& (isset($this->last_name)  && strlen($this->last_name)>0)
 			&& (isset($this->birthday)  && strlen($this->birthday)>0))
 			{ //то должны быть заполнены все поля
@@ -118,7 +118,7 @@ class Patients extends ActiveRecord
 			}
 			else
 			{
-				$this->addError($attribute, 'Необходимо заполнить поля ФИО и дату рождения.');
+				$this->addError($attribute, 'Необходимо заполнить поля фамилия, имя и дата рождения.');
 				return;
 			}
 		}
