@@ -8,7 +8,7 @@ function ReturnPaymentController() {
 		$('#CashSum').val('');
 		$('#deleteOrderButton').attr('disabled', 'disabled');
 		$('#selectedServicesTable tbody').empty();
-		$('#selectedServicesTable tbody').append('<tr class="empty"><td colspan="7"><span>Выберите услуги</span></td></tr>');
+		$('#selectedServicesTable tbody').append('<tr class="empty"><td colspan="7"><span>Пусто</span></td></tr>');
 	};
 	
 	/**

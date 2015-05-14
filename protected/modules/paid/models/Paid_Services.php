@@ -63,6 +63,12 @@ class Paid_Services extends ActiveRecord
 			['price', 'type', 'type'=>'float', 'on'=>'paid.cash.select'],
 			['since_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.select'],
 			['exp_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.select'],
+			
+			['paid_service_group_id', 'type', 'type'=>'integer', 'on'=>'paid.cashAct.select'],
+			['name, code, reason', 'type', 'type'=>'string', 'on'=>'paid.cashAct.select'],
+			['price', 'type', 'type'=>'float', 'on'=>'paid.cashAct.select'],
+			['since_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cashAct.select'],
+			['exp_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cashAct.select'],
 		];
 	}
 	
@@ -106,19 +112,27 @@ class Paid_Services extends ActiveRecord
 	public function search()
 	{
 		$criteria=new CDbCriteria;
-
 		if(!self::isEmpty($this) || $this->scenario=='paid.cash.select')
 		{
 			$criteria->compare('cast(paid_service_group_id as varchar)', $this->paid_service_group_id);
-			$criteria->compare('name', $this->name, true);
-			$criteria->compare('code', $this->code);
+			$criteria->compare('lower(t.name)', mb_strtolower($this->name, 'UTF-8'), true);
+			$criteria->compare('lower(t.code)', mb_strtolower($this->code, 'UTF-8'));
+			
 			$this->emptyTextGrid='Услуги не найдены.';
+		}
+		elseif($this->scenario=='paid.cashAct.select')
+		{
+			$dateNow=Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss', time() + 85399);
+			// 85399 + почти сутки, т.к. в БД 00:00:00
+			$criteria->addCondition(':dateNow>t.exp_date');
+			$criteria->params=[':dateNow'=>$dateNow];
 		}
 		else 
 		{
 			$criteria->addCondition('paid_service_group_id=-1');
 			$this->emptyTextGrid='Необходимо заполнить поисковую форму.';
 		}
+		
 		return new CActiveDataProvider($this, [
 			'criteria'=>$criteria,
 			'sort'=>[

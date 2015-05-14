@@ -130,7 +130,7 @@ function classChooseExpenses() {
 		
 		if(i===0)
 		{ // в таблице selectedServicesTable нету тега tr с классом empty
-			$('#selectedServicesTable tbody').append('<tr class="empty"><td colspan="7"><span>Выберите услуги</span></td></tr>');
+			$('#selectedServicesTable tbody').append('<tr class="empty"><td colspan="7"><span>Пусто</span></td></tr>');
 		}
 		
 		$('#selectedServicesTable tbody .empty').css('display', 'table-row');
@@ -420,6 +420,7 @@ $(document).ready(function() {
 
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-99-99"});
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
+	$('#Patients_snils').inputmask("mask", {"mask": "999-999-999-99"});
 	
 	var inputMaskComplete=function () {
 		var totalSum=$('#TotalSum').html(); //взяли сумму "ИТОГО"

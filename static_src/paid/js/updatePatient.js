@@ -76,7 +76,12 @@ function UpdatePatient () {
 		 * который был сгенерирован выше
 		 */
 		spanTag.on('click', function () {
-			$(this).parent().detach();
+			var count=$('.b-documentUpdate .b-documentUpdate__delete').length;
+			if(count>1) {
+				$(this).parent().detach();
+			} else {
+				alert('Нельзя удалить последний документ пациента.');
+			}
 		});
 	}
 	
@@ -94,8 +99,16 @@ function UpdatePatient () {
 		divTag.append(spanTag);
 		$(this).parent().append(divTag);
 		
+		/**
+		 * кнопка удаления контакта
+		 */
 		spanTag.on('click', function () {
-			$(this).parent().detach();
+			var count=$('.b-contactUpdate .b-paid__contactUpdatePatient').length;
+			if(count>1) {
+				$(this).parent().detach();
+			} else {
+				alert('Нельзя удалить последний контакт пациента.');
+			}
 		});
 	}
 	
@@ -127,6 +140,7 @@ function UpdatePatient () {
 			$('#modalUpdatePatient').modal('show');
 			
 			$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
+			$('#Patients_snils').inputmask("mask", {"mask": "999-999-999-99"});
 			
 			$('.b-contactUpdate .b-phones__spanPlus').on('click', createInputContact);
 			$('.b-documentUpdate .b-documentUpdate__spanPlus').on('click', createInputDocument);

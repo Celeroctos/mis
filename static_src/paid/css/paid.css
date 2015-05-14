@@ -350,6 +350,9 @@ b-modalReturnPayment
 #selectedServicesTable{
 	word-break: break-all;
 }
+#Patients_snils{
+	text-align: center;
+}
 #tableSelectionServices{
 	word-break: break-all;
 }

@@ -1,5 +1,6 @@
 <?php
 /**
+ * Выбор услуг
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>

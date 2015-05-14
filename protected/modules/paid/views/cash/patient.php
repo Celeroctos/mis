@@ -18,6 +18,7 @@ $this->pageTitle='Пациент';
 				'first_name',        // an attribute of the related object "owner"
 				'middle_name',
 				'address_reg',
+				'birthday',
 			],
 		)); ?>
 <?= CHtml::button('Редактировать пациента', ['class'=>'btn btn-primary btn-sm', 'id'=>'updatePatient']); ?>
@@ -50,7 +51,7 @@ $this->pageTitle='Пациент';
 				</thead>
 				<tbody>
 					<tr class="empty">
-						<td colspan="7"><span>Выберите услуги</span></td>
+						<td colspan="7"><span>Пусто</span></td>
 					</tr>
 				</tbody>
 			</table>

@@ -42,7 +42,7 @@ class CashActController extends MPaidController
 	public function actionSelectServices()
 	{
 		self::disableScripts();
-		$modelPaid_Service=new Paid_Services('paid.cash.select');
+		$modelPaid_Service=new Paid_Services('paid.cashAct.select');
 		$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
 		
 		$modelDoctors=new Doctors();
