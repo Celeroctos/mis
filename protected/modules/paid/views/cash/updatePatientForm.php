@@ -120,7 +120,7 @@
 		</div>
 	</div>
 	<?php foreach($recordPatient_Document as $document) : ?>
-		<div class="row">
+		<div class="row b-documentUpdate__row">
 			<div class="col-xs-4">
 				<?= CHtml::dropDownList('Patient_Documents[type][]', $document['type'], Patients::getDocumentTypeListData(), ['class'=>'form-control input-sm', 'id'=>substr(uniqid(rand(1,9), true), 0, 5)]) ?>
 			</div>

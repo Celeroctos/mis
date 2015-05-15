@@ -209,6 +209,7 @@ function classSelectServices() {
 				/**
 				 * см. inputMaskComplete
 				 */
+				alert(Number($('#CashSum').val()));
 				if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
 				{
 					$('#punchButton').removeClass('btn-danger');
@@ -218,7 +219,8 @@ function classSelectServices() {
 						'success': function (print_refferals) {
 							//TODO провели платёж, закрыли счёт, создали направления
 							//TODO печатаем направления
-							location.reload();
+							window.open('http://www.w3schools.com', '','location=no, titlebar=no, toolbar=no, width=500px, height=500px, top=250px, left=350px;');
+//							location.reload();
 						}
 					});
 				}

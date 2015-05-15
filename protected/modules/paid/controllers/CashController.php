@@ -526,7 +526,7 @@ class CashController extends MPaidController
 			$recordPatient_Contact=Patient_Contacts::model()->findAll('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 			$recordPatient_Document=Patient_Documents::model()->findAll('patient_id=:patient_id', [':patient_id'=>$patient_id]);
 			
-			$this->renderPartial('updatePatient', ['recordPatient'=>$recordPatient,
+			$this->renderPartial('updatePatientForm', ['recordPatient'=>$recordPatient,
 												   'recordPatient_Contact'=>$recordPatient_Contact,
 												   'recordPatient_Document'=>$recordPatient_Document,
 												   'modelPatient_Document'=>$modelPatient_Document,
