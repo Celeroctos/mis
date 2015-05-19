@@ -166,7 +166,7 @@ function UpdatePatient () {
 	
 	/**
 	 * @private
-	 */	
+	 */
 	function handlerHiddenModal() {
 		$(document).on('hidden.bs.modal', '#modalUpdatePatient', function () {
 			$('#modalUpdatePatientBody').empty();

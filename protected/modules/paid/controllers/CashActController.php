@@ -528,4 +528,28 @@ class CashActController extends MPaidController
 			throw $e;
 		}
 	}
+	
+	/**
+	 * Печать счета при нажатии на "Сформировать заказ"
+	 * или "Выбрать" из выбора счёта.
+	 * @param integer $paid_order_id номер заказа
+	 */
+	public function actionPrintExpense($paid_order_id)
+	{
+		$recordPaid_Order=Paid_Orders::model()->findByPk($paid_order_id);
+		
+		if($recordPaid_Order===null)
+		{
+			throw new CHttpException(404, 'Такой заказ не существует.');
+		}
+		
+		$recordPaid_Expense=Paid_Expenses::model()->find('paid_order_id=:paid_order_id', [':paid_order_id'=>$paid_order_id]);
+		
+		if($recordPaid_Expense===null)
+		{
+			throw new CHttpException(404, 'Такой счёт не существует.');
+		}
+		
+		$this->renderPartial('printExpense', ['recordPaid_Expense'=>$recordPaid_Expense], false, true);
+	}
 }

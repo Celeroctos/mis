@@ -16,6 +16,7 @@ function ReturnPaymentController() {
 	 * load bootstrap modal, if successful
 	 */
 	var loadModal = function () {
+		
 		/**
 		* Ajax success method (первое модальное окно)
 		* @param {mixed} result
@@ -55,6 +56,7 @@ function ReturnPaymentController() {
 			
 			/**
 			 * GridView id
+			 * @var {Number}
 			 */
 			var gridId=$('#modalReturnPayment').find('.grid-view').prop('id');
 			
@@ -76,6 +78,7 @@ function ReturnPaymentController() {
 	};
 	
 	this.handlerButton = function () {
+		
 		/**
 		 * Загрузка модали по нажатию на кнопку "Возврат оплаты"
 		 */
@@ -88,6 +91,7 @@ function ReturnPaymentController() {
 	};
 	
 	this.handlerModal = function () {
+		
 		/**
 		 * Чистим модаль после её скрытия
 		 */

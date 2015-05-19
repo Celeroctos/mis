@@ -97,6 +97,15 @@ return [
 				'footer',
 			],
 		],
+		'print'=>[
+			'baseUrl'=>_STATIC . '/paid/',
+			'css'=>[
+				'css/print.css',
+			],
+			'depends'=>[
+				'bootstrap',
+			],
+		],
 		'journal'=>[
 			'baseUrl'=>_STATIC . '/paid/',
 			'js'=>[
