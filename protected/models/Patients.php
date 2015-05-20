@@ -124,6 +124,26 @@ class Patients extends ActiveRecord
 		}
 	}
 	
+	public static function getAge($birthday)
+	{
+		$thisD=Yii::app()->dateFormatter->format('dd', time());
+		$thisM=Yii::app()->dateFormatter->format('MM', time());
+		$thisY=Yii::app()->dateFormatter->format('yyyy', time());
+		
+		list($y, $m, $d)=explode('-', $birthday);
+		
+		$years=$thisY-$y-1;
+		if($thisM>$m)
+		{
+			$years++;
+		}
+		if($thisM==$m and $thisD>=$d)
+		{
+			$years++;
+		}
+		return $years;
+	}
+	
 	/**
 	 * Валидатор
 	 * Если заполнено поле birthday, то необходимо заполнить ещё поля.

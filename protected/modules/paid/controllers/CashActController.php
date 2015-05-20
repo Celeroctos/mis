@@ -550,6 +550,21 @@ class CashActController extends MPaidController
 			throw new CHttpException(404, 'Такой счёт не существует.');
 		}
 		
-		$this->renderPartial('printExpense', ['recordPaid_Expense'=>$recordPaid_Expense], false, true);
+		$recordPatient=Patients::model()->find('patient_id=:patient_id', [':patient_id'=>$recordPaid_Order->patient_id]);
+		
+		if($recordPatient===null)
+		{
+			throw new CHttpException(404, 'Такого пациента не существует.');
+		}
+		
+		$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', [':patient_id'=>$recordPaid_Order->patient_id]);
+		
+		if($recordPaid_Medcard===null)
+		{
+			throw new CHttpException(404, 'Такой медкарты не существует.');
+		}
+		
+		$modelOrder_Details=new Paid_Order_Details();
+		$this->renderPartial('printExpense', ['modelOrder_Details'=>$modelOrder_Details, 'recordPaid_Expense'=>$recordPaid_Expense, 'recordPatient'=>$recordPatient, 'recordPaid_Medcard'=>$recordPaid_Medcard], false, true);
 	}
 }

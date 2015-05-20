@@ -40,4 +40,21 @@ class Paid_Order_Details extends ActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public function search()
+	{
+		$criteria=new CDbCriteria;
+		
+		return new CActiveDataProvider($this, [
+			'criteria'=>$criteria,
+			'sort'=>[
+				'defaultOrder'=>[
+					'paid_order_detail_id'=>CSort::SORT_DESC,
+				],
+			],
+			'pagination'=>[
+				'pageSize'=>self::PAGE_SIZE,
+			],
+		]);		
+	}
 }
