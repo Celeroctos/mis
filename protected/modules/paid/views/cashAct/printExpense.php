@@ -31,7 +31,7 @@ $this->pageTitle='Печать счёта';
 					<?= $recordPaid_Medcard->paid_medcard_number; ?>
 				</div>
 			</div>
-<!--			<div class="row">
+			<div class="row">
 				<div class="col-xs-2">
 					Пациент
 				</div>
@@ -52,7 +52,7 @@ $this->pageTitle='Печать счёта';
 			</div>
 			<div class="row">
 				 тут CGridView !
-			</div>-->
+			</div>
 		</div>
 	</body>
 </html>
