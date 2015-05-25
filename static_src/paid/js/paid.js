@@ -213,21 +213,21 @@ function classSelectServices() {
 				 * см. inputMaskComplete
 				 */
 //				alert(Number($('#CashSum').val()));
-//				if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
-//				{
-//					$('#punchButton').removeClass('btn-danger');
-//					$('#punchButton').addClass('btn-default');
-//					
-//					$.ajax({
-//						'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
-//						'success': function (print_refferals) {
-//							//TODO провели платёж, закрыли счёт, создали направления
-//							//TODO печатаем направления
-//							window.open('http://www.w3schools.com', '','location=no, titlebar=no, toolbar=no, width=500px, height=500px, top=250px, left=380px;');
-////							location.reload();
-//						}
-//					});
-//				}
+				if( Number( $('#CashSum').val() )*100 >= Number( $('#TotalSum').html() )*100 ) //если сдача получилось больше нуля, то можно пробить чек
+				{
+					$('#punchButton').removeClass('btn-danger');
+					$('#punchButton').addClass('btn-default');
+					
+					$.ajax({
+						'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
+						'success': function (print_refferals) {
+							//TODO провели платёж, закрыли счёт, создали направления
+							//TODO печатаем направления
+							window.open('http://www.w3schools.com', '','location=no, titlebar=no, toolbar=no, width=500px, height=500px, top=250px, left=380px;');
+//							location.reload();
+						}
+					});
+				}
 				else {
 					$('#punchButton').removeClass('btn-default'); //если денег дали меньше чем ИТОГО
 					$('#punchButton').addClass('btn-danger');
@@ -536,41 +536,41 @@ $(document).ready(function() {
 		var group_id = null;
         this.AddService=function () { //add to onclick, modal for add service
             $.ajax({'success': function (html) {
-						$('#modalServiceGroupsBody').html(html);
-						$('#modalServiceGroups').modal('show');
-						$('#Paid_Services_price').inputmask("9{2,9}.9{2}");
+				$('#modalServiceGroupsBody').html(html);
+				$('#modalServiceGroups').modal('show');
+				$('#Paid_Services_price').inputmask("9{2,9}.9{2}");
 		//					$("#Paid_Services_paid_service_group_id").attr('value', this.valueP_id);
-					},
+			},
 					'url': '/paid/cash/addService/group_id/' + group_id
             });
         };
 	
         this.AddGroup=function () { //add to onclick, 
 			$.ajax({'success': function (html) {
-						$('#modalServiceGroupsBody').html(html);
-						$('#modalServiceGroups').modal('show');
+				$('#modalServiceGroupsBody').html(html);
+				$('#modalServiceGroups').modal('show');
 //				$("#Paid_Service_Groups_p_id").attr('value', this.valueP_id);
-					},
-						'url': '/paid/cash/addGroup/group_id/' + group_id
+			},
+					'url': '/paid/cash/addGroup/group_id/' + group_id
 			});
         };
 	
         this.buttonAddGroup=function () { //add to onclick
 			$.ajax({'success': function (html) {
-						$('#modalServiceGroupsBody').html(html);
-						$('#modalServiceGroups').modal('show');
-					},
-						'url': '/paid/cash/addGroup/group_id/0'
+				$('#modalServiceGroupsBody').html(html);
+				$('#modalServiceGroups').modal('show');
+			},
+					'url': '/paid/cash/addGroup/group_id/0'
 			});
         };
 	
         this.UpdateGroup=function () {
 			$.ajax({'success': function (html) {
-						$('#modalServiceGroupsBody').html(html);
-						$('#modalServiceGroups').modal('show');
+				$('#modalServiceGroupsBody').html(html);
+				$('#modalServiceGroups').modal('show');
 //				$("#Paid_Service_Groups_p_id").attr('value', this.valueP_id);
-					},
-						'url': '/paid/cash/updateGroup/group_id/' + group_id
+			},
+					'url': '/paid/cash/updateGroup/group_id/' + group_id
 			});			
         };
 	
@@ -580,12 +580,12 @@ $(document).ready(function() {
 			}
 			$.ajax({'url': '/paid/cash/deleteGroup/group_id/' + group_id,
 						'success': function (error) {
-								if(error==0) {
-									alert('Удаление группы невозможно, т.к. у данной группы (или её подгрупп) присутствуют услуги или врачи.');
-								} 
-								else if(error==1) {
-									location.href='/paid/cash/groups';
-								}
+							if(error==0) {
+								alert('Удаление группы невозможно, т.к. у данной группы (или её подгрупп) присутствуют услуги или врачи.');
+							} 
+							else if(error==1) {
+								location.href='/paid/cash/groups';
+							}
 						}
 					});
         };
