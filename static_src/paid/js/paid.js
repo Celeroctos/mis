@@ -201,15 +201,14 @@ function classSelectServices() {
 		{ //если заказ id корректный
 			
 			window.open('/paid/cashAct/printExpense/paid_order_id/' + paid_order_id, '','location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
-//			window.open('http://www.w3schools.com', '','location=no, titlebar=no, toolbar=no, width=500px, height=500px, top=250px, left=380px;');
 			
 			$('#punchButton').off('click');
 			$('#deleteOrderButton').off('click');
 			
 			$('#CashSum').val('');
 			$('#TotalSum').html(arr.priceSum.toFixed(2));
-			$('#punchButton').removeAttr('disabled');
 			
+			$('#punchButton').removeAttr('disabled');
 			$('#punchButton').on('click', function () {
 				/**
 				 * см. inputMaskComplete
@@ -252,6 +251,7 @@ function classSelectServices() {
 	
 	/**
 	 * Метод, используется когда нужно формировать заказ и счёт на оплату в хранилище
+	 * @private
 	 */
 	var _createOrder=function() {
 		$.ajax({
@@ -266,6 +266,7 @@ function classSelectServices() {
 	/**
 	 * Метод, когда заказ уже сформирован, нужно только
 	 * навесить обработчики пробивки чека.
+	 * @private
 	 */
 	var _prepareOrder = function() {
 		var data={};
@@ -278,7 +279,10 @@ function classSelectServices() {
 		price=0;
 	};
 
-	var _punch=function () { //private method
+	/**
+	 * @private
+	 */
+	var _punch=function () {
 		$("#selectedServicesTable tbody .priceService").each(function () {
 			price+=Number($(this).html());
 		});

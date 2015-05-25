@@ -530,6 +530,14 @@ class CashActController extends MPaidController
 	}
 	
 	/**
+	 * Печать направления при пробитии чека
+	 */
+	public function actionPrintReferral()
+	{
+		
+	}
+	
+	/**
 	 * Печать счета при нажатии на "Сформировать заказ"
 	 * или "Выбрать" из выбора счёта.
 	 * @param integer $paid_order_id номер заказа
