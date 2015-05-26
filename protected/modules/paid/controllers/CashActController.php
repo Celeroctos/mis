@@ -505,6 +505,7 @@ class CashActController extends MPaidController
 				$modelPaid_Referrals->date=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
 				$modelPaid_Referrals->patient_id=$patient_id; //избыточность, но зато меньше связей.
 				$modelPaid_Referrals->doctor_id=$groupRow['doctor_id'];
+				$modelPaid_Referrals->referral_number=Paid_Orders::generateRandNumber();
 				$modelPaid_Referrals->status=null; //очень сомнительный параметр
 				$modelPaid_Referrals->save(); //сохранили направление. Теперь добавляем в него услуги.
 				
@@ -538,10 +539,56 @@ class CashActController extends MPaidController
 	
 	/**
 	 * Печать направления при пробитии чека
+	 * @param integer $paid_referral_id #ID направления
 	 */
 	public function actionPrintReferral($paid_referral_id)
 	{
+		$recordReferral=Paid_Referrals::model()->findByPk($paid_referral_id);
 		
+		if($recordReferral===null)
+		{
+			throw new CHttpException(404, 'Такого направления не существует.');
+		}
+		
+		$recordOrder=Paid_Orders::model()->find('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordReferral->paid_order_id]);
+		
+		if($recordOrder===null)
+		{
+			throw new CHttpException(404, 'Заказа в данном направлении не существует.');
+		}
+		
+		$recordExpense=Paid_Expenses::model()->find('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordOrder->paid_order_id]);
+		
+		if($recordExpense===null)
+		{
+			throw new CHttpException(404, 'В данном заказе не создан счёт.');
+		}
+		
+		$recordPatient=Patients::model()->find('patient_id=:patient_id', [':patient_id'=>$recordOrder->patient_id]);
+		
+		if($recordPatient===null)
+		{
+			throw new CHttpException(404, 'Такого пациента не существует.');
+		}
+		
+		//TODO TODO TODO НЕПОНЯТНО КАКУЮ КАРТУ ПОДТЯГИВАЕТ МОДУЛЬ!!!! ИХ МОЖЕТ БЫТЬ МНОЖЕСТВО
+		$recordPaid_Medcard=Paid_Medcards::model()->find('patient_id=:patient_id', [':patient_id'=>$recordPatient->patient_id]);
+		
+		if($recordPaid_Medcard===null)
+		{
+			throw new CHttpException(404, 'Такой ЭМК не существует.');
+		}
+		
+		$recordReferrals_Details=Paid_Referrals_Details::model()->findAll('paid_referral_id=:paid_referral_id', [':paid_referral_id'=>$paid_referral_id]);
+		
+		if(empty($recordReferrals_Details))
+		{
+			throw new CHttpException(404, 'В данном направлении отсутствуют услуги.');
+		}
+		
+		$modelReferrals_Details=new Paid_Referrals_Details();
+		
+		$this->renderPartial('printReferral', ['recordExpense'=>$recordExpense, 'recordPaid_Medcard'=>$recordPaid_Medcard, 'recordPatient'=>$recordPatient, 'paid_referral_id'=>$paid_referral_id, 'modelReferrals_Details'=>$modelReferrals_Details, 'recordReferral'=>$recordReferral, 'recordReferrals_Details'=>$recordReferrals_Details], false, true);
 	}
 	
 	/**

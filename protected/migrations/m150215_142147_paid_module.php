@@ -94,6 +94,7 @@ HERE;
 						"patient_id" integer NOT NULL, --FK (table mis.patients)
 						"doctor_id" integer,
 						"date" TIMESTAMPTZ,
+						"number_referral" character varying(255) NOT NULL, --Уникальный номер направления
 						"status" integer, --Сомнительно, возможно удаление (есть в paid_orders)
 						PRIMARY KEY(paid_referrals_id)
 					);

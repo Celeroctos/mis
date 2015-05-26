@@ -1,9 +1,9 @@
 <?php
 /**
- * Шаблон для печати счёта
+ * Шаблон для печати направления
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
-$this->pageTitle='Печать счёта';
+$this->pageTitle='Печать направления';
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,8 +19,8 @@ $this->pageTitle='Печать счёта';
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-6 col-xs-offset-3">
-					<h3>Счёт № <?= $recordPaid_Expense->expense_number; ?></h3>
+				<div class="col-xs-8 col-xs-offset-2">
+					<h3>Направление № <?= $recordReferral->referral_number; ?></h3>
 				</div>
 			</div>
 			<div class="row">
@@ -57,19 +57,19 @@ $this->pageTitle='Печать счёта';
 				<div class="col-xs-12">
 					<?php
 					$this->widget('zii.widgets.grid.CGridView', [
-						'dataProvider'=>$modelOrder_Details->search($paid_order_id),
-						'filter'=>$modelOrder_Details,
+						'dataProvider'=>$modelReferrals_Details->search($paid_referral_id),
+//						'filter'=>$modelReferrals_Details,
 						'ajaxType'=>'post',
-						'id'=>'gridPrintExpense',
+						'id'=>'gridPrintReferral',
 	//					'id'=>$modelDoctors->hash, //сохраняем ID при обновлении ajax
-						'ajaxVar'=>'gridPrintExpense',
+						'ajaxVar'=>'gridPrintReferral',
 						'template'=>'{pager}{items}',
 						'ajaxUpdate'=>true,
 						'enableSorting'=>false,
 						'emptyText'=>
 						'<h4 class="b-paid__emptyServiceHeader">Нет услуг.</h4>',
 						'showTableOnEmpty'=>false,
-						'itemsCssClass'=>'table table-bordered gridPrintExpense', //gridSelectServices используется в paid.js
+						'itemsCssClass'=>'table table-bordered gridPrintReferral', //gridSelectServices используется в paid.js
 						'pager'=>[
 							'class'=>'CLinkPager',
 							'cssFile'=>'',
@@ -101,10 +101,10 @@ $this->pageTitle='Печать счёта';
 								'type'=>'raw',
 								'value'=>'ParseMoney::decodeMoney($data->service->price) . " руб."',
 							],
-							[
-								'name'=>'service.doctor.last_name',
-								'value'=>'$data->doctor->last_name  . " " . $data->doctor->first_name . " " . $data->doctor->middle_name',
-							]
+//							[
+//								'name'=>'service.doctor.last_name',
+//								'value'=>'$data->doctor->last_name  . " " . $data->doctor->first_name . " " . $data->doctor->middle_name',
+//							]
 						],
 					]);
 					?>
@@ -120,7 +120,6 @@ $this->pageTitle='Печать счёта';
 					
 				</div>
 				<div class="col-xs-4">
-					ИТОГО: <?= ParseMoney::decodeMoney($recordPaid_Expense->price) . ' руб.' ?>
 				</div>
 			</div>
 		</div>

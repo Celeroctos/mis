@@ -11,6 +11,7 @@ class Paid_Referrals extends ActiveRecord
 	public $doctor_id;
 	public $date;
 	public $status; //очень сомнительный параметр
+	public $referral_number;
 	
 	public function tableName()
 	{
