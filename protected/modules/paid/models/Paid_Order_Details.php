@@ -13,7 +13,7 @@ class Paid_Order_Details extends ActiveRecord
 	public $doctorName; //user in CGridView (chooseExpenseServices)
 	public $hash; //use in CGridView id
 	
-	const PAGE_SIZE = 7; //use in pagination Yii
+	const PAGE_SIZE = 999; //use in pagination Yii
 	
 	public function tableName()
 	{
@@ -41,10 +41,10 @@ class Paid_Order_Details extends ActiveRecord
 		return parent::model($className);
 	}
 
-	public function search()
+	public function search($paid_order_id)
 	{
 		$criteria=new CDbCriteria;
-		
+		$criteria->compare('t.paid_order_id', $paid_order_id);
 		return new CActiveDataProvider($this, [
 			'criteria'=>$criteria,
 			'sort'=>[
