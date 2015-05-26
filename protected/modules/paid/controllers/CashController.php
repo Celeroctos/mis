@@ -437,6 +437,33 @@ class CashController extends MPaidController
 				throw new CHttpException(404, 'Запрос на создание ЭМК не был выполнен. Перезагрузите страницу (кнопка F5 на клавиатуре).');
 			}
 		}
+		
+		$recordPatient_Contacts=Patient_Contacts::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+		
+		/**
+		 * сохраняем юзеру хотя бы один контакт (пустой). Нужно для редактирования.
+		 */
+		if($recordPatient_Contacts===null)
+		{ 
+			$recordPatient_Contacts=new Patient_Contacts();
+			$recordPatient_Contacts->value='';
+			$recordPatient_Contacts->type=Patient_Contacts::TYPE;
+			$recordPatient_Contacts->patient_id=$patient_id;
+			$recordPatient_Contacts->save();
+		}
+		
+		$recordPatient_Documents=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$patient_id]);
+		
+		if($recordPatient_Documents===null)
+		{
+			$recordPatient_Documents=new Patient_Documents();
+			$recordPatient_Documents->serie='';
+			$recordPatient_Documents->number='';
+			$recordPatient_Documents->type=Patients::DOCUMENT_TYPE_PASSPORT_ID;
+			$recordPatient_Documents->patient_id=$patient_id;
+			$recordPatient_Documents->save();
+		}
+		
 		$this->render('patient', ['modelPatient'=>$modelPatient]);	
 	}
 	

@@ -22,6 +22,8 @@ class Patient_Contacts extends ActiveRecord
 	const WORK_PHONE_ID = 3;
 	const WORK_PHONE_NAME = 'Рабочий телефон';
 	
+	const TYPE = 1; //сомнительный параметр
+	
 	public function relations()
 	{
 		return [
