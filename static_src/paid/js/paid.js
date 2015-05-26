@@ -199,7 +199,7 @@ function classSelectServices() {
 	var _callBackSuccessHandlerPunch=function (paid_order_id) {
 		if(Number(paid_order_id) > 0)
 		{ //если заказ id корректный
-			window.open('/paid/cashAct/printExpense/paid_order_id/' + paid_order_id, '','location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
+			window.open('/paid/cashAct/printExpense/paid_order_id/' + paid_order_id, '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
 			
 			$('#punchButton').off('click');
 			$('#deleteOrderButton').off('click');
@@ -220,10 +220,14 @@ function classSelectServices() {
 					
 					$.ajax({
 						'url': '/paid/cashAct/punch/paid_order_id/' + paid_order_id + '/patient_id/' + arr.patient_id,
-						'success': function (print_refferals) {
+						'success': function (json_referrals) {
 							//TODO провели платёж, закрыли счёт, создали направления
 							//TODO печатаем направления
-							window.open('http://www.w3schools.com', '','location=no, titlebar=no, toolbar=no, width=500px, height=500px, top=250px, left=380px;');
+							var referrals=$.parseJSON(json_referrals);
+							
+							for(var i=0; i<referrals.length; i++) {
+								window.open('/paid/cashAct/printReferral/paid_referral_id/' + referrals[i], '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
+							}
 //							location.reload();
 						}
 					});

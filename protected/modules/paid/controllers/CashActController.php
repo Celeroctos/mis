@@ -491,6 +491,8 @@ class CashActController extends MPaidController
 			$command=Yii::app()->db->createCommand($sql);
 			
 			//считали группы (связка группа_услуги - номер врача)
+			$referrals = array();
+			$index = 0;
 			foreach($groupRows as $groupRow)
 			{ //считываем группу (ее услуги), создаем направление на основе одной группы
 				$command->bindParam(':paid_order_id', $paid_order_id, PDO::PARAM_INT);
@@ -520,8 +522,12 @@ class CashActController extends MPaidController
 				} //сформировали одно направление с услугами, надо печатать их где-то тут. 
 				//TODO!!!!!!!!!!!!!!!!!TODO!!!!!!!!!!ПЕЧАТЬ направлений где-то тут
 				//Сформировать JSON массив и отправить в JS
+				$referrals[$index]=Yii::app()->db->getLastInsertID('paid.paid_referrals_paid_referrals_id_seq');
+				$index++;
 			}
 			$transaction->commit();
+			
+			echo CJSON::encode($referrals);
 		}
 		catch(Exception $e)
 		{
@@ -533,7 +539,7 @@ class CashActController extends MPaidController
 	/**
 	 * Печать направления при пробитии чека
 	 */
-	public function actionPrintReferral()
+	public function actionPrintReferral($paid_referral_id)
 	{
 		
 	}

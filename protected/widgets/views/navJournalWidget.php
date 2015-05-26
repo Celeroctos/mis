@@ -19,9 +19,6 @@
 			<li class="b-paidNavJ__li" id="paidReturnExpenses">
 				<a class="" href="">Возвраты</a>				
 			</li>
-			<li class="b-paidNavJ__li">
-				<a class="" href="">Кассовая книга</a>				
-			</li>
 		</ul>
 	</nav>
 </div>
