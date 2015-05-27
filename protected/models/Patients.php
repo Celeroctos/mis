@@ -15,7 +15,7 @@ class Patients extends ActiveRecord
 	public $address;
 	public $snils;
 	public $invalid_group;
-	public $phone_number;
+//	public $phone_number;
 	public $profession;
 	public $work_address;
 	public $work_place;
@@ -55,7 +55,7 @@ class Patients extends ActiveRecord
 	const GENDER_MALE_ID = 1;
 	const GENDER_MALE_NAME = 'Мужской';
 	
-	const GENDER_FEMALE_ID = 2;
+	const GENDER_FEMALE_ID = 0;
 	const GENDER_FEMALE_NAME = 'Женский';
 	
 	public static function model($className=__CLASS__)
