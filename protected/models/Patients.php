@@ -63,6 +63,26 @@ class Patients extends ActiveRecord
 		return parent::model($className);
 	}
 	
+	public function attributeLabels()
+	{
+		return [
+			'last_name'=>'Фамилия',
+			'first_name'=>'Имя',
+			'middle_name'=>'Отчество',
+			'gender'=>'Пол',
+			'birthday'=>'Дата рождения',
+			'address_reg'=>'Адрес',
+			'address'=>'Адрес',
+			'address_str'=>'Адрес',
+			'address_str_reg'=>'Адрес',
+			'snils'=>'СНИЛС',
+			'invalid_group'=>'Группа инвалидности',
+			'profession'=>'Профессия',
+			'work_address'=>'Рабочий адрес',
+			'work_place'=>'Работа',
+		];
+	}
+	
 	public function relations()
 	{
 		return [

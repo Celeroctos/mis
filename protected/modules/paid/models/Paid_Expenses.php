@@ -37,7 +37,18 @@ class Paid_Expenses extends ActiveRecord
 	{
 		return 'paid.paid_expenses';
 	}
-	
+
+	public function attributeLabels()
+	{
+		return [
+			'paid_expense_id'=>'ID',
+			'date'=>'Дата',
+			'price'=>'Цена',
+			'paid_order_id'=>'Заказ',
+			'expense_number'=>'Номер счёта',
+		];
+	}
+
 	public function rules()
 	{
 		return [

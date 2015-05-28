@@ -87,6 +87,7 @@ class Patient_Contacts extends ActiveRecord
 	public function attributeLabels()
 	{
 		return [
+			'value'=>'Телефон',
 		];
 	}
 	

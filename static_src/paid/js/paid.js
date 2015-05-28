@@ -228,7 +228,7 @@ function classSelectServices() {
 							for(var i=0; i<referrals.length; i++) {
 								window.open('/paid/cashAct/printReferral/paid_referral_id/' + referrals[i], '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
 							}
-//							location.reload();
+							location.reload();
 						}
 					});
 				}

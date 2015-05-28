@@ -25,6 +25,15 @@ class Patient_Documents extends ActiveRecord
 			'patient_id'=>[self::BELONGS_TO, 'Patients', 'patient_id'],
 		];
 	}
+
+	public function attributeLabels()
+	{
+		return [
+			'serie'=>'Серия документа',
+			'number'=>'Номер документа',
+			'type'=>'Тип документа',
+		];
+	}
 	
 	public function rules()
 	{
@@ -95,12 +104,6 @@ class Patient_Documents extends ActiveRecord
 	public function tableName()
 	{
 		return 'mis.patient_documents';
-	}
-	
-	public function attributeLabels()
-	{
-		return [
-		];
 	}
 	
 	public function search()

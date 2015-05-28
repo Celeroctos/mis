@@ -24,6 +24,13 @@ class Paid_Medcards extends ActiveRecord
 		];
 	}
 	
+	public function attributeLabels()
+	{
+		return [
+			'paid_medcard_number'=>'Номер карты',
+		];
+	}
+	
 	public function tableName()
 	{
 		return 'paid.paid_medcards';
