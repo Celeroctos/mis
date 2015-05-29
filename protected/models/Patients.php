@@ -97,9 +97,9 @@ class Patients extends ActiveRecord
 		return [
 			['hash', 'type', 'type'=>'string'],
 			//Добавление пациента
-			['first_name, middle_name, last_name, birthday, gender', 'required', 'on'=>'paid.cash.create'],
+			['first_name, last_name, birthday, gender', 'required', 'on'=>'paid.cash.create'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
-			['address_reg, address, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			['middle_name, address_reg, address, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			['first_name', 'unique', 'criteria'=>['condition'=>'middle_name=:middle_name AND last_name=:last_name AND birthday=:birthday', 
 												  'params'=>[':middle_name'=>$this->middle_name, ':last_name'=>$this->last_name, ':birthday'=>$this->birthday]], 
 			'message'=>'Такой пациент уже существует в базе данных.',
@@ -138,7 +138,7 @@ class Patients extends ActiveRecord
 			}
 			else
 			{
-				$this->addError($attribute, 'Необходимо заполнить поля фамилия, имя и дата рождения.');
+				$this->addError($attribute, 'Необходимо заполнить фамилию, имя и дату рождения.');
 				return;
 			}
 		}

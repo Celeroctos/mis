@@ -41,14 +41,14 @@ class Paid_Services extends ActiveRecord
 			['paid_service_group_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.create'],
 			['name, code, reason', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			['price', 'type', 'type'=>'float', 'on'=>'paid.cash.create'],
-			['name, price, since_date, exp_date', 'required', 'on'=>'paid.cash.create'],
+			['name, price, since_date, exp_date, code', 'required', 'on'=>'paid.cash.create'],
 			['since_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
 			['exp_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
 			
 			['paid_service_group_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.update'],
 			['name, code, reason', 'type', 'type'=>'string', 'on'=>'paid.cash.update'],
 			['price', 'type', 'type'=>'float', 'on'=>'paid.cash.update'],
-			['name, price, since_date, exp_date', 'required', 'on'=>'paid.cash.update'],
+			['name, price, since_date, exp_date, code', 'required', 'on'=>'paid.cash.update'],
 			['since_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.update'],
 			['exp_date', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.update'],
 			

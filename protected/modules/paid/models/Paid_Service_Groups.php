@@ -41,7 +41,7 @@ class Paid_Service_Groups extends ActiveRecord
 		return [
 			['code', 'unique'],
 			//TODO ограничить макс. кол-во символов в названии групп, иначе будет съезжать
-			['name', 'required', 'on'=>'paid.cash.create'],
+			['name, code', 'required', 'on'=>'paid.cash.create'],
 			['code', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			['p_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.create'],
 			
