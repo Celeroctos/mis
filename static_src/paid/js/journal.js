@@ -1,14 +1,24 @@
 function JournalController () {
 	
+	var expense_number;
+	
 	function gridRowOnHandler() {
 		
 		function success(html) {
 			$('#modalSelectJournalRowBody').html(html);
-			$('#modalSelectJournalRow').modal('show');			
+			$('#printExpenseJournal').on('click', function () {
+				$.ajax({
+					url: '/paid/journal/chooseRow/expense_number/' + expense_number + '/isPrint/1',
+					success: function (paid_order_id) {
+						window.open('/paid/cashAct/printExpense/paid_order_id/' + paid_order_id, '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
+					}
+				});
+			});
+			$('#modalSelectJournalRow').modal('show');
 		}
 		
 		$(document).on('click', '.gridJournalExpenses tbody tr', function () {
-			var expense_number = $(this).find('.expense_number').html();
+			expense_number = $(this).find('.expense_number').html();
 			$.ajax({
 				url: '/paid/journal/chooseRow/expense_number/' + expense_number,
 				success: success,

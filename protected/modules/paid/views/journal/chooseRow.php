@@ -9,6 +9,6 @@
 		<h4>Номер счёта: <i><?= $recordExpense->expense_number; ?>.</i></h4>
 		<h4>Статус счёта: <i><?= $statusExpense ?></i>.</h4>
 		<?= CHtml::button('Печать счёта', ['class'=>'btn btn-primary btn-sm', 'id'=>'printExpenseJournal']); ?>
-		<?= CHtml::button('Печать договора', ['class'=>'btn btn-primary btn-sm']); ?>
+		<?= CHtml::button('Печать договора', ['class'=>'btn btn-primary btn-sm', 'disabled'=>'disabled']); ?>
 	</div>
 </div>

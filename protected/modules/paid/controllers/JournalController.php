@@ -155,7 +155,7 @@ class JournalController extends MPaidController
 	 * Метод для выбора строки в журнале (в разных разрезах).
 	 * @param $expense_number integer Номер счёта.
 	 */
-	public function actionChooseRow($expense_number)
+	public function actionChooseRow($expense_number, $isPrint=null)
 	{
 		self::disableScripts();
 		$recordExpense=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);
@@ -178,7 +178,14 @@ class JournalController extends MPaidController
 				$statusExpense=Paid_Expenses::RETURN_PAID_NAME;
 		}
 		
-		$this->renderPartial('chooseRow', ['recordExpense'=>$recordExpense, 'statusExpense'=>$statusExpense], false, true);
+		if($isPrint)
+		{
+			echo $recordExpense->order->paid_order_id;
+		}
+		else
+		{
+			$this->renderPartial('chooseRow', ['recordExpense'=>$recordExpense, 'statusExpense'=>$statusExpense], false, true);
+		}
 	}
 	
 	/**
