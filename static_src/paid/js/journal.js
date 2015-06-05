@@ -1,10 +1,19 @@
 function JournalController () {
 	
 	function gridRowOnHandler() {
+		
+		function success(html) {
+			$('#modalSelectJournalRowBody').html(html);
+			$('#modalSelectJournalRow').modal('show');			
+		}
+		
 		$(document).on('click', '.gridJournalExpenses tbody tr', function () {
 			var expense_number = $(this).find('.expense_number').html();
-			$('#modalSelectJournalRowBody').html();
-			$('#modalSelectJournalRow').modal('show');
+			$.ajax({
+				url: '/paid/journal/chooseRow/expense_number/' + expense_number,
+				success: success,
+				method: 'post'
+			});
 		});
 	}
 	

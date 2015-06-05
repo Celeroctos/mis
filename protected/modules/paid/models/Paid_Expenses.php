@@ -27,9 +27,13 @@ class Paid_Expenses extends ActiveRecord
 	 */
 	public $action=self::NOT_PAID;
 	
-	const NOT_PAID = 0;
-	const PAID = 1;
+	const NOT_PAID = 0; //не оплачен
+	const PAID = 1; //оплачен
 	const RETURN_PAID = 2; //возврат оплаты
+	
+	const NOT_PAID_NAME = 'Не оплачен';
+	const PAID_NAME = 'Оплачен';
+	const RETURN_PAID_NAME = 'Возвращён';
 	
 	const PAGE_SIZE = 7;
 	

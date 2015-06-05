@@ -149,7 +149,37 @@ class JournalController extends MPaidController
 			self::disableScripts();
 			$this->renderPartial('returnExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
 		}	
-	}	
+	}
+	
+	/**
+	 * Метод для выбора строки в журнале (в разных разрезах).
+	 * @param $expense_number integer Номер счёта.
+	 */
+	public function actionChooseRow($expense_number)
+	{
+		self::disableScripts();
+		$recordExpense=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);
+		$statusExpense=null;
+		
+		if($recordExpense===null)
+		{
+			throw new CHttpException(404, 'Такого счёта не существует.');
+		}
+		
+		switch($recordExpense->status)
+		{
+			case 0:
+				$statusExpense=Paid_Expenses::NOT_PAID_NAME;
+				break;
+			case 1:
+				$statusExpense=Paid_Expenses::PAID_NAME;
+				break;
+			case 2:
+				$statusExpense=Paid_Expenses::RETURN_PAID_NAME;
+		}
+		
+		$this->renderPartial('chooseRow', ['recordExpense'=>$recordExpense, 'statusExpense'=>$statusExpense], false, true);
+	}
 	
 	/**
 	 * Main action
