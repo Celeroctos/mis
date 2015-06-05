@@ -1,5 +1,13 @@
 function JournalController () {
 	
+	function gridRowOnHandler() {
+		$(document).on('click', '.gridJournalExpenses tbody tr', function () {
+			var expense_number = $(this).find('.expense_number').html();
+			$('#modalSelectJournalRowBody').html();
+			$('#modalSelectJournalRow').modal('show');
+		});
+	}
+	
 	var ajaxSuccess = function (html) {
 		$('.b-content').html(html);
 	};
@@ -38,6 +46,7 @@ function JournalController () {
 	this.init = function () {
 		$(document).ready(function () {
 			$('#allExpenses').addClass('active');
+			gridRowOnHandler();
 		});
 		this.handlerAllExpenses();
 		this.handlerNotPaidExpenses();

@@ -312,24 +312,24 @@ b-modalReturnPayment
 	width: 120px;
 }
 #Paid_Services_price, #Paid_Expenses_date, #Paid_Expenses_dateEnd{
-	text-align: center;
+    text-align: center;
 }
 .b-modalContentSelectServices{
-	max-height: 600px;
-	overflow-y: scroll;
+    max-height: 600px;
+    overflow-y: scroll;
 }
 .b-modalUpdatePatient{
-	max-height: 700px;
-	overflow-y: scroll;
+    max-height: 700px;
+    overflow-y: scroll;
 }
 .b-modalReturnPaymentConfirm{
-	margin-top: 80px;
+    margin-top: 80px;
 }
 .gridChooseExpenseServices .filters{
-	display: none;
+    display: none;
 }
 .gridSearchServicesResult .filters{
-	display: none;
+    display: none;
 }
 .gridSelectServices .filters{
 	display: none;
@@ -341,26 +341,30 @@ b-modalReturnPayment
     display: none;
 }
 .gridReturnPayment .filters{
-	display: none;
+    display: none;
 }
 .gridSearchPatients .filters{
-	display: none;
+    display: none;
 }
 .gridReturnPayment tbody tr:hover {
-	background-color: #f5f5f5;
-	cursor: pointer;	
+    background-color: #f5f5f5;
+    cursor: pointer;	
+}
+.gridJournalExpenses tbody tr:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
 }
 .modalOverlay{
 	
 }
 #selectedServicesTable{
-	word-break: break-all;
+    word-break: break-all;
 }
 #Patients_snils{
-	text-align: center;
+    text-align: center;
 }
 #tableSelectionServices{
-	word-break: break-all;
+    word-break: break-all;
 }
 .grid-view td{
     word-break: break-all; 
