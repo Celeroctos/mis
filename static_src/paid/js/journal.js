@@ -1,9 +1,20 @@
 function JournalController () {
 	
+	/**
+	 * @private
+	 */
 	var expense_number;
 	
+	/**
+	 * Функция навешивания обработчика на строку таблицы в журнале.
+	 * @private
+	 */
 	function gridRowOnHandler() {
 		
+		/**
+		 * @callback
+		 * @param {String} html
+		 */
 		function success(html) {
 			$('#modalSelectJournalRowBody').html(html);
 			$('#printExpenseJournal').on('click', function () {
@@ -17,6 +28,9 @@ function JournalController () {
 			$('#modalSelectJournalRow').modal('show');
 		}
 		
+		/**
+		 * Обработка нажатия на строку таблицы в журнале.
+		 */
 		$(document).on('click', '.gridJournalExpenses tbody tr', function () {
 			expense_number = $(this).find('.expense_number').html();
 			$.ajax({
@@ -27,11 +41,22 @@ function JournalController () {
 		});
 	}
 	
-	var ajaxSuccess = function (html) {
+	/**
+	 * @private
+	 * @callback
+	 * @param {String} html
+	 */
+	function ajaxSuccess(html) {
 		$('.b-content').html(html);
 	};
 	
-	var loadPage = function (event) {
+	/**
+	 * Метод загрузки экшна
+	 * @private
+	 * @callback
+	 * @param {Event} event
+	 */
+	function loadPage (event) {
 		var idElem = $(this).attr('id');
 		$('.b-content__journal').animate({opacity: 0.4}, 200, function () {
 			$.ajax({
