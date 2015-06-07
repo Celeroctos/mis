@@ -3,6 +3,7 @@ function JournalController () {
 	this.searchAfterValidate = function (form, data, hasError) {
 		if (hasError === false) {
 			
+			$('#'+gridChooseExpensesId).yiiGridView('update');
 		}
 		return false; //в любом случае не нужно отправлять форму ActiveForm
 	};
