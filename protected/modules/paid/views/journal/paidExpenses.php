@@ -6,6 +6,7 @@
 $this->pageTitle='Оплаченные счета';
 ?>
 <?php $this->widget('NavJournalWidget'); ?>
+<?php $this->widget('SearchJournalWidget'); ?>
 <div class="b-content__journal">
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', [
