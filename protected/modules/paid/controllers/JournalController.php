@@ -189,6 +189,19 @@ class JournalController extends MPaidController
 	}
 	
 	/**
+	 * Валидация поиска с ActiveForm
+	 */
+	public function actionAjaxValidateSearchJournal()
+	{
+		if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('searchJournal'))
+		{
+			$modelPaid_Expense=new Paid_Expenses();
+			echo CActiveForm::validate($modelPaid_Expense);
+			Yii::app()->end();
+		}		
+	}
+	
+	/**
 	 * Main action
 	 * @return mixed
 	 */

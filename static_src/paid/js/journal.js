@@ -1,5 +1,12 @@
 function JournalController () {
 	
+	this.searchAfterValidate = function (form, data, hasError) {
+		if (hasError === false) {
+			
+		}
+		return false; //в любом случае не нужно отправлять форму ActiveForm
+	};
+	
 	/**
 	 * @private
 	 */

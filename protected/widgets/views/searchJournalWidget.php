@@ -5,16 +5,17 @@
  */
 ?>
 <?php $form=$this->beginWidget('CActiveForm', [
-	'action'=>CHtml::normalizeUrl(['journal/index']),
+	'action'=>CHtml::normalizeUrl(['journal/AjaxValidateSearchJournal']),
     'id'=>'searchJournal',
     'enableAjaxValidation'=>true,
     'enableClientValidation'=>true,
 	'clientOptions'=>[
-		'validateOnChange'=>false,
+//		'validateOnChange'=>false,
 		'validateOnType'=>false,
 //		'validationDelay'=>30,
 		'ajaxVar'=>'searchJournal',
 		'validateOnSubmit'=>true,
+		'afterValidate'=>new CJavaScriptExpression('journal.searchAfterValidate'),
 	],
 ]); ?>
 <div class="row">
@@ -59,6 +60,9 @@
 				],
 			]); ?>
 		<?= $form->error($modelPaid_Expense, 'dateEnd', ['class'=>'b-paid__errorFormPatient']); ?>
+	</div>
+	<div class="col-xs-2">
+		<?= CHtml::submitButton('Найти', ['class'=>'btn btn-primary']); ?>
 	</div>
 </div>
 <!--
