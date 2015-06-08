@@ -6,12 +6,13 @@ function JournalController () {
 	 * @this $.ajax({}).
 	 * @param {String} html
 	 */
-	this.ajaxSearch = function (html, status, xhr) {
+	this.ajaxSearch = function (html) {
 		var url=this.url.split('/');
 		$('.b-content__journal').animate({opacity: 0.4}, 300, function () {
 			$('.b-content').html(html);
 				var obj=$('.b-paidNavJ').find('#' + url[3]);
 				obj.addClass('active');
+				addInputDateMask();
 		});
 	};
 	
@@ -80,11 +81,21 @@ function JournalController () {
 				method: 'post',
 				complete: function () {
 					$('#' + idElem).addClass('active');
+					addInputDateMask();
 				}
 			});
 		});
 		return false;
 	};
+	
+	/**
+	 * Add inputmask for input fields
+	 * @private
+	 */
+	function addInputDateMask() {
+		$('#Paid_Expenses_date').inputmask("mask", {"mask": "9999-99-99"});
+		$('#Paid_Expenses_dateEnd').inputmask("mask", {"mask": "9999-99-99"});
+	}
 	
 	this.handlerAllExpenses = function () {
 		$(document).on('click', '#allExpenses', loadPage);
@@ -105,6 +116,7 @@ function JournalController () {
 	this.init = function () {
 		$(document).ready(function () {
 			$('#allExpenses').addClass('active');
+			addInputDateMask();
 			gridRowOnHandler();
 		});
 		this.handlerAllExpenses();
