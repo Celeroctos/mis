@@ -1,11 +1,14 @@
 function JournalController () {
 	
-	this.searchAfterValidate = function (form, data, hasError) {
-		if (hasError === false) {
-			
-			$('#'+gridChooseExpensesId).yiiGridView('update');
-		}
-		return false; //в любом случае не нужно отправлять форму ActiveForm
+	/**
+	 * ajax success method.
+	 * Insert into Yii ajaxSubmitButton.
+	 * @param {String} html
+	 */
+	this.ajaxSearch = function (html) {
+		$('.b-content__journal').animate({opacity: 0.4}, 300, function () {
+			$('.b-content').html(html);
+		});
 	};
 	
 	/**

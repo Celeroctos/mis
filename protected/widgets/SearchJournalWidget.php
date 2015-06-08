@@ -5,10 +5,10 @@
  */
 class SearchJournalWidget extends Widget
 {
+	public $modelPaid_Expense;
+	
 	public function run()
 	{
-		$modelPatient=new Patients;
-		$modelPaid_Expense=new Paid_Expenses();
-		$this->render('searchJournalWidget', ['modelPatient'=>$modelPatient, 'modelPaid_Expense'=>$modelPaid_Expense]);
+		$this->render('searchJournalWidget', ['modelPaid_Expense'=>$this->modelPaid_Expense]);
 	}
 }

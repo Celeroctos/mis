@@ -49,10 +49,18 @@ class JournalController extends MPaidController
 	public function actionAllExpenses()
 	{
 		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
-		$criteria=new CDbCriteria;
-		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
-		
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		
+		$criteria=new CDbCriteria;
+		/**
+		 * перенести в ->search() модели.
+		 */
+		if(isset($modelPaid_Expenses->date) && isset($modelPaid_Expenses->dateEnd) && strlen($modelPaid_Expenses->date)>0 && strlen($modelPaid_Expenses->dateEnd)>0)
+		{
+			$criteria->addBetweenCondition('date', $modelPaid_Expenses->date, $modelPaid_Expenses->dateEnd.' 23:59:59');
+		}
+		
+		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
 		
 		if(!Yii::app()->request->getParam('gridSelectExpenses'))
 		{
@@ -74,13 +82,21 @@ class JournalController extends MPaidController
 	public function actionNotPaidExpenses()
 	{
 		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
+		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		
 		$criteria=new CDbCriteria;
 		$criteria->condition='status=:status';
 		$criteria->params=[':status'=>Paid_Expenses::NOT_PAID];
 		
-		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
+		/**
+		 * перенести в ->search() модели.
+		 */
+		if(isset($modelPaid_Expenses->date) && isset($modelPaid_Expenses->dateEnd) && strlen($modelPaid_Expenses->date)>0 && strlen($modelPaid_Expenses->dateEnd)>0)
+		{
+			$criteria->addBetweenCondition('date', $modelPaid_Expenses->date, $modelPaid_Expenses->dateEnd.' 23:59:59');
+		}
 		
-		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
 		
 		if(!Yii::app()->request->getParam('gridSelectExpenses'))
 		{
@@ -102,13 +118,21 @@ class JournalController extends MPaidController
 	public function actionPaidExpenses()
 	{
 		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
+		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		
 		$criteria=new CDbCriteria;
 		$criteria->condition='status=:status';
 		$criteria->params=[':status'=>Paid_Expenses::PAID];
 		
-		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
+		/**
+		 * перенести в ->search() модели.
+		 */
+		if(isset($modelPaid_Expenses->date) && isset($modelPaid_Expenses->dateEnd) && strlen($modelPaid_Expenses->date)>0 && strlen($modelPaid_Expenses->dateEnd)>0)
+		{
+			$criteria->addBetweenCondition('date', $modelPaid_Expenses->date, $modelPaid_Expenses->dateEnd.' 23:59:59');
+		}
 		
-		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
 		
 		if(!Yii::app()->request->getParam('gridSelectExpenses'))
 		{
@@ -130,13 +154,21 @@ class JournalController extends MPaidController
 	public function actionPaidReturnExpenses()
 	{
 		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
+		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		
 		$criteria=new CDbCriteria;
 		$criteria->condition='status=:status';
 		$criteria->params=[':status'=>Paid_Expenses::RETURN_PAID];
 		
-		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
+		/**
+		 * перенести в ->search() модели.
+		 */
+		if(isset($modelPaid_Expenses->date) && isset($modelPaid_Expenses->dateEnd) && strlen($modelPaid_Expenses->date)>0 && strlen($modelPaid_Expenses->dateEnd)>0)
+		{
+			$criteria->addBetweenCondition('date', $modelPaid_Expenses->date, $modelPaid_Expenses->dateEnd.' 23:59:59');
+		}
 		
-		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
 		
 		if(!Yii::app()->request->getParam('gridSelectExpenses'))
 		{
@@ -149,7 +181,7 @@ class JournalController extends MPaidController
 		else {
 			self::disableScripts();
 			$this->renderPartial('returnExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
-		}	
+		}
 	}
 	
 	/**
@@ -189,18 +221,6 @@ class JournalController extends MPaidController
 		}
 	}
 	
-	/**
-	 * Валидация поиска с ActiveForm
-	 */
-	public function actionAjaxValidateSearchJournal()
-	{
-		if(Yii::app()->request->isAjaxRequest && Yii::app()->request->getPost('searchJournal'))
-		{
-			$modelPaid_Expense=new Paid_Expenses();
-			echo CActiveForm::validate($modelPaid_Expense);
-			Yii::app()->end();
-		}		
-	}
 	
 	/**
 	 * Main action

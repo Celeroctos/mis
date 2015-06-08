@@ -17,7 +17,7 @@ class Paid_Expenses extends ActiveRecord
 	public $services; //услуги, включенные в счёт (gridChooseExpenses.php)
 	public $hash; //use in CGridView id
 	public $hashForm; //use in Form id
-	public $dateEnd;
+	public $dateEnd; //in CGridView search
 	public $patient_id; //use in compare
 	
 	/**
@@ -58,6 +58,7 @@ class Paid_Expenses extends ActiveRecord
 		return [
 			['hash', 'type', 'type'=>'string'],
 			['date, dateEnd', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cashAct.search'],
+			['date, dateEnd', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.journal.all'],
 //			['date, dateEnd', 'required', 'on'=>'paid.cashAct.search'],
 			['paid_order_id', 'unique'],
 			['expense_number', 'unique'],
