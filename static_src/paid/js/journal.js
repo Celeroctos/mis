@@ -3,11 +3,15 @@ function JournalController () {
 	/**
 	 * ajax success method.
 	 * Insert into Yii ajaxSubmitButton.
+	 * @this $.ajax({}).
 	 * @param {String} html
 	 */
-	this.ajaxSearch = function (html) {
+	this.ajaxSearch = function (html, status, xhr) {
+		var url=this.url.split('/');
 		$('.b-content__journal').animate({opacity: 0.4}, 300, function () {
 			$('.b-content').html(html);
+				var obj=$('.b-paidNavJ').find('#' + url[3]);
+				obj.addClass('active');
 		});
 	};
 	
