@@ -6,8 +6,10 @@
 $this->pageTitle='Все счета';
 ?>
 <?php $this->widget('NavJournalWidget'); ?>
-<?php $this->widget('SearchJournalWidget', ['modelPaid_Expense'=>$modelPaid_Expenses]); ?>
 <div class="b-content__journal">
+	
+	<?php $this->widget('SearchJournalWidget', ['modelPaid_Expense'=>$modelPaid_Expenses]); ?>
+	
 	<h4>Все счета</h4>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', [

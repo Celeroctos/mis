@@ -122,9 +122,9 @@ class Paid_Services extends ActiveRecord
 		}
 		elseif($this->scenario=='paid.cashAct.select')
 		{
-			$dateNow=Yii::app()->dateFormatter->format('yyyy-MM-dd HH:mm:ss', time() + 85399);
+			$dateNow=Yii::app()->dateFormatter->format('yyyy-MM-dd', time());
 			// 85399 + почти сутки, т.к. в БД 00:00:00
-			$criteria->addCondition(':dateNow>t.exp_date');
+			$criteria->addCondition(':dateNow<=t.exp_date');
 			$criteria->params=[':dateNow'=>$dateNow];
 		}
 		else 

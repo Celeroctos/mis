@@ -121,7 +121,7 @@ $this->pageTitle='Группы и услуги';
 			],
 			[
 				'name'=>'exp_date',
-				'value'=>'Yii::app()->dateFormatter->format("yyyy-MM-dd", $data->since_date)',
+				'value'=>'Yii::app()->dateFormatter->format("yyyy-MM-dd", $data->exp_date)',
 			],
 			[
 				'class'=>'CButtonColumn',
