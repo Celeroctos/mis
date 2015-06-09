@@ -373,7 +373,7 @@ function classSelectServices() {
 					$('#modalSelectDoctorBody').html(html);
 					$('#modalSelectDoctor').modal('show');
 				},
-					'url': '/paid/cashAct/chooseDoctor/code/' + $(this).find('.codeService').html()
+					'url': '/paid/cashAct/chooseDoctor/code/' + $(this).find('.codeService').text()
 			});
 
 			$(document).off('selectedDoctor');

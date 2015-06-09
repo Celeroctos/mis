@@ -8,7 +8,7 @@ $this->pageTitle='Все счета';
 <?php $this->widget('NavJournalWidget'); ?>
 <div class="b-content__journal">
 	
-	<?php $this->widget('SearchJournalWidget', ['modelPaid_Expense'=>$modelPaid_Expenses]); ?>
+	<?php $this->widget('SearchJournalWidget', ['modelPaid_Expense'=>$modelPaid_Expenses, 'modelPatient'=>$modelPatient]); ?>
 	
 	<h4>Все счета</h4>
 	<?php
@@ -64,7 +64,7 @@ $this->pageTitle='Все счета';
 			],
 			[
 				'name'=>'patientName',
-				'filter'=>false,
+				'filter'=>CHtml::activeTextField($modelPatient, 'last_name') . CHtml::activeTextField($modelPatient, 'first_name') . CHtml::activeTextField($modelPatient, 'middle_name'),
 				'value'=>'$data->order->patient->last_name . " " . $data->order->patient->first_name . " " . $data->order->patient->middle_name',
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-3',

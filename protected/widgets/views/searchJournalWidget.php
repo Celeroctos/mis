@@ -11,7 +11,8 @@
     'enableAjaxValidation'=>false,
     'enableClientValidation'=>false,
 ]); ?>
-<div class="row">
+<h4>Фильтр</h4>
+<div class="row form-group">
 	<div class="col-xs-2">
 			<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 				'language'=>'ru',
@@ -27,7 +28,7 @@
 					'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
-					'class'=>'form-control',
+					'class'=>'form-control  input-sm',
 					'placeholder'=>'Начальная дата',
 				],
 			]); ?>
@@ -48,14 +49,27 @@
 					'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
-					'class'=>'form-control',
+					'class'=>'form-control  input-sm',
 					'placeholder'=>'Конечная дата',
 				],
 			]); ?>
 		<?= $form->error($modelPaid_Expense, 'dateEnd', ['class'=>'b-paid__errorFormPatient']); ?>
 	</div>
+</div>
+<div class="row form-group">
 	<div class="col-xs-2">
-		<?= CHtml::ajaxSubmitButton('Найти', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('journal.ajaxSearch')], ['class'=>'btn btn-primary', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
+		<?= $form->TextField($modelPatient, 'last_name', ['class'=>'form-control input-sm', 'placeholder'=>'Фамилия']); ?>
+	</div>
+	<div class="col-xs-2">
+		<?= $form->TextField($modelPatient, 'first_name', ['class'=>'form-control input-sm', 'placeholder'=>'Имя']); ?>
+	</div>
+	<div class="col-xs-2">
+		<?= $form->TextField($modelPatient, 'middle_name', ['class'=>'form-control input-sm', 'placeholder'=>'Отчество']); ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-2">
+		<?= CHtml::ajaxSubmitButton('Применить фильтр', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('journal.ajaxSearch')], ['class'=>'btn btn-primary btn-sm', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
 	</div>
 </div>
 <?php $this->endWidget(); ?>

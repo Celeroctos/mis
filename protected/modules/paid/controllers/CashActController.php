@@ -433,7 +433,7 @@ class CashActController extends MPaidController
 			throw new CHttpException(404, 'Неверный запрос.');
 		}
 		
-		$recordPaid_Order=Paid_Orders::model()->findbyPk($paid_order_id);
+		$recordPaid_Order=Paid_Orders::model()->findByPk($paid_order_id);
 		if($recordPaid_Order===null)
 		{
 			throw new CHttpException(404, 'Заказ не найден.');
@@ -471,6 +471,7 @@ class CashActController extends MPaidController
 				throw new CHttpException(404, 'Ошибка в запросе смены статуса счета. Транзакция отменена.');
 			}
 			//ActiveRecord не отрабатывает (сложный запрос для AR), поэтому запрос напрямую.
+			//TODO IN MODEL
 			$sql='SELECT service.paid_service_group_id, t.doctor_id
 				  FROM "paid"."paid_services" service, "paid"."paid_order_details" t
 				  WHERE service.paid_service_id=t.paid_service_id

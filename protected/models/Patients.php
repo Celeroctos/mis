@@ -115,6 +115,10 @@ class Patients extends ActiveRecord
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.search'],
 			['address_reg, address, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			['errorSummary', 'validateRequiredLastName', 'on'=>'paid.cash.search'],
+			
+			//Поиск пациентов из журнала
+			['first_name, middle_name, last_name', 'type', 'type'=>'string', 'on'=>'paid.journal.search'],
+			
 		];
 	}
 	

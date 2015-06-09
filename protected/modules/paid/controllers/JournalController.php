@@ -49,9 +49,20 @@ class JournalController extends MPaidController
 	public function actionAllExpenses()
 	{
 		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
+		$modelPatient=new Patients('paid.journal.search');
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 		
+		/**
+		 * перенести в search() модели. (Повторы кода, некритично)...
+		 */
 		$criteria=new CDbCriteria;
+		$criteria->with=['order.patient'=>['joinType'=>'INNER JOIN', 'select'=>'']];
+		$criteria->together=true;
+		$criteria->compare('LOWER(patient.last_name)', mb_strtolower($modelPatient->last_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.first_name)', mb_strtolower($modelPatient->first_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.middle_name)', mb_strtolower($modelPatient->middle_name, 'UTF-8'));
+		
 		/**
 		 * перенести в ->search() модели.
 		 */
@@ -59,7 +70,7 @@ class JournalController extends MPaidController
 		{
 			$criteria->addBetweenCondition('date', $modelPaid_Expenses->date, $modelPaid_Expenses->dateEnd.' 23:59:59');
 		}
-		
+	
 		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
 		
 		if(!Yii::app()->request->getParam('gridSelectExpenses'))
@@ -68,11 +79,11 @@ class JournalController extends MPaidController
 		}
 		if(!Yii::app()->request->isAjaxRequest) {
 			self::enableScripts();
-			$this->render('allExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
+			$this->render('allExpenses', ['modelPatient'=>$modelPatient, 'modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
 		}
 		else {
 			self::disableScripts();
-			$this->renderPartial('allExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
+			$this->renderPartial('allExpenses', ['modelPatient'=>$modelPatient, 'modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
 		}
 	}
 	
@@ -82,11 +93,18 @@ class JournalController extends MPaidController
 	public function actionNotPaidExpenses()
 	{
 		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
+		$modelPatient=new Patients('paid.journal.search');
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 		
 		$criteria=new CDbCriteria;
 		$criteria->condition='status=:status';
 		$criteria->params=[':status'=>Paid_Expenses::NOT_PAID];
+		$criteria->with=['order.patient'=>['joinType'=>'INNER JOIN', 'select'=>'']];
+		$criteria->together=true;
+		$criteria->compare('LOWER(patient.last_name)', mb_strtolower($modelPatient->last_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.first_name)', mb_strtolower($modelPatient->first_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.middle_name)', mb_strtolower($modelPatient->middle_name, 'UTF-8'));
 		
 		/**
 		 * перенести в ->search() модели.
@@ -104,11 +122,11 @@ class JournalController extends MPaidController
 		}
 		if(!Yii::app()->request->isAjaxRequest) {
 			self::enableScripts();
-			$this->render('notPaidExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
+			$this->render('notPaidExpenses', ['modelPatient'=>$modelPatient, 'modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
 		}
 		else {
 			self::disableScripts();
-			$this->renderPartial('notPaidExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
+			$this->renderPartial('notPaidExpenses', ['modelPatient'=>$modelPatient, 'modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
 		}		
 	}
 	
@@ -118,11 +136,18 @@ class JournalController extends MPaidController
 	public function actionPaidExpenses()
 	{
 		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
+		$modelPatient=new Patients('paid.journal.search');
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 		
 		$criteria=new CDbCriteria;
 		$criteria->condition='status=:status';
 		$criteria->params=[':status'=>Paid_Expenses::PAID];
+		$criteria->with=['order.patient'=>['joinType'=>'INNER JOIN', 'select'=>'']];
+		$criteria->together=true;
+		$criteria->compare('LOWER(patient.last_name)', mb_strtolower($modelPatient->last_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.first_name)', mb_strtolower($modelPatient->first_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.middle_name)', mb_strtolower($modelPatient->middle_name, 'UTF-8'));
 		
 		/**
 		 * перенести в ->search() модели.
@@ -140,11 +165,11 @@ class JournalController extends MPaidController
 		}
 		if(!Yii::app()->request->isAjaxRequest) {
 			self::enableScripts();
-			$this->render('paidExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
+			$this->render('paidExpenses', ['modelPatient'=>$modelPatient, 'modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
 		}
 		else {
 			self::disableScripts();
-			$this->renderPartial('paidExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
+			$this->renderPartial('paidExpenses', ['modelPatient'=>$modelPatient, 'modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
 		}	
 	}
 	
@@ -154,11 +179,18 @@ class JournalController extends MPaidController
 	public function actionPaidReturnExpenses()
 	{
 		$modelPaid_Expenses=new Paid_Expenses('paid.journal.all');
+		$modelPatient=new Patients('paid.journal.search');
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
+		$modelPatient->attributes=Yii::app()->request->getPost('Patients');
 		
 		$criteria=new CDbCriteria;
 		$criteria->condition='status=:status';
 		$criteria->params=[':status'=>Paid_Expenses::RETURN_PAID];
+		$criteria->with=['order.patient'=>['joinType'=>'INNER JOIN', 'select'=>'']];
+		$criteria->together=true;
+		$criteria->compare('LOWER(patient.last_name)', mb_strtolower($modelPatient->last_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.first_name)', mb_strtolower($modelPatient->first_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.middle_name)', mb_strtolower($modelPatient->middle_name, 'UTF-8'));
 		
 		/**
 		 * перенести в ->search() модели.
@@ -176,11 +208,11 @@ class JournalController extends MPaidController
 		}
 		if(!Yii::app()->request->isAjaxRequest) {
 			self::enableScripts();
-			$this->render('returnExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
+			$this->render('returnExpenses', ['modelPatient'=>$modelPatient, 'modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider]);
 		}
 		else {
 			self::disableScripts();
-			$this->renderPartial('returnExpenses', ['modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
+			$this->renderPartial('returnExpenses', ['modelPatient'=>$modelPatient, 'modelPaid_Expenses'=>$modelPaid_Expenses, 'dataProvider'=>$dataProvider], false, true);
 		}
 	}
 	
