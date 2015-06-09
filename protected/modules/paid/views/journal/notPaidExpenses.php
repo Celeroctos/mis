@@ -59,7 +59,7 @@ $this->pageTitle='Счета на оплату';
 				'value'=>'"<div class=\"expense_number\">". CHtml::encode($data->expense_number) . "</div>"',
 				'filter'=>CHtml::activeTextField($modelPaid_Expenses, 'expense_number') . CHtml::activeTextField($modelPaid_Expenses, 'hash'),
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-3',
+					'class'=>'col-xs-2',
 				],
 			],
 			[
@@ -75,7 +75,7 @@ $this->pageTitle='Счета на оплату';
 				'value'=>'$data->getServices($data->paid_expense_id)',
 				'filter'=>false,
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-3',
+					'class'=>'col-xs-2',
 				],
 			],
 			[
@@ -83,7 +83,7 @@ $this->pageTitle='Счета на оплату';
 				'value'=>'ParseMoney::decodeMoney($data->price) . " руб."',
 				'filter'=>false,
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-3',
+					'class'=>'col-xs-5',
 				],
 			],
 //			[

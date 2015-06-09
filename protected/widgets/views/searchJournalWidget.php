@@ -28,7 +28,7 @@
 					'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
-					'class'=>'form-control  input-sm',
+					'class'=>'form-control',
 					'placeholder'=>'Начальная дата',
 				],
 			]); ?>
@@ -49,7 +49,7 @@
 					'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
-					'class'=>'form-control  input-sm',
+					'class'=>'form-control',
 					'placeholder'=>'Конечная дата',
 				],
 			]); ?>
@@ -58,18 +58,18 @@
 </div>
 <div class="row form-group">
 	<div class="col-xs-2">
-		<?= $form->TextField($modelPatient, 'last_name', ['class'=>'form-control input-sm', 'placeholder'=>'Фамилия']); ?>
+		<?= $form->TextField($modelPatient, 'last_name', ['class'=>'form-control', 'placeholder'=>'Фамилия']); ?>
 	</div>
 	<div class="col-xs-2">
-		<?= $form->TextField($modelPatient, 'first_name', ['class'=>'form-control input-sm', 'placeholder'=>'Имя']); ?>
+		<?= $form->TextField($modelPatient, 'first_name', ['class'=>'form-control', 'placeholder'=>'Имя']); ?>
 	</div>
 	<div class="col-xs-2">
-		<?= $form->TextField($modelPatient, 'middle_name', ['class'=>'form-control input-sm', 'placeholder'=>'Отчество']); ?>
+		<?= $form->TextField($modelPatient, 'middle_name', ['class'=>'form-control', 'placeholder'=>'Отчество']); ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-xs-2">
-		<?= CHtml::ajaxSubmitButton('Применить фильтр', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('journal.ajaxSearch')], ['class'=>'btn btn-primary btn-sm', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
+		<?= CHtml::ajaxSubmitButton('Применить фильтр', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('journal.ajaxSearch')], ['class'=>'btn btn-primary', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
 	</div>
 </div>
 <?php $this->endWidget(); ?>

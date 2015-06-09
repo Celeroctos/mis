@@ -315,7 +315,7 @@ b-modalReturnPayment
 	font-weight: bold;
 	width: 120px;
 }
-#Paid_Services_price, #Paid_Expenses_date, #Paid_Expenses_dateEnd{
+#Paid_Services_price, #Paid_Expenses_date, #Paid_Expenses_dateEnd, #Patients_last_name, #Patients_first_name, #Patients_middle_name{
     text-align: center;
 }
 .b-modalContentSelectServices{

@@ -50,6 +50,8 @@ class Paid_Expenses extends ActiveRecord
 			'price'=>'Цена',
 			'paid_order_id'=>'Заказ',
 			'expense_number'=>'Номер счёта',
+			'patientName'=>'Пациент', //use in GridView Journal
+			'services'=>'Услуги', //use in GridView Journal
 		];
 	}
 
