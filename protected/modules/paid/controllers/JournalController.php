@@ -217,8 +217,37 @@ class JournalController extends MPaidController
 	}
 	
 	/**
+	 * Метод возвращает все #ID направлений для дальнейшей
+	 * печати
+	 * @param index $expense_number Номер счёта
+	 * @return JSON
+	 */
+	public function actionReturnReferrals($expense_number)
+	{
+		$recordPaid_Expense=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);
+		
+		if($recordPaid_Expense===null)
+		{
+			throw new CHttpException(404, 'Такого счёта не существует.');
+		}
+		
+		$recordReferrals=Paid_Referrals::model()->findAll('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordPaid_Expense->paid_order_id]);
+		
+		$referrals=array();
+		$i=0;
+		foreach($recordReferrals as $value)
+		{
+			$referrals[$i]=$value->paid_referrals_id;
+			$i++;
+		}
+		echo CJSON::encode($referrals);
+	}
+	
+	/**
 	 * Метод для выбора строки в журнале (в разных разрезах).
 	 * @param $expense_number integer Номер счёта.
+	 * @param $isPrint integer Откуда идёт обращение: из модали или из окна печати.
+	 * Если isPrint==true, то выводить #ID заказа для последующей печати через cashAct/print_expense
 	 */
 	public function actionChooseRow($expense_number, $isPrint=null)
 	{
