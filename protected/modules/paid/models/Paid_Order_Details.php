@@ -27,6 +27,13 @@ class Paid_Order_Details extends ActiveRecord
 		];
 	}
 	
+	public function attributeLabels()
+	{
+		return [
+			'doctor_id'=>'Врач',
+		];
+	}
+	
 	public function relations()
 	{
 		return [

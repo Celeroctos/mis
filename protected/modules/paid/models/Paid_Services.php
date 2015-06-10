@@ -17,7 +17,7 @@ class Paid_Services extends ActiveRecord
 	public $hash;
 	public $emptyTextGrid;
 	public $globalSearch=false;
-	const PAGE_SIZE=7;
+	const PAGE_SIZE=5;
 	
 	public static function model($className=__CLASS__)
 	{
@@ -112,6 +112,7 @@ class Paid_Services extends ActiveRecord
 	public function search()
 	{
 		$criteria=new CDbCriteria;
+		
 		if(!self::isEmpty($this) || $this->scenario=='paid.cash.select')
 		{
 			$criteria->compare('cast(paid_service_group_id as varchar)', $this->paid_service_group_id);
@@ -123,9 +124,11 @@ class Paid_Services extends ActiveRecord
 		elseif($this->scenario=='paid.cashAct.select')
 		{
 			$dateNow=Yii::app()->dateFormatter->format('yyyy-MM-dd', time());
-			// 85399 + почти сутки, т.к. в БД 00:00:00
-			$criteria->addCondition(':dateNow<=t.exp_date');
+			// 85399
+			$criteria->addCondition(':dateNow<=t.exp_date AND :dateNow>=t.since_date');
 			$criteria->params=[':dateNow'=>$dateNow];
+			
+			$this->emptyTextGrid='Услуги не найдены.';
 		}
 		else 
 		{

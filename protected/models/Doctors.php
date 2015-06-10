@@ -24,6 +24,15 @@ class Doctors extends ActiveRecord
 		return 'mis.doctors';
 	}
 	
+	public function attributeLabels()
+	{
+		return [
+			'last_name'=>'Врач', //
+			'first_name'=>'Имя',
+			'middle_name'=>'Отчество',
+		];
+	}
+	
 	public function rules()
 	{
 		return [

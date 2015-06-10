@@ -102,7 +102,7 @@ $this->pageTitle='Печать счёта';
 								'value'=>'ParseMoney::decodeMoney($data->service->price) . " руб."',
 							],
 							[
-								'name'=>'service.doctor.last_name',
+								'name'=>'doctor.last_name',
 								'value'=>'$data->doctor->last_name  . " " . $data->doctor->first_name . " " . $data->doctor->middle_name',
 							]
 						],

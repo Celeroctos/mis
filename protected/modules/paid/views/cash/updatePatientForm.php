@@ -144,7 +144,7 @@
 <div class="row">
 	<div class="col-xs-4 col-xs-offset-4">
 		<br>
-		<?= CHtml::SubmitButton('Редактировать', ['class'=>'btn btn-block btn-primary btn-sm']); ?>
+		<?= CHtml::SubmitButton('Сохранить', ['class'=>'btn btn-block btn-primary btn-sm']); ?>
 	</div>
 </div>
 <?php $this->endWidget(); ?>

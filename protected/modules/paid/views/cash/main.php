@@ -145,6 +145,7 @@ $this->pageTitle='Касса';
 				<?php $this->widget('FieldPhonesWidget', ['model'=>$modelPatient_Contacts, 'form'=>$form]); ?>
 			</div>
 		</div>
+		<br>
 		<div class="row">
 			<div id="select_button" name="search" class="col-xs-12"> <!-- какую кнопку нажали? (search or create) -->
 				<?= CHtml::SubmitButton('Найти', ['class'=>'btn btn-primary', 'data-loading-text'=>'Загрузка..', 'data-role'=>'button', 'id'=>'submitSearchPatient', 'name'=>'search',]); ?>

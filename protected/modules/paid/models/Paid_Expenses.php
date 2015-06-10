@@ -47,6 +47,7 @@ class Paid_Expenses extends ActiveRecord
 		return [
 			'paid_expense_id'=>'ID',
 			'date'=>'Дата',
+			'dateEnd'=>'Дата конца',
 			'price'=>'Цена',
 			'paid_order_id'=>'Заказ',
 			'expense_number'=>'Номер счёта',
