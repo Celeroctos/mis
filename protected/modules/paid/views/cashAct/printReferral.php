@@ -97,7 +97,7 @@ $this->pageTitle='Печать направления';
 								'name'=>'service.name'
 							],
 							[
-								'name'=>'service.price',
+								'name'=>'price',
 								'type'=>'raw',
 								'value'=>'ParseMoney::decodeMoney($data->service->price) . " руб."',
 							],

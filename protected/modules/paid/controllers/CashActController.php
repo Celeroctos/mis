@@ -480,7 +480,7 @@ class CashActController extends MPaidController
 			{
 				throw new CHttpException(404, 'Ошибка в запросе смены статуса счета. Транзакция отменена.');
 			}
-			//ActiveRecord не отрабатывает (сложный запрос для AR), поэтому запрос напрямую.
+			//ActiveRecord не отрабатывает (сложный запрос для AR, группировки), поэтому запрос напрямую.
 			//TODO IN MODEL
 			$sql='SELECT service.paid_service_group_id, t.doctor_id
 				  FROM "paid"."paid_services" service, "paid"."paid_order_details" t
@@ -524,6 +524,15 @@ class CashActController extends MPaidController
 				{ //добавление услуг в направление
 					$modelPaid_Referrals_Details=new Paid_Referrals_Details();
 					$modelPaid_Referrals_Details->paid_service_id=$serviceRow['paid_service_id'];
+					
+					$recordPaid_Services=Paid_Services::model()->findByPk($serviceRow['paid_service_id']);
+					
+					if($recordPaid_Services===null)
+					{
+						throw new CHttpException(404, 'Не существует выбранной услуги. Ошибка на уровне создания услуги в направлении.');
+					}
+					
+					$modelPaid_Referrals_Details->price=$recordPaid_Services->price;
 //					$modelPaid_Referrals_Details->doctor_id=$serviceRow['doctor_id'];
 					$modelPaid_Referrals_Details->paid_referral_id=Yii::app()->db->getLastInsertID('paid.paid_referrals_paid_referrals_id_seq');
 					
