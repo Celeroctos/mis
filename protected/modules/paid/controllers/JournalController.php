@@ -217,6 +217,7 @@ class JournalController extends MPaidController
 	}
 	
 	/**
+	 * @param integer $expense_number номер направления
 	 * Возвращает массив объектов ActiveRecord направлений по данному счёту.
 	 */
 	public function returnReferrals($expense_number)
