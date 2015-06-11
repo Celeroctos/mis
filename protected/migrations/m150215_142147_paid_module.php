@@ -80,6 +80,7 @@ HERE;
 						"paid_order_id" integer NOT NULL, --FK (table paid_orders)
 						"paid_service_id" integer NOT NULL, --FK (table paid_services)
 						"doctor_id" integer, --FK (table doctors)
+						"price" integer, --Сумма, которая была зафиксирована при формировании заказа. Может отличаться реальной стоимости услуги
 						PRIMARY KEY(paid_order_detail_id)
 					);
 HERE;
@@ -108,6 +109,7 @@ HERE;
 						"paid_referral_detail_id" serial NOT NULL,
 						"paid_service_id" integer NOT NULL,
 						"paid_referral_id" integer NOT NULL,
+						"price" integer, --Сумма, которая была зафиксирована при формировании заказа. Может отличаться реальной стоимости услуги
 						PRIMARY KEY(paid_referral_detail_id)
 					);
 HERE;
@@ -159,7 +161,7 @@ HERE;
 			$command=$connection->createCommand($sql);
 			$command->execute();
 	}
-
+	
 	public function down()
 	{
 	}
