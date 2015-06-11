@@ -217,12 +217,9 @@ class JournalController extends MPaidController
 	}
 	
 	/**
-	 * Метод возвращает все #ID направлений для дальнейшей
-	 * печати
-	 * @param index $expense_number Номер счёта
-	 * @return JSON
+	 * Возвращает массив объектов ActiveRecord направлений по данному счёту.
 	 */
-	public function actionReturnReferrals($expense_number)
+	public function returnReferrals($expense_number)
 	{
 		$recordPaid_Expense=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);
 		
@@ -233,9 +230,19 @@ class JournalController extends MPaidController
 		
 		$recordReferrals=Paid_Referrals::model()->findAll('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordPaid_Expense->paid_order_id]);
 		
+		return $recordReferrals;
+	}
+	
+	/**
+	 * Метод возвращает все #ID направлений для дальнейшей печати
+	 * @param index $expense_number Номер счёта
+	 * @return JSON
+	 */
+	public function actionReturnReferrals($expense_number)
+	{
 		$referrals=array();
 		$i=0;
-		foreach($recordReferrals as $value)
+		foreach($this->returnReferrals($expense_number) as $value)
 		{
 			$referrals[$i]=$value->paid_referrals_id;
 			$i++;
@@ -281,7 +288,6 @@ class JournalController extends MPaidController
 			$this->renderPartial('chooseRow', ['recordExpense'=>$recordExpense, 'statusExpense'=>$statusExpense], false, true);
 		}
 	}
-	
 	
 	/**
 	 * Main action

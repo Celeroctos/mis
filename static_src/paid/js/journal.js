@@ -22,11 +22,21 @@ function JournalController () {
 	var expense_number;
 	
 	/**
+	 * @param {JSON} json_referrals
+	 */
+	function printReferrals(json_referrals) {
+		var referrals=$.parseJSON(json_referrals);
+		
+		for(var i=0; i<referrals.length; i++) {
+			window.open('/paid/cashAct/printReferral/paid_referral_id/' + referrals[i], '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
+		}
+	}
+	
+	/**
 	 * Функция навешивания обработчика на строку таблицы в журнале.
 	 * @private
 	 */
 	function gridRowOnHandler() {
-		
 		/**
 		 * @callback
 		 * @param {String} html
@@ -47,11 +57,7 @@ function JournalController () {
 				$.ajax({
 					url: '/paid/journal/returnReferrals/expense_number/' + expense_number,
 					success: function (json_referrals) {
-						var referrals=$.parseJSON(json_referrals);
-
-						for(var i=0; i<referrals.length; i++) {
-							window.open('/paid/cashAct/printReferral/paid_referral_id/' + referrals[i], '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
-						}						
+						printReferrals(json_referrals);
 					} 
 				});
 			});
