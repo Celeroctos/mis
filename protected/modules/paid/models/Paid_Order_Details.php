@@ -9,6 +9,7 @@ class Paid_Order_Details extends ActiveRecord
 	public $paid_order_id;
 	public $paid_service_id;
 	public $doctor_id;
+	public $price; // стоимость услуги на момент формирования заказа. Может отличаться от реальной стоимости услуги.
 	
 	public $doctorName; //user in CGridView (chooseExpenseServices)
 	public $hash; //use in CGridView id

@@ -304,6 +304,7 @@ class CashActController extends MPaidController
 		 * данного массива)
 		 */
 		$ordersForm=Yii::app()->request->getPost('orderForm');
+		
 		if($ordersForm!==null) //заказ отправлен
 		{
 			$modelPaid_Orders=new Paid_Orders('paid.cashAct.create'); //создаем заказ.
@@ -325,7 +326,7 @@ class CashActController extends MPaidController
 					}
 					if($errorCount>50)
 					{ //если слишком много прокруток, и уникальность не отрабатывает, то надо менять алгоритм генерации номера заказа
-						throw new CHttpException(404, 'Ошибка в валидации заказа');
+						throw new CHttpException(404, 'Ошибка в валидации заказа (уникальность номера)');
 					}
 				}
 				
@@ -345,11 +346,20 @@ class CashActController extends MPaidController
 				$modelPaid_Order_Details=new Paid_Order_Details('paid.cashAct.create'); //детализация заказа
 				$modelPaid_Order_Details->paid_order_id=Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq');
 
+				// Добавление услуги и доктора в заказ. M:M
 				foreach($ordersForm as $value)
 				{
+					$recordPaid_Services=Paid_Services::model()->findByPk($value['serviceId']);
+					
+					if($recordPaid_Services===null)
+					{
+						throw new CHttpException(404, 'Услуга не найдена.');
+					}
+					
 					$modelPaid_Order_Details->paid_service_id=$value['serviceId'];
 					$modelPaid_Order_Details->doctor_id=$value['doctorId'];
-
+					$modelPaid_Order_Details->price=$recordPaid_Services->price; // сохраняем для данной услуги в заказе её стоимость на момент формирования заказа.
+					
 					if(!$modelPaid_Order_Details->save())
 					{
 						throw new CHttpException(404, 'Ошибки валидации в запросе (детализация заказа)');

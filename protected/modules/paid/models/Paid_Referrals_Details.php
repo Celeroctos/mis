@@ -9,6 +9,7 @@ class Paid_Referrals_Details extends ActiveRecord
 	public $paid_service_id;
 	public $paid_referral_id;
 //	public $doctor_id;
+	public $price; // стоимость услуги на момент формирования заказа. Может отличаться от реальной стоимости услуги.
 	
 	const PAGE_SIZE = 999;
 	
