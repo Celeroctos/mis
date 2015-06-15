@@ -356,8 +356,18 @@ function classSelectServices() {
 		$("#selectedServicesTable tbody").remove();
 		tbody=$("#tableSelectionServices tbody").clone();
 		$("#selectedServicesTable table").append(tbody);
-		$("#selectedServicesTable tbody tr .b-paid__removeGrid").each(function () {
-			$(this).remove();
+		$("#selectedServicesTable tbody tr").filter('[class != empty]').each(function () {
+			var tr=$(this);
+			tr.find('.b-paid__removeGrid').remove();
+			var service_id=tr.find('.serviceId').html();
+			
+			//обновляем прайсы услуг, если они менялись пока мы их формировали.
+			$.ajax({
+				url: '/paid/cashAct/returnServicePrice/service_id/' + service_id,
+				success: function (html) {
+					tr.find('.priceService').html(html);
+				}
+			});
 		});
 		prepareOrder=false; //нужно сохранять заказ прежде чем переносить его во фронт кассира
 		_punch(); //формируем заказ и счёт в том числе.	

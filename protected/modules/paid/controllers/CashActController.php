@@ -393,6 +393,20 @@ class CashActController extends MPaidController
 		}
 	}
 	
+	public function actionReturnServicePrice($service_id)
+	{
+		$recordService=  Paid_Services::model()->findByPk($service_id);
+		
+		if($recordService===null)
+		{
+			echo 0;
+		}
+		else
+		{
+			echo ParseMoney::decodeMoney($recordService->price);
+		}
+	}
+	
 	/**
 	 * Удаление заказа со счетом (удаление сформированного заказа)
 	 * @param integer $paid_order_id #ID заказа, который мы будем отменять (удалять), вместе с его счетом.
