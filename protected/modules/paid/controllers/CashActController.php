@@ -535,7 +535,20 @@ class CashActController extends MPaidController
 						throw new CHttpException(404, 'Не существует выбранной услуги. Ошибка на уровне создания услуги в направлении.');
 					}
 					
-					$modelPaid_Referrals_Details->price=$recordPaid_Services->price;
+					// берем старую цену из Order_Details
+					$recordPaid_Order_Details=Paid_Order_Details::model()->find('paid_order_id=:paid_order_id AND paid_service_id=:paid_service_id AND doctor_id=:doctor_id', [
+						':paid_order_id'=>$paid_order_id,
+						':paid_service_id'=>$recordPaid_Services->paid_service_id,
+						':doctor_id'=>$modelPaid_Referrals->doctor_id,
+					]);
+					
+					if($recordPaid_Order_Details===null) // именно такая услуга заказа не была
+					{
+						throw new CHttpException('Заказ, по которому генерируются направления был испорчен.');
+					}
+					
+					$modelPaid_Referrals_Details->price=$recordPaid_Order_Details->price; // берем старую цену из заказа
+					
 //					$modelPaid_Referrals_Details->doctor_id=$serviceRow['doctor_id'];
 					$modelPaid_Referrals_Details->paid_referral_id=Yii::app()->db->getLastInsertID('paid.paid_referrals_paid_referrals_id_seq');
 					

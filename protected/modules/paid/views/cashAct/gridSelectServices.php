@@ -15,7 +15,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'ajaxVar'=>'gridSelectServices',
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
-	'enableSorting'=>false,
+//	'enableSorting'=>false,
 	'itemsCssClass'=>'table table-bordered gridSelectServices', //gridSelectServices используется в paid.js
 	'pager'=>[
 			'class'=>'CLinkPager',

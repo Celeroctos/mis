@@ -120,7 +120,7 @@ class Paid_Services extends ActiveRecord
 		
 		if(!self::isEmpty($this) || $this->scenario=='paid.cash.select')
 		{ //поиск из раздела "Услуги"
-			$criteria->compare('cast(paid_service_group_id as varchar)', $this->paid_service_group_id);
+			$criteria->compare('cast(t.paid_service_group_id as varchar)', $this->paid_service_group_id);
 			$criteria->compare('lower(t.name)', mb_strtolower($this->name, 'UTF-8'), true);
 			$criteria->compare('lower(t.code)', mb_strtolower($this->code, 'UTF-8'));
 			
@@ -140,7 +140,7 @@ class Paid_Services extends ActiveRecord
 		}
 		else
 		{
-			$criteria->addCondition('paid_service_group_id=-1');
+			$criteria->addCondition('t.paid_service_group_id=-1');
 			$this->emptyTextGrid='Необходимо заполнить поисковую форму.';
 		}
 		

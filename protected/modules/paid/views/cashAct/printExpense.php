@@ -99,7 +99,7 @@ $this->pageTitle='Печать счёта';
 							[
 								'name'=>'price',
 								'type'=>'raw',
-								'value'=>'ParseMoney::decodeMoney($data->service->price) . " руб."',
+								'value'=>'ParseMoney::decodeMoney($data->price) . " руб."',
 							],
 							[
 								'name'=>'doctor.last_name',
