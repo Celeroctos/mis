@@ -17,7 +17,8 @@ $this->pageTitle='Пациент';
 				],
 				'first_name',        // an attribute of the related object "owner"
 				'middle_name',
-				'address_reg',
+				'address_reg_str',
+				'address_str',
 				'birthday',
 			],
 		]); ?>

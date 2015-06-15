@@ -27,8 +27,8 @@
 						]); ?>
 			<?= $form->error($model, 'number', ['class'=>'b-paid__errorFormPatient']); ?>				
 		</div>
-		<div class="col-xs-3">
+<!--		<div class="col-xs-3"> Расскомментировать для возможности добавления более 1. (в этом случае нужны фиксы по JS)
 			<span class="b-documents__spanPlus glyphicon glyphicon-plus" id="b-documents__add" aria-hidden="true"></span>
-		</div>
+		</div>-->
 	</div>
 </div>

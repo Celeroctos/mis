@@ -35,7 +35,7 @@ class Patients extends ActiveRecord
 	const PAGE_SIZE = 10;
 	
 	const DOCUMENT_TYPE_PASSPORT_ID = 1;
-	const DOCUMENT_TYPE_PASSPORT_NAME = 'Паспорт';
+	const DOCUMENT_TYPE_PASSPORT_NAME = 'Паспорт гражданина РФ';
 	
 	const DOCUMENT_TYPE_BIRTH_CERTIFICATE_ID = 2;
 	const DOCUMENT_TYPE_BIRTH_CERTIFICATE_NAME = 'Свидетельство о рождении';
@@ -74,7 +74,7 @@ class Patients extends ActiveRecord
 			'address_reg'=>'Адрес регистрации',
 			'address'=>'Адрес проживания',
 			'address_str'=>'Адрес проживания',
-			'address_str_reg'=>'Адрес регистрации',
+			'address_reg_str'=>'Адрес регистрации',
 			'snils'=>'СНИЛС',
 			'invalid_group'=>'Группа инвалидности',
 			'profession'=>'Профессия',
@@ -135,7 +135,7 @@ class Patients extends ActiveRecord
 			//Добавление пациента
 			['first_name, last_name, birthday, gender', 'required', 'on'=>'paid.cash.create'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.create'],
-			['middle_name, address_reg, address, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
+			['middle_name, address_reg_str, address_str, address, address_str, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.create'],
 			['first_name', 'unique', 'criteria'=>['condition'=>'middle_name=:middle_name AND last_name=:last_name AND birthday=:birthday', 
 												  'params'=>[':middle_name'=>$this->middle_name, ':last_name'=>$this->last_name, ':birthday'=>$this->birthday]], 
 			'message'=>'Такой пациент уже существует в базе данных.',
@@ -144,12 +144,12 @@ class Patients extends ActiveRecord
 			//Редактирование пациента
 			['first_name, middle_name, last_name, birthday, gender', 'required', 'on'=>'paid.cash.update'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.update'],
-			['address_reg, address, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.update'],
+			['address_reg_str, address_str, address, address_str, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.update'],
 			
 			//Поиск пациентов
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.search'],
-			['address_reg, address, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
+			['address_reg_str, address_str, address, address_str, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
 			['errorSummary', 'validateRequiredLastName', 'on'=>'paid.cash.search'],
 			
 			//Поиск пациентов из журнала

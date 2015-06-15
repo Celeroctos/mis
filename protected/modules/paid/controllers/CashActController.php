@@ -43,15 +43,18 @@ class CashActController extends MPaidController
 	{
 		self::disableScripts();
 		$modelPaid_Service=new Paid_Services('paid.cashAct.select');
-		$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
-		
+		$modelPaid_Service->modelPaid_Service_Groups=new Paid_Service_Groups('paid.cashAct.select'); //for search in CGridView
 		$modelDoctors=new Doctors();
+		
+		$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
+		$modelPaid_Service->modelPaid_Service_Groups->attributes=Yii::app()->request->getPost('Paid_Service_Groups'); //for search in CGridView
+		
 		if(!Yii::app()->request->getParam('gridSelectServices'))
 		{
 			$modelPaid_Service->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		
-		$this->renderPartial('gridSelectServices', ['modelPaid_Service'=>$modelPaid_Service, 'modelDoctors'=>$modelDoctors], false, true);
+		$this->renderPartial('gridSelectServices', ['modelPaid_Service'=>$modelPaid_Service, 'modelPaid_Service_Groups'=>$modelPaid_Service_Groups, 'modelDoctors'=>$modelDoctors], false, true);
 	}
 	
 	/**

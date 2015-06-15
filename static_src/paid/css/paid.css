@@ -335,9 +335,9 @@ b-modalReturnPayment
 .gridSearchServicesResult .filters{
     display: none;
 }
-.gridSelectServices .filters{
+/*.gridSelectServices .filters{
 	display: none;
-}
+}*/
 .gridChooseExpenses .filters{
 	display: none;
 }

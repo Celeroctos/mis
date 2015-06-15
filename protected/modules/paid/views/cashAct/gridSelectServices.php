@@ -44,14 +44,15 @@ $this->widget('zii.widgets.grid.CGridView', [
 				'name'=>'code',
 				'type'=>'raw',
 				'value'=>'"<div class=\"serviceId\">" . $data->paid_service_id . "</div><div class=\"codeService\">" . $data->code . "</div>"',
-				'filter'=>false,
+//				'filter'=>false,
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-1',
 				],
 			],
 			[
 				'name'=>'name',
-				'filter'=>CHtml::activeHiddenField($modelPaid_Service, 'code') .
+				'filter'=>CHtml::activeTextField($modelPaid_Service, 'name') . 
+						  CHtml::activeHiddenField($modelPaid_Service, 'code') .
 						  CHtml::activeHiddenField($modelPaid_Service, 'paid_service_group_id') .
 						  CHtml::activeHiddenField($modelPaid_Service, 'name') .
 						  CHtml::activeHiddenField($modelPaid_Service, 'hash'),
@@ -61,7 +62,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 			],
 			[
 				'name'=>'group.name',
-				'filter'=>false,
+				'filter'=>CHtml::activeTextField($modelPaid_Service->modelPaid_Service_Groups, 'name'),
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-3',
 				],

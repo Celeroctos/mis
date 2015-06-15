@@ -50,6 +50,8 @@ class Paid_Service_Groups extends ActiveRecord
 			['name, code', 'unique', 'on'=>'paid.cash.update'],
 			['code', 'type', 'type'=>'string', 'on'=>'paid.cash.update'],
 			['p_id', 'type', 'type'=>'integer', 'on'=>'paid.cash.update'], //здесь изменяет сам пользователь
+			
+			['name', 'type', 'type'=>'string', 'on'=>'paid.cashAct.select'],
 		];
 	}
 	

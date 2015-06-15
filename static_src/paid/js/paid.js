@@ -431,11 +431,21 @@ function classSelectServices() {
 }
 /***********************************************************/
 $(document).ready(function() {
+	var DOCUMENT_TYPE_PASSPORT_ID = 1; // паспорт гражданина рф
 	$.fn.modal.Constructor.prototype.enforceFocus = function() {}; //firefox fix focus modal+datetimepicker
-
+	
 	$('#Patient_Contacts_value').inputmask("mask", {"mask": "+7 (999) 999-99-99"});
 	$('#Patients_birthday').inputmask("mask", {"mask": "9999-99-99"});
 	$('#Patients_snils').inputmask("mask", {"mask": "999-999-999-99"});
+
+	$(document).on('change', '#Patient_Documents_type, select[name="Patient_Documents[type][]"]', function () {
+		
+		if(Number($(this).val())===DOCUMENT_TYPE_PASSPORT_ID) {
+			$(document).find('input[name="Patient_Documents[serie]"], input[name="Patient_Documents[serie][]"').inputmask("mask", {"mask": "99 99"});
+		} else {
+			$(document).find('input[name="Patient_Documents[serie]"], input[name="Patient_Documents[serie][]"').inputmask("remove");
+		}
+	});
 	
 	var inputMaskComplete=function () {
 		var totalSum=$('#TotalSum').html(); //взяли сумму "ИТОГО"

@@ -125,9 +125,16 @@ $this->pageTitle='Касса';
 		<?php $this->widget('FieldDocumentsWidget', ['model'=>$modelPatient_Documents, 'form'=>$form]); ?>
 		<div class="row">
 			<div class="col-xs-12">
-					<?= $form->Label($modelPatient, 'address_reg', ['class'=>'control-label']); ?>
-					<?= $form->TextField($modelPatient, 'address_reg', ['class'=>'form-control input-sm',]); ?>
-					<?= $form->error($modelPatient, 'address_reg', ['class'=>'b-paid__errorFormPatient']); ?>
+					<?= $form->Label($modelPatient, 'address_reg_str', ['class'=>'control-label']); ?>
+					<?= $form->TextArea($modelPatient, 'address_reg_str', ['class'=>'form-control input-sm',]); ?>
+					<?= $form->error($modelPatient, 'address_reg_str', ['class'=>'b-paid__errorFormPatient']); ?>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+					<?= $form->Label($modelPatient, 'address_str', ['class'=>'control-label']); ?>
+					<?= $form->TextArea($modelPatient, 'address_str', ['class'=>'form-control input-sm',]); ?>
+					<?= $form->error($modelPatient, 'address_str', ['class'=>'b-paid__errorFormPatient']); ?>
 			</div>
 		</div>
 		<div class="row">
