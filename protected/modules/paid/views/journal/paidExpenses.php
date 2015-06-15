@@ -8,7 +8,7 @@ $this->pageTitle='Оплаченные счета';
 <?php $this->widget('NavJournalWidget'); ?>
 <div class="b-content__journal">
 	
-	<?php $this->widget('SearchJournalWidget', ['modelPaid_Expense'=>$modelPaid_Expenses, 'modelPatient'=>$modelPatient]); ?>
+	<?php $this->widget('SearchExpenseWidget', ['modelPaid_Expense'=>$modelPaid_Expenses, 'modelPatient'=>$modelPatient]); ?>
 	
 	<h4>Оплаченные счета</h4>
 	<?php

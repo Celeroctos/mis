@@ -62,7 +62,7 @@ class Paid_Expenses extends ActiveRecord
 			['hash', 'type', 'type'=>'string'],
 			['date, dateEnd', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cashAct.search'],
 			['date, dateEnd', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.journal.all'],
-//			['date, dateEnd', 'required', 'on'=>'paid.cashAct.search'],
+			['date, dateEnd', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cashAct.returnPayment.search'],
 			['paid_order_id', 'unique', 'on'=>'paid.cashAct.create'],
 			['expense_number', 'unique', 'on'=>'paid.cashAct.create'],
 		];

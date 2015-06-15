@@ -4,10 +4,13 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
+
+<?php $this->widget('SearchExpenseWidget', ['modelPaid_Expense'=>$modelPaid_Expenses, 'modelPatient'=>$modelPatient]); ?>
+
 <h4>Возврат платежей</h4>
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
-	'dataProvider'=>$modelPaid_Expenses->search(),
+	'dataProvider'=>$dataProvider,
 	'filter'=>$modelPaid_Expenses,
 	'ajaxType'=>'post',
 //	'id'=>'gridSelectExpenses',
@@ -51,14 +54,14 @@ $this->widget('zii.widgets.grid.CGridView', [
 			'name'=>'expense_number',
 			'type'=>'raw',
 			'value'=>'"<div class=\"expense_number\">". CHtml::encode($data->expense_number) . "</div>"',
-			'filter'=>CHtml::activeTextField($modelPaid_Expenses, 'expense_number') . CHtml::activeTextField($modelPaid_Expenses, 'hash'),
+			'filter'=>CHtml::activeTextField($modelPaid_Expenses, 'expense_number') . CHtml::activeHiddenField($modelPaid_Expenses, 'hash'),
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',
 			],
 		],
 		[
 			'name'=>'patientName',
-			'filter'=>false,
+			'filter'=>CHtml::activeTextField($modelPatient, 'last_name') . CHtml::activeTextField($modelPatient, 'first_name') . CHtml::activeTextField($modelPatient, 'middle_name'),
 			'value'=>'$data->order->patient->last_name . " " . $data->order->patient->first_name . " " . $data->order->patient->middle_name',
 			'headerHtmlOptions'=>[
 				'class'=>'col-xs-3',

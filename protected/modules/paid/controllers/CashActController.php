@@ -64,30 +64,40 @@ class CashActController extends MPaidController
 	{
 		self::disableScripts();
 		
-		$modelPaid_Expenses=new Paid_Expenses('paid.cashAct.search');
-		
-//		if(Yii::app()->request->getPost('formSearchExpenses'))
-//		{ //validate CActiveForm
-//			echo CActiveForm::validate($modelPaid_Expenses);
-//			Yii::app()->end();
-//		}
+		$modelPaid_Expenses=new Paid_Expenses('paid.cashAct.returnPayment.search');
+		$modelPatient=new Patients('paid.cashAct.returnPayment.search');
 		
 		$modelPaid_Expenses->patient_id=$patient_id;
 		$modelPaid_Expenses->action=Paid_Expenses::PAID; //выбираем только оплаченные счета
 		$modelPaid_Expenses->hashForm=substr(md5(uniqid("", true)), 0, 4);
 		$modelPaid_Expenses->attributes=Yii::app()->request->getPost('Paid_Expenses');
 		
-//		if(!Yii::app()->request->getParam('gridSelectExpenses') && strlen($modelPaid_Expenses->dateEnd)>0)
-//		{
-//			$modelPaid_Expenses->dateEnd.=' 23:59:59';
-//		}
+		/**
+		 * перенести в search() модели. (Повторы кода, некритично)...
+		 */
+		$criteria=new CDbCriteria;
+		$criteria->with=['order.patient'=>['joinType'=>'INNER JOIN', 'select'=>'']];
+		$criteria->together=true;
+		$criteria->compare('LOWER(patient.last_name)', mb_strtolower($modelPatient->last_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.first_name)', mb_strtolower($modelPatient->first_name, 'UTF-8'));
+		$criteria->compare('LOWER(patient.middle_name)', mb_strtolower($modelPatient->middle_name, 'UTF-8'));
+		
+		/**
+		 * перенести в ->search() модели.
+		 */
+		if(isset($modelPaid_Expenses->date) && isset($modelPaid_Expenses->dateEnd) && strlen($modelPaid_Expenses->date)>0 && strlen($modelPaid_Expenses->dateEnd)>0)
+		{
+			$criteria->addBetweenCondition('date', $modelPaid_Expenses->date, $modelPaid_Expenses->dateEnd.' 23:59:59');
+		}
+	
+		$dataProvider=new CActiveDataProvider($modelPaid_Expenses, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Paid_Expenses::PAGE_SIZE,], 'sort'=>['defaultOrder'=>['paid_expense_id'=>CSort::SORT_DESC]]]);
 		
 		if(!Yii::app()->request->getParam('gridReturnPayment'))
-		{ //первый заход в этот экшн
+		{ // первый вход
 			$modelPaid_Expenses->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		
-		$this->renderPartial('gridReturnPayment', ['modelPaid_Expenses'=>$modelPaid_Expenses], false, true);
+		$this->renderPartial('gridReturnPayment', ['dataProvider'=>$dataProvider, 'modelPaid_Expenses'=>$modelPaid_Expenses, 'modelPatient'=>$modelPatient], false, true);
 	}
 	
 	/**
