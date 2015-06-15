@@ -332,10 +332,11 @@ class CashActController extends MPaidController
 						throw new CHttpException(404, 'Ошибка в валидации заказа (уникальность номера)');
 					}
 				}
-				
+				$priceSum=0;
 				$modelPaid_Expenses=new Paid_Expenses('paid.cashAct.create');
 				$modelPaid_Expenses->date=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-				$modelPaid_Expenses->price=ParseMoney::encodeMoney(Yii::app()->request->getPost('priceSum'));
+//				$modelPaid_Expenses->price=ParseMoney::encodeMoney(Yii::app()->request->getPost('priceSum'));
+				$modelPaid_Expenses->price=$priceSum; //дальше обновляем по сумме всех услуг, добавленных в заказ.
 				$modelPaid_Expenses->paid_order_id=Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq');
 				$modelPaid_Expenses->status=Paid_Expenses::NOT_PAID; //еще не оплачен
 				$modelPaid_Expenses->expense_number=Paid_Orders::generateRandNumber();
@@ -343,7 +344,7 @@ class CashActController extends MPaidController
 				
 				if(!$modelPaid_Expenses->save())
 				{
-					throw new CHttpException(404, 'Ошибки валидации в запросе (создание счёта)');
+					throw new CHttpException(404, 'Ошибки валидации в запросе (создание счёта).');
 				}
 				
 				$modelPaid_Order_Details=new Paid_Order_Details('paid.cashAct.create'); //детализация заказа
@@ -362,16 +363,27 @@ class CashActController extends MPaidController
 					$modelPaid_Order_Details->paid_service_id=$value['serviceId'];
 					$modelPaid_Order_Details->doctor_id=$value['doctorId'];
 					$modelPaid_Order_Details->price=$recordPaid_Services->price; // сохраняем для данной услуги в заказе её стоимость на момент формирования заказа.
+					$priceSum+=$recordPaid_Services->price;
 					
 					if(!$modelPaid_Order_Details->save())
 					{
-						throw new CHttpException(404, 'Ошибки валидации в запросе (детализация заказа)');
+						throw new CHttpException(404, 'Ошибки валидации в запросе (детализация заказа).');
 					}
 					$modelPaid_Order_Details->isNewRecord=true;
 				}
+				$recordPaid_Expenses=Paid_Expenses::model()->findByPk(Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq'));
+
+				$recordPaid_Expenses->price=$priceSum;
+
+				if(!$recordPaid_Expenses->save())
+				{
+					throw new CHttpException(404, 'Не удалось сохранить общую сумму счёта.');
+				}
 				
 				$transaction->commit();
-				Yii::app()->end(Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq')); //успех, разблокируем кнопку "Пробить"
+			
+				Yii::app()->end(Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq')); //успех, разблокируем кнопку "Пробить"				
+		
 			}
 			catch(Exception $e)
 			{
