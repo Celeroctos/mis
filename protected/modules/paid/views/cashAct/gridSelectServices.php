@@ -16,9 +16,6 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'template'=>'{pager}{items}',
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
-	'emptyText'=>
-	'<h4 class="b-paid__emptyServiceHeader">' . $modelPaid_Service->emptyTextGrid . '</h4>',
-	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridSelectServices', //gridSelectServices используется в paid.js
 	'pager'=>[
 			'class'=>'CLinkPager',
@@ -52,9 +49,6 @@ $this->widget('zii.widgets.grid.CGridView', [
 			[
 				'name'=>'name',
 				'filter'=>CHtml::activeTextField($modelPaid_Service, 'name') . 
-						  CHtml::activeHiddenField($modelPaid_Service, 'code') .
-						  CHtml::activeHiddenField($modelPaid_Service, 'paid_service_group_id') .
-						  CHtml::activeHiddenField($modelPaid_Service, 'name') .
 						  CHtml::activeHiddenField($modelPaid_Service, 'hash'),
 				'headerHtmlOptions'=>[
 					'class'=>'col-xs-4',

@@ -54,7 +54,7 @@ class CashActController extends MPaidController
 			$modelPaid_Service->hash=substr(md5(uniqid("", true)), 0, 4); //id CGridView
 		}
 		
-		$this->renderPartial('gridSelectServices', ['modelPaid_Service'=>$modelPaid_Service, 'modelPaid_Service_Groups'=>$modelPaid_Service_Groups, 'modelDoctors'=>$modelDoctors], false, true);
+		$this->renderPartial('gridSelectServices', ['modelPaid_Service'=>$modelPaid_Service, 'modelDoctors'=>$modelDoctors], false, true);
 	}
 	
 	/**

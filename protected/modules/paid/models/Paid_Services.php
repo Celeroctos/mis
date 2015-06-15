@@ -115,6 +115,8 @@ class Paid_Services extends ActiveRecord
 	public function search()
 	{
 		$criteria=new CDbCriteria;
+		$criteria->with=['group'];
+		$criteria->together=true;
 		
 		if(!self::isEmpty($this) || $this->scenario=='paid.cash.select')
 		{ //поиск из раздела "Услуги"
@@ -125,11 +127,14 @@ class Paid_Services extends ActiveRecord
 			$this->emptyTextGrid='Услуги не найдены.';
 		}
 		elseif($this->scenario=='paid.cashAct.select')
-		{ //Отображать услуги по дате в выборе услуг для пациента
+		{ //Отображать услуги по дате в выборе услуг для пациента + фильтр CGridView
 			$dateNow=Yii::app()->dateFormatter->format('yyyy-MM-dd', time());
-			//85399 time
 			$criteria->addCondition(':dateNow<=t.exp_date AND :dateNow>=t.since_date');
 			$criteria->params=[':dateNow'=>$dateNow];
+			
+			$criteria->compare('lower(t.name)', mb_strtolower($this->name, 'UTF-8'), true);
+			$criteria->compare('lower(t.code)', mb_strtolower($this->code, 'UTF-8'));		
+			$criteria->compare('lower("group"."name")', mb_strtolower($this->modelPaid_Service_Groups->name, 'UTF-8'), true);
 			
 			$this->emptyTextGrid='Услуги не найдены.';
 		}
