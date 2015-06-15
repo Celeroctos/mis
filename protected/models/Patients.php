@@ -71,10 +71,10 @@ class Patients extends ActiveRecord
 			'middle_name'=>'Отчество',
 			'gender'=>'Пол',
 			'birthday'=>'Дата рождения',
-			'address_reg'=>'Адрес',
-			'address'=>'Адрес',
-			'address_str'=>'Адрес',
-			'address_str_reg'=>'Адрес',
+			'address_reg'=>'Адрес регистрации',
+			'address'=>'Адрес проживания',
+			'address_str'=>'Адрес проживания',
+			'address_str_reg'=>'Адрес регистрации',
 			'snils'=>'СНИЛС',
 			'invalid_group'=>'Группа инвалидности',
 			'profession'=>'Профессия',
@@ -90,6 +90,42 @@ class Patients extends ActiveRecord
 			'contacts'=>[self::HAS_MANY, 'Patient_Contacts', 'patient_id'],
 			'paid_medcards'=>[self::HAS_MANY, 'Paid_Medcards', 'patient_id'],
 		];
+	}
+	
+	public function beforeValidate()
+	{
+		if(parent::beforeValidate())
+		{
+			$this->first_name=trim($this->first_name);
+			$this->last_name=trim($this->last_name);
+			$this->middle_name=trim($this->middle_name);
+			$this->birthday=trim($this->birthday);
+			$this->gender=trim($this->gender);
+			$this->address_reg_str=trim($this->address_reg_str);
+			$this->address_str=trim($this->address_reg_str);
+			$this->address=trim($this->address);
+			$this->address_reg=trim($this->address_reg);			
+		}
+		
+		return true;
+	}
+	
+	public function beforeSave()
+	{
+		if(parent::beforeSave())
+		{
+			$this->first_name=trim($this->first_name);
+			$this->last_name=trim($this->last_name);
+			$this->middle_name=trim($this->middle_name);
+			$this->birthday=trim($this->birthday);
+			$this->gender=trim($this->gender);
+			$this->address_reg_str=trim($this->address_reg_str);
+			$this->address_str=trim($this->address_reg_str);
+			$this->address=trim($this->address);
+			$this->address_reg=trim($this->address_reg);
+			
+			return true;
+		}
 	}
 	
 	public function rules()

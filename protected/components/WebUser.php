@@ -1,7 +1,7 @@
 <?php
 /**
  * Класс для работы с сущностью текущего авторизованного пользователя
- * @author Тайибов Джамал <prohps@yandex.ru>
+ * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 class WebUser extends CWebUser
 {
