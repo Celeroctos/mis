@@ -78,6 +78,11 @@ class CashActController extends MPaidController
 		$criteria=new CDbCriteria;
 		$criteria->with=['order.patient'=>['joinType'=>'INNER JOIN', 'select'=>'']];
 		$criteria->together=true;
+		$criteria->addCondition('status='. $modelPaid_Expenses->action);
+		
+		/**
+		 * Не осуществляется. На будущее.
+		 */
 		$criteria->compare('LOWER(patient.last_name)', mb_strtolower($modelPatient->last_name, 'UTF-8'));
 		$criteria->compare('LOWER(patient.first_name)', mb_strtolower($modelPatient->first_name, 'UTF-8'));
 		$criteria->compare('LOWER(patient.middle_name)', mb_strtolower($modelPatient->middle_name, 'UTF-8'));
@@ -121,14 +126,33 @@ class CashActController extends MPaidController
 		{
 			throw new CHttpException(404, 'Такого платежа не существует.');
 		}
+		$transaction=Yii::app()->db->beginTransaction();
 		
-		$modelPaid_Expense->status=Paid_Expenses::RETURN_PAID;
-		$modelPaid_Expense->save();
-		
-		$modelPaid_Payment->date_delete=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
-		$modelPaid_Payment->reason_delete=Paid_Payments::RETURN_REASON_DELETE;
-		$modelPaid_Payment->user_delete_id=Yii::app()->user->id;
-		$modelPaid_Payment->save();
+		try
+		{
+			$modelPaid_Expense->status=Paid_Expenses::RETURN_PAID;
+			
+			if(!$modelPaid_Expense->save())
+			{
+				throw new CHttpException(404, 'Не удалось обновить статус у счёта. Транзакция возврата отменена.');
+			}
+
+			$modelPaid_Payment->date_delete=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
+			$modelPaid_Payment->reason_delete=Paid_Payments::RETURN_REASON_DELETE;
+			$modelPaid_Payment->user_delete_id=Yii::app()->user->id;
+			
+			if(!$modelPaid_Payment->save())
+			{
+				throw new CHttpException(404, 'Не удалось обновить статус платежа. Транзакция возврата отменена.');
+			}
+			
+			$transaction->commit();
+		}
+		catch(Exception $e)
+		{
+			$transaction->rollback();
+			throw $e;
+		}
 	}
 	
 	/**

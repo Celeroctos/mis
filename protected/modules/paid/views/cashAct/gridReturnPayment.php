@@ -4,10 +4,8 @@
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 ?>
-
-<?php $this->widget('SearchExpenseWidget', ['modelPaid_Expense'=>$modelPaid_Expenses, 'modelPatient'=>$modelPatient]); ?>
-
 <h4>Возврат платежей</h4>
+<?php $this->widget('SearchReturnPaymentWidget', ['modelPaid_Expense'=>$modelPaid_Expenses, 'modelPatient'=>$modelPatient]); ?>
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$dataProvider,

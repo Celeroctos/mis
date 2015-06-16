@@ -111,7 +111,7 @@ $this->pageTitle='Касса';
 							'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
 						],
 						'htmlOptions'=>[
-							'class'=>'form-control',
+							'class'=>'form-control input-sm',
 						],
 					]); ?>
 				<?= $form->error($modelPatient, 'birthday', ['class'=>'b-paid__errorFormPatient']); ?>
