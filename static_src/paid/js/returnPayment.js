@@ -1,4 +1,19 @@
 function ReturnPaymentController() {
+
+	/**
+	 * ajax success method.
+	 * Insert into Yii ajaxSubmitButton.
+	 * @this $.ajax({}).
+	 * @param {String} html
+	 */
+	this.ajaxSearch = function (html) {
+		$('.modalOverlayReturnPayment').animate({opacity: 0.3}, 300, function () {
+			$('#Paid_Expenses_date').inputmask("mask", {"mask": "9999-99-99"});
+			$('#Paid_Expenses_dateEnd').inputmask("mask", {"mask": "9999-99-99"});
+			$('#modalReturnPaymentBody').html(html);
+			$('.modalOverlayReturnPayment').animate({opacity: 1}, 200);
+		});
+	};
 	
 	var cleanCashFront = function () {
 		$('#TotalSum').html('0'); //обнуляем ИТОГО

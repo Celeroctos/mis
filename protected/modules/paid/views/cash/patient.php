@@ -112,10 +112,12 @@ $this->pageTitle='Пациент';
 <div class="modal" id="modalReturnPayment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalReturnPayment">
 		<div class="modal-content b-modalReturnPayment b-paid__modalHeader">
-			<div class="modal-body" id="modalReturnPaymentBody">
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+			<div class="modalOverlayReturnPayment">
+				<div class="modal-body" id="modalReturnPaymentBody">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -134,17 +136,19 @@ $this->pageTitle='Пациент';
 <div class="modal" id="modalReturnPaymentConfirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalReturnPaymentConfirm">
 		<div class="modal-content b-modalReturnPaymentConfirm b-paid__modalHeader">
-			<div class="modal-body" id="modalReturnPaymentConfirmBody">
-				<div class="b-paid__returnPrice">
-					Сумма возврата: <span class="price"></span>
+			<div class="modalOverlayReturnPaymentConfirm">
+				<div class="modal-body" id="modalReturnPaymentConfirmBody">
+					<div class="b-paid__returnPrice">
+						Сумма возврата: <span class="price"></span>
+					</div>
+					<div>
+						<?= CHtml::button('Выполнить возврат', ['class'=>'btn btn-primary', 'id'=>'returnPaymentConfirm']); ?>
+						<?= CHtml::button('Отмена', ['class'=>'btn btn-default', 'data-dismiss'=>'modal']); ?>
+					</div>
 				</div>
-				<div>
-					<?= CHtml::button('Выполнить возврат', ['class'=>'btn btn-primary', 'id'=>'returnPaymentConfirm']); ?>
-					<?= CHtml::button('Отмена', ['class'=>'btn btn-default', 'data-dismiss'=>'modal']); ?>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 			</div>
 		</div>
 	</div>
