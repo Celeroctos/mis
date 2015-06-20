@@ -290,7 +290,10 @@
 		max-height: 600px;
 		overflow-y: scroll;
 	}
-b-modalReturnPayment
+.b-modalReturnPayment.b-paid__modalHeader{
+    max-height: 600px;
+    overflow-y: scroll;
+}
 .b-modalAddServiceGroup{
     margin-top: 70px;
 }
@@ -322,10 +325,10 @@ b-modalReturnPayment
     max-height: 600px;
     overflow-y: scroll;
 }
-.b-modalUpdatePatient{
-    max-height: 700px;
+/*.b-modalUpdatePatient{
+    max-height: 800px;
     overflow-y: scroll;
-}
+}*/
 .b-modalReturnPaymentConfirm{
     margin-top: 80px;
 }
