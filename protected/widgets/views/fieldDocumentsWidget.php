@@ -6,7 +6,7 @@
 ?>
 <div class="b-documents">
 	<div class="row">
-		<div class="col-xs-3">
+		<div class="col-xs-4">
 			<?= $form->Label($model, 'type', ['class'=>'control-label']); ?>
 			<?= $form->DropDownList($model, 'type', Patients::getDocumentTypeListData(), [
 							'class'=>'form-control input-sm',

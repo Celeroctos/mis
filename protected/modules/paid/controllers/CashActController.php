@@ -79,7 +79,8 @@ class CashActController extends MPaidController
 		$criteria->with=['order.patient'=>['joinType'=>'INNER JOIN', 'select'=>'']];
 		$criteria->together=true;
 		$criteria->addCondition('status='. $modelPaid_Expenses->action);
-		
+		$criteria->addCondition('patient.patient_id=:patient_id');
+		$criteria->params=[':patient_id'=>$patient_id];
 		/**
 		 * Не осуществляется. На будущее.
 		 */
