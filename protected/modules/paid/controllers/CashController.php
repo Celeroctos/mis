@@ -444,7 +444,7 @@ class CashController extends MPaidController
 		 * сохраняем юзеру хотя бы один контакт (пустой). Нужно для редактирования.
 		 */
 		if($recordPatient_Contacts===null)
-		{ 
+		{
 			$recordPatient_Contacts=new Patient_Contacts();
 			$recordPatient_Contacts->value='';
 			$recordPatient_Contacts->type=Patient_Contacts::TYPE;
@@ -607,6 +607,7 @@ class CashController extends MPaidController
 	 */
 	public function actionMain()
 	{
+		 $mPDF1 = Yii::app()->ePdf->mpdf();
 		$modelPatient=new Patients('paid.cash.search');
 		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
 		$modelPatient_Contacts=new Patient_Contacts('paid.cash.search');

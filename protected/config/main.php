@@ -25,6 +25,7 @@ return [
 		'application.components.*',
 		'application.widgets.*',
 		'application.classes.*',
+//		'ext.yii-pdf.*',
 	],
 
 	'modules'=>[
@@ -44,12 +45,24 @@ return [
 		],
 	],
 
-	'components'=>[
-		
+	'components'=>[	
 //		'session'=>[
 //			'class'=>'CHttpSession',
 //			'autoStart'=>false,
 //		],
+		
+		'ePdf'=>[
+			'class'=>'ext.yii-pdf.EYiiPdf',
+			'params'=>[
+				'mpdf'=>[
+					'librarySourcePath'=>'application.vendor.mpdf57.*',
+					'constants'=>[
+						'_MPDF_TEMP_PATH'=>Yii::getPathOfAlias('application.runtime'),
+					],
+					'class'=>'mpdf',
+				]
+			],
+		],
 		
 		'user'=>[
 			'class'=>'WebUser',
@@ -58,7 +71,7 @@ return [
 			'loginUrl'=>'service/auth/login', // module/controller/action, см. метод createUrl()
 		],
 		
-		'clientScript' => include(dirname(__FILE__) . '/data/packages.php'),		
+		'clientScript'=>include(dirname(__FILE__) . '/data/packages.php'),		
 
 		'assets'=>[
 			'class'=>'CAssetManager',
@@ -76,8 +89,8 @@ return [
 			'showScriptName'=>false,
 			'rules'=>[
 				//'<language:(ru|en)>' => 'main/index',
-				],
 			],
+		],
 
 		'errorHandler'=>[
 			'class'=>'CErrorHandler',
