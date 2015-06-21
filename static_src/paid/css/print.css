@@ -5,3 +5,15 @@
 .gridPrintExpense .filters{
 	display: none;
 }
+.printCenter{
+    text-align: center;
+}
+.bold{
+    font-weight: bold;
+}
+.pre-wrap{
+    white-space: pre-wrap;
+}
+.margin{
+    margin-top: 200px;
+}

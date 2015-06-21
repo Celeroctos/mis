@@ -727,4 +727,17 @@ class CashActController extends MPaidController
 		
 		$this->renderPartial('printExpense', ['paid_order_id'=>$paid_order_id, 'modelOrder_Details'=>$modelOrder_Details, 'recordPaid_Expense'=>$recordPaid_Expense, 'recordPatient'=>$recordPatient, 'recordPaid_Medcard'=>$recordPaid_Medcard], false, true);
 	}
+	
+	/**
+	 * 
+	 */
+	public function actionPrintContract()
+	{
+		$this->layout='print';
+		$mPdf=Yii::app()->ePdf->mpdf();
+		$mPdf->WriteHTML($this->render('ContractPdf', [], true));
+		$mPdf->Output();
+//		$this->layout='print';
+//		$this->render('ContractPdf', []);
+	}
 }

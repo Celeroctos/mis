@@ -607,7 +607,6 @@ class CashController extends MPaidController
 	 */
 	public function actionMain()
 	{
-		 $mPDF1 = Yii::app()->ePdf->mpdf();
 		$modelPatient=new Patients('paid.cash.search');
 		$modelPaid_Medcard=new Paid_Medcards('paid.cash.search');
 		$modelPatient_Contacts=new Patient_Contacts('paid.cash.search');
