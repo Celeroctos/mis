@@ -30,7 +30,7 @@ class Paid_Expenses extends ActiveRecord
 	/**
 	 * Начальное число для генератора номера счёта. Задаётся при внедрении к заказчику.
 	 */
-	const START_SEQUENCE = 0;
+	const START_SEQUENCE = 1;
 	
 	const NOT_PAID = 0; //не оплачен
 	const PAID = 1; //оплачен
@@ -63,9 +63,8 @@ class Paid_Expenses extends ActiveRecord
 		}
 		else
 		{
-			echo ++$recordExpense->max_number;
-		}
-		
+			return ++$recordExpense->max_number;
+		}	
 	}
 	
 	public function attributeLabels()

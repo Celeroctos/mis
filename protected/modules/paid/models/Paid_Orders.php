@@ -17,7 +17,7 @@ class Paid_Orders extends ActiveRecord
 	/**
 	 * Начальное число для генератора номера счёта. Задаётся при внедрении к заказчику.
 	 */	
-	const START_SEQUENCE = 0;
+	const START_SEQUENCE = 1;
 	
 	/**
 	 * Генератор номера заказа/счёта
@@ -50,7 +50,6 @@ class Paid_Orders extends ActiveRecord
 		{
 			return ++$recordOrder->max_number;
 		}
-		
 	}
 	
 	public function tableName()

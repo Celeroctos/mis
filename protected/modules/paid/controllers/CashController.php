@@ -428,7 +428,7 @@ class CashController extends MPaidController
 		{ //у пользователя нет ЭМК платных услуг
 			$modelPaid_Medcard=new Paid_Medcards('paid.cash.create');
 			$modelPaid_Medcard->patient_id=$patient_id;
-			$modelPaid_Medcard->paid_medcard_number=Medcards::medcardNumberGenerator();
+			$modelPaid_Medcard->paid_medcard_number=Paid_Medcards::medcardNumberGenerator();
 			$modelPaid_Medcard->date_create=Yii::app()->dateformatter->format('yyyy-MM-dd HH:mm:ss', time());
 			
 			if(!$modelPaid_Medcard->save())
