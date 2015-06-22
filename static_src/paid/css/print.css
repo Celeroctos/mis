@@ -1,6 +1,8 @@
 .container {
-	width: 640px !important;
-	height: 480px !important;
+/*	width: 640px !important;
+	height: 480px !important;*/
+    width: 970px !important;
+    min-height: 480px !important;
 }
 .gridPrintExpense .filters{
 	display: none;
@@ -15,5 +17,9 @@
     white-space: pre-wrap;
 }
 .margin{
-    margin-top: 200px;
+    margin-top: 360px;
+}
+.font{
+    font-family: 'Times New Roman';
+    font-size: 13px;
 }

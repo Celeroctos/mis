@@ -19,13 +19,18 @@ class Paid_Expenses extends ActiveRecord
 	public $hashForm; //use in Form id
 	public $dateEnd; //in CGridView search
 	public $patient_id; //use in compare
-	
+	public $max_number; //aggregate
 	/**
 	 * Выбор счетов в зависимости от действия (оплаченные, неоплаченные и т.д.)
 	 * Не связано с хранилищем, принимает константу как значение.
 	 * @var string
 	 */
 	public $action=self::NOT_PAID;
+	
+	/**
+	 * Начальное число для генератора номера счёта. Задаётся при внедрении к заказчику.
+	 */
+	const START_SEQUENCE = 0;
 	
 	const NOT_PAID = 0; //не оплачен
 	const PAID = 1; //оплачен
@@ -42,6 +47,27 @@ class Paid_Expenses extends ActiveRecord
 		return 'paid.paid_expenses';
 	}
 
+	/**
+	 * Генератор
+	 * @param integer $start Начальное число. С него начинается последовательность.
+	 */
+	public static function expenseSequenceNumber($start=Paid_Expenses::START_SEQUENCE)
+	{
+		$criteria=new CDbCriteria;
+		$criteria->select='max("t"."expense_number") as "max_number"';
+		$recordExpense=Paid_Expenses::model()->find($criteria);
+		
+		if($recordExpense===null)
+		{
+			return $start;
+		}
+		else
+		{
+			echo ++$recordExpense->max_number;
+		}
+		
+	}
+	
 	public function attributeLabels()
 	{
 		return [
