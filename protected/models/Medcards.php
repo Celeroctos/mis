@@ -41,6 +41,26 @@ class Medcards extends ActiveRecord
 		];
 	}
 	
+	public function rules()
+	{
+		return [
+			['card_number', 'unique', 'on'=>'paid.cash.create'],
+		];
+	}
+	
+	/**
+	 * Генератор
+	 * @param integer $start Начальное число. С него начинается последовательность.
+	 */
+	public static function medcardNumberGenerator()
+	{
+		$rand=(int)mt_rand(1, 999) . time() . (int)mt_rand(1, 999);
+		$rand_arr=str_split($rand); //в массив
+		shuffle($rand_arr); //мешаем массив
+		
+		return substr($rand_str_out=implode($rand_arr), 0, 5) . '\\' . Yii::app()->dateformatter->format('yyyy', time());		
+	}
+	
 	public function tableName()
 	{
 		return 'mis.medcards';

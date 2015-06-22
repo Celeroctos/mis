@@ -350,7 +350,7 @@ class CashActController extends MPaidController
 			$modelPaid_Orders->patient_id=Yii::app()->request->getPost('patient_id');
 			$modelPaid_Orders->user_create_id=Yii::app()->user->id;
 			$modelPaid_Orders->order_number=Paid_Orders::generateRandNumber(); //генерация номера заказа
-			$modelPaid_Orders->number_contract=Paid_Orders:: //TODODODODO
+			$modelPaid_Orders->number_contract=Paid_Orders::orderSequenceNumber();
 			$transaction=Yii::app()->db->beginTransaction();
 			try
 			{
@@ -374,7 +374,7 @@ class CashActController extends MPaidController
 				$modelPaid_Expenses->price=$priceSum; //дальше обновляем по сумме всех услуг, добавленных в заказ.
 				$modelPaid_Expenses->paid_order_id=Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq');
 				$modelPaid_Expenses->status=Paid_Expenses::NOT_PAID; //еще не оплачен
-				$modelPaid_Expenses->expense_number=Paid_Orders::generateRandNumber();
+				$modelPaid_Expenses->expense_number=Paid_Expenses::expenseSequenceNumber();
 				$modelPaid_Expenses->user_create_id=Yii::app()->user->id;
 				
 				if(!$modelPaid_Expenses->save())
@@ -734,35 +734,34 @@ class CashActController extends MPaidController
 	 */
 	public function actionPrintContract($order_id)
 	{
+		$recordOrder=Paid_Orders::model()->findByPk($order_id);
 		
-//		$recordOrder=Paid_Orders::model()->findByPk($order_id);
-//		
-//		if($recordOrder===null)
-//		{
-//			throw new CHttpException(404, 'Такого заказа не существует.');
-//		}
-//		
-//		$recordExpense=Paid_Expenses::model()->find('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordOrder->paid_order_id]);
-//		
-//		if($recordExpense===null)
-//		{
-//			throw new CHttpException(404, 'Такого счёта не существует.');
-//		}
-//		
-//		/**
-//		 * пока один документ, TODO множество
-//		 */
-//		$recordDocuments=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$recordOrder->patient_id]);
-//		
-//		if($recordDocuments===null)
-//		{
-//			throw new CHttpException(404, 'Отсутствует документ у пациента.');
-//		}
-//		
-//		$this->layout='print';
-//		$mPdf=Yii::app()->ePdf->mpdf();
-//		$mPdf->WriteHTML($this->render('ContractPdf', ['recordDocuments'=>$recordDocuments, 'recordOrder'=>$recordOrder, 'recordExpense'=>$recordExpense], true));
-//		$mPdf->Output();
+		if($recordOrder===null)
+		{
+			throw new CHttpException(404, 'Такого заказа не существует.');
+		}
+		
+		$recordExpense=Paid_Expenses::model()->find('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordOrder->paid_order_id]);
+		
+		if($recordExpense===null)
+		{
+			throw new CHttpException(404, 'Такого счёта не существует.');
+		}
+		
+		/**
+		 * пока один документ, TODO множество
+		 */
+		$recordDocuments=Patient_Documents::model()->find('patient_id=:patient_id', [':patient_id'=>$recordOrder->patient_id]);
+		
+		if($recordDocuments===null)
+		{
+			throw new CHttpException(404, 'Отсутствует документ у пациента.');
+		}
+		
+		$this->layout='print';
+		$mPdf=Yii::app()->ePdf->mpdf();
+		$mPdf->WriteHTML($this->render('ContractPdf', ['recordDocuments'=>$recordDocuments, 'recordOrder'=>$recordOrder, 'recordExpense'=>$recordExpense], true));
+		$mPdf->Output();
 //		$this->layout='print';
 //		$this->render('ContractPdf', []);
 	}
