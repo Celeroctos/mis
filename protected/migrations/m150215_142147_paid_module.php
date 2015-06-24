@@ -65,7 +65,7 @@ HERE;
 						"order_number" integer NOT NULL, --номер заказа, уникален. TODO UNIQUE
 						"patient_id" integer NOT NULL, --id пациента, сделавшего заказ, FK table mis.patients
 						"user_create_id" integer NOT NULL, --Пользователь, создавший заказ и в дальнейшем платёж
-						"number_contract" character varying(255), --номер контракта на оказание услуг пациенту
+						"number_contract" integer, --номер контракта на оказание услуг пациенту
 						PRIMARY KEY(paid_order_id)
 					);
 HERE;

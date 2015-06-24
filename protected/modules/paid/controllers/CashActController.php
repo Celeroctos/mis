@@ -350,7 +350,7 @@ class CashActController extends MPaidController
 			$modelPaid_Orders->patient_id=Yii::app()->request->getPost('patient_id');
 			$modelPaid_Orders->user_create_id=Yii::app()->user->id;
 			$modelPaid_Orders->order_number=Paid_Orders::generateRandNumber(); //генерация номера заказа
-			$modelPaid_Orders->number_contract=Paid_Orders::orderSequenceNumber();
+			$modelPaid_Orders->number_contract=Paid_Orders::contractSequenceNumber();
 			$transaction=Yii::app()->db->beginTransaction();
 			try
 			{

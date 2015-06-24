@@ -20,6 +20,7 @@ $this->pageTitle='Пациент';
 				'address_reg_str',
 				'address_str',
 				'birthday',
+				'paid_medcards.paid_medcard_number',
 			],
 		]); ?>
 <?= CHtml::button('Редактировать пациента', ['class'=>'btn btn-primary btn-sm', 'id'=>'updatePatient']); ?>

@@ -19,6 +19,8 @@ class Paid_Orders extends ActiveRecord
 	 */	
 	const START_SEQUENCE = 1;
 	
+	const CONTRACT_START_SEQUENCE = 1;
+	
 	/**
 	 * Генератор номера заказа/счёта
 	 * @return type
@@ -40,6 +42,26 @@ class Paid_Orders extends ActiveRecord
 	{
 		$criteria=new CDbCriteria;
 		$criteria->select='max("t"."order_number") as "max_number"';
+		$recordOrder=Paid_Orders::model()->find($criteria);
+		
+		if($recordOrder===null)
+		{
+			return $start;
+		}
+		else
+		{
+			return ++$recordOrder->max_number;
+		}
+	}
+
+	/**
+	 * Генератор
+	 * @param integer $start Начальное число. С него начинается последовательность.
+	 */
+	public static function contractSequenceNumber($start=Paid_Orders::CONTRACT_START_SEQUENCE)
+	{
+		$criteria=new CDbCriteria;
+		$criteria->select='max("t"."number_contract") as "max_number"';
 		$recordOrder=Paid_Orders::model()->find($criteria);
 		
 		if($recordOrder===null)

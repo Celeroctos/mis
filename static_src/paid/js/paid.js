@@ -200,6 +200,7 @@ function classSelectServices() {
 		if(Number(paid_order_id) > 0)
 		{ //если заказ id корректный
 			window.open('/paid/cashAct/printExpense/paid_order_id/' + paid_order_id, '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
+			window.open('/paid/cashAct/printContract/order_id/' + paid_order_id, '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
 			
 			$('#punchButton').off('click');
 			$('#deleteOrderButton').off('click');

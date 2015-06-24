@@ -34,19 +34,22 @@ class Paid_Medcards extends ActiveRecord
 	 */
 	public static function medcardNumberGenerator($start=Paid_Medcards::START_MEDCARD_NUMBER)
 	{
-		$criteria=new CDbCriteria;
-		$criteria->select='max("t"."paid_medcard_number") as "max_number"';
-		$recordMedcards=Paid_Medcards::model()->find($criteria);
+		$sql='SELECT "t"."paid_medcard_number" FROM "paid"."paid_medcards" as "t"';
+		$command=Yii::app()->db->createCommand($sql);
+		$dataReader=$command->query();
 		
-		if($recordMedcards===null)
+		$numberCards=array();
+		$i=0;
+		
+		foreach($dataReader as $row)
 		{
-			return $start;
-		}
-		else
-		{
-			echo ++$recordMedcards->max_number . '\\' . Yii::app()->dateformatter->format('yyyy', time());
+			$numberCards[$i]=substr($row['paid_medcard_number'], 0, -5);
+			$i++;
 		}
 		
+		$maxCardNumber=max($numberCards);
+		return ++$maxCardNumber . '\\' . Yii::app()->dateformatter->format('yyyy', time());
+
 //		$rand=(int)mt_rand(1, 999) . time() . (int)mt_rand(1, 999);
 //		$rand_arr=str_split($rand); //в массив
 //		shuffle($rand_arr); //мешаем массив

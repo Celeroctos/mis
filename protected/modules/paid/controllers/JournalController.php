@@ -290,6 +290,16 @@ class JournalController extends MPaidController
 		}
 	}
 	
+	function actionReturnOrder($expense_number)
+	{
+		$recordExpense=Paid_Expenses::model()->find('expense_number=:expense_number', [':expense_number'=>$expense_number]);
+		if($recordExpense===null)
+		{
+			throw new CHttpException(404, 'Такого счёта не существует.');
+		}
+		echo $recordExpense->paid_order_id;
+	}
+	
 	/**
 	 * Main action
 	 * @return mixed

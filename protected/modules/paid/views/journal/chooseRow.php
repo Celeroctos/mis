@@ -10,6 +10,6 @@
 		<h4>Статус счёта: <i><?= $statusExpense ?></i>.</h4>
 		<?= CHtml::button('Печать счёта', ['class'=>'btn btn-primary btn-sm', 'id'=>'printExpenseJournal']); ?>
 		<?= CHtml::button('Печать направлений', ['class'=>'btn btn-primary btn-sm', 'id'=>'printReferralsJournal', 'disabled'=>$this->returnReferrals($recordExpense->expense_number) ? false : true]); ?>
-		<?= CHtml::button('Печать договора', ['class'=>'btn btn-primary btn-sm', 'disabled'=>true]); ?>
+		<?= CHtml::button('Печать договора', ['class'=>'btn btn-primary btn-sm', 'id'=>'printContractJournal']); ?>
 	</div>
 </div>

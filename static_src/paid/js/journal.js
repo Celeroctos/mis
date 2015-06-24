@@ -61,6 +61,15 @@ function JournalController () {
 					} 
 				});
 			});
+			
+			$('#printContractJournal').on('click', function () {
+				$.ajax({
+					url: '/paid/journal/returnOrder/expense_number/' + expense_number,
+					success: function (paid_order_id) {
+						window.open('/paid/cashAct/printContract/order_id/' + paid_order_id, '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
+					} 
+				});
+			});
 			$('#modalSelectJournalRow').modal('show');
 		}
 		

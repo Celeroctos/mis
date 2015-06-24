@@ -88,7 +88,7 @@ class Patients extends ActiveRecord
 		return [
 			'documents'=>[self::HAS_MANY, 'Patient_Documents', 'patient_id'],
 			'contacts'=>[self::HAS_MANY, 'Patient_Contacts', 'patient_id'],
-			'paid_medcards'=>[self::HAS_MANY, 'Paid_Medcards', 'patient_id'],
+			'paid_medcards'=>[self::HAS_ONE, 'Paid_Medcards', 'patient_id'], //Пока медКарта одна.
 		];
 	}
 	
