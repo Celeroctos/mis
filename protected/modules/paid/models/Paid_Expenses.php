@@ -20,6 +20,7 @@ class Paid_Expenses extends ActiveRecord
 	public $dateEnd; //in CGridView search
 	public $patient_id; //use in compare
 	public $max_number; //aggregate
+	
 	/**
 	 * Выбор счетов в зависимости от действия (оплаченные, неоплаченные и т.д.)
 	 * Не связано с хранилищем, принимает константу как значение.
@@ -40,7 +41,7 @@ class Paid_Expenses extends ActiveRecord
 	const PAID_NAME = 'Оплачен';
 	const RETURN_PAID_NAME = 'Возвращён';
 	
-	const PAGE_SIZE = 7;
+	const PAGE_SIZE = 12;
 	
 	public function tableName()
 	{
@@ -78,6 +79,7 @@ class Paid_Expenses extends ActiveRecord
 			'expense_number'=>'Номер счёта',
 			'patientName'=>'Пациент', //use in GridView Journal
 			'services'=>'Услуги', //use in GridView Journal
+			'Doctors'=>'Врачи',
 		];
 	}
 
@@ -101,18 +103,83 @@ class Paid_Expenses extends ActiveRecord
 	}
 	
 	/**
-	 * Метод, возвращающий все услуги по счёту.
+	 * Вернуть статус счёта в GridView
+	 */
+	public function getStatus($status)
+	{
+		switch($status)
+		{
+			case self::NOT_PAID:
+				return self::NOT_PAID_NAME;
+			case self::PAID:
+				return self::PAID_NAME;
+			case self::RETURN_PAID:
+				return self::RETURN_PAID_NAME;
+		}
+	}
+	
+	/**
+	 * Метод, возвращающий всех докторов по счёту.
 	 * @param integer $paid_expense_id Номер счёта
 	 */
-	public function getServices($paid_expense_id)
+	public function getDoctors($paid_expense_id)
 	{
 		$recordPaid_Expense=Paid_Expenses::model()->findByPk($paid_expense_id);
+		
 		if($recordPaid_Expense===null)
 		{
 			throw new CHttpException(404, 'Такого счёта не существует.');
 		}
 		
 		$recordPaid_Order=Paid_Orders::model()->findByPk($recordPaid_Expense->paid_order_id);
+		
+		if($recordPaid_Order===null)
+		{
+			throw new CHttpException(404, 'Такого заказа не существует.');
+		}
+		
+		$recordPaid_Order_Details=Paid_Order_Details::model()->findAll('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordPaid_Order->paid_order_id]);
+		
+		$count=count($recordPaid_Order_Details);
+		
+		if($count===0)
+		{
+			return 'Врачи отсутствуют.';
+		}
+	
+		$i=1;
+		foreach($recordPaid_Order_Details as $value)
+		{
+			$recordDoctors=Doctors::model()->findByPk($value->doctor_id);
+			
+			if($recordDoctors!==null)
+			{
+				echo $recordDoctors->last_name . ' ' . $recordDoctors->first_name . ' ' . $recordDoctors->middle_name;
+				
+				if($i!=$count) // отсекаем последнюю запятую
+				{
+					echo ', ';
+				}
+				$i++;
+			}
+		}
+	}
+	
+	/**
+	 * Метод, возвращающий все услуги по счёту.
+	 * @param integer $paid_expense_id Номер счёта
+	 */
+	public function getServices($paid_expense_id)
+	{
+		$recordPaid_Expense=Paid_Expenses::model()->findByPk($paid_expense_id);
+		
+		if($recordPaid_Expense===null)
+		{
+			throw new CHttpException(404, 'Такого счёта не существует.');
+		}
+		
+		$recordPaid_Order=Paid_Orders::model()->findByPk($recordPaid_Expense->paid_order_id);
+		
 		if($recordPaid_Order===null)
 		{
 			throw new CHttpException(404, 'Такого заказа не существует.');
@@ -120,19 +187,23 @@ class Paid_Expenses extends ActiveRecord
 		 
 		//ловим сами услуги из заказа, который привязан к данному счёту
 		$recordPaid_Order_Details=Paid_Order_Details::model()->findAll('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordPaid_Order->paid_order_id]);
+		
 		$count=count($recordPaid_Order_Details); //сколько всего нашлось услуг
+		
 		if($count===0)
 		{
-			return 'Услуги отсутствуют';
+			return 'Услуги отсутствуют.';
 		}
 		
 		$i=1;
 		foreach($recordPaid_Order_Details as $value)
 		{
 			$recordPaid_Services=Paid_Services::model()->findByPk($value->paid_service_id);
+			
 			if($recordPaid_Services!==null)
 			{
 				echo $recordPaid_Services->name;
+				
 				if($i!=$count) //отсекаем последнюю запятую
 				{
 					echo ', ';

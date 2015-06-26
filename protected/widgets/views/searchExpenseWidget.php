@@ -25,7 +25,7 @@
 					'dateFormat'=>'yy-mm-dd',
 					'yearRange'=>'1900:'.Yii::app()->dateformatter->format('yyyy', time()),
 					'minDate'=>'1900-01-01',
-					'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
+//					'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
 					'class'=>'form-control',
@@ -46,7 +46,7 @@
 					'dateFormat'=>'yy-mm-dd',
 					'yearRange'=>'1900:'.Yii::app()->dateformatter->format('yyyy', time()),
 					'minDate'=>'1900-01-01',
-					'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
+//					'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
 				],
 				'htmlOptions'=>[
 					'class'=>'form-control',
@@ -68,8 +68,9 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-xs-2">
+	<div class="col-xs-12">
 		<?= CHtml::ajaxSubmitButton('Применить фильтр', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('journal.ajaxSearch')], ['class'=>'btn btn-primary', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
+		<?= CHtml::button('Печать', ['class'=>'btn btn-primary', 'id'=>'printGridJournal']); ?>
 	</div>
 </div>
 <?php $this->endWidget(); ?>

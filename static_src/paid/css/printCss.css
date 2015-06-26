@@ -1,0 +1,5 @@
+@media print{
+    .b-header, .b-footer, .modal, .b-paidNav, .pager, nav, form, h4{
+        display: none;
+    }
+}

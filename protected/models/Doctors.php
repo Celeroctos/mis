@@ -15,7 +15,9 @@ class Doctors extends ActiveRecord
 	
 	public static function getServiceGroupsListData()
 	{
-		$doctorList=Doctors::model()->findAll();
+		$criteria=new CDbCriteria;
+		$criteria->order='"t"."last_name"'; // add sort
+		$doctorList=Doctors::model()->findAll($criteria);
 		return CHtml::listData($doctorList, 'id', 'last_name');
 	}
 	

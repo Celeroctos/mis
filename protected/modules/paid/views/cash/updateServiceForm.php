@@ -50,7 +50,7 @@
 //				'showButtonPanel'=>true,
 				'showOn'=>'focus', // 'focus', 'button', 'both'
 				'dateFormat'=>'yy-mm-dd',
-				'yearRange'=>'2000:'.Yii::app()->dateformatter->format('yyyy', time()),
+//				'yearRange'=>'2000:'.Yii::app()->dateformatter->format('yyyy', time()),
 //				'minDate'=>'2000-01-01',
 //				'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
 			],
@@ -72,7 +72,7 @@
 //				'showButtonPanel'=>true,
 				'showOn'=>'focus', // 'focus', 'button', 'both'
 				'dateFormat'=>'yy-mm-dd',
-				'yearRange'=>'2000:'.Yii::app()->dateformatter->format('yyyy', time()),
+//				'yearRange'=>'2000:'.Yii::app()->dateformatter->format('yyyy', time()),
 //				'minDate'=>'2000-01-01',
 //				'maxDate'=>Yii::app()->dateformatter->format('yy-MM-dd', time()),
 			],

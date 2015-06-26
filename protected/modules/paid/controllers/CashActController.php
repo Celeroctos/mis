@@ -725,6 +725,11 @@ class CashActController extends MPaidController
 		
 		$modelOrder_Details=new Paid_Order_Details();
 		
+//		$this->layout='print';
+//		$mPdf=Yii::app()->ePdf->mpdf();
+//		$mPdf->WriteHTML($this->renderPartial('printExpense', ['paid_order_id'=>$paid_order_id, 'modelOrder_Details'=>$modelOrder_Details, 'recordPaid_Expense'=>$recordPaid_Expense, 'recordPatient'=>$recordPatient, 'recordPaid_Medcard'=>$recordPaid_Medcard], true, true));
+//		$mPdf->Output();
+		
 		$this->renderPartial('printExpense', ['paid_order_id'=>$paid_order_id, 'modelOrder_Details'=>$modelOrder_Details, 'recordPaid_Expense'=>$recordPaid_Expense, 'recordPatient'=>$recordPatient, 'recordPaid_Medcard'=>$recordPaid_Medcard], false, true);
 	}
 	

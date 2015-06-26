@@ -142,9 +142,9 @@ class Patients extends ActiveRecord
 			'on'=>'paid.cash.create'],
 			
 			//Редактирование пациента
-			['first_name, middle_name, last_name, birthday, gender', 'required', 'on'=>'paid.cash.update'],
+			['first_name, last_name, birthday, gender', 'required', 'on'=>'paid.cash.update'],
 			['birthday', 'date', 'format'=>'yyyy-MM-dd', 'on'=>'paid.cash.update'],
-			['address_reg_str, address_str, address, address_str, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.update'],
+			['middle_name, address_reg_str, address_str, address, address_str, gender, snils, invalid_group, profession, work_address', 'type', 'type'=>'string', 'on'=>'paid.cash.update'],
 			
 			//Поиск пациентов
 			['first_name, middle_name, last_name, gender', 'type', 'type'=>'string', 'on'=>'paid.cash.search'],
@@ -184,6 +184,11 @@ class Patients extends ActiveRecord
 		}
 	}
 	
+	/**
+	 * 
+	 * @param  $birthday
+	 * @return type
+	 */
 	public static function getAge($birthday)
 	{
 		$thisD=Yii::app()->dateFormatter->format('dd', time());

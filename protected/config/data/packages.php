@@ -111,6 +111,9 @@ return [
 			'js'=>[
 				'js/journal.js',
 			],
+			'css'=>[
+				'css/printCss.css',
+			],
 			'depends'=>[
 				'bootstrap',
 				'jquery'

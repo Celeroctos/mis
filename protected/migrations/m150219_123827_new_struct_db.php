@@ -10,11 +10,11 @@ class m150219_123827_new_struct_db extends CDbMigration
 	public function up()
 	{
 		$connection=Yii::app()->db;
-		$sql=<<<HERE
-				ALTER TABLE "mis"."medcards" ADD COLUMN "patient_id" integer DEFAULT NULL;
-HERE;
-		$command=$connection->createCommand($sql);
-		$command->execute();
+//		$sql=<<<HERE
+//				ALTER TABLE "mis"."medcards" ADD COLUMN "patient_id" integer DEFAULT NULL;
+//HERE;
+//		$command=$connection->createCommand($sql);
+//		$command->execute();
 		
 		$sql=<<<HERE
 				CREATE TABLE IF NOT EXISTS "mis"."patients" --Пациенты

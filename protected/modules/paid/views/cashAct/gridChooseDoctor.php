@@ -16,7 +16,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
 	'emptyText'=>
-	'<h4 class="b-paid__emptyServiceHeader">Врач(и) не найден(ы)</h4>',
+	'<h4 class="b-paid__emptyServiceHeader">Для того, чтобы выбрать данную услугу, нужно закрепить врача за группой, в которой создана данная услуга.</h4>',
 	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridChooseDoctor', //gridSelectServices используется в paid.js
 	'pager'=>[

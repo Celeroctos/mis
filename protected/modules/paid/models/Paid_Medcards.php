@@ -47,8 +47,15 @@ class Paid_Medcards extends ActiveRecord
 			$i++;
 		}
 		
-		$maxCardNumber=max($numberCards);
-		return ++$maxCardNumber . '\\' . Yii::app()->dateformatter->format('yyyy', time());
+		if(empty($numberCards))
+		{ //fix bug
+			return Paid_Medcards::START_MEDCARD_NUMBER;
+		}
+		else
+		{
+			$maxCardNumber=max($numberCards);
+			return ++$maxCardNumber . '\\' . Yii::app()->dateformatter->format('yyyy', time());
+		}
 
 //		$rand=(int)mt_rand(1, 999) . time() . (int)mt_rand(1, 999);
 //		$rand_arr=str_split($rand); //в массив

@@ -148,6 +148,11 @@ function JournalController () {
 			addInputDateMask();
 			gridRowOnHandler();
 		});
+		
+		$(document).on('click', '#printGridJournal', function () {
+			window.print();
+		});
+		
 		this.handlerAllExpenses();
 		this.handlerNotPaidExpenses();
 		this.handlerPaidExpenses();

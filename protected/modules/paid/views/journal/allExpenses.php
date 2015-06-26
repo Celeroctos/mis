@@ -50,7 +50,7 @@ $this->pageTitle='Все счета';
 				'value'=>'Yii::app()->dateformatter->formatDateTime($data->date, "medium");',
 				'filter'=>CHtml::activeTextField($modelPaid_Expenses, 'date') . CHtml::activeTextField($modelPaid_Expenses, 'dateEnd'),
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-3',
+					'class'=>'col-xs-2',
 				],
 			],
 			[
@@ -59,7 +59,7 @@ $this->pageTitle='Все счета';
 				'value'=>'"<div class=\"expense_number\">". CHtml::encode($data->expense_number) . "</div>"',
 				'filter'=>CHtml::activeTextField($modelPaid_Expenses, 'expense_number') . CHtml::activeTextField($modelPaid_Expenses, 'hash'),
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-2',
+					'class'=>'col-xs-1',
 				],
 			],
 			[
@@ -67,7 +67,7 @@ $this->pageTitle='Все счета';
 				'filter'=>CHtml::activeTextField($modelPatient, 'last_name') . CHtml::activeTextField($modelPatient, 'first_name') . CHtml::activeTextField($modelPatient, 'middle_name'),
 				'value'=>'$data->order->patient->last_name . " " . $data->order->patient->first_name . " " . $data->order->patient->middle_name',
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-3',
+					'class'=>'col-xs-2',
 				],
 			],
 			[
@@ -83,9 +83,26 @@ $this->pageTitle='Все счета';
 				'value'=>'ParseMoney::decodeMoney($data->price) . " руб."',
 				'filter'=>false,
 				'headerHtmlOptions'=>[
-					'class'=>'col-xs-5',
+					'class'=>'col-xs-1',
 				],
 			],
+			[
+				'name'=>'Doctors',
+				'value'=>'$data->getDoctors($data->paid_expense_id)',
+				'filter'=>false,
+				'headerHtmlOptions'=>[
+					'class'=>'col-xs-3',
+				]
+			],
+			[
+				'name'=>'status',
+				'value'=>'$data->getStatus($data->status)',
+				'filter'=>false,
+				'headerHtmlOptions'=>[
+					'class'=>'col-xs-2',
+				]
+			],
+			
 //			[
 //				'class'=>'CButtonColumn',
 //				'template'=>'{delete}',
