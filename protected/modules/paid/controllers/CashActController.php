@@ -35,6 +35,22 @@ class CashActController extends MPaidController
 	}
 	
 	/**
+	 * 
+	 */
+	public function actionGridSelectServices()
+	{
+		self::disableScripts();
+		
+		$modelPaid_Service=new Paid_Services('paid.cashAct.select');
+		$modelPaid_Service->modelPaid_Service_Groups=new Paid_Service_Groups('paid.cashAct.select'); //for search in CGridView
+		$modelDoctors=new Doctors();
+		
+		$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
+		$modelPaid_Service->modelPaid_Service_Groups->attributes=Yii::app()->request->getPost('Paid_Service_Groups'); //for search in CGridView
+				
+	}
+	
+	/**
 	 * Выбор услуг (CGridView) в модальном окне
 	 * Грузится из экшна /paid/cash/actionpatient() ajax-запросом.
 	 * Результат грузится в модальное окно.

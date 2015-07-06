@@ -5,6 +5,42 @@
  */
 ?>
 <h4>Выберите услуги</h4>
+<br>
+<?php
+/**
+ * Шаблон поиска по возвратам платежей.
+ * @author Dzhamal Tayibov <prohps@yandex.ru>
+ */
+?>
+<?php $form=$this->beginWidget('CActiveForm', [
+	'method'=>'post',
+    'id'=>substr(md5(uniqid("", true)), 0, 7),
+    'enableAjaxValidation'=>false,
+    'enableClientValidation'=>false,
+]); ?>
+<div class="row form-group">
+	<div class="col-xs-4">
+		<?= $form->Label($modelPaid_Service, 'code', ['class'=>'control-label']); ?>
+		<?= $form->TextField($modelPaid_Service, 'code', ['class'=>'form-control input-sm',]); ?>
+	</div>
+	<div class="col-xs-4">
+		<?= $form->Label($modelPaid_Service, 'name', ['class'=>'control-label']); ?>
+		<?= $form->TextField($modelPaid_Service, 'name', ['class'=>'form-control input-sm',]); ?>
+	</div>
+	<div class="col-xs-4">
+		<?= $form->Label($modelPaid_Service->modelPaid_Service_Groups, 'name', ['class'=>'control-label']); ?>
+		<?= $form->TextField($modelPaid_Service->modelPaid_Service_Groups, 'name', ['class'=>'form-control input-sm',]); ?>
+		<?= $form->HiddenField($modelPaid_Service, 'hash'); ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<?= CHtml::ajaxButton('Применить фильтр', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('$("#modalSelectServicesBody .grid-view").yiiGridView("update", {data: $("#modalSelectServicesBody form").serialize()})')], ['class'=>'btn btn-primary btn-sm', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
+		<?= CHtml::ajaxButton('Очистить', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('returnPayment.ajaxSearch')], ['class'=>'btn btn-primary btn-sm', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
+	</div>
+</div>
+<?php $this->endWidget(); ?>
+
 <?php
 $this->widget('zii.widgets.grid.CGridView', [
 	'dataProvider'=>$modelPaid_Service->search(),

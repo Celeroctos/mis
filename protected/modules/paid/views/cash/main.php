@@ -108,7 +108,7 @@ $this->pageTitle='Касса';
 							'dateFormat'=>'yy-mm-dd',
 							'yearRange'=>'1900:'.Yii::app()->dateformatter->format('yyyy', time()),
 							'minDate'=>'1900-01-01',
-//							'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
+							'maxDate'=>Yii::app()->dateformatter->format('yyyy-MM-dd', time()),
 						],
 						'htmlOptions'=>[
 							'class'=>'form-control input-sm',

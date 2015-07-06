@@ -338,9 +338,9 @@
 .gridSearchServicesResult .filters{
     display: none;
 }
-/*.gridSelectServices .filters{
+.gridSelectServices .filters{
 	display: none;
-}*/
+}
 .gridChooseExpenses .filters{
 	display: none;
 }
@@ -366,13 +366,13 @@
 .pagination>.active>a{
     z-index: 1;
 }
-#selectedServicesTable{
+#selectedServicesTable td{
     word-break: break-all;
 }
 #Patients_snils{
     text-align: center;
 }
-#tableSelectionServices{
+#tableSelectionServices td{
     word-break: break-all;
 }
 .grid-view td{
