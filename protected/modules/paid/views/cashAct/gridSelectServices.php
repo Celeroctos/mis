@@ -35,8 +35,8 @@
 </div>
 <div class="row">
 	<div class="col-xs-12">
-		<?= CHtml::ajaxButton('Применить фильтр', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('$("#modalSelectServicesBody .grid-view").yiiGridView("update", {data: $("#modalSelectServicesBody form").serialize()})')], ['class'=>'btn btn-primary btn-sm', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
-		<?= CHtml::ajaxButton('Очистить', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('returnPayment.ajaxSearch')], ['class'=>'btn btn-primary btn-sm', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
+		<?= CHtml::button('Применить фильтр', ['class'=>'btn btn-primary btn-sm', 'id'=>'selectServicesFilter']); ?>
+		<?= CHtml::button('Очистить', ['class'=>'btn btn-primary btn-sm', 'id'=>'cleanSelectServicesFilter']); ?>
 	</div>
 </div>
 <?php $this->endWidget(); ?>

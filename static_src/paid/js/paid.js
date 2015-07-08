@@ -172,6 +172,17 @@ function selectServices(html) {
 	$('#punchButton').addClass('btn-default');
 	$('#modalSelectServicesBody').html(html);
     $('#modalSelectServices').modal('show');
+	
+	$('#selectServicesFilter').on('click', function () {
+		$("#modalSelectServicesBody .grid-view").yiiGridView("update", {data: $("#modalSelectServicesBody form").serialize()});
+	});
+	
+	$('#cleanSelectServicesFilter').on('click', function () {
+		$('input[name="Paid_Services[code]"]').val('');
+		$('input[name="Paid_Services[name]"]').val('');
+		$('input[name="Paid_Service_Groups[name]"]').val('');
+		$("#modalSelectServicesBody .grid-view").yiiGridView("update", {data: $("#modalSelectServicesBody form").serialize()});
+	});
 }
 
 /**
@@ -436,6 +447,8 @@ function classSelectServices() {
 
 	this.handlerHiddenModal=function () {
 		$('#modalSelectServices').on('hidden.bs.modal', function () {
+			$('#selectServicesFilter').off('click');
+			$('#cleanSelectServicesFilter').off('click');
 			i=0; //обнуляем через замыкание
 		});	
 	};
