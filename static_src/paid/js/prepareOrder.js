@@ -7,7 +7,7 @@
 	 * Creates a new prepareOrder.
 	 * @class
 	 */
-	function PrepareOrder() {	
+	function PrepareOrder() {
 			
 		/**
 		 * Возможные сценарии: создание и редактирование (1 и 0 соответственно).
@@ -140,6 +140,13 @@
 			function ajaxSuccess(html) {
 				
 				/**
+				 * Сформировать заказ
+				 */
+				function confirmPrepareOrder() {
+					
+				}
+				
+				/**
 				 * Заполнение модали контентом.
 				 */
 				$('#modalSelectServicesBody').html(html);
@@ -167,19 +174,22 @@
 				});
 				
 				$(document).on('click', '#modalSelectServicesBody .gridSelectServices tbody tr', selectedService);
-				$(document).on('click', '#prepareOrderConfirm', function () {
-					
-				});
+				$(document).on('click', '#confirmPrepareOrder', confirmPrepareOrder);
+				scenario = 0; // перешли в режим редактирования
 			};
 
-			/**
-			 * ajax request.
-			 */
-			$.ajax({
-				url: '/paid/cashAct/SelectServices',
-				method: 'post',
-				success: ajaxSuccess
-			});
+			if(scenario===0) { // заказ уже был создан, его нужно просто отредактировать.
+				$('#modalSelectServices').modal('show'); // z-index: 1040 (default)
+			} else { // иначе создаём заказ.
+				/**
+				 * ajax request.
+				 */
+				$.ajax({
+					url: '/paid/cashAct/SelectServices',
+					method: 'post',
+					success: ajaxSuccess
+				});
+			}
 		}
 		
 		/**
@@ -187,12 +197,12 @@
 		 * @callback
 		 * @private
 		 */
-		function hiddenServicesModal() {
-			$('#selectServicesFilter').off('click');
-			$('#cleanSelectServicesFilter').off('click');
-			$(document).off('click', '#modalSelectServicesBody .gridSelectServices tbody tr');
-			$('#modalSelectServicesBody').empty();
-		}
+//		function hiddenServicesModal() {
+//			$('#selectServicesFilter').off('click');
+//			$('#cleanSelectServicesFilter').off('click');
+//			$(document).off('click', '#modalSelectServicesBody .gridSelectServices tbody tr');
+//			$('#modalSelectServicesBody').empty();
+//		}
 		
 		function hiddenDoctorsModal() {
 			$('#modalSelectDoctorsBody').empty();
@@ -213,7 +223,7 @@
 			/**
 			 * Отключаем все обработчики при скрытии модали.
 			 */
-			$(document).on('hidden.bs.modal', '#modalSelectServices', hiddenServicesModal);
+//			$(document).on('hidden.bs.modal', '#modalSelectServices', hiddenServicesModal);
 			$(document).on('hidden.bs.modal', '#modalSelectDoctors', hiddenDoctorsModal);
 		};	
 	}

@@ -19,7 +19,7 @@
 			<div class="modal-body" id="modalSelectServicesBody">
 			</div>
 			<div class="modal-footer">
-				<button type="button" id="prepareOrderConfirm" class="btn btn-primary" data-dismiss="modal">Сформировать заказ</button>
+				<button type="button" id="confirmPrepareOrder" class="btn btn-primary" data-dismiss="modal">Сформировать заказ</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
 			</div>
 		</div>

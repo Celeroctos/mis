@@ -438,7 +438,7 @@ class CashActController extends MPaidController
 	
 	public function actionReturnServicePrice($service_id)
 	{
-		$recordService=  Paid_Services::model()->findByPk($service_id);
+		$recordService=Paid_Services::model()->findByPk($service_id);
 		
 		if($recordService===null)
 		{
