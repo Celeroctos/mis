@@ -62,7 +62,7 @@ $this->pageTitle='Пациент';
 	<?php $this->widget('PaidActWidget', ['modelPatient'=>$modelPatient]); ?>
 </div>
 <?php $this->widget('PaidCashPunch'); ?>
-<div class="modal" id="modalSelectServices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--<div class="modal" id="modalSelectServices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalSelectServices">
 		<div class="modal-content b-modalContentSelectServices b-paid__modalHeader">
 			<div class="modal-body" id="modalSelectServicesBody">
@@ -84,7 +84,7 @@ $this->pageTitle='Пациент';
 			</div>
 		</div>
 	</div>
-</div>
+</div>-->
 <div class="modal" id="modalSelectExpenses" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalSelectExpenses">
 		<div class="modal-content b-modalSelectExpenseServices__content b-paid__modalHeader">

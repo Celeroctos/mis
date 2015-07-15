@@ -6,12 +6,6 @@
 ?>
 <h4>Выберите услуги</h4>
 <br>
-<?php
-/**
- * Шаблон поиска по возвратам платежей.
- * @author Dzhamal Tayibov <prohps@yandex.ru>
- */
-?>
 <?php $form=$this->beginWidget('CActiveForm', [
 	'method'=>'post',
     'id'=>substr(md5(uniqid("", true)), 0, 7),
@@ -137,7 +131,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 ]);
 ?>
 <h4>Выбранные услуги</h4>
-<table id="tableSelectionServices" class="table table-bordered table-striped">
+<table id="tablePrepareOrderServices" class="table table-bordered table-striped">
 	<thead>
 		<th>
 			Код услуги
@@ -165,8 +159,8 @@ $this->widget('zii.widgets.grid.CGridView', [
 		</th>
 	</thead>
 	<tbody>
-		<tr class="empty">
+<!--		<tr class="empty">
 			<td colspan="7"><span>Пусто</span></td>
-		</tr>
+		</tr>-->
 	</tbody>
 </table>

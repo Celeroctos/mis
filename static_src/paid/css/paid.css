@@ -204,7 +204,7 @@
 		background-color: #f5f5f5;
 		cursor: pointer;
 	}
-	.gridChooseDoctor tbody tr:hover{
+	.gridSelectDoctors tbody tr:hover{
 		background-color: #f5f5f5;
 		cursor: pointer;
 	}
@@ -372,17 +372,20 @@
 #Patients_snils{
     text-align: center;
 }
-#tableSelectionServices td{
+#tablePrepareOrderServices td{
     word-break: break-all;
 }
 .grid-view td{
     word-break: break-all; 
 }
 #Paid_Services_since_date, #Paid_Services_exp_date{
-	text-align: center;
+    text-align: center;
 }
 #Patients_birthday{
-	text-align: center;
+    text-align: center;
+}
+.indexOrder{
+    display: none;
 }
 /*.b-paidHeader{
     margin-bottom: 10px;

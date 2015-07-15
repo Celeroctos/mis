@@ -414,6 +414,7 @@ class CashController extends MPaidController
 //			$contact->isNewRecord = true;
 //		}
 		
+		Yii::app()->clientScript->registerPackage('prepareOrder');
 		Yii::app()->clientScript->registerPackage('updatePatient');
 		$modelPatient=Patients::model()->findByPk($patient_id);
 		

@@ -51,6 +51,15 @@ return [
 				'jquery',
 			],
 		],
+		'prepareOrder'=>[
+			'baseUrl'=>_STATIC . '/paid/',
+			'js'=>[
+				'js/prepareOrder.js',
+			],
+			'depends'=>[
+				'bootstrap',
+			]
+		],
 		'datetimepicker'=>[
 			'baseUrl'=>_STATIC . '/datetimepicker/',
 			'js'=>[

@@ -35,22 +35,6 @@ class CashActController extends MPaidController
 	}
 	
 	/**
-	 * 
-	 */
-	public function actionGridSelectServices()
-	{
-		self::disableScripts();
-		
-		$modelPaid_Service=new Paid_Services('paid.cashAct.select');
-		$modelPaid_Service->modelPaid_Service_Groups=new Paid_Service_Groups('paid.cashAct.select'); //for search in CGridView
-		$modelDoctors=new Doctors();
-		
-		$modelPaid_Service->attributes=Yii::app()->request->getPost('Paid_Services');
-		$modelPaid_Service->modelPaid_Service_Groups->attributes=Yii::app()->request->getPost('Paid_Service_Groups'); //for search in CGridView
-				
-	}
-	
-	/**
 	 * Выбор услуг (CGridView) в модальном окне
 	 * Грузится из экшна /paid/cash/actionpatient() ajax-запросом.
 	 * Результат грузится в модальное окно.
@@ -205,12 +189,12 @@ class CashActController extends MPaidController
 	}
 	
 	/**
-	 * Используется ответом на ajax-запрос при выборе услуги (двойном
+	 * Используется ответом на ajax-запрос при выборе услуги (
 	 * нажатии по записи в таблице).
 	 * Смотри classSelectServices() в paid.js
 	 * @param $code код услуги из хранилища, по которой был произведен двойной клик.
 	 */
-	public function actionChooseDoctor($code)
+	public function actionSelectDoctors($code)
 	{
 		self::disableScripts();
 		Yii::app()->clientScript->scriptMap['jquery.yiigridview.js']=false;
@@ -240,7 +224,15 @@ class CashActController extends MPaidController
 		}
 		
 		$dataProvider=new CActiveDataProvider($modelDoctors, ['criteria'=>$criteria, 'pagination'=>['pageSize'=>Doctors::PAGE_SIZE]]);
-		$this->renderPartial('gridChooseDoctor', ['modelDoctors'=>$modelDoctors, 'dataProvider'=>$dataProvider], false, true);
+		$this->renderPartial('gridSelectDoctors', ['modelDoctors'=>$modelDoctors, 'dataProvider'=>$dataProvider], false, true);
+	}
+	
+	/**
+	 * 
+	 */
+	public function actionTempPrepareOrder()
+	{
+		
 	}
 	
 	/**
