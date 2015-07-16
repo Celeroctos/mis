@@ -8,7 +8,10 @@
 	 * @class
 	 */
 	function PrepareOrder() {
-			
+		
+		var url = document.location.href;
+		
+		var parseUrl = url.split('/');
 		/**
 		 * Возможные сценарии: создание и редактирование (1 и 0 соответственно).
 		 * @default
@@ -28,6 +31,12 @@
 		var indexOrder = 0;
 		
 		/**
+		 * #ID сфоромированного заказа.
+		 * @type Number
+		 */
+		var orderId = -1;
+		
+		/**
 		 * This callback uses in handler onclick.
 		 * @private
 		 * @callback
@@ -41,14 +50,20 @@
 			function selectedService() {
 				
 				/**
-				 * Сохраняем состояние контекста
+				 * Сохраняем состояние контекста.
 				 * @var
 				 * @type jQuery
 				 */
 				var thisService = $(this).clone();
 				
 				/**
-				 * Код выбранной услуги
+				 * <td></td> тег, на удаление строки таблицы.
+				 * @type jQuery
+				 */
+				var tagRemove;
+				
+				/**
+				 * Код выбранной услуги.
 				 * @var
 				 */
 				var codeService = $(this).find('.codeService').html();
@@ -66,49 +81,49 @@
 				function selectedDoctor() {
 					
 					/**
-					 * ID выбранного доктора
+					 * ID выбранного доктора.
 					 * @var
 					 */
 					var doctorId = $(this).find('.doctorId').html();
 					
 					/**
-					 * Сохраняем контекст
+					 * Сохраняем контекст.
 					 * @var
 					 */
 					var thisDoctor = this;
 					
 					/**
-					 * Фамилия доктора
+					 * Фамилия доктора.
 					 * @var
 					 */
 					var lastName = $(thisDoctor).find('.lastName').text();
 					
 					/**
-					 * Имя доктора
+					 * Имя доктора.
 					 * @var
 					 */
 					var firstName = $(thisDoctor).find('.firstName').text();
 					
 					/**
-					 * Отчество доктора
+					 * Отчество доктора.
 					 * @var
 					 */
 					var middleName = $(thisDoctor).find('.middleName').text();
 					
-					modelOrder[indexOrder]=[serviceId, doctorId]; // заполняем заказ
-					indexOrder++;
+					modelOrder[indexOrder]={'serviceId': serviceId, 'doctorId': doctorId}; // заполняем заказ
 					
 					$('#modalSelectDoctors').modal('hide');
 					
 					thisService.css('opacity', 0);
-					thisService.append('<td>' + lastName + ' ' + firstName + ' ' + middleName + '</td><td class="b-paid__removeGrid"><span class="indexOrder">' + indexOrder +'</span><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
+					tagRemove = $('<td class="b-paid__removeGrid"><span class="indexOrder">' + indexOrder +'</span><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
+					thisService.append('<td>' + lastName + ' ' + firstName + ' ' + middleName + '</td>').append(tagRemove);
 					$('#tablePrepareOrderServices tbody').append(thisService);
 					thisService.animate({opacity: 1}, 200);
+					indexOrder++; // следующая строка заказа
 					
-					thisService.on('click', function () {
-						
-						$(this).animate({opacity: 0}, 150, function () {
-							$(this).detach();
+					tagRemove.on('click', function () {
+						thisService.animate({opacity: 0}, 150, function () {
+							thisService.detach();
 						});
 					});
 				}
@@ -140,10 +155,36 @@
 			function ajaxSuccess(html) {
 				
 				/**
-				 * Сформировать заказ
+				 * @callback
+				 * @param {Number} id #ID заказа
+				 */
+				function ajaxOrderSuccess(id) {
+					orderId=id;
+					scenario = 0; // перевод на редактирование
+				}
+				
+				/**
+				 * Сформировать заказ.
 				 */
 				function confirmPrepareOrder() {
 					
+					var urlAjax;
+					// заполняем orderId после AJAX-запроса if(scenario) создаем заказ или редактируем
+					$('#modalSelectServices').modal('hide');
+					$('#beginPrepareOrder').attr('value', 'Редактировать');
+					
+					if(scenario===0) { // если мы перешли на редактирование, то нужно указать заказ для его удаления, чтобы добавить другой
+						urlAjax = '/paid/cashAct/orderForm/scenario/' + scenario + '/order_id/' + orderId;
+					} else { // если сформировали заказ в первый раз (scenario == 1)
+						urlAjax = '/paid/cashAct/orderForm/scenario/' + scenario;
+					}
+					
+					$.ajax({
+						url: urlAjax,
+						data: {orderForm: modelOrder, patientId: parseUrl[7]},
+						success: ajaxOrderSuccess,
+						method: 'post'
+					});
 				}
 				
 				/**
@@ -172,18 +213,17 @@
 					$('input[name="Paid_Service_Groups[name]"]').val('');
 					$("#modalSelectServicesBody .grid-view").yiiGridView("update", {data: $("#modalSelectServicesBody form").serialize()});
 				});
-				
 				$(document).on('click', '#modalSelectServicesBody .gridSelectServices tbody tr', selectedService);
 				$(document).on('click', '#confirmPrepareOrder', confirmPrepareOrder);
-				scenario = 0; // перешли в режим редактирования
+				
+				// завершаем раскрытие модального окна. Переводим состояние в режим редактирования.
 			};
 
-			if(scenario===0) { // заказ уже был создан, его нужно просто отредактировать.
-				$('#modalSelectServices').modal('show'); // z-index: 1040 (default)
-			} else { // иначе создаём заказ.
-				/**
-				 * ajax request.
-				 */
+			if(scenario===0) { // заказ уже был создан, его нужно просто отредактировать
+				$('#confirmPrepareOrder').text('Редактировать заказ');
+				$('#modalSelectServices').modal('show'); // z-index: 1040
+			} else { // иначе создаём заказ
+				hiddenServicesModal(); // удаляем обработчики, т.к. не сформировали заказ ещё.
 				$.ajax({
 					url: '/paid/cashAct/SelectServices',
 					method: 'post',
@@ -197,12 +237,17 @@
 		 * @callback
 		 * @private
 		 */
-//		function hiddenServicesModal() {
-//			$('#selectServicesFilter').off('click');
-//			$('#cleanSelectServicesFilter').off('click');
-//			$(document).off('click', '#modalSelectServicesBody .gridSelectServices tbody tr');
-//			$('#modalSelectServicesBody').empty();
-//		}
+		function hiddenServicesModal() {
+			if(scenario===1) { // если не был сформирован заказ, то модаль сбрасывается.
+				$('#selectServicesFilter').off('click');
+				$('#cleanSelectServicesFilter').off('click');
+				$(document).off('click', '#modalSelectServicesBody .gridSelectServices tbody tr');
+				$(document).off('click', '#confirmPrepareOrder');
+				$('#modalSelectServicesBody').empty();
+				modelOrder=[]; // чистим заказ.
+				indexOrder=0;
+			}
+		}
 		
 		function hiddenDoctorsModal() {
 			$('#modalSelectDoctorsBody').empty();

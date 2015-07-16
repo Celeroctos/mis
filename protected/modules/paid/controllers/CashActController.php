@@ -336,8 +336,9 @@ class CashActController extends MPaidController
 	/**
 	 *	Добавление заказа и его счета (сформировать заказ)
 	 * classSelectServices() из paid.js (ajax-запрос)
+	 * @param $scenario integer 0 - редактирование, 1 - создание
 	 */
-	public function actionOrderForm()
+	public function actionOrderForm($scenario, $order_id=null)
 	{
 		if(!Yii::app()->request->isAjaxRequest)
 		{ //только AJAX запросы.
@@ -350,18 +351,24 @@ class CashActController extends MPaidController
 		 * данного массива)
 		 */
 		$ordersForm=Yii::app()->request->getPost('orderForm');
-		
 		if($ordersForm!==null) //заказ отправлен
 		{
 			$modelPaid_Orders=new Paid_Orders('paid.cashAct.create'); //создаем заказ.
 //			$modelPaid_Orders->name=null; //сомнительный параметр, в будущем удалить
-			$modelPaid_Orders->patient_id=Yii::app()->request->getPost('patient_id');
+			$modelPaid_Orders->patient_id=Yii::app()->request->getPost('patientId');
 			$modelPaid_Orders->user_create_id=Yii::app()->user->id;
 			$modelPaid_Orders->order_number=Paid_Orders::generateRandNumber(); //генерация номера заказа
 			$modelPaid_Orders->number_contract=Paid_Orders::contractSequenceNumber();
 			$transaction=Yii::app()->db->beginTransaction();
 			try
 			{
+				if($scenario==0)
+				{ // если заказ повешен на редактирование
+					Paid_Orders::model()->deleteByPk($order_id);
+					Paid_Order_Details::model()->deleteAll('paid_order_id=:order_id', [':order_id'=>$order_id]);
+					Paid_Expenses::model()->deleteAll('paid_order_id=:order_id', [':order_id'=>$order_id]);
+				}
+				
 				$errorCount=0;
 				while(true)
 				{
@@ -414,8 +421,13 @@ class CashActController extends MPaidController
 					}
 					$modelPaid_Order_Details->isNewRecord=true;
 				}
-				$recordPaid_Expenses=Paid_Expenses::model()->findByPk(Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq'));
-
+				$recordPaid_Expenses=Paid_Expenses::model()->find('paid_order_id=:paid_order_id', [':paid_order_id'=>Yii::app()->db->getLastInsertID('paid.paid_orders_paid_order_id_seq')]);
+				
+				if($recordPaid_Expenses===null)
+				{
+					throw new CHttpException(404, 'Не удалось найти счёт.');
+				}
+				
 				$recordPaid_Expenses->price=$priceSum;
 
 				if(!$recordPaid_Expenses->save())
