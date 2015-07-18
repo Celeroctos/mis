@@ -9,9 +9,16 @@
 	 */
 	function PrepareOrder() {
 		
+		/**
+		 * URL страницы.
+		 */
 		var url = document.location.href;
 		
+		/**
+		 * Парсим url, для дальнейшего извлечения patient_id
+		 */
 		var parseUrl = url.split('/');
+		
 		/**
 		 * Возможные сценарии: создание и редактирование (1 и 0 соответственно).
 		 * @default
@@ -110,20 +117,37 @@
 					 */
 					var middleName = $(thisDoctor).find('.middleName').text();
 					
-					modelOrder[indexOrder]={'serviceId': serviceId, 'doctorId': doctorId}; // заполняем заказ
+					modelOrder.push({'serviceId': serviceId, 'doctorId': doctorId}); // заполняем заказ
 					
 					$('#modalSelectDoctors').modal('hide');
 					
 					thisService.css('opacity', 0);
-					tagRemove = $('<td class="b-paid__removeGrid"><span class="indexOrder">' + indexOrder +'</span><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
-					thisService.append('<td>' + lastName + ' ' + firstName + ' ' + middleName + '</td>').append(tagRemove);
+					tagRemove = $('<td class="b-paid__removeGrid"><span class="indexOrder">' + indexOrder + '</span><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
+					thisService.append('<td><div class="doctorId">' + doctorId + '</div>' + lastName + ' ' + firstName + ' ' + middleName + '</td>').append(tagRemove);
 					$('#tablePrepareOrderServices tbody').append(thisService);
 					thisService.animate({opacity: 1}, 200);
-					indexOrder++; // следующая строка заказа
-					
+//					indexOrder++; // следующая строка заказа
 					tagRemove.on('click', function () {
+						
 						thisService.animate({opacity: 0}, 150, function () {
+							
+							var index=0;
+							var j=0;
+							var modelTemp=[];
+							
+							for(var i=0; i<modelOrder.length; i++) {
+								if(modelOrder[i]!==undefined) { // алгоритм обновления массива заказанных услуг при удалении из него услуги
+									if(modelOrder[i].serviceId!==serviceId && modelOrder[i].doctorId!==doctorId && j===0) {
+										modelTemp[index]=modelOrder[i];
+										j++; // аналог DISTINCT
+										index++;
+									}
+								}
+							}
+							
+							modelOrder=modelTemp;
 							thisService.detach();
+			
 						});
 					});
 				}
@@ -149,11 +173,10 @@
 			}
 			
 			/**
-			 * @callback
-			 * @param {String} html
+			 * Сформировать заказ.
 			 */
-			function ajaxSuccess(html) {
-				
+			function confirmPrepareOrder() {
+
 				/**
 				 * @callback
 				 * @param {Number} id #ID заказа
@@ -162,30 +185,32 @@
 					orderId=id;
 					scenario = 0; // перевод на редактирование
 				}
-				
-				/**
-				 * Сформировать заказ.
-				 */
-				function confirmPrepareOrder() {
-					
-					var urlAjax;
-					// заполняем orderId после AJAX-запроса if(scenario) создаем заказ или редактируем
-					$('#modalSelectServices').modal('hide');
-					$('#beginPrepareOrder').attr('value', 'Редактировать');
-					
-					if(scenario===0) { // если мы перешли на редактирование, то нужно указать заказ для его удаления, чтобы добавить другой
-						urlAjax = '/paid/cashAct/orderForm/scenario/' + scenario + '/order_id/' + orderId;
-					} else { // если сформировали заказ в первый раз (scenario == 1)
-						urlAjax = '/paid/cashAct/orderForm/scenario/' + scenario;
-					}
-					
-					$.ajax({
-						url: urlAjax,
-						data: {orderForm: modelOrder, patientId: parseUrl[7]},
-						success: ajaxOrderSuccess,
-						method: 'post'
-					});
+
+				var urlAjax;
+
+				// заполняем orderId после AJAX-запроса if(scenario) создаем заказ или редактируем
+				$('#modalSelectServices').modal('hide');
+				$('#beginPrepareOrder').attr('value', 'Редактировать');
+
+				if(scenario===0) { // если мы перешли на редактирование, то нужно указать заказ для его удаления, чтобы добавить другой
+					urlAjax = '/paid/cashAct/orderForm/scenario/' + scenario + '/order_id/' + orderId;
+				} else { // если сформировали заказ в первый раз (scenario == 1)
+					urlAjax = '/paid/cashAct/orderForm/scenario/' + scenario;
 				}
+
+				$.ajax({
+					url: urlAjax,
+					data: {orderForm: modelOrder, patientId: parseUrl[7]},
+					success: ajaxOrderSuccess,
+					method: 'post'
+				});
+			}
+			
+			/**
+			 * @callback
+			 * @param {String} html
+			 */
+			function ajaxSuccess(html) {
 				
 				/**
 				 * Заполнение модали контентом.

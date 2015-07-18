@@ -350,9 +350,9 @@ class CashActController extends MPaidController
 		 * Из этих данных в последующем будут формироваться направления (группировка по группам и врачам из
 		 * данного массива)
 		 */
-		$ordersForm=Yii::app()->request->getPost('orderForm');
-		if($ordersForm!==null) //заказ отправлен
-		{
+		$ordersForm=Yii::app()->request->getPost('orderForm')? Yii::app()->request->getPost('orderForm'): [];
+//		if($ordersForm!==null) //заказ отправлен
+//		{
 			$modelPaid_Orders=new Paid_Orders('paid.cashAct.create'); //создаем заказ.
 //			$modelPaid_Orders->name=null; //сомнительный параметр, в будущем удалить
 			$modelPaid_Orders->patient_id=Yii::app()->request->getPost('patientId');
@@ -445,7 +445,11 @@ class CashActController extends MPaidController
 				$transaction->rollback();
 				throw $e;
 			}
-		}
+//		}
+//		else { // пустой заказ
+//			echo -1;
+//			Yii::app()->end();
+//		}
 	}
 	
 	public function actionReturnServicePrice($service_id)
