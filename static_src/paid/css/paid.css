@@ -387,6 +387,12 @@
 .indexOrder{
     display: none;
 }
+#selectedServicesTable .b-paid__removeGrid{
+    display: none;
+}
+#selectedServicesTable .prepareOrderServicesHeadRemove{
+    display: none;
+}
 /*.b-paidHeader{
     margin-bottom: 10px;
 }*/

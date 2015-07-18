@@ -122,8 +122,8 @@
 					$('#modalSelectDoctors').modal('hide');
 					
 					thisService.css('opacity', 0);
-					tagRemove = $('<td class="b-paid__removeGrid"><span class="indexOrder">' + indexOrder + '</span><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
-					thisService.append('<td><div class="doctorId">' + doctorId + '</div>' + lastName + ' ' + firstName + ' ' + middleName + '</td>').append(tagRemove);
+					tagRemove = $('<td class="b-paid__removeGrid"><span class="b-paid__removeGridGl glyphicon glyphicon-remove" aria-hidden="true"></span></td>');
+					thisService.append('<td>' + lastName + ' ' + firstName + ' ' + middleName + '</td>').append(tagRemove);
 					$('#tablePrepareOrderServices tbody').append(thisService);
 					thisService.animate({opacity: 1}, 200);
 //					indexOrder++; // следующая строка заказа
@@ -184,6 +184,11 @@
 				function ajaxOrderSuccess(id) {
 					orderId=id;
 					scenario = 0; // перевод на редактирование
+					var tableOrder=$('#tablePrepareOrderServices').clone();
+					$('#selectedServicesTable').empty();
+					$('#selectedServicesTable').html('<table class="table table-bordered table-striped"></table>');
+					$('#selectedServicesTable').find('table').append(tableOrder.find('thead'));
+					$('#selectedServicesTable').find('table').append(tableOrder.find('tbody'));
 				}
 
 				var urlAjax;

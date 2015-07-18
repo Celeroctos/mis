@@ -154,7 +154,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 		<th>
 			Действует до
 		</th>-->
-		<th>
+		<th class="prepareOrderServicesHeadRemove">
 			Удаление
 		</th>
 	</thead>
