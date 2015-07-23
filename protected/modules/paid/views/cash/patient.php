@@ -104,7 +104,7 @@ $this->pageTitle='Пациент';
 			<div class="modal-body" id="modalSelectExpenseServicesBody">
 			</div>
 			<div class="modal-footer">
-				<?= CHtml::button('Выбрать', ['class'=>'btn btn-primary', 'id'=>'chooseNoPaidExpense']); ?>
+				<?= CHtml::button('Выбрать', ['class'=>'btn btn-primary', 'id'=>'confirmExpenseOrder']); ?>
 				<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 			</div>
 		</div>

@@ -32,6 +32,7 @@ class Paid_Order_Details extends ActiveRecord
 	{
 		return [
 			'doctor_id'=>'Врач',
+			'doctorName'=>'Врач',
 		];
 	}
 	

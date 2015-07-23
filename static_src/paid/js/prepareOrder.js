@@ -1,6 +1,7 @@
 /**
  * @version 1.0
  * @module prepare order
+ * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 (function() {
 	/**
@@ -17,7 +18,7 @@
 		/**
 		 * Парсим url, для дальнейшего извлечения patient_id
 		 */
-		var parseUrl = url.split('/');
+		var parseUrl = url.split('/'); // parseUrl[7] = patientId
 		
 		/**
 		 * Возможные сценарии: создание и редактирование (1 и 0 соответственно).
@@ -42,6 +43,35 @@
 		 * @type Number
 		 */
 		var orderId = -1;
+		
+		/**
+		 * Номер счёта
+		 * @type Number
+		 */
+		var expenseNumber;
+
+		/**
+		 * @callback
+		 * Пробить чек
+		 */
+		function punch() {
+			if(orderId>0) {
+				function ajaxSuccessJsonReferrals(jsonResponse) {
+					var referrals=$.parseJSON(jsonResponse);
+					for(var i=0; i<referrals.length; i++) { // печатаем все направления
+						window.open('/paid/cashAct/printReferral/paid_referral_id/' + referrals[i], '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
+					}
+					location.reload();				
+				}
+
+				$.ajax({
+					url: '/paid/cashAct/punch/paid_order_id/' + orderId + '/patient_id/' + parseUrl[7],
+					success: ajaxSuccessJsonReferrals
+				});
+			} else {
+				$('#punchButton').prop('disabled', true);
+			}
+		}
 		
 		/**
 		 * This callback uses in handler onclick.
@@ -176,7 +206,7 @@
 			 * Сформировать заказ.
 			 */
 			function confirmPrepareOrder() {
-
+				
 				/**
 				 * @callback
 				 * @param {Number} id #ID заказа
@@ -189,6 +219,11 @@
 					$('#selectedServicesTable').html('<table class="table table-bordered table-striped"></table>');
 					$('#selectedServicesTable').find('table').append(tableOrder.find('thead'));
 					$('#selectedServicesTable').find('table').append(tableOrder.find('tbody'));
+					
+					window.open('/paid/cashAct/printExpense/paid_order_id/' + orderId, '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');
+					window.open('/paid/cashAct/printContract/order_id/' + orderId, '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');		
+					
+					$('#punchButton').prop('disabled', false);
 				}
 
 				var urlAjax;
@@ -263,6 +298,35 @@
 		}
 		
 		/**
+		 * @callback
+		 */
+		function loadPrepareOrder() {
+			
+			
+			expenseNumber = $('._expense_number').text();
+			scenario = 1;
+			
+			$.ajax({
+				url: '/paid/cashAct/PrepareOrder/expense_number/' + expenseNumber,
+				method: 'get',
+				success: function (localOrderId) {
+					orderId=localOrderId;
+					var tableOrder=$('.gridChooseExpenseServices').clone();
+					$('#selectedServicesTable').empty();
+					$('#selectedServicesTable').html('<table class="table table-bordered table-striped"></table>');
+					$('#selectedServicesTable').find('table').append(tableOrder.find('thead'));
+					$('#selectedServicesTable').find('table').append(tableOrder.find('tbody'));
+				
+					$('#beginPrepareOrder').attr('value', 'Выбрать услуги');
+					$('#modalSelectExpenses').modal('hide');
+					$('#modalSelectExpenseServices').modal('hide');
+					
+					$('#punchButton').prop('disabled', false);		
+				}
+			});
+		}
+		
+		/**
 		 * to turn off events
 		 * @callback
 		 * @private
@@ -294,6 +358,16 @@
 			 * Начинаем подготовку услуг для заказа.
 			 */
 			$(document).on('click ', '#beginPrepareOrder', loadServicesModal);
+			
+			/**
+			 * Выбранный счёт
+			 */
+			$(document).on('click', '#confirmExpenseOrder', loadPrepareOrder);
+			
+			/**
+			 * Пробивка чека, кнопку надо разблокировать
+			 */
+			$(document).on('click', '#punchButton', punch);
 			
 			/**
 			 * Отключаем все обработчики при скрытии модали.

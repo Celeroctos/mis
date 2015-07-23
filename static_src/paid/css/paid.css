@@ -1,5 +1,5 @@
 .container{
-	width: 970px !important;
+    width: 970px !important;
 }
 .b-content{ /*Yii content container*/
     margin-bottom: 8px;
@@ -17,19 +17,19 @@
     margin-bottom: 7px;
 }
     .b-paidNavJ__li{ /*journal nav*/
-            border-radius: 5px 5px 5px 5px;
-			margin-right: 1px;
-            box-shadow: 0px 0px 1px rgba(0,0,0,0.65);
+        border-radius: 5px 5px 5px 5px;
+        margin-right: 1px;
+        box-shadow: 0px 0px 1px rgba(0,0,0,0.65);
     }
 .b-modalSelectServices{
-	min-height: 300px;
+    min-height: 300px;
 }
 .b-modalSelectServices td{
     vertical-align: middle !important;
 }
 #selectedServicesTable td, th{
-	vertical-align: middle !important;
-	text-align: center;
+    vertical-align: middle !important;
+    text-align: center;
 }
 .b-phones{
 	
@@ -41,31 +41,31 @@
 	
 }
 	.b-documentUpdate__row{
-		margin-top: 1px;
+            margin-top: 1px;
 	}
 	.b-documentUpdate__spanPlus{
-        color: gray;
-        font-size: 12px;
-        cursor: default;
-        margin-left: 1px !important;
-        margin-top: 30px;
-        cursor: default;		
+            color: gray;
+            font-size: 12px;
+            cursor: default;
+            margin-left: 1px !important;
+            margin-top: 30px;
+            cursor: default;		
 	}
 	.b-documentUpdate__spanPlus:hover{
-        color: black !important;		
+            color: black !important;		
 	}
 	.b-documentUpdate__spanMinus{
-		color: gray;
-        font-size: 15px;
-        cursor: default;
-        margin-top: 5px;
-        cursor: default;
+            color: gray;
+            font-size: 15px;
+            cursor: default;
+            margin-top: 5px;
+            cursor: default;
 	}
 	.b-documentUpdate__spanMinus:hover{
         color: black;		
 	}
 	.b-documentUpdate__delete{
-		padding-left: 0px !important;
+            padding-left: 0px !important;
 	}
 	
 .b-paid{
@@ -73,95 +73,95 @@
     box-shadow: 0px 1px 7px rgba(0,0,0,0.30);
 }
 	.b-paid__contactUpdatePatient{
-		margin-bottom: 2px;
+            margin-bottom: 2px;
 	}
     .b-paid__searchHeader{
-            margin-top: 0px;
+        margin-top: 0px;
     }
 	.b-paid__checkBoxListDoctors{
-		overflow-y: scroll !important;
-		height: 300px !important;
-		border-left: solid 1px #f5f5f5;
-		border-top: solid 1px #f5f5f5;
-		border-bottom: solid 1px #f5f5f5;
-		border-radius: 5px 0 0px 5px;
-		padding-top: 7px;
-		padding-bottom: 5px;
+            overflow-y: scroll !important;
+            height: 300px !important;
+            border-left: solid 1px #f5f5f5;
+            border-top: solid 1px #f5f5f5;
+            border-bottom: solid 1px #f5f5f5;
+            border-radius: 5px 0 0px 5px;
+            padding-top: 7px;
+            padding-bottom: 5px;
 	}
 	.b-paid__checkBoxListDoctors span{
-		text-align: left;
-		display: block;
-		padding-left: 15px;
+            text-align: left;
+            display: block;
+            padding-left: 15px;
 	}
 	.b-paid__punchButtons{
-		text-align: right;
+            text-align: right;
 	}
     .b-paid__serviceSearchButton{
-            margin-top: 25px;
+        margin-top: 25px;
     }
 	.b-paid__selectedServicesTable{
 		
 	}
     .b-paid__Row{
-            padding-bottom: 3px;
-            border-top: 1px solid #f5f5f5;
-            margin-top: 5px;
+        padding-bottom: 3px;
+        border-top: 1px solid #f5f5f5;
+        margin-top: 5px;
     }
     .b-paid__selectServicePagination{
-            margin: 0;
+        margin: 0;
     }
     .pager{
-            text-align: center !important;
+        text-align: center !important;
     }
     .b-paid__selectHeader{
-            text-align: center;
-            margin-bottom: 15px;
-            margin-top: 40px;
+        text-align: center;
+        margin-bottom: 15px;
+        margin-top: 40px;
     }
     .b-paid__hr{
-            margin-bottom: 10px;
-            margin-top: 10px;
-            margin-left: 15px;
-            margin-right: 15px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        margin-left: 15px;
+        margin-right: 15px;
     }
     .b-paid__summHeader{
-		font-size: 19px;
-		height: 25px;
-		min-width: 130px;
-		display: inline-block;
+        font-size: 19px;
+        height: 25px;
+        min-width: 130px;
+        display: inline-block;
     }
 	.b-paid__returnPrice{
-		font-size: 19px;
-		min-width: 130px;	
-		margin-bottom: 10px;
+            font-size: 19px;
+            min-width: 130px;	
+            margin-bottom: 10px;
 	}
 	.b-paid__tableMoney td{
-		text-align: center;
-		vertical-align: middle;
-		font-weight: bold;
-		font-size: 15px;
-		padding: 2px;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 2px;
 	}
 	.b-paid__tableMoney{
-		margin-top: 3px;
-		float: right;
+            margin-top: 3px;
+            float: right;
 	}
     .b-paid_UL{
-            padding-left: 20px;
+        padding-left: 20px;
     }
     .b-paid_position{
-            margin-bottom: 5px;
-            position: relative !important;
-            min-height: 350px;
+        margin-bottom: 5px;
+        position: relative !important;
+        min-height: 350px;
     }
     .b-paid_grid_position{
-            position: absolute;
-            bottom: 0px;
-            right: 0px;
+        position: absolute;
+        bottom: 0px;
+        right: 0px;
     }
     .b-paid__borderRight{
-            padding-top: 15px;
-            border-right: 1px solid #f5f5f5;
+        padding-top: 15px;
+        border-right: 1px solid #f5f5f5;
     }
     .b-paid__bodyLeft{
         box-shadow: 0px 1px 7px rgba(0,0,0,0.30);
@@ -194,19 +194,19 @@
 /*        vertical-align: bottom !important;*/
     }
 	.b-paid__searchExpenseButton{
-		text-align: left;
+            text-align: left;
 	}
     .gridSelectServices tbody tr:hover{
         background-color: #f5f5f5;
         cursor: pointer;
     }
 	.gridChooseExpenses tbody tr:hover{
-		background-color: #f5f5f5;
-		cursor: pointer;
+            background-color: #f5f5f5;
+            cursor: pointer;
 	}
 	.gridSelectDoctors tbody tr:hover{
-		background-color: #f5f5f5;
-		cursor: pointer;
+            background-color: #f5f5f5;
+            cursor: pointer;
 	}
     .b-paid__emptyServiceGroupHeader{
         text-align: center;
@@ -214,19 +214,19 @@
         margin-top: 10px;
     }
     .b-paid__modalHeader{
-            text-align: center;
+        text-align: center;
     }
     .b-paid__serviceItemGroup{
-		margin-bottom: 3px;
+        margin-bottom: 3px;
     }
 	.b-paid__serviceItemGroup-b_color{
-		display: inline-block;
-		background-color: #F5F5F5;
-		padding-left: 7px;
-		padding-right: 7px;
-		padding-top: 3px;
-		padding-bottom: 3px;
-		border-radius: 4px 4px 4px 4px;		
+            display: inline-block;
+            background-color: #F5F5F5;
+            padding-left: 7px;
+            padding-right: 7px;
+            padding-top: 3px;
+            padding-bottom: 3px;
+            border-radius: 4px 4px 4px 4px;		
 	}
 	.b-paid__serviceItemGroup.active .b-paid__serviceItemGroup-b_color{
 		font-weight: bold;
@@ -239,26 +239,26 @@
         font-size: 12px;
     }
 	.b-paid__errorFormServicesGroup{
-		color: red;
-		font-size: 12px;
+            color: red;
+            font-size: 12px;
 	}
 	.b-paid__addEditPopover{
-		font-size: 12px;
-		color: #999;
-		cursor: pointer;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
 	}
 	.b-paid__addEditPopover:focus{
-		outline: none;
-		color: black;
+            outline: none;
+            color: black;
 	}
 	.b-paid__addPopover{
-		font-size: 12px;
-		color: #999;
-		cursor: pointer;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
 	}
 	.b-paid__addPopover:focus{
-		outline: none;
-		color: black;
+            outline: none;
+            color: black;
 	}
     .b-paid__bodyRight{
     }
@@ -277,18 +277,18 @@
     margin-bottom: 10px;
 }
 .b-modalSearchPacient{
-	margin-top: 70px;
+    margin-top: 70px;
 }
 .b-modalSelectDoctor{
-	margin-top: 80px !important;
+    margin-top: 80px !important;
 }
 .b-modalSelectExpenseServices{
-	margin-top: 80px !important;
+    margin-top: 80px !important;
 }
 	.b-modalSelectExpenseServices__content
 	{
-		max-height: 600px;
-		overflow-y: scroll;
+            max-height: 600px;
+            overflow-y: scroll;
 	}
 .b-modalReturnPayment.b-paid__modalHeader{
     max-height: 600px;
@@ -298,7 +298,7 @@
     margin-top: 70px;
 }
 .control-label{
-	white-space: nowrap;
+    white-space: nowrap;
 }
 #submitCreatePatient {
     display: none;
@@ -308,15 +308,15 @@
 	background-color: #ebccd1;
 }*/
 .doctorId{
-	display: none;
+    display: none;
 }
 .serviceId{
-	display: none;
+    display: none;
 }
 #CashSum{
-	text-align: center;
-	font-weight: bold;
-	width: 120px;
+    text-align: center;
+    font-weight: bold;
+    width: 120px;
 }
 #Paid_Services_price, #Paid_Expenses_date, #Paid_Expenses_dateEnd, #Patients_last_name, #Patients_first_name, #Patients_middle_name{
     text-align: center;
@@ -339,10 +339,13 @@
     display: none;
 }
 .gridSelectServices .filters{
-	display: none;
+    display: none;
+}
+#selectedServicesTable .filters{
+    display: none;
 }
 .gridChooseExpenses .filters{
-	display: none;
+    display: none;
 }
 .gridJournalExpenses .filters{
     display: none;
@@ -388,6 +391,9 @@
     display: none;
 }
 #selectedServicesTable .b-paid__removeGrid{
+    display: none;
+}
+#selectedServicesTable .button-column{
     display: none;
 }
 #selectedServicesTable .prepareOrderServicesHeadRemove{
