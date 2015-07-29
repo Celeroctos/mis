@@ -102,8 +102,8 @@ $this->pageTitle='Печать направления';
 								'value'=>'ParseMoney::decodeMoney($data->price) . " руб."',
 							],
 //							[
-//								'name'=>'service.doctor.last_name',
-//								'value'=>'$data->doctor->last_name  . " " . $data->doctor->first_name . " " . $data->doctor->middle_name',
+//								'name'=>'doctor',
+//								'value'=>'$data->referral->doctor->last_name  . " " . $data->referral->doctor->first_name . " " . $data->referral->doctor->middle_name',
 //							]
 						],
 					]);
@@ -111,15 +111,16 @@ $this->pageTitle='Печать направления';
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-8">
+				<div class="col-xs-5">
 					Кто направил на исслед.<br>
 					______________________<br>
 					
 					Регистратор <?= Yii::app()->user->name; ?><br>
-					Код МКБ__________ &nbsp&nbsp&nbsp&nbsp Отделение
-					
+					Код МКБ__________________  Отделение
 				</div>
-				<div class="col-xs-4">
+				<div class="col-xs-5">
+					<br><br>
+					Врач: <?= $recordDoctor->last_name . ' ' . $recordDoctor->first_name . ' ' . $recordDoctor->middle_name; ?>
 				</div>
 			</div>
 		</div>

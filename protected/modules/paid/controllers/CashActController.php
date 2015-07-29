@@ -709,7 +709,19 @@ class CashActController extends MPaidController
 		
 		$modelReferrals_Details=new Paid_Referrals_Details();
 		
-		$this->renderPartial('printReferral', ['recordExpense'=>$recordExpense, 'recordPaid_Medcard'=>$recordPaid_Medcard, 'recordPatient'=>$recordPatient, 'paid_referral_id'=>$paid_referral_id, 'modelReferrals_Details'=>$modelReferrals_Details, 'recordReferral'=>$recordReferral, 'recordReferrals_Details'=>$recordReferrals_Details], false, true);
+		$recordDoctor=Doctors::model()->findByPk($recordReferral->doctor_id);
+		
+		if($recordDoctor===null)
+		{
+			throw new CHttpException(404, 'Врач из данного направления был удалён.');
+		}
+		
+		$this->layout='print';
+		$mPdf=Yii::app()->ePdf->mpdf();
+		$mPdf->WriteHTML($this->renderPartial('printReferral', ['recordExpense'=>$recordExpense, 'recordPaid_Medcard'=>$recordPaid_Medcard, 'recordPatient'=>$recordPatient, 'paid_referral_id'=>$paid_referral_id, 'modelReferrals_Details'=>$modelReferrals_Details, 'recordReferral'=>$recordReferral, 'recordReferrals_Details'=>$recordReferrals_Details, 'recordDoctor'=>$recordDoctor], true, true));
+		$mPdf->Output();
+		
+//		$this->renderPartial('printReferral', ['recordExpense'=>$recordExpense, 'recordPaid_Medcard'=>$recordPaid_Medcard, 'recordPatient'=>$recordPatient, 'paid_referral_id'=>$paid_referral_id, 'modelReferrals_Details'=>$modelReferrals_Details, 'recordReferral'=>$recordReferral, 'recordReferrals_Details'=>$recordReferrals_Details], false, true);
 	}
 	
 	/**
@@ -749,12 +761,12 @@ class CashActController extends MPaidController
 		
 		$modelOrder_Details=new Paid_Order_Details();
 		
-//		$this->layout='print';
-//		$mPdf=Yii::app()->ePdf->mpdf();
-//		$mPdf->WriteHTML($this->renderPartial('printExpense', ['paid_order_id'=>$paid_order_id, 'modelOrder_Details'=>$modelOrder_Details, 'recordPaid_Expense'=>$recordPaid_Expense, 'recordPatient'=>$recordPatient, 'recordPaid_Medcard'=>$recordPaid_Medcard], true, true));
-//		$mPdf->Output();
+		$this->layout='print';
+		$mPdf=Yii::app()->ePdf->mpdf();
+		$mPdf->WriteHTML($this->renderPartial('printExpense', ['paid_order_id'=>$paid_order_id, 'modelOrder_Details'=>$modelOrder_Details, 'recordPaid_Expense'=>$recordPaid_Expense, 'recordPatient'=>$recordPatient, 'recordPaid_Medcard'=>$recordPaid_Medcard], true, true));
+		$mPdf->Output();
 		
-		$this->renderPartial('printExpense', ['paid_order_id'=>$paid_order_id, 'modelOrder_Details'=>$modelOrder_Details, 'recordPaid_Expense'=>$recordPaid_Expense, 'recordPatient'=>$recordPatient, 'recordPaid_Medcard'=>$recordPaid_Medcard], false, true);
+//		$this->renderPartial('printExpense', ['paid_order_id'=>$paid_order_id, 'modelOrder_Details'=>$modelOrder_Details, 'recordPaid_Expense'=>$recordPaid_Expense, 'recordPatient'=>$recordPatient, 'recordPaid_Medcard'=>$recordPaid_Medcard], false, true);
 	}
 	
 	/**
@@ -791,7 +803,7 @@ class CashActController extends MPaidController
 		$mPdf=Yii::app()->ePdf->mpdf();
 		$mPdf->WriteHTML($this->render('ContractPdf', ['recordDocuments'=>$recordDocuments, 'recordOrder'=>$recordOrder, 'recordExpense'=>$recordExpense], true));
 		$mPdf->Output();
-//		$this->layout='print';
+		
 //		$this->render('ContractPdf', []);
 	}
 }

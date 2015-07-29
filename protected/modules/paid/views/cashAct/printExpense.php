@@ -58,12 +58,12 @@ $this->pageTitle='Печать счёта';
 					<?php
 					$this->widget('zii.widgets.grid.CGridView', [
 						'dataProvider'=>$modelOrder_Details->search($paid_order_id),
-						'filter'=>$modelOrder_Details,
+//						'filter'=>'',
 						'ajaxType'=>'post',
 						'id'=>'gridPrintExpense',
 	//					'id'=>$modelDoctors->hash, //сохраняем ID при обновлении ajax
 						'ajaxVar'=>'gridPrintExpense',
-						'template'=>'{pager}{items}',
+						'template'=>'{items}',
 						'ajaxUpdate'=>true,
 						'enableSorting'=>false,
 						'emptyText'=>
@@ -116,7 +116,7 @@ $this->pageTitle='Печать счёта';
 					______________________<br>
 					
 					Регистратор <?= Yii::app()->user->name; ?><br>
-					Код МКБ__________ &nbsp&nbsp&nbsp&nbsp Отделение
+					Код МКБ__________  Отделение
 					
 				</div>
 				<div class="col-xs-4">

@@ -118,12 +118,9 @@ function classChooseExpenses() {
 		
 		var i=0;
 		$('#selectedServicesTable tbody tr').each(function () {
-			if ($(this).attr('class') !== 'empty')
-			{
+			if ($(this).attr('class') !== 'empty') {
 				$(this).detach();
-			}
-			else
-			{ //php PSR style..
+			} else {
 				i++;
 			}
 		});
@@ -149,6 +146,11 @@ function classChooseExpenses() {
 	};
 	
 	this.initHandlers=function () {
+		$(document).on('click', '#cleanChooseExpenses', function () {
+			$('input[name="Paid_Expenses[date]"]').val('');
+			$('input[name="Paid_Expenses[dateEnd]"]').val('');
+			$("#modalSelectExpensesBody .grid-view").yiiGridView("update");
+		});
 		$(document).on('hidden.bs.modal', '#modalSelectExpenses', callBackHiddenModalExpenses);
 		$(document).on('click', '.gridChooseExpenses tbody tr', callBackClickTr);
 		$(document).on('hidden.bs.modal', '#modalSelectExpenseServices', callBackHiddenModalExpenseServices);

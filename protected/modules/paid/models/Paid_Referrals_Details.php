@@ -24,6 +24,14 @@ class Paid_Referrals_Details extends ActiveRecord
 			
 		];
 	}
+
+	public function attributeLabels()
+	{
+		return [
+			'price'=>'Цена',
+			'doctor'=>'Доктор',
+		];
+	}
 	
 	public function relations()
 	{

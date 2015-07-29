@@ -153,6 +153,15 @@ function JournalController () {
 			window.print();
 		});
 		
+		$(document).on('click', '#cleanSearchJournal', function () {
+			$('input[name="Paid_Expenses[date]"]').val('');
+			$('input[name="Paid_Expenses[dateEnd]"]').val('');
+			$('input[name="Patients[last_name]"]').val('');
+			$('input[name="Patients[first_name]"]').val('');
+			$('input[name="Patients[middle_name]"]').val('');
+			$(".b-content__journal .grid-view").yiiGridView("update");			
+		});
+		
 		this.handlerAllExpenses();
 		this.handlerNotPaidExpenses();
 		this.handlerPaidExpenses();

@@ -29,7 +29,8 @@ class Paid_Referrals extends ActiveRecord
 	public function relations()
 	{
 		return [
-			
+			'doctor'=>[self::BELONGS_TO, 'Doctors', 'doctor_id'],
+			'order'=>[self::BELONGS_TO, 'Paid_Orders', 'paid_order_id'],
 		];
 	}
 	

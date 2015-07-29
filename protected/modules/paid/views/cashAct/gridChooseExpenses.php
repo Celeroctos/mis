@@ -19,7 +19,7 @@
 											]
 ]); ?>
 	<div class="row">
-		<div class="col-xs-4 col-xs-offset-1">
+		<div class="col-xs-3">
 			<?= $form->Label($modelPaid_Expenses, 'date', ['class'=>'control-label']); ?>
 			<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 				'language'=>'ru',
@@ -40,7 +40,7 @@
 			]); ?>
 			<?= $form->error($modelPaid_Expenses, 'date', ['class'=>'b-paid__errorFormPatient']); ?>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-xs-3">
 			<?= $form->Label($modelPaid_Expenses, 'dateEnd', ['class'=>'control-label']); ?>
 			<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 				'language'=>'ru',
@@ -64,6 +64,10 @@
 			<?= CHtml::label('Поиск', '', ['class'=>'control-label', 'style'=>'opacity: 0;']); ?>
 			<?= CHtml::submitButton('Поиск', ['id'=>$modelPaid_Expenses->hashForm, 'class'=>'btn btn-block btn-primary btn-sm']); ?>
 		</div>
+		<div class="col-xs-3">
+			<?= CHtml::label('Очистить', '', ['class'=>'control-label', 'style'=>'opacity: 0']); ?>
+			<?= CHtml::button('Очистить', ['id'=>'cleanChooseExpenses', 'class'=>'btn btn-block btn-default btn-sm']); ?>
+		</div>
 	</div>
 <?php $this->endWidget(); ?>
 <?php
@@ -78,7 +82,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
 	'emptyText'=>'Счета не найдены.',
-	'showTableOnEmpty'=>false,
+//	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridChooseExpenses',
 	'pager'=>[
 		'class'=>'CLinkPager',

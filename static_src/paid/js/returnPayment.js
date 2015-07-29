@@ -103,6 +103,12 @@ function ReturnPaymentController() {
 		 * Обработка нажатий на строку грида в самой модали
 		 */
 		$(document).on('click', '.gridReturnPayment tbody tr', returnPaymentConfirm);
+		
+		$(document).on('click', '#cleanReturnPayment', function () {
+			$('input[name="Paid_Expenses[date]"]').val('');
+			$('input[name="Paid_Expenses[dateEnd]"]').val('');
+			$("#modalReturnPaymentBody .grid-view").yiiGridView("update");
+		});
 	};
 	
 	this.handlerModal = function () {

@@ -18,7 +18,7 @@ $this->widget('zii.widgets.grid.CGridView', [
 	'ajaxUpdate'=>true,
 	'enableSorting'=>false,
 	'emptyText'=>'Не оплаченные счета отсутствуют.',
-	'showTableOnEmpty'=>false,
+//	'showTableOnEmpty'=>false,
 	'itemsCssClass'=>'table table-bordered gridReturnPayment',
 	'pager'=>[
 		'class'=>'CLinkPager',

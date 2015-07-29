@@ -11,7 +11,7 @@
     'enableClientValidation'=>false,
 ]); ?>
 <div class="row form-group">
-	<div class="col-xs-4 col-xs-offset-1">
+	<div class="col-xs-3">
 		<?= $form->Label($modelPaid_Expense, 'date', ['class'=>'control-label']); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 			'language'=>'ru',
@@ -33,7 +33,7 @@
 		]); ?>
 		<?= $form->error($modelPaid_Expense, 'date', ['class'=>'b-paid__errorFormPatient']); ?>
 	</div>
-	<div class="col-xs-4">
+	<div class="col-xs-3">
 		<?= $form->Label($modelPaid_Expense, 'dateEnd', ['class'=>'control-label']); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', [
 			'language'=>'ru',
@@ -57,7 +57,11 @@
 	</div>
 	<div class="col-xs-2">
 		<?= CHtml::label('Поиск', '', ['class'=>'control-label', 'style'=>'opacity: 0;']); ?>
-		<?= CHtml::ajaxSubmitButton('Поиск', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('returnPayment.ajaxSearch')], ['class'=>'btn btn-primary btn-sm', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
+		<?= CHtml::ajaxSubmitButton('Поиск', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('returnPayment.ajaxSearch')], ['class'=>'btn btn-primary btn-block btn-sm', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
+	</div>
+	<div class="col-xs-3">
+		<?= CHtml::label('Очистить', '', ['class'=>'control-label', 'style'=>'opacity: 0;']); ?>
+		<?= CHtml::button('Очистить', ['class'=>'btn btn-default btn-block btn-sm', 'id'=>'cleanReturnPayment']); ?>
 	</div>
 </div>
 <?php $this->endWidget(); ?>

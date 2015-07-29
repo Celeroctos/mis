@@ -58,18 +58,19 @@
 </div>
 <div class="row form-group">
 	<div class="col-xs-2">
-		<?= $form->TextField($modelPatient, 'last_name', ['class'=>'form-control', 'placeholder'=>'Фамилия']); ?>
+		<?= $form->TextField($modelPatient, 'last_name', ['class'=>'form-control', 'placeholder'=>'Фамилия пациента']); ?>
 	</div>
 	<div class="col-xs-2">
-		<?= $form->TextField($modelPatient, 'first_name', ['class'=>'form-control', 'placeholder'=>'Имя']); ?>
+		<?= $form->TextField($modelPatient, 'first_name', ['class'=>'form-control', 'placeholder'=>'Имя пациента']); ?>
 	</div>
 	<div class="col-xs-2">
-		<?= $form->TextField($modelPatient, 'middle_name', ['class'=>'form-control', 'placeholder'=>'Отчество']); ?>
+		<?= $form->TextField($modelPatient, 'middle_name', ['class'=>'form-control', 'placeholder'=>'Отчество пациента']); ?>
 	</div>
 </div>
 <div class="row">
 	<div class="col-xs-12">
 		<?= CHtml::ajaxSubmitButton('Применить фильтр', '', ['method'=>'post', 'success'=>new CJavaScriptExpression('journal.ajaxSearch')], ['class'=>'btn btn-primary', 'id'=>substr(md5(uniqid("", true)), 0, 6)]); ?>
+		<?= CHtml::button('Очистить', ['class'=>'btn btn-primary', 'id'=>'cleanSearchJournal']); ?>
 		<?= CHtml::button('Печать', ['class'=>'btn btn-primary', 'id'=>'printGridJournal']); ?>
 	</div>
 </div>
