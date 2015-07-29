@@ -53,7 +53,7 @@ $this->pageTitle='Пациент';
 				</thead>
 				<tbody>
 					<tr class="empty">
-						<td colspan="7"><span>Пусто</span></td>
+						<td colspan="7"><span>Услуги не выбраны.</span></td>
 					</tr>
 				</tbody>
 			</table>
@@ -154,3 +154,4 @@ $this->pageTitle='Пациент';
 		</div>
 	</div>
 </div>
+<?php $this->widget('ModalTransitionSearch'); ?>

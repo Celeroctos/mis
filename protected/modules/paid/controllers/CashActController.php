@@ -517,7 +517,15 @@ class CashActController extends MPaidController
 		{
 			throw new CHttpException(404, 'Заказ не найден.');
 		}
-		echo $recordPaid_Orders->paid_order_id;
+		
+		$recordPaid_Order_Details=Paid_Order_Details::model()->findAll('paid_order_id=:paid_order_id', [':paid_order_id'=>$recordPaid_Orders->paid_order_id]);
+		
+		if(!empty($recordPaid_Order_Details)) {
+			echo $recordPaid_Orders->paid_order_id;
+		}
+		else {
+			echo -1;
+		}
 	}
 	
 	/**

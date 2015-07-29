@@ -56,6 +56,16 @@
 		 */
 		var expenseNumber;
 
+		function deleteOrder() {
+			$.ajax({
+				url: '/paid/cashAct/DeleteOrderForm/paid_order_id/' + orderId,
+				method: 'get',
+				success: function () {
+					location.reload();
+				}
+			});
+		}
+		
 		/**
 		 * "Итого"
 		 * @private
@@ -179,6 +189,7 @@
 					var middleName = $(thisDoctor).find('.middleName').text();
 					
 					modelOrder.push({'serviceId': serviceId, 'doctorId': doctorId}); // заполняем заказ
+					indexOrder++;
 					
 					$('#modalSelectDoctors').modal('hide');
 					
@@ -206,8 +217,9 @@
 								}
 							}
 							
-							modelOrder=modelTemp;
+							modelOrder=modelTemp; // обновление модели заказа
 							thisService.detach();
+							indexOrder--;
 						});
 					});
 				}
@@ -237,6 +249,11 @@
 			 */
 			function confirmPrepareOrder() {
 				
+				if(indexOrder<=0) {
+					alert('Выберите хотя бы одну услугу!');
+					return;
+				}
+				
 				/**
 				 * @callback
 				 * @param {Number} id #ID заказа
@@ -256,6 +273,7 @@
 					window.open('/paid/cashAct/printContract/order_id/' + orderId, '', 'location=no, titlebar=no, toolbar=no, directories=no, width=640px, height=480px, top=250px, left=380px;');		
 					
 					$('#punchButton').prop('disabled', false);
+					$('#deleteOrderButton').prop('disabled', false);
 				}
 				
 				var urlAjax;
@@ -335,13 +353,18 @@
 		function loadPrepareOrder() {
 			
 			expenseNumber = $('._expense_number').text();
-			scenario = 1;
+			scenario = 1; // режим создания
 			
 			$.ajax({
 				url: '/paid/cashAct/PrepareOrder/expense_number/' + expenseNumber,
 				method: 'get',
 				success: function (localOrderId) {
 					orderId=localOrderId;
+					
+					if(orderId<=0) {
+						alert('В счёте отсутствуют услуги!');
+						return;
+					}
 					setTotalSum();
 					
 					var tableOrder=$('.gridChooseExpenseServices').clone();
@@ -354,7 +377,8 @@
 					$('#modalSelectExpenses').modal('hide');
 					$('#modalSelectExpenseServices').modal('hide');
 					
-					$('#punchButton').prop('disabled', false);		
+					$('#punchButton').prop('disabled', false);
+					$('#deleteOrderButton').prop('disabled', false);
 				}
 			});
 		}
@@ -423,6 +447,8 @@
 			 * Пробивка чека, кнопку надо разблокировать
 			 */
 			$(document).on('click', '#punchButton', punch);
+			
+			$(document).on('click', '#deleteOrderButton', deleteOrder);
 			
 			/**
 			 * Отключаем все обработчики при скрытии модали.
