@@ -806,4 +806,19 @@ class CashActController extends MPaidController
 		
 //		$this->render('ContractPdf', []);
 	}
+	
+	public function actionGetTotalSum($order_id)
+	{
+		$recordExpense=Paid_Expenses::model()->find('paid_order_id=:paid_order_id', [':paid_order_id'=>$order_id]);
+		if($recordExpense===null)
+		{
+			echo 0;
+			Yii::app()->end();
+		}
+		else {
+			echo ParseMoney::decodeMoney($recordExpense->price);
+			Yii::app()->end();
+		}
+	}
+	
 }

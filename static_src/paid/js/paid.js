@@ -474,17 +474,17 @@ $(document).ready(function() {
 		}
 	});
 	
-	var inputMaskComplete=function () {
-		var totalSum=$('#TotalSum').html(); //взяли сумму "ИТОГО"
-		if(totalSum>0)
-		{ //если ИТОГО существует
-			var oddMoney=$(this).val() - totalSum;
-			if(Number(oddMoney)===oddMoney)
-				$('#oddMoney').html(oddMoney.toFixed(2)); //формируем сдачу
-		}
-	}; //используется в .inputmask, формирует сдачу пациента.
-	
-	$('#CashSum').inputmask("9{2,9}.9{2}", {"oncomplete": inputMaskComplete});
+//	var inputMaskComplete=function () {
+//		var totalSum=$('#TotalSum').html(); //взяли сумму "ИТОГО"
+//		if(totalSum>0)
+//		{ //если ИТОГО существует
+//			var oddMoney=$(this).val() - totalSum;
+//			if(Number(oddMoney)===oddMoney)
+//				$('#oddMoney').html(oddMoney.toFixed(2)); //формируем сдачу
+//		}
+//	}; //используется в .inputmask, формирует сдачу пациента.
+//	
+//	$('#CashSum').inputmask("9{2,9}.9{2}", {"oncomplete": inputMaskComplete});
 	
 //	function classOrderForm() {
 //		

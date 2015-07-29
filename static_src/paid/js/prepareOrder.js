@@ -45,17 +45,47 @@
 		var orderId = -1;
 		
 		/**
+		 * Общая сумма заказа
+		 * @type Number
+		 */
+		var totalSum = 0;
+		
+		/**
 		 * Номер счёта
 		 * @type Number
 		 */
 		var expenseNumber;
 
 		/**
+		 * "Итого"
+		 * @private
+		 */
+		function setTotalSum() {
+			$.ajax({
+				url: '/paid/cashAct/GetTotalSum/order_id/' + orderId,
+				success: function (html) {
+					$('#TotalSum').text(html);
+					totalSum=$('#TotalSum').text();
+					$('#CashSum').val('');
+					$('#oddMoney').text('');
+				}
+			});
+		}
+		
+		/**
 		 * @callback
 		 * Пробить чек
 		 */
 		function punch() {
-			if(orderId>0) {
+			
+			var cashSum = parseFloat($('#CashSum').val());
+			var totalSum = parseFloat($('#TotalSum').text());
+
+			if(orderId>0 && !isNaN(cashSum) && !isNaN(totalSum) && cashSum>=totalSum) {
+				
+				$('#punchButton').removeClass('btn-danger');
+				$('#punchButton').addClass('btn-default');
+				
 				function ajaxSuccessJsonReferrals(jsonResponse) {
 					var referrals=$.parseJSON(jsonResponse);
 					for(var i=0; i<referrals.length; i++) { // печатаем все направления
@@ -69,7 +99,8 @@
 					success: ajaxSuccessJsonReferrals
 				});
 			} else {
-				$('#punchButton').prop('disabled', true);
+				$('#punchButton').removeClass('btn-default');
+				$('#punchButton').addClass('btn-danger');
 			}
 		}
 		
@@ -177,7 +208,6 @@
 							
 							modelOrder=modelTemp;
 							thisService.detach();
-			
 						});
 					});
 				}
@@ -213,7 +243,9 @@
 				 */
 				function ajaxOrderSuccess(id) {
 					orderId=id;
+					setTotalSum();
 					scenario = 0; // перевод на редактирование
+					
 					var tableOrder=$('#tablePrepareOrderServices').clone();
 					$('#selectedServicesTable').empty();
 					$('#selectedServicesTable').html('<table class="table table-bordered table-striped"></table>');
@@ -225,7 +257,7 @@
 					
 					$('#punchButton').prop('disabled', false);
 				}
-
+				
 				var urlAjax;
 
 				// заполняем orderId после AJAX-запроса if(scenario) создаем заказ или редактируем
@@ -302,7 +334,6 @@
 		 */
 		function loadPrepareOrder() {
 			
-			
 			expenseNumber = $('._expense_number').text();
 			scenario = 1;
 			
@@ -311,6 +342,8 @@
 				method: 'get',
 				success: function (localOrderId) {
 					orderId=localOrderId;
+					setTotalSum();
+					
 					var tableOrder=$('.gridChooseExpenseServices').clone();
 					$('#selectedServicesTable').empty();
 					$('#selectedServicesTable').html('<table class="table table-bordered table-striped"></table>');
@@ -353,6 +386,28 @@
 		 * @function
 		 */
 		this.initialize = function() {
+			
+			var i = 0;
+			$(document).ready(function () {
+				$('#CashSum').inputmask({"mask": "[9{2,9}][.99]", greedy: false});
+				$('#CashSum').on('blur', function () {
+					var cashSum = parseFloat($(this).val());
+					var localTotalSum = parseFloat(totalSum);
+					
+					var odd = cashSum.toFixed(2) - localTotalSum.toFixed(2);
+					odd=odd.toFixed(2);
+					if(!isNaN(odd)) {
+						$('#oddMoney').text(odd);
+					} else {
+						$('#oddMoney').text('');
+					}
+				});
+			});
+					
+			
+			if(parseUrl[7]==='patient') {
+				$('#beginPrepareOrder').prop('disabled', false);
+			}
 			
 			/**
 			 * Начинаем подготовку услуг для заказа.

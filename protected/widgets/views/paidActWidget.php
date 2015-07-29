@@ -10,7 +10,7 @@
 	<?= CHtml::ajaxButton('Выбрать счет', CHtml::normalizeUrl(['/paid/cashAct/ChooseExpenses', 'patient_id'=>$modelPatient->patient_id]), ['method'=>'POST', 'success'=>'chooseExpenses.selectExpenses'], ['class'=>'btn btn-default btn-block', 'id'=>'chooseExpenses', 'disabled'=>'disabled']); ?>
 </div>
 <div class="col-xs-2 b-paid_grid_position paidActWidget">
-	<?= CHtml::button('Выбрать услуги', ['class'=>'btn btn-default btn-block', 'id'=>'beginPrepareOrder']); ?>
+	<?= CHtml::button('Выбрать услуги', ['class'=>'btn btn-default btn-block', 'id'=>'beginPrepareOrder', 'disabled'=>'disabled']); ?>
 </div>
 <div class="modal" id="modalSelectServices" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog b-modalSelectServices">
