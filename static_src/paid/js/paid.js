@@ -105,45 +105,45 @@ function classChooseExpenses() {
 	* success method for ajax request
 	* @param {mixed} html ответ от сервера
 	*/
-	this.selectExpenses=function(html) {
-		
-		if(html===ERROR_LOGIN) 
-		{ //пришёл ответ от сервера в виде: echo "ERROR_LOGIN"
-			redirectToLogin();
-			return;
-		}
-		
-		/**TODO */
-		//чистим это всё только когда есть выбранный пациент!!! TODODODODO
-		
-		var i=0;
-		$('#selectedServicesTable tbody tr').each(function () {
-			if ($(this).attr('class') !== 'empty') {
-				$(this).detach();
-			} else {
-				i++;
-			}
-		});
-		
-		if(i===0)
-		{ // в таблице selectedServicesTable нету тега tr с классом empty
-			$('#selectedServicesTable tbody').append('<tr class="empty"><td colspan="7"><span>Пусто</span></td></tr>');
-		}
-		
-		$('#selectedServicesTable tbody .empty').css('display', 'table-row');
-		$('#deleteOrderButton, #punchButton').off('click');		
-		$('#deleteOrderButton, #punchButton').attr('disabled', 'disabled');
-		$('#CashSum').val('');
-		$('#punchButton').removeClass('btn-danger');
-		$('#punchButton').addClass('btn-default');
-		$('#TotalSum').html(0);
-		/* TODODODODO */
-		
-		$('#modalSelectExpensesBody').html(html);
-		$('#Paid_Expenses_date').inputmask("mask", {"mask": "9999-99-99"});
-		$('#Paid_Expenses_dateEnd').inputmask("mask", {"mask": "9999-99-99"});
-		$('#modalSelectExpenses').modal('show');
-	};
+//	this.selectExpenses=function(html) {
+//		
+//		if(html===ERROR_LOGIN) 
+//		{ //пришёл ответ от сервера в виде: echo "ERROR_LOGIN"
+//			redirectToLogin();
+//			return;
+//		}
+//		
+//		/**TODO */
+//		//чистим это всё только когда есть выбранный пациент!!! TODODODODO
+//		
+//		var i=0;
+//		$('#selectedServicesTable tbody tr').each(function () {
+//			if ($(this).attr('class') !== 'empty') {
+//				$(this).detach();
+//			} else {
+//				i++;
+//			}
+//		});
+//		
+//		if(i===0)
+//		{ // в таблице selectedServicesTable нету тега tr с классом empty
+//			$('#selectedServicesTable tbody').append('<tr class="empty"><td colspan="7"><span>Пусто</span></td></tr>');
+//		}
+//		
+//		$('#selectedServicesTable tbody .empty').css('display', 'table-row');
+//		$('#deleteOrderButton, #punchButton').off('click');		
+//		$('#deleteOrderButton, #punchButton').attr('disabled', 'disabled');
+//		$('#CashSum').val('');
+//		$('#punchButton').removeClass('btn-danger');
+//		$('#punchButton').addClass('btn-default');
+//		$('#TotalSum').html(0);
+//		/* TODODODODO */
+//		
+//		$('#modalSelectExpensesBody').html(html);
+//		$('#Paid_Expenses_date').inputmask("mask", {"mask": "9999-99-99"});
+//		$('#Paid_Expenses_dateEnd').inputmask("mask", {"mask": "9999-99-99"});
+//		$('#modalSelectExpenses').modal('show');
+//	};
 	
 	this.initHandlers=function () {
 		$(document).on('click', '#cleanChooseExpenses', function () {

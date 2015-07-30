@@ -84,6 +84,7 @@
 		
 		/**
 		 * @callback
+		 * @private
 		 * Пробить чек
 		 */
 		function punch() {
@@ -112,6 +113,30 @@
 				$('#punchButton').removeClass('btn-default');
 				$('#punchButton').addClass('btn-danger');
 			}
+		}
+		
+		/**
+		 * Обработка события click на кнопку "Выбрать счёт"
+		 * @callback
+		 * @private
+		 */
+		function loadExpensesModal() {
+			
+			/**
+			 * ajax success method
+			 * @callback
+			 */
+			function ajaxSuccess(html) {
+				$('#modalSelectExpensesBody').html(html);
+				$('#Paid_Expenses_date').inputmask("mask", {"mask": "9999-99-99"});
+				$('#Paid_Expenses_dateEnd').inputmask("mask", {"mask": "9999-99-99"});
+				$('#modalSelectExpenses').modal('show');				
+			}
+			
+			$.ajax({
+				url: '/paid/cashAct/ChooseExpenses/patient_id/' + parseUrl[7], // parseUrl[7] == patientId
+				success: ajaxSuccess
+			});
 		}
 		
 		/**
@@ -189,10 +214,7 @@
 					var middleName = $(thisDoctor).find('.middleName').text();
 					
 					modelOrder.push({serviceId: serviceId, doctorId: doctorId}); // заполняем заказ
-//					console.log(modelOrder);
 					indexOrder++;
-//						console.log(serviceId)
-//								console.log(doctorId)
 					$('#modalSelectDoctors').modal('hide');
 					
 					thisService.css('opacity', 0);
@@ -200,7 +222,6 @@
 					thisService.append('<td>' + lastName + ' ' + firstName + ' ' + middleName + '</td>').append(tagRemove);
 					$('#tablePrepareOrderServices tbody').append(thisService);
 					thisService.animate({opacity: 1}, 200);
-//					indexOrder++; // следующая строка заказа
 					tagRemove.on('click', function () {
 						thisService.animate({opacity: 0}, 150, function () {
 							
@@ -209,7 +230,7 @@
 							var modelTemp=[];
 							for(var i=0; i<modelOrder.length; i++) {
 								if(modelOrder[i].serviceId==serviceId && modelOrder[i].doctorId==doctorId && j===0) { //пропускаем и не добавляем на кликнутый элемент
-									j++;
+									j++; // если есть повторяющиеся кортежи (1-1, 1-1). Удаляем только первый.
 									continue;
 								}
 								modelTemp[index]={};
@@ -438,6 +459,11 @@
 			 * Начинаем подготовку услуг для заказа.
 			 */
 			$(document).on('click ', '#beginPrepareOrder', loadServicesModal);
+			
+			/**
+			 * Нажатие на кнопку "выбрать счёт". Сюда попадают уже подготовленные счета.
+			 */
+			$(document).on('click', '#beginPrepareExpense', loadExpensesModal);
 			
 			/**
 			 * Выбранный счёт
