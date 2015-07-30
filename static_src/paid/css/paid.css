@@ -4,6 +4,40 @@
 .b-content{ /*Yii content container*/
     margin-bottom: 8px;
 }
+.b-header{
+    background-color: #2294F2;
+        box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.10);
+        border: none;
+        margin-bottom: 10px;
+        border-radius: 0 0 0 0;
+        color: white !important;
+        height: 64px;
+}
+.b-footer{
+    background-color: #2294F2 !important;
+}
+.b-header .navbar-text{
+    color: white;
+    margin-top: 24px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 19px;
+    padding-top: 0;
+}
+.navbar-brand{
+    height: 64px;
+}
+.b-header .dropdown-toggle{
+    margin-top: 24px;
+    font-weight: bold;
+    font-size: 14px;
+    color: white !important;
+    padding-top: 0;
+    line-height: 19px;
+}
+.dropdown.open .dropdown-toggle:focus{
+    background-color: transparent !important;
+}
 .b-paidNav{
     padding-bottom: 15px;
 }
@@ -12,7 +46,11 @@
     }
     .b-paidNav .b-paidNav__li{
         box-shadow: 0px 0px 1px rgba(0,0,0,0.65);
-    } 
+    }
+    .b-paidNav .active .b-paidNav__href{
+        background-color: #2294F2 !important;
+      
+    }
 .b-paidNavJ{
     margin-bottom: 7px;
 }
@@ -278,6 +316,9 @@
 }
 .b-modalSearchPacient{
     margin-top: 70px;
+}
+.b-modalTransitionSearch{
+    margin-top: 150px;
 }
 .b-modalSelectDoctor{
     margin-top: 80px !important;

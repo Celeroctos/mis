@@ -188,9 +188,11 @@
 					 */
 					var middleName = $(thisDoctor).find('.middleName').text();
 					
-					modelOrder.push({'serviceId': serviceId, 'doctorId': doctorId}); // заполняем заказ
+					modelOrder.push({serviceId: serviceId, doctorId: doctorId}); // заполняем заказ
+//					console.log(modelOrder);
 					indexOrder++;
-					
+//						console.log(serviceId)
+//								console.log(doctorId)
 					$('#modalSelectDoctors').modal('hide');
 					
 					thisService.css('opacity', 0);
@@ -200,24 +202,23 @@
 					thisService.animate({opacity: 1}, 200);
 //					indexOrder++; // следующая строка заказа
 					tagRemove.on('click', function () {
-						
 						thisService.animate({opacity: 0}, 150, function () {
 							
 							var index=0;
 							var j=0;
 							var modelTemp=[];
-							
 							for(var i=0; i<modelOrder.length; i++) {
-								if(modelOrder[i]!==undefined) { // алгоритм обновления массива заказанных услуг при удалении из него услуги
-									if(modelOrder[i].serviceId!==serviceId && modelOrder[i].doctorId!==doctorId && j===0) {
-										modelTemp[index]=modelOrder[i];
-										j++; // аналог DISTINCT
-										index++;
-									}
+								if(modelOrder[i].serviceId==serviceId && modelOrder[i].doctorId==doctorId && j===0) { //пропускаем и не добавляем на кликнутый элемент
+									j++;
+									continue;
 								}
+								modelTemp[index]={};
+								modelTemp[index].serviceId=modelOrder[i].serviceId;
+								modelTemp[index].doctorId=modelOrder[i].doctorId;
+								index++;
 							}
-							
 							modelOrder=modelTemp; // обновление модели заказа
+//							console.log(modelOrder);
 							thisService.detach();
 							indexOrder--;
 						});
@@ -353,7 +354,7 @@
 		function loadPrepareOrder() {
 			
 			expenseNumber = $('._expense_number').text();
-			scenario = 1; // режим создания
+			scenario = 1; // сбрасываем если было редактирование на "создание"
 			
 			$.ajax({
 				url: '/paid/cashAct/PrepareOrder/expense_number/' + expenseNumber,
@@ -448,7 +449,20 @@
 			 */
 			$(document).on('click', '#punchButton', punch);
 			
+			/**
+			 * Отмена заказа
+			 */
 			$(document).on('click', '#deleteOrderButton', deleteOrder);
+			
+			/**
+			 * Нажатие на кнопку "К поиску"
+			 */
+			$(document).on('click', '#searchTransitionButton', function () {
+				if(orderId>0) {
+					$('#transitionSearch').modal('show');
+					return false;
+				}
+			});
 			
 			/**
 			 * Отключаем все обработчики при скрытии модали.

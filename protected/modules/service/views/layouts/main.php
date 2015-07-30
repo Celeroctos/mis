@@ -12,16 +12,17 @@
 	<?php Yii::app()->clientScript->registerPackage('service') ?>
 	<title><?= CHtml::encode($this->pageTitle); ?></title>
 </head>
-<body>
-
-	<?php $this->widget('HeaderWidget'); ?>
-	<div class="container">
+<body class="login">
+	<div class="tableCell">
+		<?= $content; ?>
+	</div>
+<!--	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
 				<?php $this->widget('FlashMessager'); ?>
 				<?= $content; ?>
 			</div>
 		</div>
-	</div>
+	</div>-->
 </body>
 </html>
